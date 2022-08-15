@@ -1,3 +1,5 @@
+import {themes} from "@/javascripts/publicContents";
+
 // 获取日期与时间
 export function getDate() {
     let param = new Date();
@@ -72,27 +74,6 @@ export function getGreet() {
 
 // 请求unsplash图片前随机显示多彩颜色主题
 export function setColorTheme() {
-    let themes = [
-        {'bodyBackgroundColor': '#FFEBEE', 'frostedGlassBackgroundColor': '#F44336'},
-        {'bodyBackgroundColor': '#FCE4EC', 'frostedGlassBackgroundColor': '#E91E63'},
-        {'bodyBackgroundColor': '#F3E5F5', 'frostedGlassBackgroundColor': '#9C27B0'},
-        {'bodyBackgroundColor': '#EDE7F6', 'frostedGlassBackgroundColor': '#673AB7'},
-        {'bodyBackgroundColor': '#E8EAF6', 'frostedGlassBackgroundColor': '#3F51B5'},
-        {'bodyBackgroundColor': '#E3F2FD', 'frostedGlassBackgroundColor': '#2196F3'},
-        {'bodyBackgroundColor': '#E1F5FE', 'frostedGlassBackgroundColor': '#03A9F4'},
-        {'bodyBackgroundColor': '#E0F7FA', 'frostedGlassBackgroundColor': '#00BCD4'},
-        {'bodyBackgroundColor': '#E0F2F1', 'frostedGlassBackgroundColor': '#009688'},
-        {'bodyBackgroundColor': '#E8F5E9', 'frostedGlassBackgroundColor': '#4CAF50'},
-        {'bodyBackgroundColor': '#F1F8E9', 'frostedGlassBackgroundColor': '#8BC34A'},
-        {'bodyBackgroundColor': '#F9FBE7', 'frostedGlassBackgroundColor': '#CDDC39'},
-        {'bodyBackgroundColor': '#FFFDE7', 'frostedGlassBackgroundColor': '#FFEB3B'},
-        {'bodyBackgroundColor': '#FFF8E1', 'frostedGlassBackgroundColor': '#FFC107'},
-        {'bodyBackgroundColor': '#FFF3E0', 'frostedGlassBackgroundColor': '#FF9800'},
-        {'bodyBackgroundColor': '#FBE9E7', 'frostedGlassBackgroundColor': '#FF5722'},
-        {'bodyBackgroundColor': '#EFEBE9', 'frostedGlassBackgroundColor': '#795548'},
-        {'bodyBackgroundColor': '#ECEFF1', 'frostedGlassBackgroundColor': '#607D8B'},
-        {'bodyBackgroundColor': '#FAFAFA', 'frostedGlassBackgroundColor': '#9E9E9E'},
-    ];
     let randomNum = Math.floor(Math.random() * themes.length);
     let body = document.getElementsByTagName('body')[0];
     body.style.backgroundColor = themes[randomNum].bodyBackgroundColor;  // 设置body背景颜色

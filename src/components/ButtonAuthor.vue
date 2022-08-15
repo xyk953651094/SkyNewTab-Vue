@@ -1,12 +1,14 @@
 <template>
     <a-space>
-        <a-button type="primary" shape="round" size="large" class="zIndexHigh"
-                  :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
-            <template #icon>
-                <icon-user/>
-            </template>
-            {{ props.authorName }}
-        </a-button>
+        <a-tooltip content="前往图片作者主页">
+            <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh" @click="onclick"
+                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+                <template #icon>
+                    <icon-user/>
+                </template>
+                {{ props.authorName }}
+            </a-button>
+        </a-tooltip>
     </a-space>
 </template>
 
@@ -17,6 +19,13 @@ import { getFontColor } from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     authorName: {
+        type: String,
+        default: () => {
+            return "";
+        },
+        required: true
+    },
+    authorLink: {
         type: String,
         default: () => {
             return "";
@@ -47,6 +56,15 @@ watch(() => props.imageColor, (newValue, oldValue) => {
         fontColor.value = getFontColor(backgroundColor.value);
     }
 })
+
+const onclick = () => {
+    if(props.authorLink.length !== 0) {
+        window.open(props.authorLink);
+    }
+    else {
+        this.$message.error("无跳转链接");
+    }
+}
 </script>
 
 <style scoped>

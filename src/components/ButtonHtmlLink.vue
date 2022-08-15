@@ -1,18 +1,20 @@
 <template>
-  <a-space>
-    <a-button type="primary" shape="round" size="large" class="zIndexHigh" @click="onclick"
-              :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
-      <template #icon>
-        <icon-link />
-      </template>
-    </a-button>
-  </a-space>
+    <a-space>
+        <a-tooltip content="前往图片原网页">
+            <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh" @click="onclick"
+                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+                <template #icon>
+                    <icon-link/>
+                </template>
+            </a-button>
+        </a-tooltip>
+    </a-space>
 </template>
 
 <script setup>
-import { defineProps, ref, watch } from "vue";
-import { IconLink } from "@arco-design/web-vue/es/icon";
-import { getFontColor } from "@/javascripts/publicFunctions";
+import {defineProps, ref, watch} from "vue";
+import {IconLink} from "@arco-design/web-vue/es/icon";
+import {getFontColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     htmlLink: {
@@ -41,18 +43,17 @@ const props = defineProps({
 let backgroundColor = ref(props.imageColor);
 let fontColor = ref(getFontColor(backgroundColor.value));
 watch(() => props.imageColor, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
+    if (newValue !== oldValue) {
         backgroundColor.value = props.imageColor;
         fontColor.value = getFontColor(backgroundColor.value);
     }
 })
 
 const onclick = () => {
-    if(props.htmlLink.length !== 0) {
+    if (props.htmlLink.length !== 0) {
         window.open(props.htmlLink);
-    }
-    else {
-        alert("无跳转链接");
+    } else {
+        this.$message.error("无跳转链接");
     }
 }
 </script>

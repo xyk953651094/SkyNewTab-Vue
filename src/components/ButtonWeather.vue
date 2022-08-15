@@ -1,14 +1,14 @@
 <template>
-  <a-space>
-    <a-button type="primary" shape="round" size="large" class="zIndexHigh"  @click="onclick"
-              :style="{backgroundColor: backgroundColor, color: fontColor}">
-    </a-button>
-  </a-space>
+    <a-space>
+        <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh" @click="onclick"
+                  :style="{backgroundColor: backgroundColor, color: fontColor}">
+        </a-button>
+    </a-space>
 </template>
 
 <script setup>
-import { defineProps, ref, watch } from "vue";
-import { getFontColor } from "@/javascripts/publicFunctions";
+import {defineProps, ref, watch} from "vue";
+import {getFontColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     imageColor: {
@@ -23,7 +23,7 @@ const props = defineProps({
 let backgroundColor = ref(props.imageColor);
 let fontColor = ref(getFontColor(backgroundColor.value));
 watch(() => props.imageColor, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
+    if (newValue !== oldValue) {
         backgroundColor.value = props.imageColor;
         fontColor.value = getFontColor(backgroundColor.value);
     }

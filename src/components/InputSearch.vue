@@ -6,6 +6,7 @@
             allow-clear=true
             placeholder="请输入搜索内容"
             size="large"
+            class="frostedGlass"
             @focus="onFocus"
             @blur="onBlur"
             @search="onSearch"
@@ -15,7 +16,7 @@
 </template>
 
 <script setup>
-import "../css/publicStyles.css"
+import "../stylesheets/publicStyles.css"
 import { ref } from "vue";
 
 let showMask = ref("none");

@@ -21,8 +21,15 @@
             <a-row justify="space-around">
                 <a-col :span="22" style="text-align: right">
                     <a-space>
-                        <ButtonAuthor :author-name="authorName" :display="componentDisplay" :image-color="imageColor" />
-                        <ButtonCreateTime :create-time="createTime" :display="componentDisplay" :image-color="imageColor" />
+                        <ButtonAuthor
+                            :author-name="authorName"
+                            :author-link="authorLink"
+                            :display="componentDisplay"
+                            :image-color="imageColor" />
+                        <ButtonCreateTime
+                            :create-time="createTime"
+                            :display="componentDisplay"
+                            :image-color="imageColor" />
                     </a-space>
                 </a-col>
             </a-row>
@@ -48,6 +55,7 @@ let htmlLink = ref("");
 let downloadLink = ref("");
 let imageLink = ref("");
 let authorName = ref("");
+let authorLink = ref("");
 let createTime = ref("");
 
 onMounted(()=>{
@@ -66,6 +74,7 @@ onMounted(()=>{
             downloadLink.value = imageData.links.download;
             imageLink.value = imageData.urls.regular;
             authorName.value = imageData.user.name;
+            authorLink.value = imageData.user.links.html,
             createTime.value = imageData.created_at.split('T')[0];
         }
     }
