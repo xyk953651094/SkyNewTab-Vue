@@ -34,20 +34,20 @@ watch(() => props.imageColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    let imageXHR=new XMLHttpRequest();
-    imageXHR.open("GET","https://v2.jinrishici.com/info");
-    imageXHR.onload=function(){
-        if(imageXHR.status===200){
-            let imageData=JSON.parse(imageXHR.responseText);
+    let weatherXHR = new XMLHttpRequest();
+    weatherXHR.open("GET","https://v2.jinrishici.com/info");
+    weatherXHR.onload = function(){
+        if(weatherXHR.status === 200){
+            let result = JSON.parse(weatherXHR.responseText);
 
-            if (imageData.status === 'success') {
-                let weatherData = imageData.data.weatherData;
-                weatherInfo.value = weatherData.weather  + " ｜ " + weatherData.temperature + "°C";
+            if (result.status === 'success') {
+                weatherInfo.value = result.data.weatherData.weather  + " ｜ "
+                    + result.data.weatherData.temperature + "°C";
             }
         }
     }
-    imageXHR.onerror=function(){}
-    imageXHR.send();
+    weatherXHR.onerror=function(){}
+    weatherXHR.send();
 })
 </script>
 
