@@ -3,12 +3,15 @@
         <a-layout-header>
             <a-row justify="space-around">
                 <a-col :span="10" style="text-align: left">
-                    <button-greet :image-color="imageColor" />
+                    <a-space>
+                        <button-greet :image-color="imageColor" />
+                        <button-weather :image-color="imageColor" />
+                    </a-space>
                 </a-col>
                 <a-col :span="10" style="text-align: right">
                     <a-space>
-                        <button-html-link :html-link="htmlLink" :display="componentDisplay" :image-color="imageColor" />
                         <button-download :download-link="downloadLink" :display="componentDisplay" :image-color="imageColor" />
+                        <button-html-link :html-link="htmlLink" :display="componentDisplay" :image-color="imageColor" />
                     </a-space>
                 </a-col>
             </a-row>
@@ -48,6 +51,7 @@ import InputSearch from "@/components/InputSearch";
 import ImageWallpaper from "@/components/ImageWallpaper"
 import ButtonAuthor from "@/components/ButtonAuthor";
 import ButtonCreateTime from "@/components/ButtonCreateTime";
+import ButtonWeather from "@/components/ButtonWeather";
 
 let componentDisplay = ref("none");
 let imageColor = ref("");

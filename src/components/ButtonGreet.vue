@@ -1,14 +1,14 @@
 <template>
     <a-space>
-        <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh"
-                  :style="{ cursor: 'default', backgroundColor: backgroundColor, color: fontColor}">
-            <template #icon>
-                <icon-calendar-clock/>
-            </template>
-            <template #default>
+        <a-tooltip :content=greetContent>
+            <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh"
+                      :style="{ cursor: 'default', backgroundColor: backgroundColor, color: fontColor}">
+                <template #icon>
+                    <icon-calendar-clock/>
+                </template>
                 {{ greetContent }}
-            </template>
-        </a-button>
+            </a-button>
+        </a-tooltip>
     </a-space>
 </template>
 

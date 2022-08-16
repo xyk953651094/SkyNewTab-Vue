@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="前往图片原网页">
+        <a-tooltip content="图片链接">
             <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
                 <template #icon>
