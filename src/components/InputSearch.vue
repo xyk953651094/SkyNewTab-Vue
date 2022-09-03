@@ -11,7 +11,7 @@
             @blur="onBlur"
             @search="onSearch"
             @press-enter="onPressEnter"
-            :style="{width:'750px', borderRadius: 'calc(36px * 0.5)'}"/>
+        />
     </a-space>
 </template>
 
@@ -40,6 +40,11 @@ const onPressEnter = () => {
 </script>
 
 <style scoped>
+#inputSearch {
+    width: 750px;
+    border-radius: calc(36px * 0.5);
+}
+
 .mask {
     position: fixed;
     top: 0;
@@ -52,4 +57,19 @@ const onPressEnter = () => {
     display: none;
 }
 
+/*移动端竖屏样式*/
+@media screen and (max-width: 500px) and (orientation:portrait) {
+    #inputSearch {
+        width: 350px;
+        border-radius: calc(36px * 0.5);
+    }
+}
+
+/*移动端横屏样式*/
+@media screen and (max-width: 1000px) and (orientation:landscape) {
+    #inputSearch {
+        width: 600px;
+        border-radius: calc(36px * 0.5);
+    }
+}
 </style>
