@@ -23,15 +23,15 @@ let showMask = ref("none");
 
 
 const onFocus = () => {
-    // let mask = document.getElementById("mask");
-    // mask.className = "mask zIndexMiddle fadeIn";
+    let mask = document.getElementById("mask");
+    mask.className = "mask zIndexMiddle maskFadeIn";
     showMask.value = "block";
 }
 
 const onBlur = () => {
-    // let mask = document.getElementById("mask");
-    // mask.className = "mask zIndexMiddle fadeOut";
-    showMask.value = "none";
+    let mask = document.getElementById("mask");
+    mask.className = "mask zIndexMiddle maskFadeOut";
+    // showMask.value = "none";
 }
 
 const onSearch = (value) => {
