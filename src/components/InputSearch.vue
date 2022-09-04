@@ -1,5 +1,5 @@
 <template>
-    <div class="mask zIndexMiddle" :style="{display: showMask}"/>
+    <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
     <a-space direction="vertical"  class="zIndexHigh">
         <a-input-search
             id="inputSearch"
@@ -21,11 +21,16 @@ import { ref } from "vue";
 
 let showMask = ref("none");
 
+
 const onFocus = () => {
+    // let mask = document.getElementById("mask");
+    // mask.className = "mask zIndexMiddle fadeIn";
     showMask.value = "block";
 }
 
 const onBlur = () => {
+    // let mask = document.getElementById("mask");
+    // mask.className = "mask zIndexMiddle fadeOut";
     showMask.value = "none";
 }
 

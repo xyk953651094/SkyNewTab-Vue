@@ -45,6 +45,7 @@ onMounted(() => {
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
             // 设置动态效果
+            backgroundImage.className = "arco-image-img fadeIn";
             backgroundImage.style.transform = 'scale(1.05)';
             backgroundImage.style.transition = '5s';
             setTimeout(mouseMoveEffect, 5000);
