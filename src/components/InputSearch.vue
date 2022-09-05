@@ -18,19 +18,18 @@
 <script setup>
 import "../stylesheets/publicStyles.css"
 import { ref } from "vue";
+import {fadeIn, fadeOut} from "@/javascripts/publicFunctions";
 
 let showMask = ref("none");
 
 
 const onFocus = () => {
-    let mask = document.getElementById("mask");
-    mask.className = "mask zIndexMiddle maskFadeIn";
+    fadeIn("#mask", 300);
     showMask.value = "block";
 }
 
 const onBlur = () => {
-    let mask = document.getElementById("mask");
-    mask.className = "mask zIndexMiddle maskFadeOut";
+    fadeOut("#mask", 300);
     // showMask.value = "none";
 }
 

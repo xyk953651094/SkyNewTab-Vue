@@ -20,7 +20,7 @@
 
 <script setup>
 import {defineProps, onMounted} from "vue";
-import {mouseMoveEffect} from "@/javascripts/publicFunctions";
+import {fadeIn, mouseMoveEffect} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     display: {
@@ -45,7 +45,8 @@ onMounted(() => {
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
             // 设置动态效果
-            backgroundImage.className = "arco-image-img wallpaplerFadeIn";
+            // backgroundImage.className = "backgroundImage zIndexLow wallpaplerFadeIn";
+            fadeIn("#backgroundImage", 3000);
             backgroundImage.style.transform = 'scale(1.05)';
             backgroundImage.style.transition = '5s';
             setTimeout(mouseMoveEffect, 5000);

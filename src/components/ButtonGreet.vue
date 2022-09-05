@@ -1,8 +1,8 @@
 <template>
     <a-space>
         <a-tooltip :content=greetContent>
-            <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh"
-                      :style="{ cursor: 'default', backgroundColor: backgroundColor, color: fontColor}">
+            <a-button type="primary" shape="round" size="large" id="buttonGreet" class="frostedGlass zIndexHigh"
+                      :style="{ cursor: 'default'}">
                 <template #icon>
                     <icon-calendar-clock/>
                 </template>
@@ -16,7 +16,7 @@
 import "../stylesheets/publicStyles.css"
 import { defineProps, onMounted, ref, watch } from "vue"
 import { IconCalendarClock } from "@arco-design/web-vue/es/icon";
-import { getDate, getFontColor, getGreet } from "@/javascripts/publicFunctions";
+import {changeThemeColor, getDate, getGreet} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     imageColor: {
@@ -28,13 +28,10 @@ const props = defineProps({
     }
 });
 
-let backgroundColor = ref(props.imageColor);
-let fontColor = ref(getFontColor(backgroundColor.value));
 let greetContent = ref(getGreet());
 watch(() => props.imageColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.imageColor;
-        fontColor.value = getFontColor(backgroundColor.value);
+        changeThemeColor("#buttonGreet", props.imageColor);
     }
 })
 

@@ -48,7 +48,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import {getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
 
 import ButtonGreet from "@/components/ButtonGreet";
 import ButtonHtmlLink from "@/components/ButtonHtmlLink";
@@ -101,8 +101,9 @@ onMounted(()=>{
             }
 
             //设置body颜色
-            let body = document.getElementsByTagName("body")[0];
-            body.style.backgroundColor = imageData.color;
+            // let body = document.getElementsByTagName("body")[0];
+            // body.style.backgroundColor = imageData.color;
+            changeThemeColor("body", imageData.color);
         }
     }
     imageXHR.onerror = function () {

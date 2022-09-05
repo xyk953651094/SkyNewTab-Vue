@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.24.1",
+    "jquery": "^3.6.1",
+    "jquery-color": "^2.2.0",
+    "jquery-ui": "^1.13.2",
     "vue": "^3.2.37"
   },
   "devDependencies": {

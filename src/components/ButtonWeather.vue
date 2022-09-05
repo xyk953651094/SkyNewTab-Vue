@@ -1,8 +1,7 @@
 <template>
     <a-space>
         <a-tooltip :content=weatherInfo>
-            <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh"
-                      :style="{backgroundColor: backgroundColor, color: fontColor}">
+            <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh">
                 {{ weatherInfo }}
             </a-button>
         </a-tooltip>
@@ -11,7 +10,7 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {getFontColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     imageColor: {
@@ -23,13 +22,10 @@ const props = defineProps({
     }
 });
 
-let backgroundColor = ref(props.imageColor);
-let fontColor = ref(getFontColor(backgroundColor.value));
 let weatherInfo = ref("暂无天气信息");
 watch(() => props.imageColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.imageColor;
-        fontColor.value = getFontColor(backgroundColor.value);
+        changeThemeColor("#buttonWeather", props.imageColor);
     }
 })
 

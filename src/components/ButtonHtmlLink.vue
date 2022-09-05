@@ -1,8 +1,8 @@
 <template>
     <a-space>
         <a-tooltip content="图片链接">
-            <a-button type="primary" shape="round" size="large" class="frostedGlass zIndexHigh" @click="onclick"
-                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+            <a-button type="primary" shape="round" size="large" id="buttonHtmlLink" class="frostedGlass zIndexHigh" @click="onclick"
+                      :style="{display: display}">
                 <template #icon>
                     <icon-link/>
                 </template>
@@ -12,9 +12,9 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue";
+import {defineProps, watch} from "vue";
 import {IconLink} from "@arco-design/web-vue/es/icon";
-import {getFontColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     htmlLink: {
@@ -40,12 +40,9 @@ const props = defineProps({
     }
 });
 
-let backgroundColor = ref(props.imageColor);
-let fontColor = ref(getFontColor(backgroundColor.value));
 watch(() => props.imageColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.imageColor;
-        fontColor.value = getFontColor(backgroundColor.value);
+        changeThemeColor("#buttonHtmlLink", props.imageColor);
     }
 })
 
