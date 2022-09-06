@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="下载图片">
+        <a-tooltip :content=tooltipContent>
             <a-button type="primary" shape="round" size="large" id="buttonDownload" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
@@ -12,9 +12,10 @@
 </template>
 
 <script setup>
-import {defineProps, watch} from "vue";
+import {defineProps, ref, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
+let tooltipContent = ref("");
 
 const props = defineProps({
     downloadLink: {
@@ -43,6 +44,12 @@ const props = defineProps({
 watch(() => props.imageColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         changeThemeColor("#buttonDownload", props.imageColor);
+    }
+})
+
+watch(() => props.downloadLink, (newValue, oldValue) => {
+    if(newValue !== oldValue) {
+        tooltipContent.value = "下载图片：" + props.downloadLink;
     }
 })
 

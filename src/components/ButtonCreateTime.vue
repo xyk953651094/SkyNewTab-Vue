@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="拍摄时间">
+        <a-tooltip :content=tooltipContent>
             <a-button type="primary" shape="round" size="large" id="buttonCreateTime" class="frostedGlass zIndexHigh"
                       :style="{display: display}">
                 <template #icon>
@@ -13,9 +13,10 @@
 </template>
 
 <script setup>
-import {defineProps, watch} from "vue"
+import {defineProps, ref, watch} from "vue"
 import {IconCamera} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
+let tooltipContent = ref("");
 
 const props = defineProps({
     createTime: {
@@ -44,6 +45,12 @@ const props = defineProps({
 watch(() => props.imageColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         changeThemeColor("#buttonCreateTime", props.imageColor);
+    }
+})
+
+watch(() => props.createTime, (newValue, oldValue) => {
+    if(newValue !== oldValue) {
+        tooltipContent.value = "拍摄时间：" + props.createTime;
     }
 })
 </script>

@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="作者主页">
+        <a-tooltip :content=tooltipContent>
             <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
@@ -13,9 +13,10 @@
 </template>
 
 <script setup>
-import {defineProps, watch} from "vue"
+import {defineProps, ref, watch} from "vue"
 import {IconUser} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
+let tooltipContent = ref("");
 
 const props = defineProps({
     authorName: {
@@ -51,6 +52,12 @@ const props = defineProps({
 watch(() => props.imageColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         changeThemeColor("#buttonAuthor", props.imageColor);
+    }
+})
+
+watch(() => props.authorLink, (newValue, oldValue) => {
+    if(newValue !== oldValue) {
+        tooltipContent.value = "作者主页：" + props.authorLink;
     }
 })
 

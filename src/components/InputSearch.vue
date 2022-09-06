@@ -4,7 +4,7 @@
         <a-input-search
             id="inputSearch"
             allow-clear=true
-            placeholder="请输入搜索内容"
+            placeholder="按下 Enter 键搜索"
             size="large"
             class="frostedGlass"
             @focus="onFocus"

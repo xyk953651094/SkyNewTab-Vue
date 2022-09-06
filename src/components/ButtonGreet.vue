@@ -51,7 +51,7 @@ onMounted(() => {
                 if (holidayData.data.solarTerms.indexOf('后') === -1) {
                     holidayContent = '今日' + holidayContent;
                 }
-                greetContent.value += " | " + holidayContent;
+                greetContent.value += " ｜ " + holidayContent;
             }
         }
     }

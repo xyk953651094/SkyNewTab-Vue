@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip :content=weatherInfo>
+        <a-tooltip :content=weatherDetail>
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh">
                 {{ weatherInfo }}
             </a-button>
@@ -23,6 +23,7 @@ const props = defineProps({
 });
 
 let weatherInfo = ref("暂无天气信息");
+let weatherDetail = ref("暂无天气信息");
 watch(() => props.imageColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         changeThemeColor("#buttonWeather", props.imageColor);
@@ -39,6 +40,10 @@ onMounted(() => {
             if (result.status === 'success') {
                 weatherInfo.value = result.data.weatherData.weather  + " ｜ "
                     + result.data.weatherData.temperature + "°C";
+                weatherDetail.value = result.data.region.split("|")[1] + " ｜ " +
+                    result.data.weatherData.weather  + " ｜ " +
+                    result.data.weatherData.windDirection  + " ｜ " +
+                    result.data.weatherData.temperature + "°C"
             }
         }
     }
