@@ -1,10 +1,10 @@
 <template>
     <a-space>
-        <a-tooltip :content=tooltipContent>
+        <a-tooltip content="前往作者主页">
             <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
-                    <icon-user/>
+                    <icon-camera/>
                 </template>
                 {{ props.authorName }}
             </a-button>
@@ -13,10 +13,10 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue"
-import {IconUser} from "@arco-design/web-vue/es/icon";
+import {defineProps, watch} from "vue"
+import {IconCamera} from "@arco-design/web-vue/es/icon";
+import {unsplashUrl} from "@/javascripts/publicContents";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
-let tooltipContent = ref("");
 
 const props = defineProps({
     authorName: {
@@ -55,15 +55,9 @@ watch(() => props.imageColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.authorLink, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
-        tooltipContent.value = "作者主页：" + props.authorLink;
-    }
-})
-
 const onclick = () => {
     if(props.authorLink.length !== 0) {
-        window.open(props.authorLink);
+        window.open(props.authorLink + unsplashUrl);
     }
     else {
         this.$message.error("无跳转链接");

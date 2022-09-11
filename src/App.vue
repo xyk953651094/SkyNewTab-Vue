@@ -47,7 +47,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
+import {unsplashUrl, clientId} from "@/javascripts/publicContents";
 import {changeThemeColor, getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
 
 import ButtonGreet from "@/components/ButtonGreet";
@@ -70,27 +71,28 @@ let authorLink = ref("");
 let createTime = ref("");
 
 onMounted(()=>{
+    let tempThis = this;
+    
     imageColor.value = setColorTheme();
     let device = deviceModel();
-    let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral"   // Unsplash API规范
-
-    let clientId = "ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM";
     let orientation = "landscape";
     if(device === "iPhone" || device === "Android") {
         orientation = "portrait";
     }
+    let topics = "bo8jQKTaE0Y,6sMVjTLSkeQ,bDo48cUhwnY,xHxYTMHLgOc,iUIsnVtjB0Y,R_Fyn-Gwtlw,Fzo3zuOHN6w";
+
     let imageXHR = new XMLHttpRequest();
-    imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&content_filter=high");
+    imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&topics=" + topics + "&content_filter=high");
     imageXHR.onload = function () {
         if (imageXHR.status === 200) {
             let imageData = JSON.parse(imageXHR.responseText);
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
             imageColor.value = getThemeColor(imageData.color);
-            htmlLink.value = imageData.links.html + unsplashUrl;
-            downloadLink.value = imageData.links.download + unsplashUrl;
+            htmlLink.value = imageData.links.html;
+            downloadLink.value = imageData.links.download_location;
             imageLink.value = imageData.urls.regular;
-            authorName.value = imageData.user.name;
+            authorName.value = imageData.user.name + " on Unsplash";
             authorLink.value = imageData.user.links.html + unsplashUrl;
             createTime.value = imageData.created_at.split("T")[0];
 
@@ -105,9 +107,12 @@ onMounted(()=>{
             // body.style.backgroundColor = imageData.color;
             changeThemeColor("body", imageData.color);
         }
+        else {
+            tempThis.$message.error("获取图片失败");
+        }
     }
     imageXHR.onerror = function () {
-
+        tempThis.$message.error("获取图片失败");
     }
     imageXHR.send();
 });

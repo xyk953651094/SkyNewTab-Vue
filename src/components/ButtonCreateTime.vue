@@ -4,7 +4,7 @@
             <a-button type="primary" shape="round" size="large" id="buttonCreateTime" class="frostedGlass zIndexHigh"
                       :style="{display: display}">
                 <template #icon>
-                    <icon-camera/>
+                    <icon-calendar-clock />
                 </template>
                 {{ props.createTime }}
             </a-button>
@@ -14,7 +14,7 @@
 
 <script setup>
 import {defineProps, ref, watch} from "vue"
-import {IconCamera} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
 let tooltipContent = ref("");
 

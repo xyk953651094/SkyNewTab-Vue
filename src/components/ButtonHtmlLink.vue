@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip :content=tooltipContent>
+        <a-tooltip content="前往图片主页">
             <a-button type="primary" shape="round" size="large" id="buttonHtmlLink" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue";
+import {defineProps, watch} from "vue";
 import {IconLink} from "@arco-design/web-vue/es/icon";
+import {unsplashUrl} from "@/javascripts/publicContents";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
-let tooltipContent = ref("");
 
 const props = defineProps({
     htmlLink: {
@@ -47,15 +47,9 @@ watch(() => props.imageColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.htmlLink, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
-        tooltipContent.value = "图片链接：" + props.htmlLink;
-    }
-})
-
 const onclick = () => {
     if (props.htmlLink.length !== 0) {
-        window.open(props.htmlLink);
+        window.open(props.htmlLink + unsplashUrl);
     } else {
         this.$message.error("无跳转链接");
     }

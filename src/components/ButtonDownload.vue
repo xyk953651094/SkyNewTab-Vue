@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip :content=tooltipContent>
+        <a-tooltip content="下载图片">
             <a-button type="primary" shape="round" size="large" id="buttonDownload" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue";
+import {defineProps, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
+import {unsplashUrl, clientId} from "@/javascripts/publicContents";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
-let tooltipContent = ref("");
 
 const props = defineProps({
     downloadLink: {
@@ -47,15 +47,24 @@ watch(() => props.imageColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.downloadLink, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
-        tooltipContent.value = "下载图片：" + props.downloadLink;
-    }
-})
-
 const onclick = () => {
     if (props.downloadLink.length !== 0) {
-        window.open(props.downloadLink);
+        let tempThis = this;
+        let downloadXHR = new XMLHttpRequest();
+        downloadXHR.open("GET", props.downloadLink + "?client_id=" + clientId);
+        downloadXHR.onload = function () {
+            if (downloadXHR.status === 200) {
+                let downloadUrl = JSON.parse(downloadXHR.responseText).url + unsplashUrl;
+                window.open(downloadUrl);
+            }
+            else {
+                tempThis.$message.error("获取下载链接失败");
+            }
+        }
+        downloadXHR.onerror = function () {
+            tempThis.$message.error("获取下载链接失败");
+        }
+        downloadXHR.send();
     } else {
         this.$message.error("无下载链接");
     }
