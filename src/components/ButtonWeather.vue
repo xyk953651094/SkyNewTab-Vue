@@ -1,7 +1,8 @@
 <template>
     <a-space>
         <a-tooltip :content=weatherDetail>
-            <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh">
+            <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh"
+                      :style="{display: display}">
                 {{ weatherInfo }}
             </a-button>
         </a-tooltip>
@@ -22,6 +23,7 @@ const props = defineProps({
     }
 });
 
+let display = ref("none");
 let weatherInfo = ref("暂无天气信息");
 let weatherDetail = ref("暂无天气信息");
 watch(() => props.imageColor, (newValue, oldValue) => {
@@ -38,12 +40,16 @@ onMounted(() => {
             let result = JSON.parse(weatherXHR.responseText);
 
             if (result.status === 'success') {
+                display.value = "block";
                 weatherInfo.value = result.data.weatherData.weather  + " ｜ "
                     + result.data.weatherData.temperature + "°C";
                 weatherDetail.value = result.data.region.split("|")[1] + " ｜ " +
                     result.data.weatherData.weather  + " ｜ " +
                     result.data.weatherData.windDirection  + " ｜ " +
-                    result.data.weatherData.temperature + "°C"
+                    result.data.weatherData.temperature + "°C";
+            }
+            else {
+                display.value = "none";
             }
         }
     }

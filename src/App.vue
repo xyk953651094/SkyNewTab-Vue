@@ -72,7 +72,7 @@ let createTime = ref("");
 
 onMounted(()=>{
     let tempThis = this;
-    
+
     imageColor.value = setColorTheme();
     let device = deviceModel();
     let orientation = "landscape";
