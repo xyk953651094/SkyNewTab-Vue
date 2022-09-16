@@ -19,7 +19,7 @@ import { IconCalendarClock } from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getDate, getGreet} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
-    imageColor: {
+    themeColor: {
         type: String,
         default: () => {
             return "#2c3e50";
@@ -29,9 +29,9 @@ const props = defineProps({
 });
 
 let greetContent = ref(getGreet());
-watch(() => props.imageColor, (newValue, oldValue) => {
+watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        changeThemeColor("#buttonGreet", props.imageColor);
+        changeThemeColor("#buttonGreet", props.themeColor);
     }
 })
 

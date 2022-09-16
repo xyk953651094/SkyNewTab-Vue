@@ -40,7 +40,7 @@ const props = defineProps({
         },
         required: true
     },
-    imageColor: {
+    themeColor: {
         type: String,
         default: () => {
             return "#2c3e50";
@@ -49,9 +49,9 @@ const props = defineProps({
     }
 });
 
-watch(() => props.imageColor, (newValue, oldValue) => {
+watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
-        changeThemeColor("#buttonAuthor", props.imageColor);
+        changeThemeColor("#buttonAuthor", props.themeColor);
     }
 })
 

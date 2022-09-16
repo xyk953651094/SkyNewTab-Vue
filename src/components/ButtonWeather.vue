@@ -14,7 +14,7 @@ import {defineProps, ref, watch, onMounted} from "vue";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
-    imageColor: {
+    themeColor: {
         type: String,
         default: () => {
             return "#2c3e50";
@@ -26,9 +26,9 @@ const props = defineProps({
 let display = ref("none");
 let weatherInfo = ref("暂无天气信息");
 let weatherDetail = ref("暂无天气信息");
-watch(() => props.imageColor, (newValue, oldValue) => {
+watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        changeThemeColor("#buttonWeather", props.imageColor);
+        changeThemeColor("#buttonWeather", props.themeColor);
     }
 })
 

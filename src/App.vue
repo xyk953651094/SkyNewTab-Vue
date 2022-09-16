@@ -4,14 +4,15 @@
             <a-row justify="space-around">
                 <a-col :span="10" style="text-align: left">
                     <a-space>
-                        <button-greet :image-color="imageColor" />
-                        <button-weather :image-color="imageColor" />
+                        <button-greet :theme-color="themeColor" />
+                        <button-weather :theme-color="themeColor" />
                     </a-space>
                 </a-col>
                 <a-col :span="10" style="text-align: right">
                     <a-space>
-                        <button-download :download-link="downloadLink" :display="componentDisplay" :image-color="imageColor" />
-                        <button-html-link :html-link="htmlLink" :display="componentDisplay" :image-color="imageColor" />
+                        <button-download :download-link="downloadLink" :display="componentDisplay" :theme-color="themeColor" />
+                        <button-html-link :html-link="htmlLink" :display="componentDisplay" :theme-color="themeColor" />
+                        <button-preference :display="componentDisplay" :theme-color="themeColor" />
                     </a-space>
                 </a-col>
             </a-row>
@@ -24,8 +25,9 @@
             <a-row justify="space-around">
                 <a-col :span="10" style="text-align: left">
                     <a-space>
-                        <button-download :download-link="downloadLink" :display="mobileComponentDisplay" :image-color="imageColor" />
-                        <button-html-link :html-link="htmlLink" :display="mobileComponentDisplay" :image-color="imageColor" />
+                        <button-download :download-link="downloadLink" :display="mobileComponentDisplay" :theme-color="themeColor" />
+                        <button-html-link :html-link="htmlLink" :display="mobileComponentDisplay" :theme-color="themeColor" />
+                        <button-preference :display="mobileComponentDisplay" :theme-color="themeColor" />
                     </a-space>
                 </a-col>
                 <a-col :span="10" style="text-align: right">
@@ -34,11 +36,11 @@
                             :author-name="authorName"
                             :author-link="authorLink"
                             :display="componentDisplay"
-                            :image-color="imageColor" />
+                            :theme-color="themeColor" />
                         <ButtonCreateTime
                             :create-time="createTime"
                             :display="componentDisplay"
-                            :image-color="imageColor" />
+                            :theme-color="themeColor" />
                     </a-space>
                 </a-col>
             </a-row>
@@ -59,10 +61,11 @@ import ImageWallpaper from "@/components/ImageWallpaper"
 import ButtonAuthor from "@/components/ButtonAuthor";
 import ButtonCreateTime from "@/components/ButtonCreateTime";
 import ButtonWeather from "@/components/ButtonWeather";
+import ButtonPreference from "@/components/ButtonPreference";
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
-let imageColor = ref("");
+let themeColor = ref("");
 let htmlLink = ref("");
 let downloadLink = ref("");
 let imageLink = ref("");
@@ -73,7 +76,7 @@ let createTime = ref("");
 onMounted(()=>{
     let tempThis = this;
 
-    imageColor.value = setColorTheme();
+    themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
     let device = deviceModel();
     let orientation = "landscape";
     if(device === "iPhone" || device === "Android") {
@@ -88,11 +91,11 @@ onMounted(()=>{
             let imageData = JSON.parse(imageXHR.responseText);
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
-            imageColor.value = getThemeColor(imageData.color);
+            themeColor.value = getThemeColor(imageData.color);
             htmlLink.value = imageData.links.html;
             downloadLink.value = imageData.links.download_location;
             imageLink.value = imageData.urls.regular;
-            authorName.value = imageData.user.name + " on Unsplash";
+            authorName.value = "by " + imageData.user.name + " on Unsplash";
             authorLink.value = imageData.user.links.html + unsplashUrl;
             createTime.value = imageData.created_at.split("T")[0];
 
@@ -103,8 +106,6 @@ onMounted(()=>{
             }
 
             //设置body颜色
-            // let body = document.getElementsByTagName("body")[0];
-            // body.style.backgroundColor = imageData.color;
             changeThemeColor("body", imageData.color);
         }
         else {
