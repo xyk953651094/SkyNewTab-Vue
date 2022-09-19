@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import {defineProps, onMounted} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import {fadeIn, mouseMoveEffect} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
@@ -30,15 +30,20 @@ const props = defineProps({
         },
         required: true
     },
-    imageLink: {
+    imageData: {
         type: String,
-        default: () => {
-            return "";
-        },
         required: true
     }
 });
 console.log(props);
+
+let imageLink = ref("");
+
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        imageLink.value = JSON.parse(props.imageData).urls.regular;
+    }
+})
 
 onMounted(() => {
     let backgroundImage = document.getElementById('backgroundImage');
@@ -49,7 +54,10 @@ onMounted(() => {
             fadeIn("#backgroundImage", 3000);
             backgroundImage.style.transform = 'scale(1.05)';
             backgroundImage.style.transition = '5s';
-            setTimeout(mouseMoveEffect, 5000);
+            let effectType  = "rotate";
+            setTimeout(() => {
+                mouseMoveEffect(effectType);
+            }, 5000);
         }
     }
 })

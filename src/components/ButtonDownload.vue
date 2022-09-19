@@ -2,7 +2,7 @@
     <a-space>
         <a-tooltip content="下载图片">
             <a-button type="primary" shape="round" size="large" id="buttonDownload" class="frostedGlass zIndexHigh" @click="onclick"
-                      :style="{display: display}">
+                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
                 <template #icon>
                     <icon-download/>
                 </template>
@@ -12,17 +12,14 @@
 </template>
 
 <script setup>
-import {defineProps, watch} from "vue";
+import {defineProps, ref, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl, clientId} from "@/javascripts/publicContents";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
-    downloadLink: {
+    themeColor: {
         type: String,
-        default: () => {
-            return "";
-        },
         required: true
     },
     display: {
@@ -32,26 +29,35 @@ const props = defineProps({
         },
         required: true
     },
-    themeColor: {
+    imageData: {
         type: String,
-        default: () => {
-            return "#2c3e50";
-        },
         required: true
     }
 });
 
+let backgroundColor = ref("");
+let fontColor = ref("");
+let downloadLink = ref("");
+
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        backgroundColor.value = props.themeColor;
+        fontColor.value = getFontColor(props.themeColor);
         changeThemeColor("#buttonDownload", props.themeColor);
     }
 })
 
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        downloadLink.value = JSON.parse(props.imageData).links.download_location;
+    }
+})
+
 const onclick = () => {
-    if (props.downloadLink.length !== 0) {
+    if (downloadLink.value.length !== 0) {
         let tempThis = this;
         let downloadXHR = new XMLHttpRequest();
-        downloadXHR.open("GET", props.downloadLink + "?client_id=" + clientId);
+        downloadXHR.open("GET", downloadLink.value + "?client_id=" + clientId);
         downloadXHR.onload = function () {
             if (downloadXHR.status === 200) {
                 let downloadUrl = JSON.parse(downloadXHR.responseText).url + unsplashUrl;

@@ -6,7 +6,7 @@
                 <template #icon>
                     <icon-calendar-clock />
                 </template>
-                {{ props.createTime }}
+                {{ createTime }}
             </a-button>
         </a-tooltip>
     </a-space>
@@ -19,11 +19,8 @@ import {changeThemeColor} from "@/javascripts/publicFunctions";
 let tooltipContent = ref("");
 
 const props = defineProps({
-    createTime: {
+    themeColor: {
         type: String,
-        default: () => {
-            return "";
-        },
         required: true
     },
     display: {
@@ -33,14 +30,13 @@ const props = defineProps({
         },
         required: true
     },
-    themeColor: {
+    imageData: {
         type: String,
-        default: () => {
-            return "#2c3e50";
-        },
         required: true
     }
 });
+
+let createTime = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -48,9 +44,10 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.createTime, (newValue, oldValue) => {
+watch(() => props.imageData, (newValue, oldValue) => {
     if(newValue !== oldValue) {
-        tooltipContent.value = "拍摄时间：" + props.createTime;
+        createTime.value = JSON.parse(props.imageData).created_at.split("T")[0];
+        tooltipContent.value = "拍摄时间：" + createTime.value;
     }
 })
 </script>

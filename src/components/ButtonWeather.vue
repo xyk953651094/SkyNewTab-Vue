@@ -16,9 +16,6 @@ import {changeThemeColor} from "@/javascripts/publicFunctions";
 const props = defineProps({
     themeColor: {
         type: String,
-        default: () => {
-            return "#2c3e50";
-        },
         required: true
     }
 });
@@ -26,6 +23,7 @@ const props = defineProps({
 let display = ref("none");
 let weatherInfo = ref("暂无天气信息");
 let weatherDetail = ref("暂无天气信息");
+
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         changeThemeColor("#buttonWeather", props.themeColor);
@@ -43,8 +41,7 @@ onMounted(() => {
                 display.value = "block";
                 weatherInfo.value = result.data.weatherData.weather  + " ｜ "
                     + result.data.weatherData.temperature + "°C";
-                weatherDetail.value = result.data.region.split("|")[1] + " ｜ " +
-                    result.data.weatherData.weather  + " ｜ " +
+                weatherDetail.value = result.data.weatherData.weather  + " ｜ " +
                     result.data.weatherData.windDirection  + " ｜ " +
                     result.data.weatherData.temperature + "°C";
             }

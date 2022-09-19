@@ -6,31 +6,21 @@
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{ props.authorName }}
+                {{ authorName }}
             </a-button>
         </a-tooltip>
     </a-space>
 </template>
 
 <script setup>
-import {defineProps, watch} from "vue"
+import {defineProps, ref, watch} from "vue"
 import {IconCamera} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "@/javascripts/publicContents";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
-    authorName: {
+    themeColor: {
         type: String,
-        default: () => {
-            return "";
-        },
-        required: true
-    },
-    authorLink: {
-        type: String,
-        default: () => {
-            return "";
-        },
         required: true
     },
     display: {
@@ -40,14 +30,14 @@ const props = defineProps({
         },
         required: true
     },
-    themeColor: {
+    imageData: {
         type: String,
-        default: () => {
-            return "#2c3e50";
-        },
         required: true
     }
 });
+
+let authorName = ref("");
+let authorLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
@@ -55,9 +45,16 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        authorName.value = "by " + JSON.parse(props.imageData).user.name  + " on Unsplash";
+        authorLink.value = JSON.parse(props.imageData).user.links.html
+    }
+})
+
 const onclick = () => {
-    if(props.authorLink.length !== 0) {
-        window.open(props.authorLink + unsplashUrl);
+    if(authorLink.value.length !== 0) {
+        window.open(authorLink.value + unsplashUrl);
     }
     else {
         this.$message.error("无跳转链接");

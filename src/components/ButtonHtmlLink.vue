@@ -2,7 +2,7 @@
     <a-space>
         <a-tooltip content="前往图片主页">
             <a-button type="primary" shape="round" size="large" id="buttonHtmlLink" class="frostedGlass zIndexHigh" @click="onclick"
-                      :style="{display: display}">
+                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
                 <template #icon>
                     <icon-link/>
                 </template>
@@ -12,17 +12,14 @@
 </template>
 
 <script setup>
-import {defineProps, watch} from "vue";
+import {defineProps, ref, watch} from "vue";
 import {IconLink} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "@/javascripts/publicContents";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
-    htmlLink: {
+    themeColor: {
         type: String,
-        default: () => {
-            return "";
-        },
         required: true
     },
     display: {
@@ -32,24 +29,33 @@ const props = defineProps({
         },
         required: true
     },
-    themeColor: {
+    imageData: {
         type: String,
-        default: () => {
-            return "#2c3e50";
-        },
         required: true
     }
 });
 
+let backgroundColor = ref("");
+let fontColor = ref("");
+let htmlLink = ref("");
+
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        backgroundColor.value = props.themeColor;
+        fontColor.value = getFontColor(props.themeColor);
         changeThemeColor("#buttonHtmlLink", props.themeColor);
     }
 })
 
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        htmlLink.value = JSON.parse(props.imageData).links.html;
+    }
+})
+
 const onclick = () => {
-    if (props.htmlLink.length !== 0) {
-        window.open(props.htmlLink + unsplashUrl);
+    if (htmlLink.value.length !== 0) {
+        window.open(htmlLink.value + unsplashUrl);
     } else {
         this.$message.error("无跳转链接");
     }

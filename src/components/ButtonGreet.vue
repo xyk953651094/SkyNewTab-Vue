@@ -4,7 +4,7 @@
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="frostedGlass zIndexHigh"
                       :style="{ cursor: 'default'}">
                 <template #icon>
-                    <icon-calendar-clock/>
+                    <icon-calendar />
                 </template>
                 {{ greetContent }}
             </a-button>
@@ -14,16 +14,13 @@
 
 <script setup>
 import "../stylesheets/publicStyles.css"
-import { defineProps, onMounted, ref, watch } from "vue"
-import { IconCalendarClock } from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getDate, getGreet} from "@/javascripts/publicFunctions";
+import {defineProps, onMounted, ref, watch} from "vue"
+import {IconCalendar} from "@arco-design/web-vue/es/icon";
+import {changeThemeColor, getTimeDetails, getGreet} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
         type: String,
-        default: () => {
-            return "#2c3e50";
-        },
         required: true
     }
 });
@@ -36,7 +33,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    let tempDate = getDate();
+    let tempDate = getTimeDetails();
     let date = tempDate.year + tempDate.month + tempDate.day;
 
     let appId = 'cicgheqakgmpjclo'

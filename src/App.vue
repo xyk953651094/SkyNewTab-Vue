@@ -2,45 +2,38 @@
     <a-layout style="height: 100%">
         <a-layout-header id="header">
             <a-row justify="space-around">
-                <a-col :span="10" style="text-align: left">
+                <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
-                        <button-greet :theme-color="themeColor" />
-                        <button-weather :theme-color="themeColor" />
+                        <button-greet :theme-color="themeColor"/>
+                        <button-weather :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
-                <a-col :span="10" style="text-align: right">
+                <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
-                        <button-download :download-link="downloadLink" :display="componentDisplay" :theme-color="themeColor" />
-                        <button-html-link :html-link="htmlLink" :display="componentDisplay" :theme-color="themeColor" />
-                        <button-preference :display="componentDisplay" :theme-color="themeColor" />
+                        <button-download :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-html-link :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-preference :theme-color="themeColor" :display="componentDisplay"/>
                     </a-space>
                 </a-col>
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
             <input-search/>
-            <image-wallpaper :display="componentDisplay" :image-link="imageLink"/>
+            <image-wallpaper :display="componentDisplay" :image-data="imageData"/>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
-                <a-col :span="10" style="text-align: left">
+                <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
                     <a-space>
-                        <button-download :download-link="downloadLink" :display="mobileComponentDisplay" :theme-color="themeColor" />
-                        <button-html-link :html-link="htmlLink" :display="mobileComponentDisplay" :theme-color="themeColor" />
-                        <button-preference :display="mobileComponentDisplay" :theme-color="themeColor" />
+                        <button-preference :theme-color="themeColor" :display="mobileComponentDisplay"/>
+                        <button-download :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
+                        <button-html-link :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
-                <a-col :span="10" style="text-align: right">
+                <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
-                        <ButtonAuthor
-                            :author-name="authorName"
-                            :author-link="authorLink"
-                            :display="componentDisplay"
-                            :theme-color="themeColor" />
-                        <ButtonCreateTime
-                            :create-time="createTime"
-                            :display="componentDisplay"
-                            :theme-color="themeColor" />
+                        <ButtonAuthor :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <ButtonCreateTime :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -50,7 +43,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {unsplashUrl, clientId} from "@/javascripts/publicContents";
+import {clientId} from "@/javascripts/publicContents";
 import {changeThemeColor, getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
 
 import ButtonGreet from "@/components/ButtonGreet";
@@ -65,13 +58,8 @@ import ButtonPreference from "@/components/ButtonPreference";
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
+let imageData = ref("");
 let themeColor = ref("");
-let htmlLink = ref("");
-let downloadLink = ref("");
-let imageLink = ref("");
-let authorName = ref("");
-let authorLink = ref("");
-let createTime = ref("");
 
 onMounted(()=>{
     let tempThis = this;
@@ -85,19 +73,16 @@ onMounted(()=>{
     let topics = "bo8jQKTaE0Y,6sMVjTLSkeQ,bDo48cUhwnY,xHxYTMHLgOc,iUIsnVtjB0Y,R_Fyn-Gwtlw,Fzo3zuOHN6w";
 
     let imageXHR = new XMLHttpRequest();
+    imageXHR.timeout = 5000;
     imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&topics=" + topics + "&content_filter=high");
     imageXHR.onload = function () {
         if (imageXHR.status === 200) {
-            let imageData = JSON.parse(imageXHR.responseText);
+            let resultData = JSON.parse(imageXHR.responseText);
+            let resultData2 = imageXHR.responseText
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
-            themeColor.value = getThemeColor(imageData.color);
-            htmlLink.value = imageData.links.html;
-            downloadLink.value = imageData.links.download_location;
-            imageLink.value = imageData.urls.regular;
-            authorName.value = "by " + imageData.user.name + " on Unsplash";
-            authorLink.value = imageData.user.links.html + unsplashUrl;
-            createTime.value = imageData.created_at.split("T")[0];
+            imageData.value = resultData2;
+            themeColor.value = getThemeColor(resultData.color);
 
             // 小屏显示底部按钮
             if(device === "iPhone" || device === "Android") {
@@ -106,7 +91,7 @@ onMounted(()=>{
             }
 
             //设置body颜色
-            changeThemeColor("body", imageData.color);
+            changeThemeColor("body", resultData.color);
         }
         else {
             tempThis.$message.error("获取图片失败");
