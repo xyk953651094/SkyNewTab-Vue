@@ -33,15 +33,39 @@ const props = defineProps({
     imageData: {
         type: String,
         required: true
+    },
+    displayEffect: {
+        type: String,
+        default: () => {
+            return "regular";
+        },
+        required: true
+    },
+    dynamicEffect: {
+        type: String,
+        default: () => {
+            return "translate";
+        },
+        required: true
     }
 });
-console.log(props);
 
 let imageLink = ref("");
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        imageLink.value = JSON.parse(props.imageData).urls.regular;
+        if(props.displayEffect === "regular") {
+            imageLink.value = props.imageData.urls.regular;
+        }
+        else if (props.displayEffect === "full") {
+            imageLink.value = props.imageData.urls.full;
+        }
+    }
+})
+
+watch(() => props.dynamicEffect, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        mouseMoveEffect(props.dynamicEffect);
     }
 })
 
@@ -54,9 +78,8 @@ onMounted(() => {
             fadeIn("#backgroundImage", 3000);
             backgroundImage.style.transform = 'scale(1.05)';
             backgroundImage.style.transition = '5s';
-            let effectType  = "rotate";
             setTimeout(() => {
-                mouseMoveEffect(effectType);
+                mouseMoveEffect(props.dynamicEffect);
             }, 5000);
         }
     }

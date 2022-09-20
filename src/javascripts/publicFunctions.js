@@ -173,16 +173,11 @@ export function mouseMoveEffect(effectType) {
                     } else {                                    // 左下角
                         backgroundImage.style.transform = "scale(1.05) rotateX(" + (-relatedXRatio) + "deg) rotateY(" + (-relatedYRatio) + "deg)";
                     }
+                    break;
+                case "close":
+                    backgroundImage.style.transform = "scale(1.05)";
+                    break;
             }
-            // if (e.movementX > 0 && e.movementY > 0) {
-            //     backgroundImage.style.transform = 'scale(1.05) translate(-0.1%, -0.1%)';
-            // } else if (e.movementX < 0 && e.movementY > 0) {
-            //     backgroundImage.style.transform = 'scale(1.05) translate(0.1%, -0.1%)';
-            // } else if (e.movementX > 0 && e.movementY < 0) {
-            //     backgroundImage.style.transform = 'scale(1.05) translate(-0.1%, 0.1%)';
-            // } else if (e.movementX < 0 && e.movementY < 0) {
-            //     backgroundImage.style.transform = 'scale(1.05) translate(0.1%, 0.1%)';
-            // }
         }
     });
 }

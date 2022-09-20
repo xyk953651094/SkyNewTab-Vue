@@ -49,7 +49,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        downloadLink.value = JSON.parse(props.imageData).links.download_location;
+        downloadLink.value = props.imageData.links.download_location;
     }
 })
 

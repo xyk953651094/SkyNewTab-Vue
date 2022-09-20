@@ -12,20 +12,28 @@
                     <a-space>
                         <button-download :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <button-html-link :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <button-preference :theme-color="themeColor" :display="componentDisplay"/>
+                        <button-preference :theme-color="themeColor" :display="componentDisplay"
+                                           @displayEffect="getDisplayEffect"
+                                           @dynamicEffect="getDynamicEffect"
+                                           @imageTopics="getImageTopics"
+                        />
                     </a-space>
                 </a-col>
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
             <input-search/>
-            <image-wallpaper :display="componentDisplay" :image-data="imageData"/>
+            <image-wallpaper :display="componentDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
                 <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
                     <a-space>
-                        <button-preference :theme-color="themeColor" :display="mobileComponentDisplay"/>
+                        <button-preference :theme-color="themeColor" :display="mobileComponentDisplay"
+                                           @displayEffect="getDisplayEffect"
+                                           @dynamicEffect="getDynamicEffect"
+                                           @imageTopics="getImageTopics"
+                        />
                         <button-download :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
                         <button-html-link :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
                     </a-space>
@@ -55,33 +63,51 @@ import ButtonAuthor from "@/components/ButtonAuthor";
 import ButtonCreateTime from "@/components/ButtonCreateTime";
 import ButtonWeather from "@/components/ButtonWeather";
 import ButtonPreference from "@/components/ButtonPreference";
+const $ = require("jquery");
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
 let imageData = ref("");
 let themeColor = ref("");
+let displayEffect = ref("regular");
+let dynamicEffect = ref("translate");
+let imageTopics = ref("Fzo3zuOHN6w");
+
+const getDisplayEffect = (value) => {
+    displayEffect.value = value;
+};
+
+const getDynamicEffect = (value) => {
+    dynamicEffect.value = value;
+}
+
+const getImageTopics = (value) => {
+    imageTopics.value = value;
+}
 
 onMounted(()=>{
-    let tempThis = this;
-
-    themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
     let device = deviceModel();
-    let orientation = "landscape";
-    if(device === "iPhone" || device === "Android") {
-        orientation = "portrait";
-    }
-    let topics = "bo8jQKTaE0Y,6sMVjTLSkeQ,bDo48cUhwnY,xHxYTMHLgOc,iUIsnVtjB0Y,R_Fyn-Gwtlw,Fzo3zuOHN6w";
+    themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
 
-    let imageXHR = new XMLHttpRequest();
-    imageXHR.timeout = 5000;
-    imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&topics=" + topics + "&content_filter=high");
-    imageXHR.onload = function () {
-        if (imageXHR.status === 200) {
-            let resultData = JSON.parse(imageXHR.responseText);
-            let resultData2 = imageXHR.responseText
+
+    // 获取背景图片
+    $.ajax({
+        url: "https://api.unsplash.com/photos/random?",
+        headers: {
+            "Authorization": "Client-ID " + clientId,
+        },
+        type: "GET",
+        data: {
+            "client_id": clientId,
+            "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
+            "topics": imageTopics.value,
+            "content_filter": "high",
+        },
+        timeout: 5000,
+        success: (resultData) => {
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
-            imageData.value = resultData2;
+            imageData.value = resultData;
             themeColor.value = getThemeColor(resultData.color);
 
             // 小屏显示底部按钮
@@ -92,15 +118,46 @@ onMounted(()=>{
 
             //设置body颜色
             changeThemeColor("body", resultData.color);
+        },
+        error: () => {
+            this.$message.error("获取图片失败");
         }
-        else {
-            tempThis.$message.error("获取图片失败");
-        }
-    }
-    imageXHR.onerror = function () {
-        tempThis.$message.error("获取图片失败");
-    }
-    imageXHR.send();
+    });
+
+    // let orientation = "landscape";
+    // if(device === "iPhone" || device === "Android") {
+    //     orientation = "portrait";
+    // }
+    //
+    // let imageXHR = new XMLHttpRequest();
+    // imageXHR.timeout = 5000;
+    // imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&topics=" + imageTopics.value + "&content_filter=high");
+    // imageXHR.onload = function () {
+    //     if (imageXHR.status === 200) {
+    //         let resultData = JSON.parse(imageXHR.responseText);
+    //         let resultData2 = imageXHR.responseText
+    //         componentDisplay.value = "block";
+    //         mobileComponentDisplay.value ="none";
+    //         imageData.value = resultData2;
+    //         themeColor.value = getThemeColor(resultData.color);
+    //
+    //         // 小屏显示底部按钮
+    //         if(device === "iPhone" || device === "Android") {
+    //             componentDisplay.value = "none";
+    //             mobileComponentDisplay.value ="block";
+    //         }
+    //
+    //         //设置body颜色
+    //         changeThemeColor("body", resultData.color);
+    //     }
+    //     else {
+    //         tempThis.$message.error("获取图片失败");
+    //     }
+    // }
+    // imageXHR.onerror = function () {
+    //     tempThis.$message.error("获取图片失败");
+    // }
+    // imageXHR.send();
 });
 </script>
 

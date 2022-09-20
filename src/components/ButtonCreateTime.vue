@@ -46,7 +46,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if(newValue !== oldValue) {
-        createTime.value = JSON.parse(props.imageData).created_at.split("T")[0];
+        createTime.value = props.imageData.created_at.split("T")[0];
         tooltipContent.value = "拍摄时间：" + createTime.value;
     }
 })

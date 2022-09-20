@@ -22,25 +22,25 @@
                 unmountOnClose
             >
                 <template #title>
-                    抽屉
+                    {{timeDetails[0]}}
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <a-card :title="timeDetails[0]" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>
-                            <a-typography-paragraph>
-                                <ul>
-                                    <li>
-                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>
-                                    </li>
-                                    <li>
-                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>
-                                    </li>
-                                    <li>
-                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>
-                                    </li>
-                                </ul>
-                            </a-typography-paragraph>
-                        </a-card>
+<!--                        <a-card :title="timeDetails[0]" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>-->
+<!--                            <a-typography-paragraph>-->
+<!--                                <ul>-->
+<!--                                    <li>-->
+<!--                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </a-typography-paragraph>-->
+<!--                        </a-card>-->
                     </a-col>
                     <a-col :span="24">
                         <a-card title="【唐】· 张若虚 ·《春江花月夜》" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>
@@ -51,7 +51,7 @@
                     </a-col>
                     <a-col :span="24">
                         <a-card title="偏好设置" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>
-                            <a-form layout="horizontal" auto-label-width>
+                            <a-form layout="vertical" auto-label-width>
                                 <a-form-item field="displayEffectRadio" label="图片质量">
                                     <a-radio-group default-value="regular" v-model="displayEffectRadioCheckedValue"
                                                    @change="displayEffectRadioOnChange"
@@ -72,13 +72,26 @@
                                 <a-form-item field="imageTopicsCheckbox" label="图片主题">
                                     <a-checkbox-group direction="horizontal" v-model="imageTopicsCheckboxCheckedValue" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
-                                            <a-col :span="12"><a-checkbox value="travel">旅游</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox value="wallpapers">壁纸</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox value="textures-patterns">纹理 & 图案</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox value="nature">自然</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox value="interiors">精神</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox value="street-photography">街头摄影</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox value="arts-culture">艺术 & 文化</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="3d-renders"         value="CDwuwXJAbEw">3D渲染</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="textures-patterns"  value="iUIsnVtjB0Y">纹理</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="experimental"       value="qPYsDzvJOYc">实验</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="architecture"       value="rnSKDHwwYUk">建筑</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="nature"             value="6sMVjTLSkeQ">自然</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="business-work"      value="aeu6rL-j6ew">商务</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="fashion"            value="S4MKLAsBB74">时尚</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="film"               value="hmenvQhUmxM">电影</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="food-drink"         value="xjPR4hlkBGA">饮食</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="health"             value="_hb-dl4Q-4U">健康</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="people"             value="towJZFskpGg">人物</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="interiors"          value="R_Fyn-Gwtlw">精神</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="street-photography" value="xHxYTMHLgOc">街头</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="animals"            value="Jpg6Kidl-Hk">动物</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="spirituality"       value="_8zFHuhRhyo">灵魂</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="arts-culture"       value="bDo48cUhwnY">文化</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="history"            value="dijpbw99kQQ">历史</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
@@ -107,8 +120,8 @@ let drawerPosition = ref("right");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayEffectRadioCheckedValue = ref("regular");
-let dynamicEffectRadioCheckedValue = ref("1");
-let imageTopicsCheckboxCheckedValue = ref([]);
+let dynamicEffectRadioCheckedValue = ref("translate");
+let imageTopicsCheckboxCheckedValue = ref(["Fzo3zuOHN6w"]);
 let timeDetails = ref([]);
 
 const props = defineProps({
@@ -168,19 +181,29 @@ const handleCancel = () => {
     visible.value = false;
 }
 
+const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics"]);
+
 // 图片质量
 const displayEffectRadioOnChange = (value) => {
-    console.log(value);
+    emit("displayEffect", value);
 }
 
 // 动效样式
 const dynamicEffectRadioOnChange = (value) => {
-    console.log(value);
+    emit("dynamicEffect", value);
 }
 
 // 图片主题
 const imageTopicsCheckboxOnChange = (values) =>  {
-    console.log('checked = ', values);
+    let temp = "";
+    for (let i = 0; i < values.length; i++) {
+        temp += values[i];
+        if (i !== values.length - 1) {
+            temp += ",";
+        }
+    }
+
+    emit("imageTopics", temp);
 }
 </script>
 

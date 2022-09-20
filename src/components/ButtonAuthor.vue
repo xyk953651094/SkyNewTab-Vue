@@ -47,8 +47,8 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        authorName.value = "by " + JSON.parse(props.imageData).user.name  + " on Unsplash";
-        authorLink.value = JSON.parse(props.imageData).user.links.html
+        authorName.value = "by " + props.imageData.user.name  + " on Unsplash";
+        authorLink.value = props.imageData.user.links.html
     }
 })
 

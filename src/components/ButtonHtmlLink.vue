@@ -49,7 +49,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        htmlLink.value = JSON.parse(props.imageData).links.html;
+        htmlLink.value = props.imageData.links.html;
     }
 })
 
