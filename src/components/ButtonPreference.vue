@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="偏好设置">
+        <a-tooltip content="偏好设置" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonPreference" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
                 <template #icon>
@@ -26,31 +26,20 @@
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-<!--                        <a-card :title="timeDetails[0]" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>-->
-<!--                            <a-typography-paragraph>-->
-<!--                                <ul>-->
-<!--                                    <li>-->
-<!--                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>-->
-<!--                                    </li>-->
-<!--                                    <li>-->
-<!--                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>-->
-<!--                                    </li>-->
-<!--                                    <li>-->
-<!--                                        <a-typography-text>{{timeDetails[1]}}</a-typography-text>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </a-typography-paragraph>-->
-<!--                        </a-card>-->
-                    </a-col>
-                    <a-col :span="24">
-                        <a-card title="【唐】· 张若虚 ·《春江花月夜》" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>
+                        <a-card title="【唐】· 张若虚 ·《春江花月夜》" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
+                            <template #extra>
+                                <icon-book />
+                            </template>
                             <a-typography-paragraph>
                                 「 江畔何人初见月，江月何年初照人，江畔何人初见月，江月何年初照人，江畔何人初见月，江月何年初照人 」
                             </a-typography-paragraph>
                         </a-card>
                     </a-col>
                     <a-col :span="24">
-                        <a-card title="偏好设置" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" hoverable>
+                        <a-card title="偏好设置" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
+                            <template #extra>
+                                <icon-settings />
+                            </template>
                             <a-form layout="vertical" auto-label-width>
                                 <a-form-item field="displayEffectRadio" label="图片质量">
                                     <a-radio-group default-value="regular" v-model="displayEffectRadioCheckedValue"
@@ -111,7 +100,7 @@
 
 <script setup>
 import {defineProps, onBeforeMount, onMounted, ref, watch} from "vue";
-import {IconMoreVertical} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconBook, IconSettings} from "@arco-design/web-vue/es/icon";
 import {getTimeDetails, changeThemeColor, getFontColor, deviceModel} from "@/javascripts/publicFunctions";
 const $ = require("jquery");
 
@@ -119,6 +108,11 @@ let visible = ref(false);
 let drawerPosition = ref("right");
 let backgroundColor = ref("");
 let fontColor = ref("");
+// let form = reactive({
+//     displayEffectRadio: "regular",
+//     dynamicEffectRadio: "translate",
+//     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
+// })
 let displayEffectRadioCheckedValue = ref("regular");
 let dynamicEffectRadioCheckedValue = ref("translate");
 let imageTopicsCheckboxCheckedValue = ref(["Fzo3zuOHN6w"]);
@@ -140,7 +134,6 @@ const props = defineProps({
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        changeThemeColor("#buttonPreference", props.themeColor);
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
     }
@@ -163,9 +156,11 @@ const onclick = () => {
 };
 
 const handleOpen = () => {
-    $(".arco-drawer-title").css("color", fontColor.value);                                       // 抽屉 header 样式
-    $(".arco-card-header").css("backgroundColor", backgroundColor.value);  // 抽屉 body 样式
+    $(".arco-drawer-title").css("color", fontColor.value);
+    $(".arco-card").css("border", "1px solid " + fontColor.value);
+    $(".arco-card-header").css({"backgroundColor": backgroundColor.value, "borderBottom": "1px solid " + fontColor.value});
     $(".arco-card-header-title").css("color", fontColor.value);
+    $(".arco-card-header-extra").css("color", fontColor.value);
     $(".arco-card-body").css("backgroundColor", backgroundColor.value);
     $(".arco-typography").css("color", fontColor.value);
     $(".arco-form-item-label").css({"color": fontColor.value, "fontSize": "16px"});

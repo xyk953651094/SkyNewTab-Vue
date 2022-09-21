@@ -1,17 +1,24 @@
 <template>
     <a-space>
-        <a-tooltip :content=weatherDetail>
+        <a-popover :title="region" :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh"
-                      :style="{display: display}">
+                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
                 {{ weatherInfo }}
             </a-button>
-        </a-tooltip>
+            <template #content>
+                <p>{{"空气：" + pm25}}</p>
+                <p>{{"降雨：" + rainfall}}</p>
+                <p>{{"视距：" + visibility}}</p>
+                <p>{{"风况：" + windInfo}}</p>
+            </template>
+        </a-popover>
     </a-space>
 </template>
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, getTimeDetails} from "@/javascripts/publicFunctions";
+import $ from "jquery";
 
 const props = defineProps({
     themeColor: {
@@ -20,38 +27,49 @@ const props = defineProps({
     }
 });
 
+let backgroundColor = ref("");
+let fontColor = ref("");
 let display = ref("none");
 let weatherInfo = ref("暂无天气信息");
-let weatherDetail = ref("暂无天气信息");
+let region = ref("");
+let pm25 = ref("");
+let rainfall = ref("");
+let visibility = ref("");
+let windInfo = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        changeThemeColor("#buttonWeather", props.themeColor);
+        backgroundColor.value = props.themeColor;
+        fontColor.value = getFontColor(props.themeColor);
     }
 })
 
 onMounted(() => {
-    let weatherXHR = new XMLHttpRequest();
-    weatherXHR.open("GET","https://v2.jinrishici.com/info");
-    weatherXHR.onload = function(){
-        if(weatherXHR.status === 200){
-            let result = JSON.parse(weatherXHR.responseText);
+    $('#buttonWeather').hover(function(){
+        $(".arco-popover-title").css("color", fontColor.value);
+    });
 
-            if (result.status === 'success') {
+    $.ajax({
+        url: "https://v2.jinrishici.com/info",
+        type: "GET",
+        timeout: 5000,
+        success: (resultData) => {
+            if (resultData.status === 'success') {
                 display.value = "block";
-                weatherInfo.value = result.data.weatherData.weather  + " ｜ "
-                    + result.data.weatherData.temperature + "°C";
-                weatherDetail.value = result.data.weatherData.weather  + " ｜ " +
-                    result.data.weatherData.windDirection  + " ｜ " +
-                    result.data.weatherData.temperature + "°C";
+                weatherInfo.value = resultData.data.weatherData.weather  + " ｜ "
+                    + resultData.data.weatherData.temperature + "°C";
+                region.value = resultData.data.region.replace("|", "｜");
+                pm25.value = resultData.data.weatherData.pm25;
+                rainfall.value = resultData.data.weatherData.rainfall + "%";
+                visibility.value = resultData.data.weatherData.visibility;
+                windInfo.value = resultData.data.weatherData.windDirection + resultData.data.weatherData.windPower + "级";
             }
             else {
                 display.value = "none";
             }
-        }
-    }
-    weatherXHR.onerror=function(){}
-    weatherXHR.send();
+        },
+        error: function () {}
+    });
 })
 </script>
 

@@ -11,7 +11,8 @@ export function getTimeDetails() {
     let hour = param.getHours();
     let minute = param.getMinutes();
     let second = param.getSeconds();
-    let week = param.getDay() + 1;
+    let week = param.getDay();
+    console.log(week);
     let localeDate = param.toLocaleString("zh-Hans-u-ca-chinese");
 
     year = year.toString();
@@ -21,13 +22,13 @@ export function getTimeDetails() {
     minute = minute < 10? ('0' + minute) : minute.toString();
     second = second < 10? ('0' + second) : second.toString();
     switch (week) {
+        case 0: week = "周日"; break;
         case 1: week = "周一"; break;
         case 2: week = "周二"; break;
         case 3: week = "周三"; break;
         case 4: week = "周四"; break;
         case 5: week = "周五"; break;
         case 6: week = "周六"; break;
-        case 7: week = "周日"; break;
         default: week = "";
     }
 
@@ -41,6 +42,7 @@ export function getTimeDetails() {
         showWeek: week,
         showDate: year + "-" + month + "-" + day,
         showDate2: year + "." + month + "." + day,
+        showDate3: year + month + day,
         showTime: hour + ":" + minute,
         showLocaleDate: "农历" + localeDate.split(" ")[0] + "日"
     };

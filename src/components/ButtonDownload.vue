@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="下载图片">
+        <a-tooltip content="下载图片" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonDownload" class="frostedGlass zIndexHigh" @click="onclick"
                       :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
                 <template #icon>
@@ -43,7 +43,6 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
-        changeThemeColor("#buttonDownload", props.themeColor);
     }
 })
 

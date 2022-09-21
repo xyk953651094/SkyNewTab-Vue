@@ -86,9 +86,9 @@ const getImageTopics = (value) => {
 }
 
 onMounted(()=>{
+    let tempThis = this;
     let device = deviceModel();
     themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
-
 
     // 获取背景图片
     $.ajax({
@@ -120,44 +120,9 @@ onMounted(()=>{
             changeThemeColor("body", resultData.color);
         },
         error: () => {
-            this.$message.error("获取图片失败");
+            tempThis.$message.error("获取图片失败");
         }
     });
-
-    // let orientation = "landscape";
-    // if(device === "iPhone" || device === "Android") {
-    //     orientation = "portrait";
-    // }
-    //
-    // let imageXHR = new XMLHttpRequest();
-    // imageXHR.timeout = 5000;
-    // imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&topics=" + imageTopics.value + "&content_filter=high");
-    // imageXHR.onload = function () {
-    //     if (imageXHR.status === 200) {
-    //         let resultData = JSON.parse(imageXHR.responseText);
-    //         let resultData2 = imageXHR.responseText
-    //         componentDisplay.value = "block";
-    //         mobileComponentDisplay.value ="none";
-    //         imageData.value = resultData2;
-    //         themeColor.value = getThemeColor(resultData.color);
-    //
-    //         // 小屏显示底部按钮
-    //         if(device === "iPhone" || device === "Android") {
-    //             componentDisplay.value = "none";
-    //             mobileComponentDisplay.value ="block";
-    //         }
-    //
-    //         //设置body颜色
-    //         changeThemeColor("body", resultData.color);
-    //     }
-    //     else {
-    //         tempThis.$message.error("获取图片失败");
-    //     }
-    // }
-    // imageXHR.onerror = function () {
-    //     tempThis.$message.error("获取图片失败");
-    // }
-    // imageXHR.send();
 });
 </script>
 
