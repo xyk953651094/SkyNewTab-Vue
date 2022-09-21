@@ -7,4 +7,4 @@ import '@arco-design/web-vue/dist/arco.css';
 const app = createApp(App);
 app.use(ArcoVue);
 app.use(ArcoVueIcon);
-app.mount('#app');
+app.mount("#app");

@@ -16,11 +16,11 @@ export function getTimeDetails() {
     let localeDate = param.toLocaleString("zh-Hans-u-ca-chinese");
 
     year = year.toString();
-    month = month < 10? ('0' + month) : month.toString();
-    day = day < 10? ('0' + day) : day.toString();
-    hour = hour < 10? ('0' + hour) : hour.toString();
-    minute = minute < 10? ('0' + minute) : minute.toString();
-    second = second < 10? ('0' + second) : second.toString();
+    month = month < 10? ("0" + month) : month.toString();
+    day = day < 10? ("0" + day) : day.toString();
+    hour = hour < 10? ("0" + hour) : hour.toString();
+    minute = minute < 10? ("0" + minute) : minute.toString();
+    second = second < 10? ("0" + second) : second.toString();
     switch (week) {
         case 0: week = "周日"; break;
         case 1: week = "周一"; break;
@@ -50,7 +50,7 @@ export function getTimeDetails() {
 
 // 判断字符串是否合规
 export function isEmptyString(param) {
-    if(typeof param === 'string') {
+    if(typeof param === "string") {
         return (param.length === 0);
     }
     else {
@@ -63,12 +63,12 @@ export function getGreet() {
     let hour = new Date().getHours();
 
     const greets = {
-        morning: '朝霞满',
-        noon: '正当午',
-        afternoon: '斜阳下',
-        evening: '日暮里',
-        night: '见星辰',
-        daybreak: '又一宿'
+        morning: "朝霞满",
+        noon: "正当午",
+        afternoon: "斜阳下",
+        evening: "日暮里",
+        night: "见星辰",
+        daybreak: "又一宿"
     };
 
     if (hour >=0 && hour < 6) {          // 凌晨
@@ -99,7 +99,7 @@ export function setColorTheme() {
         theme = darkThemeArray;
     }
     let randomNum = Math.floor(Math.random() * theme.length);
-    let body = document.getElementsByTagName('body')[0];
+    let body = document.getElementsByTagName("body")[0];
     body.style.backgroundColor = theme[randomNum].bodyBackgroundColor;  // 设置body背景颜色
 
     return theme[randomNum].frostedGlassBackgroundColor;  // 返回各组件背景颜色
@@ -107,8 +107,8 @@ export function setColorTheme() {
 
 // 根据图片背景颜色获取反色主题
 export function getThemeColor(color) {
-    color = '0x' + color.replace('#', '');
-    let newColor = '000000' + (0xFFFFFF - parseInt(color)).toString(16);
+    color = "0x" + color.replace("#", '');
+    let newColor = "000000" + (0xFFFFFF - parseInt(color)).toString(16);
     return '#' + newColor.substring(newColor.length-6, newColor.length);
 }
 

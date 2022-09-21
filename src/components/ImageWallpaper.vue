@@ -70,14 +70,14 @@ watch(() => props.dynamicEffect, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    let backgroundImage = document.getElementById('backgroundImage');
+    let backgroundImage = document.getElementById("backgroundImage");
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
             // 设置动态效果
             // backgroundImage.className = "backgroundImage zIndexLow wallpaplerFadeIn";
             fadeIn("#backgroundImage", 3000);
-            backgroundImage.style.transform = 'scale(1.05)';
-            backgroundImage.style.transition = '5s';
+            backgroundImage.style.transform = "scale(1.05)";
+            backgroundImage.style.transition = "5s";
             setTimeout(() => {
                 mouseMoveEffect(props.dynamicEffect);
             }, 5000);

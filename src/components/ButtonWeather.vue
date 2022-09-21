@@ -46,7 +46,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    $('#buttonWeather').hover(function(){
+    $("#buttonWeather").hover(function(){
         $(".arco-popover-title").css("color", fontColor.value);
     });
 
@@ -55,7 +55,7 @@ onMounted(() => {
         type: "GET",
         timeout: 5000,
         success: (resultData) => {
-            if (resultData.status === 'success') {
+            if (resultData.status === "success") {
                 display.value = "block";
                 weatherInfo.value = resultData.data.weatherData.weather  + " ｜ "
                     + resultData.data.weatherData.temperature + "°C";
