@@ -2,7 +2,7 @@
     <a-space>
         <a-tooltip content="偏好设置" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonPreference" class="frostedGlass zIndexHigh" @click="onclick"
-                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+                      :style="{display: display}">
                 <template #icon>
                     <icon-more-vertical />
                 </template>
@@ -25,16 +25,6 @@
                     {{timeDetails[0]}}
                 </template>
                 <a-row :gutter="[16, 16]">
-                    <a-col :span="24">
-                        <a-card title="【唐】· 张若虚 ·《春江花月夜》" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
-                            <template #extra>
-                                <icon-book />
-                            </template>
-                            <a-typography-paragraph>
-                                「 江畔何人初见月，江月何年初照人，江畔何人初见月，江月何年初照人，江畔何人初见月，江月何年初照人 」
-                            </a-typography-paragraph>
-                        </a-card>
-                    </a-col>
                     <a-col :span="24">
                         <a-card title="偏好设置" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
                             <template #extra>
@@ -100,8 +90,8 @@
 
 <script setup>
 import {defineProps, onBeforeMount, onMounted, ref, watch} from "vue";
-import {IconMoreVertical, IconBook, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, changeThemeColor, getFontColor, deviceModel} from "@/javascripts/publicFunctions";
+import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
+import {getTimeDetails, getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
 const $ = require("jquery");
 
 let visible = ref(false);
@@ -136,6 +126,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
+        changeThemeColor("#buttonPreference", props.themeColor);
     }
 })
 

@@ -4,7 +4,7 @@
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="frostedGlass zIndexHigh"
-                      :style="{ cursor: 'default', backgroundColor: backgroundColor, color: fontColor}">
+                      :style="{ cursor: 'default'}">
                 <template #icon>
                     <icon-face-smile-fill />
                 </template>
@@ -22,7 +22,7 @@
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconFaceSmileFill} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getTimeDetails, getGreet, getFontColor} from "@/javascripts/publicFunctions";
+import {getTimeDetails, getGreet, getFontColor, changeThemeColor} from "@/javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({
@@ -43,6 +43,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
+        changeThemeColor("#buttonGreet", props.themeColor);
     }
 })
 

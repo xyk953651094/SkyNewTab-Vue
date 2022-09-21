@@ -2,7 +2,7 @@
     <a-space>
         <a-popover :title="region" :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh"
-                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+                      :style="{display: display}">
                 {{ weatherInfo }}
             </a-button>
             <template #content>
@@ -17,7 +17,7 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {changeThemeColor, getFontColor, getTimeDetails} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
 import $ from "jquery";
 
 const props = defineProps({
@@ -41,6 +41,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
+        changeThemeColor("#buttonWeather", props.themeColor);
     }
 })
 

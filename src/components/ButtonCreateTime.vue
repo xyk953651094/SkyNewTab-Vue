@@ -2,7 +2,7 @@
     <a-space>
         <a-tooltip :content=tooltipContent position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonCreateTime" class="frostedGlass zIndexHigh"
-                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+                      :style="{display: display}">
                 <template #icon>
                     <icon-calendar-clock />
                 </template>
@@ -45,6 +45,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
+        changeThemeColor("#buttonCreateTime", props.themeColor);
     }
 })
 

@@ -2,7 +2,7 @@
     <a-space>
         <a-tooltip content="前往作者主页" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="frostedGlass zIndexHigh" @click="onclick"
-                      :style="{display: display, backgroundColor: backgroundColor, color: fontColor}">
+                      :style="{display: display}">
                 <template #icon>
                     <icon-camera/>
                 </template>
@@ -16,7 +16,7 @@
 import {defineProps, ref, watch} from "vue"
 import {IconCamera} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "@/javascripts/publicContents";
-import {getFontColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
@@ -45,6 +45,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         backgroundColor.value = props.themeColor;
         fontColor.value = getFontColor(props.themeColor);
+        changeThemeColor("#buttonAuthor", props.themeColor);
     }
 })
 
