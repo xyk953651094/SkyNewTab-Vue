@@ -22,7 +22,7 @@
                 unmountOnClose
             >
                 <template #title>
-                    {{timeDetails[0]}}
+                    {{"菜单栏"}}
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
@@ -89,9 +89,9 @@
 </template>
 
 <script setup>
-import {defineProps, onBeforeMount, onMounted, ref, watch} from "vue";
+import {defineProps, onBeforeMount, ref, watch} from "vue";
 import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
+import {getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
 const $ = require("jquery");
 
 let visible = ref(false);
@@ -106,7 +106,6 @@ let fontColor = ref("");
 let displayEffectRadioCheckedValue = ref("regular");
 let dynamicEffectRadioCheckedValue = ref("translate");
 let imageTopicsCheckboxCheckedValue = ref(["Fzo3zuOHN6w"]);
-let timeDetails = ref([]);
 
 const props = defineProps({
     themeColor: {
@@ -135,11 +134,6 @@ onBeforeMount(() => {
     if(device === "iPhone" || device === "Android") {
         drawerPosition.value = "bottom";
     }
-})
-
-onMounted(() => {
-    let temp = getTimeDetails(new Date());
-    timeDetails.value = [temp.showDate2 + " " + temp.showWeek, temp.showLocaleDate];
 })
 
 const onclick = () => {

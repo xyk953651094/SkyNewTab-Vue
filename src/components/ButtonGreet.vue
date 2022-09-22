@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-popover :title="lunarCalendar" position="tl"
+        <a-popover :title="calendar" position="tl"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="frostedGlass zIndexHigh"
@@ -35,7 +35,7 @@ const props = defineProps({
 let backgroundColor = ref("");
 let fontColor = ref("");
 let greetContent = ref(getGreet());
-let lunarCalendar = ref("");
+let calendar = ref("");
 let suit = ref("");
 let avoid = ref("");
 
@@ -67,12 +67,14 @@ onMounted(() => {
                 if (resultData.data.solarTerms.indexOf("后") === -1) {
                     holidayContent = "今日" + holidayContent;
                 }
-                greetContent.value += " ｜ " + holidayContent;
+                let temp = getTimeDetails(new Date());
 
-                lunarCalendar.value = resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" +
+                greetContent.value += " ｜ " + holidayContent;
+                calendar.value = temp.showDate4 + " " + temp.showWeek + "｜" +
+                    resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" +
                     resultData.data.lunarCalendar;
-                suit.value = resultData.data.suit;
-                avoid.value = resultData.data.avoid;
+                suit.value = resultData.data.suit.replace(/\./g, "·");
+                avoid.value = resultData.data.avoid.replace(/\./g, "·");
             }
         },
         error: function () {}

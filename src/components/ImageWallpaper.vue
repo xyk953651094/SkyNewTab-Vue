@@ -10,17 +10,19 @@
     >
         <template #loader>
             <img
-                width="200"
-                src=""
+                width="102%"
+                height="102%"
+                :src="loadImageLink"
+                class="backgroundImage zIndexLow"
                 style="filter: blur(5px);"
-                alt=""/>
+            />
         </template>
     </a-image>
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {fadeIn, mouseMoveEffect} from "@/javascripts/publicFunctions";
+import {mouseMoveEffect} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     display: {
@@ -51,6 +53,7 @@ const props = defineProps({
 });
 
 let imageLink = ref("");
+let loadImageLink = ref("");
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -60,6 +63,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
         else if (props.displayEffect === "full") {
             imageLink.value = props.imageData.urls.full;
         }
+        loadImageLink.value = props.imageData.urls.thumb;
     }
 })
 
@@ -74,13 +78,15 @@ onMounted(() => {
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
             // 设置动态效果
-            // backgroundImage.className = "backgroundImage zIndexLow wallpaplerFadeIn";
-            fadeIn("#backgroundImage", 3000);
-            backgroundImage.style.transform = "scale(1.05)";
-            backgroundImage.style.transition = "5s";
+            backgroundImage.className = "backgroundImage zIndexLow wallpaperFadeIn";
+            // fadeIn("#backgroundImage", 3000);
+            setTimeout(() => {
+                backgroundImage.style.transform = "scale(1.05)";
+                backgroundImage.style.transition = "5s";
+            }, 2000);
             setTimeout(() => {
                 mouseMoveEffect(props.dynamicEffect);
-            }, 5000);
+            }, 7000);
         }
     }
 })

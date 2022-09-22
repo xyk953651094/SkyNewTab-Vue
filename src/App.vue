@@ -53,6 +53,7 @@
 import {onMounted, ref} from "vue";
 import {clientId} from "@/javascripts/publicContents";
 import {changeThemeColor, getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
 
 import ButtonGreet from "@/components/ButtonGreet";
 import ButtonHtmlLink from "@/components/ButtonHtmlLink";
@@ -86,7 +87,6 @@ const getImageTopics = (value) => {
 }
 
 onMounted(()=>{
-    let tempThis = this;
     let device = deviceModel();
     themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
 
@@ -120,7 +120,7 @@ onMounted(()=>{
             changeThemeColor("body", resultData.color);
         },
         error: () => {
-            tempThis.$message.error("获取图片失败");
+            Message.error("获取图片失败");
         }
     });
 });
