@@ -46,7 +46,7 @@ const props = defineProps({
     dynamicEffect: {
         type: String,
         default: () => {
-            return "translate";
+            return "all";
         },
         required: true
     }
@@ -62,6 +62,9 @@ watch(() => props.imageData, (newValue, oldValue) => {
         }
         else if (props.displayEffect === "full") {
             imageLink.value = props.imageData.urls.full;
+        }
+        else if (props.displayEffect === "raw") {
+            imageLink.value = props.imageData.urls.raw;
         }
         loadImageLink.value = props.imageData.urls.thumb;
     }

@@ -71,7 +71,7 @@ let mobileComponentDisplay = ref("none");
 let imageData = ref("");
 let themeColor = ref("");
 let displayEffect = ref("regular");
-let dynamicEffect = ref("translate");
+let dynamicEffect = ref("all");
 let imageTopics = ref("Fzo3zuOHN6w");
 
 const getDisplayEffect = (value) => {

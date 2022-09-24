@@ -36,16 +36,18 @@
                                                    @change="displayEffectRadioOnChange"
                                     >
                                         <a-radio value="regular">标准</a-radio>
-                                        <a-radio value="full">最高</a-radio>
+                                        <a-radio value="full">较高</a-radio>
+                                        <a-radio value="raw">最高</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="dynamicEffectRadio" label="动效样式">
-                                    <a-radio-group default-value="translate" v-model="dynamicEffectRadioCheckedValue"
+                                    <a-radio-group default-value="all" v-model="dynamicEffectRadioCheckedValue"
                                                    @change="dynamicEffectRadioOnChange"
                                     >
                                         <a-radio value="close">关闭</a-radio>
                                         <a-radio value="translate">平移</a-radio>
                                         <a-radio value="rotate">旋转</a-radio>
+                                        <a-radio value="all">全部</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageTopicsCheckbox" label="图片主题">
@@ -77,10 +79,17 @@
                             </a-form>
                         </a-card>
                     </a-col>
+                    <a-col :span="24">
+                        <a-card title="其它作品" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
+                            <template #extra>
+                                <icon-apps />
+                            </template>
+                        </a-card>
+                    </a-col>
                 </a-row>
                 <template #footer>
                     <a-typography-text>
-                        版本号：V1.0.3
+                        Sky 新标签页 Pro V1.0.3
                     </a-typography-text>
                 </template>
             </a-drawer>
@@ -90,7 +99,7 @@
 
 <script setup>
 import {defineProps, onBeforeMount, ref, watch} from "vue";
-import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconSettings, IconApps} from "@arco-design/web-vue/es/icon";
 import {getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
 const $ = require("jquery");
 
@@ -100,11 +109,11 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 // let form = reactive({
 //     displayEffectRadio: "regular",
-//     dynamicEffectRadio: "translate",
+//     dynamicEffectRadio: "all",
 //     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
 // })
 let displayEffectRadioCheckedValue = ref("regular");
-let dynamicEffectRadioCheckedValue = ref("translate");
+let dynamicEffectRadioCheckedValue = ref("all");
 let imageTopicsCheckboxCheckedValue = ref(["Fzo3zuOHN6w"]);
 
 const props = defineProps({
