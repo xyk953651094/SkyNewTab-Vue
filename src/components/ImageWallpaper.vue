@@ -10,16 +10,18 @@
     >
         <template #loader>
             <img
-                width="200"
-                src=""
+                width="102%"
+                height="102%"
+                :src="loadImageLink"
+                class="backgroundImage zIndexLow"
                 style="filter: blur(5px);"
-                alt=""/>
+            />
         </template>
     </a-image>
 </template>
 
 <script setup>
-import {defineProps, onMounted} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import {mouseMoveEffect} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
@@ -30,25 +32,64 @@ const props = defineProps({
         },
         required: true
     },
-    imageLink: {
+    imageData: {
+        type: String,
+        required: true
+    },
+    displayEffect: {
         type: String,
         default: () => {
-            return "";
+            return "regular";
+        },
+        required: true
+    },
+    dynamicEffect: {
+        type: String,
+        default: () => {
+            return "all";
         },
         required: true
     }
 });
-console.log(props);
+
+let imageLink = ref("");
+let loadImageLink = ref("");
+
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        if(props.displayEffect === "regular") {
+            imageLink.value = props.imageData.urls.regular;
+        }
+        else if (props.displayEffect === "full") {
+            imageLink.value = props.imageData.urls.full;
+        }
+        else if (props.displayEffect === "raw") {
+            imageLink.value = props.imageData.urls.raw;
+        }
+        loadImageLink.value = props.imageData.urls.thumb;
+    }
+})
+
+watch(() => props.dynamicEffect, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        mouseMoveEffect(props.dynamicEffect);
+    }
+})
 
 onMounted(() => {
-    let backgroundImage = document.getElementById('backgroundImage');
+    let backgroundImage = document.getElementById("backgroundImage");
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
             // 设置动态效果
-            backgroundImage.className = "arco-image-img wallpaplerFadeIn";
-            backgroundImage.style.transform = 'scale(1.05)';
-            backgroundImage.style.transition = '5s';
-            setTimeout(mouseMoveEffect, 5000);
+            backgroundImage.className = "backgroundImage zIndexLow wallpaperFadeIn";
+            // fadeIn("#backgroundImage", 3000);
+            setTimeout(() => {
+                backgroundImage.style.transform = "scale(1.05)";
+                backgroundImage.style.transition = "5s";
+            }, 2000);
+            setTimeout(() => {
+                mouseMoveEffect(props.dynamicEffect);
+            }, 7000);
         }
     }
 })

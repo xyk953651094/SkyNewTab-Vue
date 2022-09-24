@@ -4,7 +4,7 @@
         <a-input-search
             id="inputSearch"
             allow-clear=true
-            placeholder="请输入搜索内容"
+            placeholder="按下 Enter 键搜索"
             size="large"
             class="frostedGlass"
             @focus="onFocus"
@@ -18,19 +18,18 @@
 <script setup>
 import "../stylesheets/publicStyles.css"
 import { ref } from "vue";
+import {fadeIn, fadeOut} from "@/javascripts/publicFunctions";
 
 let showMask = ref("none");
 
 
 const onFocus = () => {
-    let mask = document.getElementById("mask");
-    mask.className = "mask zIndexMiddle maskFadeIn";
+    fadeIn("#mask", 300);
     showMask.value = "block";
 }
 
 const onBlur = () => {
-    let mask = document.getElementById("mask");
-    mask.className = "mask zIndexMiddle maskFadeOut";
+    fadeOut("#mask", 300);
     // showMask.value = "none";
 }
 

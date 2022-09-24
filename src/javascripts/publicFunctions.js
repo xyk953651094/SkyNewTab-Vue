@@ -1,7 +1,9 @@
 import {lightThemeArray, darkThemeArray} from "@/javascripts/publicContents";
+import "jquery-color"
+const $ = require("jquery");
 
 // 获取日期与时间
-export function getDate() {
+export function getTimeDetails() {
     let param = new Date();
     let year = param.getFullYear();
     let month = param.getMonth() + 1;
@@ -9,13 +11,25 @@ export function getDate() {
     let hour = param.getHours();
     let minute = param.getMinutes();
     let second = param.getSeconds();
+    let week = param.getDay();
+    let localeDate = param.toLocaleString("zh-Hans-u-ca-chinese");
 
     year = year.toString();
-    month = month < 10? ('0' + month) : month.toString();
-    day = day < 10? ('0' + day) : day.toString();
-    hour = hour < 10? ('0' + hour) : hour.toString();
-    minute = minute < 10? ('0' + minute) : minute.toString();
-    second = second < 10? ('0' + second) : second.toString();
+    month = month < 10? ("0" + month) : month.toString();
+    day = day < 10? ("0" + day) : day.toString();
+    hour = hour < 10? ("0" + hour) : hour.toString();
+    minute = minute < 10? ("0" + minute) : minute.toString();
+    second = second < 10? ("0" + second) : second.toString();
+    switch (week) {
+        case 0: week = "周日"; break;
+        case 1: week = "周一"; break;
+        case 2: week = "周二"; break;
+        case 3: week = "周三"; break;
+        case 4: week = "周四"; break;
+        case 5: week = "周五"; break;
+        case 6: week = "周六"; break;
+        default: week = "";
+    }
 
     return {
         year: year,
@@ -24,14 +38,19 @@ export function getDate() {
         hour: hour,
         minute: minute,
         second: second,
+        showWeek: week,
         showDate: year + "-" + month + "-" + day,
-        showTime: hour + ":" + minute
+        showDate2: year + "." + month + "." + day,
+        showDate3: year + month + day,
+        showDate4: year + "年" + month + "月" + day + "日",
+        showTime: hour + ":" + minute,
+        showLocaleDate: "农历" + localeDate.split(" ")[0] + "日"
     };
 }
 
 // 判断字符串是否合规
 export function isEmptyString(param) {
-    if(typeof param === 'string') {
+    if(typeof param === "string") {
         return (param.length === 0);
     }
     else {
@@ -44,12 +63,12 @@ export function getGreet() {
     let hour = new Date().getHours();
 
     const greets = {
-        morning: '朝霞满',
-        noon: '正当午',
-        afternoon: '斜阳下',
-        evening: '日暮里',
-        night: '见星辰',
-        daybreak: '又一宿'
+        morning: "朝霞满",
+        noon: "正当午",
+        afternoon: "斜阳下",
+        evening: "日暮里",
+        night: "见星辰",
+        daybreak: "又一宿"
     };
 
     if (hour >=0 && hour < 6) {          // 凌晨
@@ -80,7 +99,7 @@ export function setColorTheme() {
         theme = darkThemeArray;
     }
     let randomNum = Math.floor(Math.random() * theme.length);
-    let body = document.getElementsByTagName('body')[0];
+    let body = document.getElementsByTagName("body")[0];
     body.style.backgroundColor = theme[randomNum].bodyBackgroundColor;  // 设置body背景颜色
 
     return theme[randomNum].frostedGlassBackgroundColor;  // 返回各组件背景颜色
@@ -88,8 +107,8 @@ export function setColorTheme() {
 
 // 根据图片背景颜色获取反色主题
 export function getThemeColor(color) {
-    color = '0x' + color.replace('#', '');
-    let newColor = '000000' + (0xFFFFFF - parseInt(color)).toString(16);
+    color = "0x" + color.replace("#", '');
+    let newColor = "000000" + (0xFFFFFF - parseInt(color)).toString(16);
     return '#' + newColor.substring(newColor.length-6, newColor.length);
 }
 
@@ -113,19 +132,50 @@ export function getFontColor(color) {
 }
 
 // PC端鼠标移动效果
-export function mouseMoveEffect() {
+export function mouseMoveEffect(effectType) {
     let backgroundImage = document.getElementById('backgroundImage');
-    window.addEventListener('mousemove',function(e){
-        if(backgroundImage instanceof HTMLElement) {
-            backgroundImage.style.transition = '0.5s';
-            if (e.movementX > 0 && e.movementY > 0) {
-                backgroundImage.style.transform = 'scale(1.05) translate(-0.1%, -0.1%)';
-            } else if (e.movementX < 0 && e.movementY > 0) {
-                backgroundImage.style.transform = 'scale(1.05) translate(0.1%, -0.1%)';
-            } else if (e.movementX > 0 && e.movementY < 0) {
-                backgroundImage.style.transform = 'scale(1.05) translate(-0.1%, 0.1%)';
-            } else if (e.movementX < 0 && e.movementY < 0) {
-                backgroundImage.style.transform = 'scale(1.05) translate(0.1%, 0.1%)';
+    let backgroundImageDiv = backgroundImage.parentElement;
+    backgroundImageDiv.style.perspective = "500px";
+
+    window.addEventListener("mousemove",function(e){
+        let mouseX = e.screenX;
+        let mouseY = e.screenY;
+        let screenWidth = document.body.clientWidth;
+        let screenHeight = document.body.clientHeight;
+        let screenMidWidth = screenWidth / 2;
+        let screenMidHeight = screenHeight / 2;
+        let relatedX = mouseX - screenMidWidth;   // 大于0则在屏幕右边，小于0则在屏幕左边
+        let relatedY = mouseY - screenMidHeight;  // 大于0则在屏幕下边，小于0则在屏幕上边
+        let relatedXRatio = relatedX / screenMidWidth;
+        let relatedYRatio = relatedY / screenMidHeight;
+
+        backgroundImage.style.transition = "0.3s";
+        if (backgroundImage instanceof HTMLElement) {
+            switch (effectType) {
+                case "translate": {
+                    let translateX = (-relatedXRatio / 4).toFixed(2);  // 调整精度
+                    let translateY = (-relatedYRatio / 4).toFixed(2);  // 调整精度
+                    backgroundImage.style.transform = "scale(1.05, 1.05) translate(" + translateX + "%, " + translateY + "%)";
+                    break;
+                }
+                case "rotate": {
+                    let rotateX = (relatedXRatio / 4).toFixed(2);      // 调整精度
+                    let rotateY = (-relatedYRatio / 4).toFixed(2);     // 调整精度
+                    backgroundImage.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg)";
+                    break;
+                }
+                case "all": {
+                    let rotateX = (relatedXRatio / 3).toFixed(2);      // 调整精度
+                    let rotateY = (-relatedYRatio / 3).toFixed(2);     // 调整精度
+                    let translateX = (-relatedXRatio / 3).toFixed(2);  // 调整精度
+                    let translateY = (-relatedYRatio / 3).toFixed(2);  // 调整精度
+                    backgroundImage.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) translate(" + translateX + "%, " + translateY + "%)";
+                    break;
+                }
+                case "close": {
+                    backgroundImage.style.transform = "scale(1.05)";
+                    break;
+                }
             }
         }
     });
@@ -138,4 +188,20 @@ export function deviceModel() {
     else if(ua.indexOf('iPad') > -1) { return 'iPad' }
     else if(ua.indexOf('Android') > -1) { return 'Android' }
     else { return '' }
+}
+
+// 过渡动画
+export function changeThemeColor(element, backgroundColor, time = 500) {
+    $(element).animate({
+        backgroundColor: backgroundColor,
+        color: getFontColor(backgroundColor),
+    }, time);
+}
+
+export function fadeIn(element, time = 500) {
+    $(element).fadeIn(time);
+}
+
+export function fadeOut(element, time = 500) {
+    $(element).fadeOut(time);
 }

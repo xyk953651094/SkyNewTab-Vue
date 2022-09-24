@@ -2,43 +2,46 @@
     <a-layout style="height: 100%">
         <a-layout-header id="header">
             <a-row justify="space-around">
-                <a-col :span="10" style="text-align: left">
+                <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
-                        <button-greet :image-color="imageColor" />
-                        <button-weather :image-color="imageColor" />
+                        <button-greet :theme-color="themeColor"/>
+                        <button-weather :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
-                <a-col :span="10" style="text-align: right">
+                <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
-                        <button-download :download-link="downloadLink" :display="componentDisplay" :image-color="imageColor" />
-                        <button-html-link :html-link="htmlLink" :display="componentDisplay" :image-color="imageColor" />
+                        <button-download :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-html-link :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-preference :theme-color="themeColor" :display="componentDisplay"
+                                           @displayEffect="getDisplayEffect"
+                                           @dynamicEffect="getDynamicEffect"
+                                           @imageTopics="getImageTopics"
+                        />
                     </a-space>
                 </a-col>
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
             <input-search/>
-            <image-wallpaper :display="componentDisplay" :image-link="imageLink"/>
+            <image-wallpaper :display="componentDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
-                <a-col :span="10" style="text-align: left">
+                <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
                     <a-space>
-                        <button-download :download-link="downloadLink" :display="mobileComponentDisplay" :image-color="imageColor" />
-                        <button-html-link :html-link="htmlLink" :display="mobileComponentDisplay" :image-color="imageColor" />
+                        <button-preference :theme-color="themeColor" :display="mobileComponentDisplay"
+                                           @displayEffect="getDisplayEffect"
+                                           @dynamicEffect="getDynamicEffect"
+                                           @imageTopics="getImageTopics"
+                        />
+                        <button-download :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
+                        <button-html-link :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
-                <a-col :span="10" style="text-align: right">
+                <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
-                        <ButtonAuthor
-                            :author-name="authorName"
-                            :author-link="authorLink"
-                            :display="componentDisplay"
-                            :image-color="imageColor" />
-                        <ButtonCreateTime
-                            :create-time="createTime"
-                            :display="componentDisplay"
-                            :image-color="imageColor" />
+                        <ButtonAuthor :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <ButtonCreateTime :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -47,8 +50,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import {getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
+import {onMounted, ref} from "vue";
+import {clientId} from "@/javascripts/publicContents";
+import {changeThemeColor, getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
 
 import ButtonGreet from "@/components/ButtonGreet";
 import ButtonHtmlLink from "@/components/ButtonHtmlLink";
@@ -58,41 +63,52 @@ import ImageWallpaper from "@/components/ImageWallpaper"
 import ButtonAuthor from "@/components/ButtonAuthor";
 import ButtonCreateTime from "@/components/ButtonCreateTime";
 import ButtonWeather from "@/components/ButtonWeather";
+import ButtonPreference from "@/components/ButtonPreference";
+const $ = require("jquery");
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
-let imageColor = ref("");
-let htmlLink = ref("");
-let downloadLink = ref("");
-let imageLink = ref("");
-let authorName = ref("");
-let authorLink = ref("");
-let createTime = ref("");
+let imageData = ref("");
+let themeColor = ref("");
+let displayEffect = ref("regular");
+let dynamicEffect = ref("all");
+let imageTopics = ref("Fzo3zuOHN6w");
+
+const getDisplayEffect = (value) => {
+    displayEffect.value = value;
+};
+
+const getDynamicEffect = (value) => {
+    dynamicEffect.value = value;
+}
+
+const getImageTopics = (value) => {
+    imageTopics.value = value;
+}
 
 onMounted(()=>{
-    imageColor.value = setColorTheme();
     let device = deviceModel();
-    let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral"   // Unsplash API规范
+    themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
 
-    let clientId = "ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM";
-    let orientation = "landscape";
-    if(device === "iPhone" || device === "Android") {
-        orientation = "portrait";
-    }
-    let imageXHR = new XMLHttpRequest();
-    imageXHR.open("GET", "https://api.unsplash.com/photos/random?client_id=" + clientId + "&orientation=" + orientation + "&content_filter=high");
-    imageXHR.onload = function () {
-        if (imageXHR.status === 200) {
-            let imageData = JSON.parse(imageXHR.responseText);
+    // 获取背景图片
+    $.ajax({
+        url: "https://api.unsplash.com/photos/random?",
+        headers: {
+            "Authorization": "Client-ID " + clientId,
+        },
+        type: "GET",
+        data: {
+            "client_id": clientId,
+            "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
+            "topics": imageTopics.value,
+            "content_filter": "high",
+        },
+        timeout: 5000,
+        success: (resultData) => {
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
-            imageColor.value = getThemeColor(imageData.color);
-            htmlLink.value = imageData.links.html + unsplashUrl;
-            downloadLink.value = imageData.links.download + unsplashUrl;
-            imageLink.value = imageData.urls.regular;
-            authorName.value = imageData.user.name;
-            authorLink.value = imageData.user.links.html + unsplashUrl;
-            createTime.value = imageData.created_at.split("T")[0];
+            imageData.value = resultData;
+            themeColor.value = getThemeColor(resultData.color);
 
             // 小屏显示底部按钮
             if(device === "iPhone" || device === "Android") {
@@ -101,14 +117,12 @@ onMounted(()=>{
             }
 
             //设置body颜色
-            let body = document.getElementsByTagName("body")[0];
-            body.style.backgroundColor = imageData.color;
+            changeThemeColor("body", resultData.color);
+        },
+        error: () => {
+            Message.error("获取图片失败");
         }
-    }
-    imageXHR.onerror = function () {
-
-    }
-    imageXHR.send();
+    });
 });
 </script>
 
