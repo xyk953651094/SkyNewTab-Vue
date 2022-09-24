@@ -149,8 +149,9 @@ export function mouseMoveEffect(effectType) {
         let relatedXRatio = relatedX / screenMidWidth;
         let relatedYRatio = relatedY / screenMidHeight;
 
-        backgroundImage.style.transition = "0.3s";
         if (backgroundImage instanceof HTMLElement) {
+            backgroundImage.style.transition = "0.3s";
+
             switch (effectType) {
                 case "translate": {
                     let translateX = (-relatedXRatio / 4).toFixed(2);  // 调整精度

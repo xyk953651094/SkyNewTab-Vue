@@ -150,6 +150,7 @@ const onclick = () => {
 };
 
 const handleOpen = () => {
+    $(".arco-drawer-close-btn").css("color", fontColor.value);
     $(".arco-drawer-title").css("color", fontColor.value);
     $(".arco-card").css("border", "1px solid " + fontColor.value);
     $(".arco-card-header").css({"backgroundColor": backgroundColor.value, "borderBottom": "1px solid " + fontColor.value});

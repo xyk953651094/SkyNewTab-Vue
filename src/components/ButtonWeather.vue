@@ -1,6 +1,8 @@
 <template>
     <a-space>
-        <a-popover :title="region" :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
+        <a-popover :title="region"
+                   :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+                   :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh"
                       :style="{display: display}">
                 {{ weatherInfo }}

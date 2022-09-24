@@ -1,6 +1,7 @@
 <template>
     <a-space>
         <a-popover :title="calendar" position="tl"
+                   :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="frostedGlass zIndexHigh"
@@ -50,6 +51,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 onMounted(() => {
     $("#buttonGreet").hover(function(){
         $(".arco-popover-title").css("color", fontColor.value);
+        $(".arco-popover-popup-arrow").css({"backgroundColor": backgroundColor.value, border: "1px solid " + backgroundColor.value});
     });
 
     let holidayParameters = {
