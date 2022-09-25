@@ -30,20 +30,16 @@
                             <template #extra>
                                 <icon-settings />
                             </template>
-                            <a-form layout="vertical" auto-label-width>
+                            <a-form layout="vertical" :model="formInitialValues" auto-label-width>
                                 <a-form-item field="displayEffectRadio" label="图片质量">
-                                    <a-radio-group default-value="regular" v-model="displayEffectRadioCheckedValue"
-                                                   @change="displayEffectRadioOnChange"
-                                    >
+                                    <a-radio-group v-model="formInitialValues.displayEffectRadio" @change="displayEffectRadioOnChange">
                                         <a-radio value="regular">标准</a-radio>
                                         <a-radio value="full">较高</a-radio>
                                         <a-radio value="raw">最高</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="dynamicEffectRadio" label="动效样式">
-                                    <a-radio-group default-value="all" v-model="dynamicEffectRadioCheckedValue"
-                                                   @change="dynamicEffectRadioOnChange"
-                                    >
+                                    <a-radio-group v-model="formInitialValues.dynamicEffectRadio" @change="dynamicEffectRadioOnChange">
                                         <a-radio value="close">关闭</a-radio>
                                         <a-radio value="translate">平移</a-radio>
                                         <a-radio value="rotate">旋转</a-radio>
@@ -51,7 +47,7 @@
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageTopicsCheckbox" label="图片主题">
-                                    <a-checkbox-group direction="horizontal" v-model="imageTopicsCheckboxCheckedValue" @change="imageTopicsCheckboxOnChange">
+                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
                                             <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
                                             <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
@@ -101,20 +97,18 @@
 import {defineProps, onBeforeMount, ref, watch} from "vue";
 import {IconMoreVertical, IconSettings, IconApps} from "@arco-design/web-vue/es/icon";
 import {getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
 const $ = require("jquery");
 
 let visible = ref(false);
 let drawerPosition = ref("right");
 let backgroundColor = ref("");
 let fontColor = ref("");
-// let form = reactive({
-//     displayEffectRadio: "regular",
-//     dynamicEffectRadio: "all",
-//     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
-// })
-let displayEffectRadioCheckedValue = ref("regular");
-let dynamicEffectRadioCheckedValue = ref("all");
-let imageTopicsCheckboxCheckedValue = ref(["Fzo3zuOHN6w"]);
+let formInitialValues = ref({
+    displayEffectRadio: "regular",
+    dynamicEffectRadio: "all",
+    imageTopicsCheckbox: ["Fzo3zuOHN6w"],
+})
 
 const props = defineProps({
     themeColor: {
@@ -139,6 +133,21 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onBeforeMount(() => {
+    // 初始化偏好设置
+    let tempDisplayEffectRadio = localStorage.getItem("displayEffect");
+    let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
+    let tempImageTopicsCheckbox = localStorage.getItem("imageTopics");
+    if (tempImageTopicsCheckbox !== null) {
+        tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
+    }
+
+    formInitialValues.value =  {
+        displayEffectRadio: tempDisplayEffectRadio === null ? "regular" : tempDisplayEffectRadio,
+        dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
+        imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
+    }
+
+    // 屏幕适配
     let device = deviceModel();
     if(device === "iPhone" || device === "Android") {
         drawerPosition.value = "bottom";
@@ -161,6 +170,9 @@ const handleOpen = () => {
     $(".arco-form-item-label").css({"color": fontColor.value, "fontSize": "16px"});
     $(".arco-radio-label").css({"color": fontColor.value, "fontSize": "16px"});
     $(".arco-checkbox-label").css({"color": fontColor.value, "fontSize": "16px"});
+    // TODO: 通知主题颜色有bug
+    $(".arco-message").css("backgroundColor", backgroundColor.value);
+    $(".arco-message-content").css("color", fontColor.value);
 }
 
 const handleOk = () => {
@@ -176,24 +188,32 @@ const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics"]);
 // 图片质量
 const displayEffectRadioOnChange = (value) => {
     emit("displayEffect", value);
+    localStorage.setItem("displayEffect", value);
+    Message.success("调整成功，新的图片质量将在下次加载时生效");
 }
 
 // 动效样式
 const dynamicEffectRadioOnChange = (value) => {
     emit("dynamicEffect", value);
+    localStorage.setItem("dynamicEffect", value);
+    Message.success("调整成功，新的显示效果已生效");
 }
 
 // 图片主题
 const imageTopicsCheckboxOnChange = (values) =>  {
-    let temp = "";
+    let value = "";
     for (let i = 0; i < values.length; i++) {
-        temp += values[i];
+        value += values[i];
         if (i !== values.length - 1) {
-            temp += ",";
+            value += ",";
         }
     }
-
-    emit("imageTopics", temp);
+    emit("imageTopics", value);
+    localStorage.setItem("imageTopics", value);
+    Message.success("调整成功，新的主题将在下次加载时生效");
+    if (values.length === 0) {
+        Message.info("全不选与全选的效果一样");
+    }
 }
 </script>
 

@@ -16,6 +16,7 @@ import {defineProps, ref, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl, clientId} from "@/javascripts/publicContents";
 import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -55,7 +56,6 @@ watch(() => props.imageData, (newValue, oldValue) => {
 
 const onclick = () => {
     if (downloadLink.value.length !== 0) {
-        let tempThis = this;
         let downloadXHR = new XMLHttpRequest();
         downloadXHR.open("GET", downloadLink.value + "?client_id=" + clientId);
         downloadXHR.onload = function () {
@@ -64,15 +64,15 @@ const onclick = () => {
                 window.open(downloadUrl);
             }
             else {
-                tempThis.$message.error("获取下载链接失败");
+                Message.error("获取下载链接失败");
             }
         }
         downloadXHR.onerror = function () {
-            tempThis.$message.error("获取下载链接失败");
+            Message.error("获取下载链接失败");
         }
         downloadXHR.send();
     } else {
-        this.$message.error("无下载链接");
+        Message.error("无下载链接");
     }
 }
 </script>

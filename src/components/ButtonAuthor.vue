@@ -17,6 +17,7 @@ import {defineProps, ref, watch} from "vue"
 import {IconCamera} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "@/javascripts/publicContents";
 import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -61,7 +62,7 @@ const onclick = () => {
         window.open(authorLink.value + unsplashUrl);
     }
     else {
-        this.$message.error("无跳转链接");
+        Message.error("无跳转链接");
     }
 }
 </script>

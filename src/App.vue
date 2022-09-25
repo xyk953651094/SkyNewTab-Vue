@@ -70,6 +70,7 @@ let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
 let imageData = ref("");
 let themeColor = ref("");
+
 let displayEffect = ref("regular");
 let dynamicEffect = ref("all");
 let imageTopics = ref("Fzo3zuOHN6w");
@@ -87,6 +88,14 @@ const getImageTopics = (value) => {
 }
 
 onMounted(()=>{
+    // 加载偏好设置
+    let tempDisplayEffect = localStorage.getItem("displayEffect");
+    let tempDynamicEffect = localStorage.getItem("dynamicEffect");
+    let tempImageTopics = localStorage.getItem("imageTopics");
+    displayEffect.value = tempDisplayEffect === null ? "regular" : tempDisplayEffect;
+    dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
+    imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
+
     let device = deviceModel();
     themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
 
