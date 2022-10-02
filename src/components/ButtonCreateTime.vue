@@ -39,7 +39,7 @@ const props = defineProps({
     }
 });
 
-let createTime = ref("");
+let createTime = ref("暂无拍摄时间信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {

@@ -16,7 +16,6 @@
                     backgroundColor: backgroundColor,
                     color: fontColor
                 }"
-                @open="handleOpen"
                 @ok="handleOk"
                 @cancel="handleCancel"
                 unmountOnClose
@@ -26,7 +25,7 @@
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <a-card title="偏好设置" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
+                        <a-card title="偏好设置" size="small" >
                             <template #extra>
                                 <icon-settings />
                             </template>
@@ -47,39 +46,101 @@
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageTopicsCheckbox" label="图片主题">
-                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
-                                        <a-row>
-                                            <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="3d-renders"         value="CDwuwXJAbEw">3D渲染</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="textures-patterns"  value="iUIsnVtjB0Y">纹理</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="experimental"       value="qPYsDzvJOYc">实验</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="architecture"       value="rnSKDHwwYUk">建筑</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="nature"             value="6sMVjTLSkeQ">自然</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="business-work"      value="aeu6rL-j6ew">商务</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="fashion"            value="S4MKLAsBB74">时尚</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="film"               value="hmenvQhUmxM">电影</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="food-drink"         value="xjPR4hlkBGA">饮食</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="health"             value="_hb-dl4Q-4U">健康</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="people"             value="towJZFskpGg">人物</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="interiors"          value="R_Fyn-Gwtlw">精神</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="street-photography" value="xHxYTMHLgOc">街头</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="animals"            value="Jpg6Kidl-Hk">动物</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="spirituality"       value="_8zFHuhRhyo">灵魂</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="arts-culture"       value="bDo48cUhwnY">文化</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="history"            value="dijpbw99kQQ">历史</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
-                                        </a-row>
-                                    </a-checkbox-group>
-                                </a-form-item>
+                                    <a-space direction="vertical" size="small" fill>
+                                        <a-alert>全不选与全选效果相同</a-alert>
+                                        <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
+                                            <a-row>
+                                                <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="3d-renders"         value="CDwuwXJAbEw">3D渲染</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="textures-patterns"  value="iUIsnVtjB0Y">纹理</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="experimental"       value="qPYsDzvJOYc">实验</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="architecture"       value="rnSKDHwwYUk">建筑</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="nature"             value="6sMVjTLSkeQ">自然</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="business-work"      value="aeu6rL-j6ew">商务</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="fashion"            value="S4MKLAsBB74">时尚</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="film"               value="hmenvQhUmxM">电影</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="food-drink"         value="xjPR4hlkBGA">饮食</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="health"             value="_hb-dl4Q-4U">健康</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="people"             value="towJZFskpGg">人物</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="interiors"          value="R_Fyn-Gwtlw">精神</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="street-photography" value="xHxYTMHLgOc">街头</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="animals"            value="Jpg6Kidl-Hk">动物</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="spirituality"       value="_8zFHuhRhyo">灵魂</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="arts-culture"       value="bDo48cUhwnY">文化</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="history"            value="dijpbw99kQQ">历史</a-checkbox></a-col>
+                                                <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
+                                            </a-row>
+                                        </a-checkbox-group>
+                                    </a-space>
+                                </a-form-item>>
                             </a-form>
                         </a-card>
                     </a-col>
                     <a-col :span="24">
-                        <a-card title="其它作品" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
+                        <a-card title="捐款支持" size="small" >
+                            <template #extra>
+                                <icon-heart />
+                            </template>
+                            <a-space direction="vertical" size="small" fill>
+                                <a-alert type="warning">捐款不会为您带来额外体验</a-alert>
+                                <a-collapse :accordion=true :bordered=false>
+                                    <a-collapse-item header="支付宝" key="AliPay" :style="{backgroundColor: backgroundColor}">
+                                        <template #expand-icon>
+                                            <icon-alipay-circle />
+                                        </template>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                    </a-collapse-item>
+                                    <a-collapse-item header="微信支付" key="WeChatPay">
+                                        <template #expand-icon>
+                                            <icon-wechatpay/>
+                                        </template>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                    </a-collapse-item>
+                                    <a-collapse-item header="PayPal" key="PayPal">
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                        <div>Beijing Toutiao Technology Co., Ltd.</div>
+                                    </a-collapse-item>
+                                </a-collapse>
+                            </a-space>
+                        </a-card>
+                    </a-col>
+                    <a-col :span="24">
+                        <a-card title="其它作品" size="small" >
                             <template #extra>
                                 <icon-apps />
                             </template>
+                            <a-list size="small" :bordered=false hoverable>
+                                <a-list-item>
+                                    <a-list-item-meta title="Sky 诗词新标签页">
+                                        <template #avatar>
+                                            <a-avatar shape="square">
+                                                <img alt="avatar" src="../assets/otherApps/skyNewTabPoem.png" />
+                                            </a-avatar>
+                                        </template>
+                                        <template #description>
+                                            <a-link href="https://www.baidu.com">前往扩展商店</a-link>
+                                        </template>
+                                    </a-list-item-meta>
+                                </a-list-item>
+                                <a-list-item>
+                                    <a-list-item-meta title="Sky 新标签页">
+                                        <template #avatar>
+                                            <a-avatar shape="square">
+                                                <img alt="avatar" src="../assets/otherApps/skyNewTab.png" />
+                                            </a-avatar>
+                                        </template>
+                                        <template #description>
+                                            <a-link href="https://www.baidu.com">前往扩展商店</a-link>
+                                        </template>
+                                    </a-list-item-meta>
+                                </a-list-item>
+                            </a-list>
                         </a-card>
                     </a-col>
                 </a-row>
@@ -94,8 +155,8 @@
 </template>
 
 <script setup>
-import {defineProps, onBeforeMount, ref, watch} from "vue";
-import {IconMoreVertical, IconSettings, IconApps} from "@arco-design/web-vue/es/icon";
+import {defineProps, onMounted, ref, watch} from "vue";
+import {IconMoreVertical, IconSettings, IconHeart, IconAlipayCircle, IconWechatpay, IconApps} from "@arco-design/web-vue/es/icon";
 import {getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 const $ = require("jquery");
@@ -132,7 +193,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-onBeforeMount(() => {
+onMounted(() => {
     // 初始化偏好设置
     let tempDisplayEffectRadio = localStorage.getItem("displayEffect");
     let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
@@ -152,28 +213,48 @@ onBeforeMount(() => {
     if(device === "iPhone" || device === "Android") {
         drawerPosition.value = "bottom";
     }
+
+    // 修改各类弹窗样式
+    $("body").bind("DOMNodeInserted", () => {
+        // popover
+        let popoverEle = $(".arco-popover");
+        if (popoverEle.length && popoverEle.length > 0) {
+            $(".arco-popover-title").css("color", fontColor.value);
+            $(".arco-popover-popup-arrow").css({"backgroundColor": backgroundColor.value, border: "1px solid " + backgroundColor.value});
+        }
+
+        // message
+        let messageEle = $(".arco-message");
+        if(messageEle.length && messageEle.length > 0) {
+            messageEle.css({"backgroundColor": backgroundColor.value, "border-color": backgroundColor.value});
+            $(".arco-message-icon").css("color", fontColor.value);
+            $(".arco-message-content").css("color", fontColor.value);
+        }
+
+        // drawer
+        let drawerEle = $(".arco-drawer");
+        if (drawerEle.length && drawerEle.length > 0) {
+            $(".arco-drawer-close-btn").css("color", fontColor.value);
+            $(".arco-drawer-title").css("color", fontColor.value);
+            $(".arco-card").css("border", "1px solid " + fontColor.value);
+            $(".arco-card-header").css({"backgroundColor": backgroundColor.value, "borderBottom": "1px solid " + fontColor.value});
+            $(".arco-card-header-title").css("color", fontColor.value);
+            $(".arco-card-header-extra").css("color", fontColor.value);
+            $(".arco-card-body").css("backgroundColor", backgroundColor.value);
+            $(".arco-typography").css("color", fontColor.value);
+            $(".arco-form-item-label").css("color", fontColor.value);
+            $(".arco-radio-label").css("color", fontColor.value);
+            $(".arco-checkbox-label").css("color", fontColor.value);
+            $(".arco-collapse-item-header").css({"backgroundColor": backgroundColor.value, "color": fontColor.value});
+            $(".arco-collapse-item-content").css({"backgroundColor": backgroundColor.value, "color": fontColor.value});
+            $(".arco-list-item-meta-title").css("color", fontColor.value);
+        }
+    });
 })
 
 const onclick = () => {
     visible.value = true;
 };
-
-const handleOpen = () => {
-    $(".arco-drawer-close-btn").css("color", fontColor.value);
-    $(".arco-drawer-title").css("color", fontColor.value);
-    $(".arco-card").css("border", "1px solid " + fontColor.value);
-    $(".arco-card-header").css({"backgroundColor": backgroundColor.value, "borderBottom": "1px solid " + fontColor.value});
-    $(".arco-card-header-title").css("color", fontColor.value);
-    $(".arco-card-header-extra").css("color", fontColor.value);
-    $(".arco-card-body").css("backgroundColor", backgroundColor.value);
-    $(".arco-typography").css("color", fontColor.value);
-    $(".arco-form-item-label").css({"color": fontColor.value, "fontSize": "16px"});
-    $(".arco-radio-label").css({"color": fontColor.value, "fontSize": "16px"});
-    $(".arco-checkbox-label").css({"color": fontColor.value, "fontSize": "16px"});
-    // TODO: 通知主题颜色有bug
-    $(".arco-message").css("backgroundColor", backgroundColor.value);
-    $(".arco-message-content").css("color", fontColor.value);
-}
 
 const handleOk = () => {
     visible.value = false;

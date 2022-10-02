@@ -196,17 +196,17 @@ export function deviceModel() {
 }
 
 // 过渡动画
-export function changeThemeColor(element, backgroundColor, time = 500) {
+export function changeThemeColor(element, backgroundColor, time = 300) {
     $(element).animate({
         backgroundColor: backgroundColor,
         color: getFontColor(backgroundColor),
     }, time);
 }
 
-export function fadeIn(element, time = 500) {
+export function fadeIn(element, time = 300) {
     $(element).fadeIn(time);
 }
 
-export function fadeOut(element, time = 500) {
+export function fadeOut(element, time = 300) {
     $(element).fadeOut(time);
 }

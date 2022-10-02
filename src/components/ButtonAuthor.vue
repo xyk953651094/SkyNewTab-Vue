@@ -39,7 +39,7 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let authorName = ref("");
+let authorName = ref("暂无作者信息");
 let authorLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {

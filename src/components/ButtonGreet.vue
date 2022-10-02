@@ -36,9 +36,9 @@ const props = defineProps({
 let backgroundColor = ref("");
 let fontColor = ref("");
 let greetContent = ref(getGreet());
-let calendar = ref("");
-let suit = ref("");
-let avoid = ref("");
+let calendar = ref("暂无信息");
+let suit = ref("暂无信息");
+let avoid = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -49,15 +49,13 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    $("#buttonGreet").hover(function(){
-        $(".arco-popover-title").css("color", fontColor.value);
-        $(".arco-popover-popup-arrow").css({"backgroundColor": backgroundColor.value, border: "1px solid " + backgroundColor.value});
-    });
-
     let holidayParameters = {
         "app_id": "cicgheqakgmpjclo",
         "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
     };
+
+    let calendarDetails = getTimeDetails(new Date());
+    calendar.value = calendarDetails.showDate4 + " " + calendarDetails.showWeek
     $.ajax({
         url: "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3,
         type: "GET",
@@ -69,12 +67,9 @@ onMounted(() => {
                 if (resultData.data.solarTerms.indexOf("后") === -1) {
                     holidayContent = "今日" + holidayContent;
                 }
-                let temp = getTimeDetails(new Date());
 
                 greetContent.value += " ｜ " + holidayContent;
-                calendar.value = temp.showDate4 + " " + temp.showWeek + "｜" +
-                    resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" +
-                    resultData.data.lunarCalendar;
+                calendar.value += "｜" + resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" + resultData.data.lunarCalendar;
                 suit.value = resultData.data.suit.replace(/\./g, "·");
                 avoid.value = resultData.data.avoid.replace(/\./g, "·");
             }

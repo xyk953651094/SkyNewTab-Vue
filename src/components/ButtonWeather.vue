@@ -33,11 +33,11 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let display = ref("none");
 let weatherInfo = ref("暂无天气信息");
-let region = ref("");
-let pm25 = ref("");
-let rainfall = ref("");
-let visibility = ref("");
-let windInfo = ref("");
+let region = ref("暂无地区信息");
+let pm25 = ref("暂无PM2.5信息");
+let rainfall = ref("暂无降雨信息");
+let visibility = ref("暂无视距信息");
+let windInfo = ref("暂无风况信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -48,10 +48,6 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    $("#buttonWeather").hover(function(){
-        $(".arco-popover-title").css("color", fontColor.value);
-    });
-
     $.ajax({
         url: "https://v2.jinrishici.com/info",
         type: "GET",
