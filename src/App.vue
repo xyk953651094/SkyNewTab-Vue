@@ -52,7 +52,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {clientId} from "@/javascripts/publicContents";
-import {changeThemeColor, getThemeColor, setColorTheme, deviceModel} from "@/javascripts/publicFunctions";
+import {changeThemeColor, getThemeColor, setColorTheme, getDevice} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 import ButtonGreet from "@/components/ButtonGreet";
@@ -96,7 +96,7 @@ onMounted(()=>{
     dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
     imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
 
-    let device = deviceModel();
+    let device = getDevice();
     themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
 
     // 获取背景图片

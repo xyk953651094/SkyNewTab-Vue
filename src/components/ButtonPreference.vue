@@ -157,7 +157,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMoreVertical, IconSettings, IconHeart, IconAlipayCircle, IconWechatpay, IconApps} from "@arco-design/web-vue/es/icon";
-import {getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
+import {getFontColor, getDevice, changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 const $ = require("jquery");
 
@@ -209,7 +209,7 @@ onMounted(() => {
     }
 
     // 屏幕适配
-    let device = deviceModel();
+    let device = getDevice();
     if(device === "iPhone" || device === "Android") {
         drawerPosition.value = "bottom";
     }

@@ -187,7 +187,7 @@ export function mouseMoveEffect(effectType) {
 }
 
 // 判断设备型号
-export function deviceModel() {
+export function getDevice() {
     let ua = navigator.userAgent;
     if(ua.indexOf('iPhone') > -1) { return 'iPhone' }
     else if(ua.indexOf('iPad') > -1) { return 'iPad' }
