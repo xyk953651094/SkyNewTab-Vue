@@ -3,10 +3,10 @@
     <a-space direction="vertical"  class="zIndexHigh">
         <a-input-search
             id="inputSearch"
-            allow-clear=true
+            allow-clear
             placeholder="按下 Enter 键搜索"
             size="large"
-            class="frostedGlass"
+            class="componentTheme"
             @focus="onFocus"
             @blur="onBlur"
             @search="onSearch"

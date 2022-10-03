@@ -1,7 +1,7 @@
 <template>
     <a-space>
         <a-tooltip content="下载图片" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="buttonDownload" class="frostedGlass zIndexHigh" @click="onclick"
+            <a-button type="primary" shape="round" size="large" id="buttonDownload" class="componentTheme zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
                     <icon-download/>
@@ -14,14 +14,20 @@
 <script setup>
 import {defineProps, ref, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
-import {unsplashUrl, clientId} from "@/javascripts/publicContents";
-import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
+import {unsplashUrl, clientId} from "@/javascripts/publicConstants";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
-        type: String,
-        required: true
+        type: Object,
+        required: true,
+        default: ()=> {
+            return {
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
     },
     display: {
         type: String,
@@ -31,7 +37,7 @@ const props = defineProps({
         required: true
     },
     imageData: {
-        type: String,
+        type: Object,
         required: true
     }
 });
@@ -42,9 +48,9 @@ let downloadLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.themeColor;
-        fontColor.value = getFontColor(props.themeColor);
-        changeThemeColor("#buttonDownload", props.themeColor);
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#buttonDownload", backgroundColor.value, fontColor.value);
     }
 })
 

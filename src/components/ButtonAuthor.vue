@@ -1,7 +1,7 @@
 <template>
     <a-space>
         <a-tooltip content="前往作者主页" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="frostedGlass zIndexHigh" @click="onclick"
+            <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="componentTheme zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
                     <icon-camera/>
@@ -15,14 +15,20 @@
 <script setup>
 import {defineProps, ref, watch} from "vue"
 import {IconCamera} from "@arco-design/web-vue/es/icon";
-import {unsplashUrl} from "@/javascripts/publicContents";
-import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
+import {unsplashUrl} from "@/javascripts/publicConstants";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
-        type: String,
-        required: true
+        type: Object,
+        required: true,
+        default: ()=> {
+            return {
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
     },
     display: {
         type: String,
@@ -32,7 +38,7 @@ const props = defineProps({
         required: true
     },
     imageData: {
-        type: String,
+        type: Object,
         required: true
     }
 });
@@ -44,9 +50,9 @@ let authorLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
-        backgroundColor.value = props.themeColor;
-        fontColor.value = getFontColor(props.themeColor);
-        changeThemeColor("#buttonAuthor", props.themeColor);
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#buttonAuthor", backgroundColor.value, fontColor.value);
     }
 })
 

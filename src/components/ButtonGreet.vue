@@ -4,7 +4,7 @@
                    :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
-            <a-button type="primary" shape="round" size="large" id="buttonGreet" class="frostedGlass zIndexHigh"
+            <a-button type="primary" shape="round" size="large" id="buttonGreet" class="componentTheme zIndexHigh"
                       :style="{ cursor: 'default'}">
                 <template #icon>
                     <icon-face-smile-fill />
@@ -23,13 +23,19 @@
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconFaceSmileFill} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreet, getFontColor, changeThemeColor} from "@/javascripts/publicFunctions";
+import {getTimeDetails, getGreet, changeThemeColor} from "@/javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
-        type: String,
-        required: true
+        type: Object,
+        required: true,
+        default: ()=> {
+            return {
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
     }
 });
 
@@ -42,9 +48,9 @@ let avoid = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.themeColor;
-        fontColor.value = getFontColor(props.themeColor);
-        changeThemeColor("#buttonGreet", props.themeColor);
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#buttonGreet", backgroundColor.value, fontColor.value);
     }
 })
 
@@ -60,7 +66,7 @@ onMounted(() => {
         url: "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3,
         type: "GET",
         data: holidayParameters,
-        timeout: 5000,
+        timeout: 10000,
         success: (resultData) => {
             if (resultData.code === 1) {
                 let holidayContent = resultData.data.solarTerms;

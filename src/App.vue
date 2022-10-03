@@ -51,8 +51,13 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {clientId} from "@/javascripts/publicContents";
-import {changeThemeColor, getThemeColor, setColorTheme, getDevice} from "@/javascripts/publicFunctions";
+import {clientId, device} from "@/javascripts/publicConstants";
+import {
+    changeThemeColor,
+    getComponentBackgroundColor,
+    setColorTheme,
+    getFontColor,
+} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 import ButtonGreet from "@/components/ButtonGreet";
@@ -68,8 +73,11 @@ const $ = require("jquery");
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
-let imageData = ref("");
-let themeColor = ref("");
+let imageData = ref({});
+let themeColor = ref( {
+    "componentBackgroundColor": "",
+    "componentFontColor": ""
+});
 
 let displayEffect = ref("regular");
 let dynamicEffect = ref("all");
@@ -96,8 +104,8 @@ onMounted(()=>{
     dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
     imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
 
-    let device = getDevice();
-    themeColor.value = setColorTheme();  // 未加载图片前随机显示颜色主题
+    // 未加载图片前随机显示颜色主题
+    themeColor.value = setColorTheme();
 
     // 获取背景图片
     $.ajax({
@@ -112,12 +120,18 @@ onMounted(()=>{
             "topics": imageTopics.value,
             "content_filter": "high",
         },
-        timeout: 5000,
+        timeout: 10000,
         success: (resultData) => {
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
             imageData.value = resultData;
-            themeColor.value = getThemeColor(resultData.color);
+
+            let componentBackgroundColor = getComponentBackgroundColor(resultData.color);
+            let componentFontColor = getFontColor(componentBackgroundColor);
+            themeColor.value = {
+                "componentBackgroundColor": componentBackgroundColor,
+                "componentFontColor": componentFontColor,
+            };
 
             // 小屏显示底部按钮
             if(device === "iPhone" || device === "Android") {
@@ -126,7 +140,9 @@ onMounted(()=>{
             }
 
             //设置body颜色
-            changeThemeColor("body", resultData.color);
+            let bodyBackgroundColor = resultData.color;
+            let bodyFontColor = getFontColor(bodyBackgroundColor);
+            changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
         },
         error: () => {
             Message.error("获取图片失败");
