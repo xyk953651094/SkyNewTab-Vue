@@ -23,7 +23,7 @@
         </a-layout-header>
         <a-layout-content class="center">
             <input-search/>
-            <image-wallpaper :display="componentDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
+            <image-wallpaper :display="imageDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
@@ -73,6 +73,7 @@ const $ = require("jquery");
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
+let imageDisplay = ref("none");
 let imageData = ref({});
 let themeColor = ref( {
     "componentBackgroundColor": "",
@@ -122,6 +123,7 @@ onMounted(()=>{
         },
         timeout: 10000,
         success: (resultData) => {
+            imageDisplay.value = "block";
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
             imageData.value = resultData;

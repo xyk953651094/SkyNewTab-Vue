@@ -30,14 +30,14 @@
                                 <icon-settings />
                             </template>
                             <a-form layout="vertical" :model="formInitialValues" auto-label-width>
-                                <a-form-item field="displayEffectRadio" label="图片质量">
+                                <a-form-item field="displayEffectRadio" label="图片质量（推荐选择标准）">
                                     <a-radio-group v-model="formInitialValues.displayEffectRadio" @change="displayEffectRadioOnChange">
                                         <a-radio value="regular">标准</a-radio>
                                         <a-radio value="full">较高</a-radio>
                                         <a-radio value="raw">最高</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="dynamicEffectRadio" label="动效样式">
+                                <a-form-item field="dynamicEffectRadio" label="动效样式（推荐选择全部）">
                                     <a-radio-group v-model="formInitialValues.dynamicEffectRadio" @change="dynamicEffectRadioOnChange">
                                         <a-radio value="close">关闭</a-radio>
                                         <a-radio value="translate">平移</a-radio>
@@ -45,7 +45,7 @@
                                         <a-radio value="all">全部</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageTopicsCheckbox" label="图片主题">
+                                <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
                                     <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
                                             <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
@@ -86,7 +86,7 @@
                         <template #icon>
                             <icon-github />
                         </template>
-                        <template #default>前往作者主页（捐赠支持、其它作品）</template>
+                        前往作者主页（捐赠支持、其它作品
                     </a-button>
                 </template>
             </a-drawer>
@@ -197,6 +197,8 @@ onMounted(() => {
             $(".arco-collapse-item-header").css({"backgroundColor": backgroundColor.value, "color": fontColor.value});
             $(".arco-collapse-item-content").css({"backgroundColor": backgroundColor.value, "color": fontColor.value});
             $(".arco-list-item-meta-title").css("color", fontColor.value);
+            $(".arco-drawer-footer").css("textAlign", "center");
+            $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
         }
     });
 })
