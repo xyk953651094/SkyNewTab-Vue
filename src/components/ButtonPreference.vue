@@ -70,7 +70,7 @@
                                             <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
                                         </a-row>
                                     </a-checkbox-group>
-                                </a-form-item>>
+                                </a-form-item>
                             </a-form>
                         </a-card>
                     </a-col>
@@ -82,9 +82,12 @@
 <!--                    </a-col>-->
                 </a-row>
                 <template #footer>
-                    <a-typography-text>
-                        Sky 新标签页 Pro V1.0.3
-                    </a-typography-text>
+                    <a-button type="text" href="https://github.com/xyk953651094" target="_blank">
+                        <template #icon>
+                            <icon-github />
+                        </template>
+                        <template #default>前往作者主页（捐赠支持、其它作品）</template>
+                    </a-button>
                 </template>
             </a-drawer>
         </a-tooltip>

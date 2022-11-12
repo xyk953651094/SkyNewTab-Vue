@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="前往作者主页" :background-color="backgroundColor" :content-style="{color: fontColor}">
+        <a-tooltip content="前往图片作者主页" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="componentTheme zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
