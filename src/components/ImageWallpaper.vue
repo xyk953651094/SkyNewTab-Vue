@@ -22,8 +22,8 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect, iOSImageDynamicEffect} from "@/javascripts/publicFunctions";
-import {device} from "@/javascripts/publicConstants";
+import {imageDynamicEffect, iOSImageDynamicEffect} from "../javascripts/publicFunctions";
+import {device} from "../javascripts/publicConstants";
 
 const props = defineProps({
     display: {

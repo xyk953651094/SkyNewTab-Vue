@@ -15,7 +15,7 @@
 <script setup>
 import {defineProps, ref, watch} from "vue"
 import {IconCalendarClock} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "../javascripts/publicFunctions";
 
 let backgroundColor = ref("");
 let fontColor = ref("");

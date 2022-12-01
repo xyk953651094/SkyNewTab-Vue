@@ -1,5 +1,5 @@
 import {Message} from "@arco-design/web-vue";
-import {lightThemeArray, darkThemeArray, device} from "@/javascripts/publicConstants";
+import {lightThemeArray, darkThemeArray, device} from "../javascripts/publicConstants";
 import "jquery-color"
 const $ = require("jquery");
 

@@ -71,6 +71,13 @@
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
+                                <a-form-item field="searchEngineRadio" label="搜索引擎">
+                                    <a-radio-group v-model="formInitialValues.searchEngineRadio" @change="searchEngineRadioOnChange">
+                                      <a-radio value="bing">必应</a-radio>
+                                      <a-radio value="baidu">百度</a-radio>
+                                      <a-radio value="google">谷歌</a-radio>
+                                    </a-radio-group>
+                                </a-form-item>
                             </a-form>
                         </a-card>
                     </a-col>
@@ -100,9 +107,9 @@
 
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {device} from "@/javascripts/publicConstants";
+import {device} from "../javascripts/publicConstants";
 const $ = require("jquery");
 
 let visible = ref(false);
@@ -113,6 +120,7 @@ let formInitialValues = ref({
     displayEffectRadio: "regular",
     dynamicEffectRadio: "all",
     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
+    searchEngineRadio: "bing"
 })
 
 const props = defineProps({
@@ -151,11 +159,13 @@ onMounted(() => {
     if (tempImageTopicsCheckbox !== null) {
         tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
     }
+    let tempSearchEngineRadio = localStorage.getItem("searchEngine");
 
     formInitialValues.value =  {
         displayEffectRadio: tempDisplayEffectRadio === null ? "regular" : tempDisplayEffectRadio,
         dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
         imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
+        searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
     }
 
     // 屏幕适配
@@ -215,7 +225,7 @@ const handleCancel = () => {
     visible.value = false;
 }
 
-const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics"]);
+const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics", "searchEngine"]);
 
 // 图片质量
 const displayEffectRadioOnChange = (value) => {
@@ -246,6 +256,12 @@ const imageTopicsCheckboxOnChange = (values) =>  {
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
     }
+}
+
+const searchEngineRadioOnChange = (value) => {
+    emit("searchEngine", value);
+    localStorage.setItem("searchEngine", value);
+    Message.success("已更换搜索引擎");
 }
 </script>
 

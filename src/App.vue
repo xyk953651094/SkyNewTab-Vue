@@ -16,13 +16,14 @@
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
+                                           @searchEngine="getSearchEngine"
                         />
                     </a-space>
                 </a-col>
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
-            <input-search/>
+            <input-search :search-engine="searchEngine"/>
             <image-wallpaper :display="imageDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
         </a-layout-content>
         <a-layout-footer id="footer">
@@ -33,6 +34,7 @@
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
+                                           @searchEngine="getSearchEngine"
                         />
                         <button-download :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
                         <button-html-link :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
@@ -51,24 +53,24 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {clientId, device} from "@/javascripts/publicConstants";
+import {clientId, device} from "./javascripts/publicConstants";
 import {
     changeThemeColor,
     getComponentBackgroundColor,
     setColorTheme,
     getFontColor,
-} from "@/javascripts/publicFunctions";
+} from "./javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
-import ButtonGreet from "@/components/ButtonGreet";
-import ButtonHtmlLink from "@/components/ButtonHtmlLink";
-import ButtonDownload from "@/components/ButtonDownload";
-import InputSearch from "@/components/InputSearch";
-import ImageWallpaper from "@/components/ImageWallpaper"
-import ButtonAuthor from "@/components/ButtonAuthor";
-import ButtonCreateTime from "@/components/ButtonCreateTime";
-import ButtonWeather from "@/components/ButtonWeather";
-import ButtonPreference from "@/components/ButtonPreference";
+import ButtonGreet from "../src/components/ButtonGreet";
+import ButtonHtmlLink from "../src/components/ButtonHtmlLink";
+import ButtonDownload from "../src/components/ButtonDownload";
+import InputSearch from "../src/components/InputSearch";
+import ImageWallpaper from "../src/components/ImageWallpaper"
+import ButtonAuthor from "../src/components/ButtonAuthor";
+import ButtonCreateTime from "../src/components/ButtonCreateTime";
+import ButtonWeather from "../src/components/ButtonWeather";
+import ButtonPreference from "../src/components/ButtonPreference";
 const $ = require("jquery");
 
 let componentDisplay = ref("none");
@@ -80,9 +82,11 @@ let themeColor = ref( {
     "componentFontColor": ""
 });
 
+// 配置偏好设置
 let displayEffect = ref("regular");
 let dynamicEffect = ref("all");
 let imageTopics = ref("Fzo3zuOHN6w");
+let searchEngine = ref("bing");
 
 const getDisplayEffect = (value) => {
     displayEffect.value = value;
@@ -96,14 +100,20 @@ const getImageTopics = (value) => {
     imageTopics.value = value;
 }
 
+const getSearchEngine = (value) => {
+    searchEngine.value = value;
+}
+
 onMounted(()=>{
     // 加载偏好设置
     let tempDisplayEffect = localStorage.getItem("displayEffect");
     let tempDynamicEffect = localStorage.getItem("dynamicEffect");
     let tempImageTopics = localStorage.getItem("imageTopics");
+    let tempSearchEngine = localStorage.getItem("searchEngine");
     displayEffect.value = tempDisplayEffect === null ? "regular" : tempDisplayEffect;
     dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
     imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
+    searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
 
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();

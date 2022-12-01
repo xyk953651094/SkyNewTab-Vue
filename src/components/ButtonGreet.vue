@@ -23,7 +23,7 @@
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconFaceSmileFill} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreet, changeThemeColor} from "@/javascripts/publicFunctions";
+import {getTimeDetails, getGreet, changeThemeColor} from "../javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({

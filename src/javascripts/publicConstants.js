@@ -1,4 +1,4 @@
-import {getDevice} from "@/javascripts/publicFunctions";
+import {getDevice} from "../javascripts/publicFunctions";
 
 export let lightThemeArray = [
     // Material Design配色

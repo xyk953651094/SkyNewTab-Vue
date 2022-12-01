@@ -19,7 +19,7 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "../javascripts/publicFunctions";
 import $ from "jquery";
 
 const props = defineProps({
