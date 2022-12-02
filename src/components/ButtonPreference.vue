@@ -1,7 +1,7 @@
 <template>
     <a-space>
         <a-tooltip content="偏好设置" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="buttonPreference" class="frostedGlass zIndexHigh" @click="onclick"
+            <a-button type="primary" shape="round" size="large" id="buttonPreference" class="componentTheme zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
                     <icon-more-vertical />
@@ -16,7 +16,6 @@
                     backgroundColor: backgroundColor,
                     color: fontColor
                 }"
-                @open="handleOpen"
                 @ok="handleOk"
                 @cancel="handleCancel"
                 unmountOnClose
@@ -26,32 +25,28 @@
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <a-card title="偏好设置" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
+                        <a-card title="偏好设置" size="small" >
                             <template #extra>
                                 <icon-settings />
                             </template>
-                            <a-form layout="vertical" auto-label-width>
-                                <a-form-item field="displayEffectRadio" label="图片质量">
-                                    <a-radio-group default-value="regular" v-model="displayEffectRadioCheckedValue"
-                                                   @change="displayEffectRadioOnChange"
-                                    >
+                            <a-form layout="vertical" :model="formInitialValues" auto-label-width>
+                                <a-form-item field="displayEffectRadio" label="图片质量（推荐选择标准）">
+                                    <a-radio-group v-model="formInitialValues.displayEffectRadio" @change="displayEffectRadioOnChange">
                                         <a-radio value="regular">标准</a-radio>
                                         <a-radio value="full">较高</a-radio>
                                         <a-radio value="raw">最高</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="dynamicEffectRadio" label="动效样式">
-                                    <a-radio-group default-value="all" v-model="dynamicEffectRadioCheckedValue"
-                                                   @change="dynamicEffectRadioOnChange"
-                                    >
+                                <a-form-item field="dynamicEffectRadio" label="动效样式（推荐选择全部）">
+                                    <a-radio-group v-model="formInitialValues.dynamicEffectRadio" @change="dynamicEffectRadioOnChange">
                                         <a-radio value="close">关闭</a-radio>
                                         <a-radio value="translate">平移</a-radio>
                                         <a-radio value="rotate">旋转</a-radio>
                                         <a-radio value="all">全部</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageTopicsCheckbox" label="图片主题">
-                                    <a-checkbox-group direction="horizontal" v-model="imageTopicsCheckboxCheckedValue" @change="imageTopicsCheckboxOnChange">
+                                <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
+                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
                                             <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
                                             <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
@@ -76,21 +71,30 @@
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
+                                <a-form-item field="searchEngineRadio" label="搜索引擎">
+                                    <a-radio-group v-model="formInitialValues.searchEngineRadio" @change="searchEngineRadioOnChange">
+                                      <a-radio value="bing">必应</a-radio>
+                                      <a-radio value="baidu">百度</a-radio>
+                                      <a-radio value="google">谷歌</a-radio>
+                                    </a-radio-group>
+                                </a-form-item>
                             </a-form>
                         </a-card>
                     </a-col>
-                    <a-col :span="24">
-                        <a-card title="其它作品" header-style="{fontSize: 16px}" body-style="{fontSize: 16px}" size="small" >
-                            <template #extra>
-                                <icon-apps />
-                            </template>
-                        </a-card>
-                    </a-col>
+<!--                    <a-col :span="24">-->
+<!--                        <card-donation :theme-color="themeColor"/>-->
+<!--                    </a-col>-->
+<!--                    <a-col :span="24">-->
+<!--                        <card-other-app :theme-color="themeColor"/>-->
+<!--                    </a-col>-->
                 </a-row>
                 <template #footer>
-                    <a-typography-text>
-                        Sky 新标签页 Pro V1.0.3
-                    </a-typography-text>
+                    <a-button type="text" href="https://github.com/xyk953651094" target="_blank">
+                        <template #icon>
+                            <icon-github />
+                        </template>
+                        前往作者主页（捐赠支持、其它作品
+                    </a-button>
                 </template>
             </a-drawer>
         </a-tooltip>
@@ -98,28 +102,37 @@
 </template>
 
 <script setup>
-import {defineProps, onBeforeMount, ref, watch} from "vue";
-import {IconMoreVertical, IconSettings, IconApps} from "@arco-design/web-vue/es/icon";
-import {getFontColor, deviceModel, changeThemeColor} from "@/javascripts/publicFunctions";
+// import CardDonation from "@/components/CardDonation";
+// import CardOtherApp from "@/components/CardOtherApp";
+
+import {defineProps, onMounted, ref, watch} from "vue";
+import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
+import {changeThemeColor} from "../javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
+import {device} from "../javascripts/publicConstants";
 const $ = require("jquery");
 
 let visible = ref(false);
 let drawerPosition = ref("right");
 let backgroundColor = ref("");
 let fontColor = ref("");
-// let form = reactive({
-//     displayEffectRadio: "regular",
-//     dynamicEffectRadio: "all",
-//     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
-// })
-let displayEffectRadioCheckedValue = ref("regular");
-let dynamicEffectRadioCheckedValue = ref("all");
-let imageTopicsCheckboxCheckedValue = ref(["Fzo3zuOHN6w"]);
+let formInitialValues = ref({
+    displayEffectRadio: "regular",
+    dynamicEffectRadio: "all",
+    imageTopicsCheckbox: ["Fzo3zuOHN6w"],
+    searchEngineRadio: "bing"
+})
 
 const props = defineProps({
     themeColor: {
-        type: String,
-        required: true
+        type: Object,
+        required: true,
+        default: ()=> {
+            return {
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
     },
     display: {
         type: String,
@@ -132,35 +145,77 @@ const props = defineProps({
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.themeColor;
-        fontColor.value = getFontColor(props.themeColor);
-        changeThemeColor("#buttonPreference", props.themeColor);
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#buttonPreference", backgroundColor.value, fontColor.value);
     }
 })
 
-onBeforeMount(() => {
-    let device = deviceModel();
+onMounted(() => {
+    // 初始化偏好设置
+    let tempDisplayEffectRadio = localStorage.getItem("displayEffect");
+    let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
+    let tempImageTopicsCheckbox = localStorage.getItem("imageTopics");
+    if (tempImageTopicsCheckbox !== null) {
+        tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
+    }
+    let tempSearchEngineRadio = localStorage.getItem("searchEngine");
+
+    formInitialValues.value =  {
+        displayEffectRadio: tempDisplayEffectRadio === null ? "regular" : tempDisplayEffectRadio,
+        dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
+        imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
+        searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
+    }
+
+    // 屏幕适配
     if(device === "iPhone" || device === "Android") {
         drawerPosition.value = "bottom";
     }
+
+    // 修改各类弹窗样式
+    $("body").bind("DOMNodeInserted", () => {
+        // popover
+        let popoverEle = $(".arco-popover");
+        if (popoverEle.length && popoverEle.length > 0) {
+            $(".arco-popover-title").css("color", fontColor.value);
+            $(".arco-popover-popup-arrow").css({"backgroundColor": backgroundColor.value, border: "1px solid " + backgroundColor.value});
+        }
+
+        // message
+        let messageEle = $(".arco-message");
+        if(messageEle.length && messageEle.length > 0) {
+            messageEle.css({"backgroundColor": backgroundColor.value, "border-color": backgroundColor.value});
+            $(".arco-message-icon").css("color", fontColor.value);
+            $(".arco-message-content").css("color", fontColor.value);
+        }
+
+        // drawer
+        let drawerEle = $(".arco-drawer");
+        if (drawerEle.length && drawerEle.length > 0) {
+            $(".arco-drawer-close-btn").css("color", fontColor.value);
+            $(".arco-drawer-title").css("color", fontColor.value);
+            $(".arco-card").css("border", "1px solid " + fontColor.value);
+            $(".arco-card-header").css({"backgroundColor": backgroundColor.value, "borderBottom": "1px solid " + fontColor.value});
+            $(".arco-card-header-title").css("color", fontColor.value);
+            $(".arco-card-header-extra").css("color", fontColor.value);
+            $(".arco-card-body").css("backgroundColor", backgroundColor.value);
+            $(".arco-typography").css("color", fontColor.value);
+            $(".arco-form-item-label").css("color", fontColor.value);
+            $(".arco-radio-label").css("color", fontColor.value);
+            $(".arco-checkbox-label").css("color", fontColor.value);
+            $(".arco-collapse-item-header").css({"backgroundColor": backgroundColor.value, "color": fontColor.value});
+            $(".arco-collapse-item-content").css({"backgroundColor": backgroundColor.value, "color": fontColor.value});
+            $(".arco-list-item-meta-title").css("color", fontColor.value);
+            $(".arco-drawer-footer").css("textAlign", "center");
+            $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
+        }
+    });
 })
 
 const onclick = () => {
     visible.value = true;
 };
-
-const handleOpen = () => {
-    $(".arco-drawer-title").css("color", fontColor.value);
-    $(".arco-card").css("border", "1px solid " + fontColor.value);
-    $(".arco-card-header").css({"backgroundColor": backgroundColor.value, "borderBottom": "1px solid " + fontColor.value});
-    $(".arco-card-header-title").css("color", fontColor.value);
-    $(".arco-card-header-extra").css("color", fontColor.value);
-    $(".arco-card-body").css("backgroundColor", backgroundColor.value);
-    $(".arco-typography").css("color", fontColor.value);
-    $(".arco-form-item-label").css({"color": fontColor.value, "fontSize": "16px"});
-    $(".arco-radio-label").css({"color": fontColor.value, "fontSize": "16px"});
-    $(".arco-checkbox-label").css({"color": fontColor.value, "fontSize": "16px"});
-}
 
 const handleOk = () => {
     visible.value = false;
@@ -170,29 +225,43 @@ const handleCancel = () => {
     visible.value = false;
 }
 
-const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics"]);
+const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics", "searchEngine"]);
 
 // 图片质量
 const displayEffectRadioOnChange = (value) => {
     emit("displayEffect", value);
+    localStorage.setItem("displayEffect", value);
+    Message.success("调整成功，新的图片质量将在下次加载时生效");
 }
 
 // 动效样式
 const dynamicEffectRadioOnChange = (value) => {
     emit("dynamicEffect", value);
+    localStorage.setItem("dynamicEffect", value);
+    Message.success("调整成功，新的显示效果已生效");
 }
 
 // 图片主题
 const imageTopicsCheckboxOnChange = (values) =>  {
-    let temp = "";
+    let value = "";
     for (let i = 0; i < values.length; i++) {
-        temp += values[i];
+        value += values[i];
         if (i !== values.length - 1) {
-            temp += ",";
+            value += ",";
         }
     }
+    emit("imageTopics", value);
+    localStorage.setItem("imageTopics", value);
+    Message.success("调整成功，新的主题将在下次加载时生效");
+    if (values.length === 0) {
+        Message.info("全不选与全选的效果一样");
+    }
+}
 
-    emit("imageTopics", temp);
+const searchEngineRadioOnChange = (value) => {
+    emit("searchEngine", value);
+    localStorage.setItem("searchEngine", value);
+    Message.success("已更换搜索引擎");
 }
 </script>
 

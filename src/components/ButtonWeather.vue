@@ -1,7 +1,9 @@
 <template>
     <a-space>
-        <a-popover :title="region" :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
-            <a-button type="primary" shape="round" size="large" id="buttonWeather" class="frostedGlass zIndexHigh"
+        <a-popover :title="region"
+                   :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+                   :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
+            <a-button type="primary" shape="round" size="large" id="buttonWeather" class="componentTheme zIndexHigh"
                       :style="{display: display}">
                 {{ weatherInfo }}
             </a-button>
@@ -17,13 +19,19 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {changeThemeColor, getFontColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "../javascripts/publicFunctions";
 import $ from "jquery";
 
 const props = defineProps({
     themeColor: {
-        type: String,
-        required: true
+        type: Object,
+        required: true,
+        default: ()=> {
+            return {
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
     }
 });
 
@@ -31,29 +39,25 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let display = ref("none");
 let weatherInfo = ref("暂无天气信息");
-let region = ref("");
-let pm25 = ref("");
-let rainfall = ref("");
-let visibility = ref("");
-let windInfo = ref("");
+let region = ref("暂无地区信息");
+let pm25 = ref("暂无PM2.5信息");
+let rainfall = ref("暂无降雨信息");
+let visibility = ref("暂无视距信息");
+let windInfo = ref("暂无风况信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        backgroundColor.value = props.themeColor;
-        fontColor.value = getFontColor(props.themeColor);
-        changeThemeColor("#buttonWeather", props.themeColor);
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#buttonWeather", backgroundColor.value, fontColor.value);
     }
 })
 
 onMounted(() => {
-    $("#buttonWeather").hover(function(){
-        $(".arco-popover-title").css("color", fontColor.value);
-    });
-
     $.ajax({
         url: "https://v2.jinrishici.com/info",
         type: "GET",
-        timeout: 5000,
+        timeout: 10000,
         success: (resultData) => {
             if (resultData.status === "success") {
                 display.value = "block";

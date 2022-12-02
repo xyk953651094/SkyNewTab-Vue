@@ -1,4 +1,5 @@
-import {lightThemeArray, darkThemeArray} from "@/javascripts/publicContents";
+import {Message} from "@arco-design/web-vue";
+import {lightThemeArray, darkThemeArray, device} from "../javascripts/publicConstants";
 import "jquery-color"
 const $ = require("jquery");
 
@@ -102,11 +103,15 @@ export function setColorTheme() {
     let body = document.getElementsByTagName("body")[0];
     body.style.backgroundColor = theme[randomNum].bodyBackgroundColor;  // 设置body背景颜色
 
-    return theme[randomNum].frostedGlassBackgroundColor;  // 返回各组件背景颜色
+    let returnValue = {
+        "componentBackgroundColor": theme[randomNum].componentBackgroundColor,
+        "componentFontColor": getFontColor(theme[randomNum].componentBackgroundColor),
+    }
+    return returnValue;  // 返回各组件背景颜色
 }
 
 // 根据图片背景颜色获取反色主题
-export function getThemeColor(color) {
+export function getComponentBackgroundColor(color) {
     color = "0x" + color.replace("#", '');
     let newColor = "000000" + (0xFFFFFF - parseInt(color)).toString(16);
     return '#' + newColor.substring(newColor.length-6, newColor.length);
@@ -131,58 +136,96 @@ export function getFontColor(color) {
     }
 }
 
-// PC端鼠标移动效果
-export function mouseMoveEffect(effectType) {
-    let backgroundImage = document.getElementById('backgroundImage');
-    let backgroundImageDiv = backgroundImage.parentElement;
-    backgroundImageDiv.style.perspective = "500px";
+// Android端与桌面端壁纸动态效果
+export function imageDynamicEffect(element, effectType) {
+    if (device === "Android") {
+        deviceOrientationEvent();
+    } else {  // 桌面端
+        window.addEventListener("mousemove",function(e){
+            let mouseX = e.screenX;
+            let mouseY = e.screenY;
+            let screenWidth = document.body.clientWidth;
+            let screenHeight = document.body.clientHeight;
+            let screenMidWidth = screenWidth / 2;
+            let screenMidHeight = screenHeight / 2;
+            let relatedX = mouseX - screenMidWidth;   // 大于0则在屏幕右边，小于0则在屏幕左边
+            let relatedY = mouseY - screenMidHeight;  // 大于0则在屏幕下边，小于0则在屏幕上边
+            let relatedXRatio = relatedX / screenMidWidth;
+            let relatedYRatio = relatedY / screenMidHeight;
 
-    window.addEventListener("mousemove",function(e){
-        let mouseX = e.screenX;
-        let mouseY = e.screenY;
-        let screenWidth = document.body.clientWidth;
-        let screenHeight = document.body.clientHeight;
-        let screenMidWidth = screenWidth / 2;
-        let screenMidHeight = screenHeight / 2;
-        let relatedX = mouseX - screenMidWidth;   // 大于0则在屏幕右边，小于0则在屏幕左边
-        let relatedY = mouseY - screenMidHeight;  // 大于0则在屏幕下边，小于0则在屏幕上边
-        let relatedXRatio = relatedX / screenMidWidth;
-        let relatedYRatio = relatedY / screenMidHeight;
+            if (element instanceof HTMLElement) {
+                element.style.transition = "0.3s";
 
-        backgroundImage.style.transition = "0.3s";
-        if (backgroundImage instanceof HTMLElement) {
-            switch (effectType) {
-                case "translate": {
-                    let translateX = (-relatedXRatio / 4).toFixed(2);  // 调整精度
-                    let translateY = (-relatedYRatio / 4).toFixed(2);  // 调整精度
-                    backgroundImage.style.transform = "scale(1.05, 1.05) translate(" + translateX + "%, " + translateY + "%)";
-                    break;
-                }
-                case "rotate": {
-                    let rotateX = (relatedXRatio / 4).toFixed(2);      // 调整精度
-                    let rotateY = (-relatedYRatio / 4).toFixed(2);     // 调整精度
-                    backgroundImage.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg)";
-                    break;
-                }
-                case "all": {
-                    let rotateX = (relatedXRatio / 3).toFixed(2);      // 调整精度
-                    let rotateY = (-relatedYRatio / 3).toFixed(2);     // 调整精度
-                    let translateX = (-relatedXRatio / 3).toFixed(2);  // 调整精度
-                    let translateY = (-relatedYRatio / 3).toFixed(2);  // 调整精度
-                    backgroundImage.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) translate(" + translateX + "%, " + translateY + "%)";
-                    break;
-                }
-                case "close": {
-                    backgroundImage.style.transform = "scale(1.05)";
-                    break;
+                switch (effectType) {
+                    case "translate": {
+                        let translateX = (-relatedXRatio / 4).toFixed(2);  // 调整精度
+                        let translateY = (-relatedYRatio / 4).toFixed(2);  // 调整精度
+                        element.style.transform = "scale(1.05, 1.05) translate(" + translateX + "%, " + translateY + "%)";
+                        break;
+                    }
+                    case "rotate": {
+                        let rotateX = (relatedXRatio / 4).toFixed(2);      // 调整精度
+                        let rotateY = (-relatedYRatio / 4).toFixed(2);     // 调整精度
+                        element.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg)";
+                        break;
+                    }
+                    case "all": {
+                        let skewX = (relatedXRatio / 10).toFixed(2);       // 调整精度
+                        let rotateX = (relatedXRatio / 3).toFixed(2);      // 调整精度
+                        let rotateY = (-relatedYRatio / 3).toFixed(2);     // 调整精度
+                        let translateX = (-relatedXRatio / 3).toFixed(2);  // 调整精度
+                        let translateY = (-relatedYRatio / 3).toFixed(2);  // 调整精度
+                        element.style.transform = "scale(1.05, 1.05) " +
+                            "skew(" + skewX + "deg)" +
+                            "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
+                            "translate(" + translateX + "%, " + translateY + "%)";
+                        break;
+                    }
+                    case "close": {
+                        element.style.transform = "scale(1.05)";
+                        break;
+                    }
                 }
             }
-        }
+        });
+    }
+}
+
+// iOS端壁纸动态效果
+export function iOSImageDynamicEffect(element) {
+    let deviceOrientationPermission = localStorage.getItem('deviceOrientationPermission');
+    if (deviceOrientationPermission === "granted") {
+        DeviceOrientationEvent.requestPermission().then(function (status) {
+            if (status === "granted") {
+                deviceOrientationEvent(element);
+            }
+        }).catch(function () {
+            Message.error("权限错误");
+        });
+    }
+    else {
+        // TODO：弹窗
+    }
+}
+
+// 移动端陀螺仪
+function deviceOrientationEvent(element) {
+    window.addEventListener("deviceorientation", function (event) {
+        // console.log(event.alpha, event.beta, event.gamma);
+        // let rotateX = (event.beta / 10).toFixed(2);       // 调整精度
+        // let rotateY = (-event.gamma / 10).toFixed(2);     // 调整精度
+        let translateX = (-event.gamma / 10).toFixed(2);  // 调整精度
+        let translateY = (event.beta / 10).toFixed(2);    // 调整精度
+
+        element.style.transition = "0.3s";
+        element.style.transform = "scale(1.05, 1.05) " +
+            // "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
+            "translate(" + translateX + "%, " + translateY + "%)";
     });
 }
 
 // 判断设备型号
-export function deviceModel() {
+export function getDevice() {
     let ua = navigator.userAgent;
     if(ua.indexOf('iPhone') > -1) { return 'iPhone' }
     else if(ua.indexOf('iPad') > -1) { return 'iPad' }
@@ -191,17 +234,17 @@ export function deviceModel() {
 }
 
 // 过渡动画
-export function changeThemeColor(element, backgroundColor, time = 500) {
+export function changeThemeColor(element, backgroundColor, fontColor, time = 300) {
     $(element).animate({
         backgroundColor: backgroundColor,
-        color: getFontColor(backgroundColor),
+        color: fontColor,
     }, time);
 }
 
-export function fadeIn(element, time = 500) {
+export function fadeIn(element, time = 300) {
     $(element).fadeIn(time);
 }
 
-export function fadeOut(element, time = 500) {
+export function fadeOut(element, time = 300) {
     $(element).fadeOut(time);
 }

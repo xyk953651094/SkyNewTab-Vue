@@ -22,7 +22,8 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {mouseMoveEffect} from "@/javascripts/publicFunctions";
+import {imageDynamicEffect, iOSImageDynamicEffect} from "../javascripts/publicFunctions";
+import {device} from "../javascripts/publicConstants";
 
 const props = defineProps({
     display: {
@@ -33,7 +34,7 @@ const props = defineProps({
         required: true
     },
     imageData: {
-        type: String,
+        type: Object,
         required: true
     },
     displayEffect: {
@@ -72,12 +73,17 @@ watch(() => props.imageData, (newValue, oldValue) => {
 
 watch(() => props.dynamicEffect, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        mouseMoveEffect(props.dynamicEffect);
+        let backgroundImage = document.getElementById("backgroundImage");
+        if (backgroundImage instanceof HTMLElement) {
+            imageDynamicEffect(backgroundImage, props.dynamicEffect);
+        }
     }
 })
 
 onMounted(() => {
     let backgroundImage = document.getElementById("backgroundImage");
+    let backgroundImageDiv = backgroundImage.parentElement;
+
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
             // 设置动态效果
@@ -88,7 +94,8 @@ onMounted(() => {
                 backgroundImage.style.transition = "5s";
             }, 2000);
             setTimeout(() => {
-                mouseMoveEffect(props.dynamicEffect);
+                backgroundImageDiv.style.perspective = "500px";
+                (device === "iPhone" || device === "iPad")? iOSImageDynamicEffect(backgroundImage) : imageDynamicEffect(backgroundImage, props.dynamicEffect);
             }, 7000);
         }
     }
