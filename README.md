@@ -7,7 +7,7 @@
 
 ## 简介
 适用于Chrome、Edge、Firefox、Safari的新标签页。  
-基于 Html + JavaScript + CSS + Vue + Webpack + AcroDesign。   
+基于 Html + JavaScript + CSS + Vue + Webpack + Acro Design。   
 支持语言：中文  
 * 节气来源：https://www.mxnzp.com  
 * 天气来源：https://www.jinrishici.com  
