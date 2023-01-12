@@ -45,7 +45,7 @@ const props = defineProps({
     }
 });
 
-let createTime = ref("暂无拍摄时间信息");
+let createTime = ref("暂无拍摄日期信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -58,7 +58,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 watch(() => props.imageData, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         createTime.value = props.imageData.created_at.split("T")[0];
-        tooltipContent.value = "拍摄时间：" + createTime.value;
+        tooltipContent.value = "拍摄日期：" + createTime.value;
     }
 })
 </script>
