@@ -23,7 +23,7 @@
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconFaceSmileFill, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreet, changeThemeColor} from "../javascripts/publicFunctions";
+import {getTimeDetails, getGreet, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({
@@ -74,7 +74,7 @@ onMounted(() => {
                     holidayContent = "今日" + holidayContent;
                 }
 
-                greetContent.value += " ｜ " + holidayContent;
+                greetContent.value += "｜" + holidayContent + getHoliday() + getChineseHoliday(resultData.data.lunarCalendar);
                 calendar.value += "｜" + resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" + resultData.data.lunarCalendar;
                 suit.value = resultData.data.suit.replace(/\./g, " · ");
                 avoid.value = resultData.data.avoid.replace(/\./g, " · ");

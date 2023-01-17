@@ -61,7 +61,7 @@ onMounted(() => {
         success: (resultData) => {
             if (resultData.status === "success"  && resultData.data.weatherData !== null) {
                 display.value = "block";
-                weatherInfo.value = resultData.data.weatherData.weather  + " ｜ "
+                weatherInfo.value = resultData.data.weatherData.weather  + "｜"
                     + resultData.data.weatherData.temperature + "°C";
                 region.value = resultData.data.region.replace("|", " · ");
                 pm25.value = resultData.data.weatherData.pm25;
