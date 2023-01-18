@@ -12,8 +12,8 @@
                 {{ greetContent }}
             </a-button>
             <template #content>
-                <p>{{"宜：" + suit}}</p>
-                <p>{{"忌：" + avoid}}</p>
+                <p><icon-check-circle />{{" 宜：" + suit}}</p>
+                <p><icon-close-circle />{{" 忌：" + avoid}}</p>
             </template>
         </a-popover>
     </a-space>
@@ -22,8 +22,8 @@
 <script setup>
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
-import {IconFaceSmileFill} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreet, changeThemeColor} from "../javascripts/publicFunctions";
+import {IconFaceSmileFill, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
+import {getTimeDetails, getGreet, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({
@@ -74,10 +74,10 @@ onMounted(() => {
                     holidayContent = "今日" + holidayContent;
                 }
 
-                greetContent.value += " ｜ " + holidayContent;
+                greetContent.value += "｜" + holidayContent + getHoliday() + getChineseHoliday(resultData.data.lunarCalendar);
                 calendar.value += "｜" + resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" + resultData.data.lunarCalendar;
-                suit.value = resultData.data.suit.replace(/\./g, "·");
-                avoid.value = resultData.data.avoid.replace(/\./g, "·");
+                suit.value = resultData.data.suit.replace(/\./g, " · ");
+                avoid.value = resultData.data.avoid.replace(/\./g, " · ");
             }
         },
         error: function () {}

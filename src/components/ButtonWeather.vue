@@ -59,11 +59,11 @@ onMounted(() => {
         type: "GET",
         timeout: 10000,
         success: (resultData) => {
-            if (resultData.status === "success") {
+            if (resultData.status === "success"  && resultData.data.weatherData !== null) {
                 display.value = "block";
-                weatherInfo.value = resultData.data.weatherData.weather  + " ｜ "
+                weatherInfo.value = resultData.data.weatherData.weather  + "｜"
                     + resultData.data.weatherData.temperature + "°C";
-                region.value = resultData.data.region.replace("|", "｜");
+                region.value = resultData.data.region.replace("|", " · ");
                 pm25.value = resultData.data.weatherData.pm25;
                 rainfall.value = resultData.data.weatherData.rainfall + "%";
                 visibility.value = resultData.data.weatherData.visibility;
