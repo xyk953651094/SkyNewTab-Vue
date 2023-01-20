@@ -1,16 +1,21 @@
 <template>
     <a-space>
-        <a-popover :title="calendar" position="tl"
+        <a-popover position="tl"
                    :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="componentTheme zIndexHigh"
                       :style="{ cursor: 'default'}">
                 <template #icon>
-                    <icon-face-smile-fill />
+                    <icon-sun :style="{display: showSun}"/>
+                    <icon-moon :style="{display: showMoon}"/>
                 </template>
                 {{ greetContent }}
             </a-button>
+            <template #title>
+                <p><icon-calendar />{{" " + calendar}}</p>
+            </template>
+
             <template #content>
                 <p><icon-check-circle />{{" 宜：" + suit}}</p>
                 <p><icon-close-circle />{{" 忌：" + avoid}}</p>
@@ -22,7 +27,7 @@
 <script setup>
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
-import {IconFaceSmileFill, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
+import {IconSun, IconMoon, IconCalendar, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
 import {getTimeDetails, getGreet, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
 const $ = require("jquery");
 
@@ -43,6 +48,8 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let greetContent = ref(getGreet());
 let calendar = ref("暂无信息");
+let showSun = ref("block");
+let showMoon = ref("none");
 let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
 
@@ -55,6 +62,16 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
+    let hours = new Date().getHours();
+    if (hours >= 6 && hours < 18) {
+        showSun.value = "block";
+        showMoon.value = "none";
+    }
+    else {
+        showSun.value = "none";
+        showMoon.value = "block";
+    }
+
     let holidayParameters = {
         "app_id": "cicgheqakgmpjclo",
         "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",

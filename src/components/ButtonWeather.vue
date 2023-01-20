@@ -1,17 +1,25 @@
 <template>
     <a-space>
-        <a-popover :title="region"
-                   :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
-                   :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }">
+        <a-popover
+                :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+                :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+        >
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="componentTheme zIndexHigh"
                       :style="{display: display}">
                 {{ weatherInfo }}
             </a-button>
+            <template #title>
+                <p><icon-location />{{" " + region}}</p>
+            </template>
             <template #content>
-                <p>{{"空气：" + pm25}}</p>
-                <p>{{"降雨：" + rainfall}}</p>
-                <p>{{"视距：" + visibility}}</p>
-                <p>{{"风况：" + windInfo}}</p>
+                <a-typography-paragraph>
+                    <ul>
+                        <li>{{"空气质量：" + pm25}}</li>
+                        <li>{{"降雨概率：" + rainfall}}</li>
+                        <li>{{"视线距离：" + visibility}}</li>
+                        <li>{{"风速情况：" + windInfo}}</li>
+                    </ul>
+                </a-typography-paragraph>
             </template>
         </a-popover>
     </a-space>
@@ -19,6 +27,7 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
+import {IconLocation} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import $ from "jquery";
 
