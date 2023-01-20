@@ -6,7 +6,7 @@
 * [JetBrains Open Source Support](https://jb.gg/OpenSourceSupport "跳转至 JetBrains Open Source Support")
 
 ## 简介
-适用于Chrome、Edge、Firefox、Safari的新标签页。  
+适用于Chrome、Edge、Firefox、~~Safari~~ 的新标签页。  
 基于 Html + JavaScript + CSS + Vue + Webpack + Acro Design。   
 支持语言：中文  
 * 节气来源：https://www.mxnzp.com  
