@@ -6,20 +6,19 @@
         >
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="componentTheme zIndexHigh"
                       :style="{display: display}">
+                <template #icon>
+                    <i :class="weatherIcon"></i>
+                </template>
                 {{ weatherInfo }}
             </a-button>
             <template #title>
                 <p><icon-location />{{" " + region}}</p>
             </template>
             <template #content>
-                <a-typography-paragraph>
-                    <ul>
-                        <li>{{"空气质量：" + pm25}}</li>
-                        <li>{{"降雨概率：" + rainfall}}</li>
-                        <li>{{"视线距离：" + visibility}}</li>
-                        <li>{{"风速情况：" + windInfo}}</li>
-                    </ul>
-                </a-typography-paragraph>
+                <p><i className="bi bi-water"></i>{{" 空气质量：" + pm25}}</p>
+                <p><i className="bi bi-cloud-rain"></i>{{" 降雨概率：" + rainfall}}</p>
+                <p><i className="bi bi-eye"></i>{{" 视线距离：" + visibility}}</p>
+                <p><i className="bi bi-wind"></i>{{" 风速情况：" + windInfo}}</p>
             </template>
         </a-popover>
     </a-space>
@@ -28,7 +27,7 @@
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
 import {IconLocation} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {getWeatherIcon, changeThemeColor} from "../javascripts/publicFunctions";
 import $ from "jquery";
 
 const props = defineProps({
@@ -47,6 +46,7 @@ const props = defineProps({
 let backgroundColor = ref("");
 let fontColor = ref("");
 let display = ref("none");
+let weatherIcon = ref("");
 let weatherInfo = ref("暂无天气信息");
 let region = ref("暂无地区信息");
 let pm25 = ref("暂无PM2.5信息");
@@ -70,6 +70,7 @@ onMounted(() => {
         success: (resultData) => {
             if (resultData.status === "success"  && resultData.data.weatherData !== null) {
                 display.value = "block";
+                weatherIcon.value = getWeatherIcon(resultData.data.weatherData.weather);
                 weatherInfo.value = resultData.data.weatherData.weather  + "｜"
                     + resultData.data.weatherData.temperature + "°C";
                 region.value = resultData.data.region.replace("|", " · ");

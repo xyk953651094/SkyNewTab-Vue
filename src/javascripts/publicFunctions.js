@@ -60,7 +60,7 @@ export function isEmptyString(param) {
 }
 
 // 根据当前时间段返回问候语
-export function getGreet() {
+export function getGreetContent() {
     let hour = new Date().getHours();
 
     const greets = {
@@ -89,6 +89,20 @@ export function getGreet() {
     }
     else if (hour >=19 && hour < 24) {   //夜晚
         return greets.night;
+    }
+}
+
+// 获取问候语图标 className
+export function getGreetIcon() {
+    let hour = new Date().getHours();
+    if (hour >= 6 && hour < 12) {   // 上午
+        return "bi bi-sunrise";
+    }
+    else if (hour >= 12 && hour < 18) {  // 下午
+        return "bi bi-sunset";
+    }
+    else {                               // 夜晚
+        return "bi bi-moon-stars";
     }
 }
 
@@ -122,6 +136,28 @@ export function getChineseHoliday(today) {
     else if (today === "腊月廿四") { return "｜小年"}
     else if (today === "腊月三十") { return "｜除夕"}
     else return ""
+}
+
+// 获取天气图标className
+export function getWeatherIcon(weatherInfo) {
+    if( weatherInfo.indexOf("晴") !== -1 ) {
+        return "bi bi-sun"
+    }
+    else if( weatherInfo.indexOf("云") !== -1 ) {
+        return "bi bi-cloud"
+    }
+    else if ( weatherInfo.indexOf("雨") !== -1 ) {
+        return "bi bi-cloud-rain"
+    }
+    else if ( weatherInfo.indexOf("雾") !== -1 ) {
+        return "bi bi-cloud-fog"
+    }
+    else if ( weatherInfo.indexOf("雪") !== -1 ) {
+        return "bi bi-cloud-snow"
+    }
+    else if ( weatherInfo.indexOf("雹") !== -1 ) {
+        return "bi bi-cloud-hail"
+    }
 }
 
 // 请求unsplash图片前随机显示多彩颜色主题

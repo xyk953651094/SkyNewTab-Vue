@@ -7,8 +7,7 @@
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="componentTheme zIndexHigh"
                       :style="{ cursor: 'default'}">
                 <template #icon>
-                    <icon-sun :style="{display: showSun}"/>
-                    <icon-moon :style="{display: showMoon}"/>
+                    <i :class="greetIcon"></i>
                 </template>
                 {{ greetContent }}
             </a-button>
@@ -28,7 +27,7 @@
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconSun, IconMoon, IconCalendar, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreet, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
+import {getTimeDetails, getGreetContent, getGreetIcon, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({
@@ -46,7 +45,8 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let greetContent = ref(getGreet());
+let greetIcon = ref(getGreetIcon());
+let greetContent = ref(getGreetContent());
 let calendar = ref("暂无信息");
 let showSun = ref("block");
 let showMoon = ref("none");
