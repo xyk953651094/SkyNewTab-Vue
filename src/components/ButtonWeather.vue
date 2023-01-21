@@ -1,6 +1,7 @@
 <template>
     <a-space>
         <a-popover
+                :title="region"
                 :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                 :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
@@ -11,10 +12,8 @@
                 </template>
                 {{ weatherInfo }}
             </a-button>
-            <template #title>
-                <p><icon-location />{{" " + region}}</p>
-            </template>
             <template #content>
+                <p><i className="bi bi-moisture"></i>{{" 空气湿度：" + humidity}}</p>
                 <p><i className="bi bi-water"></i>{{" 空气质量：" + pm25}}</p>
                 <p><i className="bi bi-cloud-rain"></i>{{" 降雨概率：" + rainfall}}</p>
                 <p><i className="bi bi-eye"></i>{{" 视线距离：" + visibility}}</p>
@@ -26,7 +25,6 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {IconLocation} from "@arco-design/web-vue/es/icon";
 import {getWeatherIcon, changeThemeColor} from "../javascripts/publicFunctions";
 import $ from "jquery";
 
@@ -49,6 +47,7 @@ let display = ref("none");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无天气信息");
 let region = ref("暂无地区信息");
+let humidity = ref("暂无湿度信息")
 let pm25 = ref("暂无PM2.5信息");
 let rainfall = ref("暂无降雨信息");
 let visibility = ref("暂无视距信息");
@@ -74,6 +73,7 @@ onMounted(() => {
                 weatherInfo.value = resultData.data.weatherData.weather  + "｜"
                     + resultData.data.weatherData.temperature + "°C";
                 region.value = resultData.data.region.replace("|", " · ");
+                humidity.value = resultData.data.weatherData.humidity;
                 pm25.value = resultData.data.weatherData.pm25;
                 rainfall.value = resultData.data.weatherData.rainfall + "%";
                 visibility.value = resultData.data.weatherData.visibility;

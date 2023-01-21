@@ -1,6 +1,7 @@
 <template>
     <a-space>
         <a-popover position="tl"
+                   :title="calendar"
                    :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
@@ -11,10 +12,6 @@
                 </template>
                 {{ greetContent }}
             </a-button>
-            <template #title>
-                <p><icon-calendar />{{" " + calendar}}</p>
-            </template>
-
             <template #content>
                 <p><icon-check-circle />{{" 宜：" + suit}}</p>
                 <p><icon-close-circle />{{" 忌：" + avoid}}</p>
@@ -26,8 +23,8 @@
 <script setup>
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
-import {IconSun, IconMoon, IconCalendar, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreetContent, getGreetIcon, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
+import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
+import {getTimeDetails, getGreetContent, getGreetIcon, changeThemeColor} from "../javascripts/publicFunctions";
 const $ = require("jquery");
 
 const props = defineProps({
@@ -86,12 +83,12 @@ onMounted(() => {
         timeout: 10000,
         success: (resultData) => {
             if (resultData.code === 1) {
-                let holidayContent = resultData.data.solarTerms;
+                let holidayContent = resultData.data.solarTerms + " · " + resultData.data.typeDes;
                 if (resultData.data.solarTerms.indexOf("后") === -1) {
                     holidayContent = "今日" + holidayContent;
                 }
 
-                greetContent.value += "｜" + holidayContent + getHoliday() + getChineseHoliday(resultData.data.lunarCalendar);
+                greetContent.value += "｜" + holidayContent;
                 calendar.value += "｜" + resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" + resultData.data.lunarCalendar;
                 suit.value = resultData.data.suit.replace(/\./g, " · ");
                 avoid.value = resultData.data.avoid.replace(/\./g, " · ");
