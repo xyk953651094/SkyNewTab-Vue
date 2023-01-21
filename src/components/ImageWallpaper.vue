@@ -22,8 +22,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect, iOSImageDynamicEffect} from "../javascripts/publicFunctions";
-import {device} from "../javascripts/publicConstants";
+import {imageDynamicEffect} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     display: {
@@ -95,7 +94,7 @@ onMounted(() => {
             }, 2000);
             setTimeout(() => {
                 backgroundImageDiv.style.perspective = "500px";
-                (device === "iPhone" || device === "iPad")? iOSImageDynamicEffect(backgroundImage) : imageDynamicEffect(backgroundImage, props.dynamicEffect);
+                imageDynamicEffect(backgroundImage, props.dynamicEffect);
             }, 7000);
         }
     }

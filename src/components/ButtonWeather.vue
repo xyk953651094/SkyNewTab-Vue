@@ -38,12 +38,18 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    display: {
+        type: String,
+        default: () => {
+            return "block";
+        },
+        required: true
     }
 });
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let display = ref("none");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无天气信息");
 let region = ref("暂无地区信息");
@@ -68,7 +74,6 @@ onMounted(() => {
         timeout: 10000,
         success: (resultData) => {
             if (resultData.status === "success"  && resultData.data.weatherData !== null) {
-                display.value = "block";
                 weatherIcon.value = getWeatherIcon(resultData.data.weatherData.weather);
                 weatherInfo.value = resultData.data.weatherData.weather  + "｜"
                     + resultData.data.weatherData.temperature + "°C";
@@ -78,9 +83,6 @@ onMounted(() => {
                 rainfall.value = resultData.data.weatherData.rainfall + "%";
                 visibility.value = resultData.data.weatherData.visibility;
                 windInfo.value = resultData.data.weatherData.windDirection + resultData.data.weatherData.windPower + "级";
-            }
-            else {
-                display.value = "none";
             }
         },
         error: function () {}

@@ -175,91 +175,54 @@ export function getFontColor(color) {
     }
 }
 
-// Android端与桌面端壁纸动态效果
+// 桌面端壁纸动态效果
 export function imageDynamicEffect(element, effectType) {
-    if (device === "Android") {
-        deviceOrientationEvent();
-    } else {  // 桌面端
-        window.addEventListener("mousemove",function(e){
-            let mouseX = e.screenX;
-            let mouseY = e.screenY;
-            let screenWidth = document.body.clientWidth;
-            let screenHeight = document.body.clientHeight;
-            let screenMidWidth = screenWidth / 2;
-            let screenMidHeight = screenHeight / 2;
-            let relatedX = mouseX - screenMidWidth;   // 大于0则在屏幕右边，小于0则在屏幕左边
-            let relatedY = mouseY - screenMidHeight;  // 大于0则在屏幕下边，小于0则在屏幕上边
-            let relatedXRatio = relatedX / screenMidWidth;
-            let relatedYRatio = relatedY / screenMidHeight;
+    window.addEventListener("mousemove",function(e){
+        let mouseX = e.screenX;
+        let mouseY = e.screenY;
+        let screenWidth = document.body.clientWidth;
+        let screenHeight = document.body.clientHeight;
+        let screenMidWidth = screenWidth / 2;
+        let screenMidHeight = screenHeight / 2;
+        let relatedX = mouseX - screenMidWidth;   // 大于0则在屏幕右边，小于0则在屏幕左边
+        let relatedY = mouseY - screenMidHeight;  // 大于0则在屏幕下边，小于0则在屏幕上边
+        let relatedXRatio = relatedX / screenMidWidth;
+        let relatedYRatio = relatedY / screenMidHeight;
 
-            if (element instanceof HTMLElement) {
-                element.style.transition = "0.3s";
+        if (element instanceof HTMLElement) {
+            element.style.transition = "0.3s";
 
-                switch (effectType) {
-                    case "translate": {
-                        let translateX = (-relatedXRatio / 4).toFixed(2);  // 调整精度
-                        let translateY = (-relatedYRatio / 4).toFixed(2);  // 调整精度
-                        element.style.transform = "scale(1.05, 1.05) translate(" + translateX + "%, " + translateY + "%)";
-                        break;
-                    }
-                    case "rotate": {
-                        let rotateX = (relatedXRatio / 4).toFixed(2);      // 调整精度
-                        let rotateY = (-relatedYRatio / 4).toFixed(2);     // 调整精度
-                        element.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg)";
-                        break;
-                    }
-                    case "all": {
-                        let skewX = (relatedXRatio / 10).toFixed(2);       // 调整精度
-                        let rotateX = (relatedXRatio / 3).toFixed(2);      // 调整精度
-                        let rotateY = (-relatedYRatio / 3).toFixed(2);     // 调整精度
-                        let translateX = (-relatedXRatio / 3).toFixed(2);  // 调整精度
-                        let translateY = (-relatedYRatio / 3).toFixed(2);  // 调整精度
-                        element.style.transform = "scale(1.05, 1.05) " +
-                            "skew(" + skewX + "deg)" +
-                            "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
-                            "translate(" + translateX + "%, " + translateY + "%)";
-                        break;
-                    }
-                    case "close": {
-                        element.style.transform = "scale(1.05)";
-                        break;
-                    }
+            switch (effectType) {
+                case "translate": {
+                    let translateX = (-relatedXRatio / 4).toFixed(2);  // 调整精度
+                    let translateY = (-relatedYRatio / 4).toFixed(2);  // 调整精度
+                    element.style.transform = "scale(1.05, 1.05) translate(" + translateX + "%, " + translateY + "%)";
+                    break;
+                }
+                case "rotate": {
+                    let rotateX = (relatedXRatio / 4).toFixed(2);      // 调整精度
+                    let rotateY = (-relatedYRatio / 4).toFixed(2);     // 调整精度
+                    element.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg)";
+                    break;
+                }
+                case "all": {
+                    let skewX = (relatedXRatio / 10).toFixed(2);       // 调整精度
+                    let rotateX = (relatedXRatio / 3).toFixed(2);      // 调整精度
+                    let rotateY = (-relatedYRatio / 3).toFixed(2);     // 调整精度
+                    let translateX = (-relatedXRatio / 3).toFixed(2);  // 调整精度
+                    let translateY = (-relatedYRatio / 3).toFixed(2);  // 调整精度
+                    element.style.transform = "scale(1.05, 1.05) " +
+                        "skew(" + skewX + "deg)" +
+                        "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
+                        "translate(" + translateX + "%, " + translateY + "%)";
+                    break;
+                }
+                case "close": {
+                    element.style.transform = "scale(1.05)";
+                    break;
                 }
             }
-        });
-    }
-}
-
-// iOS端壁纸动态效果
-export function iOSImageDynamicEffect(element) {
-    let deviceOrientationPermission = localStorage.getItem('deviceOrientationPermission');
-    if (deviceOrientationPermission === "granted") {
-        DeviceOrientationEvent.requestPermission().then(function (status) {
-            if (status === "granted") {
-                deviceOrientationEvent(element);
-            }
-        }).catch(function () {
-            Message.error("权限错误");
-        });
-    }
-    else {
-        // TODO：弹窗
-    }
-}
-
-// 移动端陀螺仪
-function deviceOrientationEvent(element) {
-    window.addEventListener("deviceorientation", function (event) {
-        // console.log(event.alpha, event.beta, event.gamma);
-        // let rotateX = (event.beta / 10).toFixed(2);       // 调整精度
-        // let rotateY = (-event.gamma / 10).toFixed(2);     // 调整精度
-        let translateX = (-event.gamma / 10).toFixed(2);  // 调整精度
-        let translateY = (event.beta / 10).toFixed(2);    // 调整精度
-
-        element.style.transition = "0.3s";
-        element.style.transform = "scale(1.05, 1.05) " +
-            // "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
-            "translate(" + translateX + "%, " + translateY + "%)";
+        }
     });
 }
 

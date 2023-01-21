@@ -5,7 +5,7 @@
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
                         <button-greet :theme-color="themeColor"/>
-                        <button-weather :theme-color="themeColor"/>
+                        <button-weather :theme-color="themeColor" :display="componentDisplay"/>
                     </a-space>
                 </a-col>
                 <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
