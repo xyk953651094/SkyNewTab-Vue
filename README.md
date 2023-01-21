@@ -20,10 +20,8 @@
 * 下载本页面提供的文件进行安装
 
 ## 效果展示
-<img width="281" alt="截屏2022-12-02 21 24 10" src="https://user-images.githubusercontent.com/28004442/205302566-7a23e2bf-9330-413c-9d19-e09300eb84b0.png">
+<img width="298" alt="截屏2023-01-21 17 44 30" src="https://user-images.githubusercontent.com/28004442/213861357-f10c5e13-306a-41e1-87a0-21b8050d4db4.png">
 
-<img width="282" alt="截屏2022-12-02 21 24 34" src="https://user-images.githubusercontent.com/28004442/205302645-1172702c-4bc2-4deb-bce1-6b6cafd35aab.png">
+<img width="1440" alt="截屏2023-01-21 17 23 38" src="https://user-images.githubusercontent.com/28004442/213860744-c153e82e-c042-4906-98c5-0ce8da99adc8.png">
 
-<img width="1440" alt="截屏2022-11-12 16 24 30" src="https://user-images.githubusercontent.com/28004442/201465476-397bc76c-1cbe-46a2-b991-5514d949c5c9.png">
-
-<img width="1440" alt="截屏2022-11-12 16 24 56" src="https://user-images.githubusercontent.com/28004442/201465499-d0d16be7-7fbe-422a-a0fb-63bfea8219ff.png">
+<img width="1440" alt="截屏2023-01-21 17 23 51" src="https://user-images.githubusercontent.com/28004442/213860750-06e69c97-81e2-4a76-86be-1b9407f22b37.png">
