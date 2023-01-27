@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import "../stylesheets/publicStyles.css"
+import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
 import {fadeIn, fadeOut} from "../javascripts/publicFunctions";
 
