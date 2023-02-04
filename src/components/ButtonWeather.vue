@@ -25,6 +25,7 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
+import {device} from "../javascripts/publicConstants";
 import {getWeatherIcon, changeThemeColor} from "../javascripts/publicFunctions";
 import $ from "jquery";
 
@@ -38,18 +39,12 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
-    },
-    display: {
-        type: String,
-        default: () => {
-            return "block";
-        },
-        required: true
     }
 });
 
 let backgroundColor = ref("");
 let fontColor = ref("");
+let display = ref("block");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无天气信息");
 let region = ref("暂无地区信息");
@@ -68,25 +63,30 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 onMounted(() => {
-    $.ajax({
-        url: "https://v2.jinrishici.com/info",
-        type: "GET",
-        timeout: 10000,
-        success: (resultData) => {
-            if (resultData.status === "success"  && resultData.data.weatherData !== null) {
-                weatherIcon.value = getWeatherIcon(resultData.data.weatherData.weather);
-                weatherInfo.value = resultData.data.weatherData.weather  + "｜"
-                    + resultData.data.weatherData.temperature + "°C";
-                region.value = resultData.data.region.replace("|", " · ");
-                humidity.value = resultData.data.weatherData.humidity;
-                pm25.value = resultData.data.weatherData.pm25;
-                rainfall.value = resultData.data.weatherData.rainfall + "%";
-                visibility.value = resultData.data.weatherData.visibility;
-                windInfo.value = resultData.data.weatherData.windDirection + resultData.data.weatherData.windPower + "级";
-            }
-        },
-        error: function () {}
-    });
+    if(device === "iPhone" || device === "Android") {
+        display.value = "none";
+    }
+    else {
+        $.ajax({
+            url: "https://v2.jinrishici.com/info",
+            type: "GET",
+            timeout: 10000,
+            success: (resultData) => {
+                if (resultData.status === "success"  && resultData.data.weatherData !== null) {
+                    weatherIcon.value = getWeatherIcon(resultData.data.weatherData.weather);
+                    weatherInfo.value = resultData.data.weatherData.weather  + "｜"
+                        + resultData.data.weatherData.temperature + "°C";
+                    region.value = resultData.data.region.replace("|", " · ");
+                    humidity.value = resultData.data.weatherData.humidity;
+                    pm25.value = resultData.data.weatherData.pm25;
+                    rainfall.value = resultData.data.weatherData.rainfall + "%";
+                    visibility.value = resultData.data.weatherData.visibility;
+                    windInfo.value = resultData.data.weatherData.windDirection + resultData.data.weatherData.windPower + "级";
+                }
+            },
+            error: function () {}
+        });
+    }
 })
 </script>
 

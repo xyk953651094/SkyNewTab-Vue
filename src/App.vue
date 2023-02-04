@@ -12,7 +12,7 @@
                     <a-space>
                         <button-download :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <button-html-link :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <button-preference :theme-color="themeColor" :display="componentDisplay"
+                        <button-preference :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
@@ -30,7 +30,7 @@
             <a-row justify="space-around">
                 <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
                     <a-space>
-                        <button-preference :theme-color="themeColor" :display="mobileComponentDisplay"
+                        <button-preference :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
@@ -42,8 +42,8 @@
                 </a-col>
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
-                        <ButtonAuthor :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <ButtonCreateTime :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-author :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-create-time :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
             </a-row>

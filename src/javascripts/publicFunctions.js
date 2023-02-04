@@ -238,7 +238,7 @@ export function getDevice() {
 }
 
 // 过渡动画
-export function changeThemeColor(element, backgroundColor, fontColor, time = 300) {
+export function changeThemeColor(element, backgroundColor, fontColor, time = 100) {
     $(element).animate({
         backgroundColor: backgroundColor,
         color: fontColor,
