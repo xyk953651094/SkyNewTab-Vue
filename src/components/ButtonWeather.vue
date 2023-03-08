@@ -26,8 +26,7 @@
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
 import {device} from "../javascripts/publicConstants";
-import {getWeatherIcon, changeThemeColor} from "../javascripts/publicFunctions";
-import $ from "jquery";
+import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
@@ -67,11 +66,10 @@ onMounted(() => {
         display.value = "none";
     }
     else {
-        $.ajax({
-            url: "https://v2.jinrishici.com/info",
-            type: "GET",
-            timeout: 10000,
-            success: (resultData) => {
+        let url = "https://v2.jinrishici.com/info";
+        let data = {};
+        httpRequest(url, data, "GET")
+            .then(function(resultData){
                 if (resultData.status === "success"  && resultData.data.weatherData !== null) {
                     weatherIcon.value = getWeatherIcon(resultData.data.weatherData.weather);
                     weatherInfo.value = resultData.data.weatherData.weather  + "｜"
@@ -83,9 +81,8 @@ onMounted(() => {
                     visibility.value = resultData.data.weatherData.visibility;
                     windInfo.value = resultData.data.weatherData.windDirection + resultData.data.weatherData.windPower + "级";
                 }
-            },
-            error: function () {}
-        });
+            })
+            .catch(function(){})
     }
 })
 </script>

@@ -53,14 +53,14 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {clientId, device} from "./javascripts/publicConstants";
+import {clientId, device, defaultImage} from "./javascripts/publicConstants";
 import {
     changeThemeColor,
     getComponentBackgroundColor,
     setColorTheme,
     getFontColor,
+    httpRequest,
 } from "./javascripts/publicFunctions";
-import {Message} from "@arco-design/web-vue";
 
 import ButtonGreet from "../src/components/ButtonGreet";
 import ButtonHtmlLink from "../src/components/ButtonHtmlLink";
@@ -71,12 +71,11 @@ import ButtonAuthor from "../src/components/ButtonAuthor";
 import ButtonCreateTime from "../src/components/ButtonCreateTime";
 import ButtonWeather from "../src/components/ButtonWeather";
 import ButtonPreference from "../src/components/ButtonPreference";
-const $ = require("jquery");
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
 let imageDisplay = ref("none");
-let imageData = ref({});
+let imageData = ref(defaultImage);
 let themeColor = ref( {
     "componentBackgroundColor": "",
     "componentFontColor": ""
@@ -119,47 +118,65 @@ onMounted(()=>{
     themeColor.value = setColorTheme();
 
     // 获取背景图片
-    $.ajax({
-        url: "https://api.unsplash.com/photos/random?",
-        headers: {
-            "Authorization": "Client-ID " + clientId,
-        },
-        type: "GET",
-        data: {
-            "client_id": clientId,
-            "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
-            "topics": imageTopics.value,
-            "content_filter": "high",
-        },
-        timeout: 10000,
-        success: (resultData) => {
+    let url = "https://api.unsplash.com/photos/random?";
+    let data = {
+        "client_id": clientId,
+        "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
+        "topics": imageTopics.value,
+        "content_filter": "high",
+    }
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
             imageDisplay.value = "block";
             componentDisplay.value = "block";
             mobileComponentDisplay.value ="none";
             imageData.value = resultData;
 
-            let componentBackgroundColor = getComponentBackgroundColor(resultData.color);
-            let componentFontColor = getFontColor(componentBackgroundColor);
-            themeColor.value = {
-                "componentBackgroundColor": componentBackgroundColor,
-                "componentFontColor": componentFontColor,
-            };
+            // 修改主题颜色
+            if (resultData.color !== null) {
+                let componentBackgroundColor = getComponentBackgroundColor(resultData.color);
+                let componentFontColor = getFontColor(componentBackgroundColor);
+                themeColor.value = {
+                    "componentBackgroundColor": componentBackgroundColor,
+                    "componentFontColor": componentFontColor,
+                };
 
+                let bodyBackgroundColor = resultData.color;
+                let bodyFontColor = getFontColor(bodyBackgroundColor);
+                changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
+            }
+        })
+        .catch(function(){
+            // 获取图片失败时显示默认图片
+            // Message.error("获取图片失败");
+            imageDisplay.value = "block";
+            componentDisplay.value = "block";
+            mobileComponentDisplay.value ="none";
+            imageData.value = defaultImage;
+
+            // 修改主题颜色
+            if (defaultImage.color !== null) {
+                let componentBackgroundColor = getComponentBackgroundColor(defaultImage.color);
+                let componentFontColor = getFontColor(componentBackgroundColor);
+                themeColor.value = {
+                    "componentBackgroundColor": componentBackgroundColor,
+                    "componentFontColor": componentFontColor,
+                };
+
+                let bodyBackgroundColor = defaultImage.color;
+                let bodyFontColor = getFontColor(bodyBackgroundColor);
+                changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
+            }
+
+        })
+        .finally(function () {
             // 小屏显示底部按钮
             if(device === "iPhone" || device === "Android") {
                 componentDisplay.value = "none";
                 mobileComponentDisplay.value ="block";
             }
-
-            //设置body颜色
-            let bodyBackgroundColor = resultData.color;
-            let bodyFontColor = getFontColor(bodyBackgroundColor);
-            changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
-        },
-        error: () => {
-            Message.error("获取图片失败");
-        }
-    });
+        })
+    ;
 });
 </script>
 

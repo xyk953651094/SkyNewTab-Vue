@@ -2,6 +2,24 @@ import {lightThemeArray, darkThemeArray} from "../javascripts/publicConstants";
 import "jquery-color"
 const $ = require("jquery");
 
+// 网络请求
+export function httpRequest(url, data, method) {
+    return new Promise(function(resolve,reject){
+        $.ajax({
+            url: url,
+            type: method,
+            data: data,
+            timeout: 5000,
+            success: (resultData) => {
+                resolve(resultData);
+            },
+            error: function () {
+                reject();
+            }
+        });
+    })
+}
+
 // 获取日期与时间
 export function getTimeDetails() {
     let param = new Date();

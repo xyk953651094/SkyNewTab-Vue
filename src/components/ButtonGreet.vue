@@ -24,8 +24,13 @@
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreetContent, getGreetIcon, changeThemeColor} from "../javascripts/publicFunctions";
-const $ = require("jquery");
+import {
+    getTimeDetails,
+    getGreetContent,
+    getGreetIcon,
+    changeThemeColor,
+    httpRequest,
+} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
@@ -69,19 +74,16 @@ onMounted(() => {
         showMoon.value = "block";
     }
 
-    let holidayParameters = {
+    let calendarDetails = getTimeDetails(new Date());
+    calendar.value = calendarDetails.showDate4 + " " + calendarDetails.showWeek
+
+    let url = "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3;
+    let data = {
         "app_id": "cicgheqakgmpjclo",
         "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
     };
-
-    let calendarDetails = getTimeDetails(new Date());
-    calendar.value = calendarDetails.showDate4 + " " + calendarDetails.showWeek
-    $.ajax({
-        url: "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3,
-        type: "GET",
-        data: holidayParameters,
-        timeout: 10000,
-        success: (resultData) => {
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
             if (resultData.code === 1) {
                 let holidayContent = resultData.data.solarTerms;
                 if (resultData.data.typeDes !== "休息日" && resultData.data.typeDes !== "工作日"){
@@ -96,9 +98,8 @@ onMounted(() => {
                 suit.value = resultData.data.suit.replace(/\./g, " · ");
                 avoid.value = resultData.data.avoid.replace(/\./g, " · ");
             }
-        },
-        error: function () {}
-    });
+        })
+        .catch(function(){})
 })
 </script>
 
