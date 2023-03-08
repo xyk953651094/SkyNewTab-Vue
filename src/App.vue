@@ -53,7 +53,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {clientId, device, defaultImage} from "./javascripts/publicConstants";
+import {clientId, device} from "./javascripts/publicConstants";
 import {
     changeThemeColor,
     getComponentBackgroundColor,
@@ -75,7 +75,7 @@ import ButtonPreference from "../src/components/ButtonPreference";
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
 let imageDisplay = ref("none");
-let imageData = ref(defaultImage);
+let imageData = ref("");
 let themeColor = ref( {
     "componentBackgroundColor": "",
     "componentFontColor": ""
@@ -103,6 +103,62 @@ const getSearchEngine = (value) => {
     searchEngine.value = value;
 }
 
+// 请求完成后处理步骤
+function setWallpaper(data) {
+    imageDisplay.value = "block";
+    componentDisplay.value = "block";
+    mobileComponentDisplay.value ="none";
+    imageData.value = data;
+
+    // 修改主题颜色
+    if (data.color !== null) {
+        let componentBackgroundColor = getComponentBackgroundColor(data.color);
+        let componentFontColor = getFontColor(componentBackgroundColor);
+        themeColor.value = {
+            "componentBackgroundColor": componentBackgroundColor,
+            "componentFontColor": componentFontColor,
+        };
+
+        let bodyBackgroundColor = data.color;
+        let bodyFontColor = getFontColor(bodyBackgroundColor);
+        changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
+    }
+}
+
+function getWallpaper() {
+    let url = "https://api.unsplash.com/photos/random?";
+    let data = {
+        "client_id": clientId,
+        "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
+        "topics": imageTopics.value,
+        "content_filter": "high",
+    }
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
+            setWallpaper(resultData);
+        })
+        .catch(function(){
+            // Message.error("获取图片失败");
+            // 请求失败也更新请求时间，防止超时后无信息可显示
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            // 获取图片失败时显示上次图片
+            let lastImage = localStorage.getItem("lastImage");
+            if (lastImage) {
+                lastImage = JSON.parse(lastImage);
+                setWallpaper(lastImage);
+            }
+        })
+        .finally(function () {
+            // 小屏显示底部按钮
+            if(device === "iPhone" || device === "Android") {
+                componentDisplay.value = "none";
+                mobileComponentDisplay.value ="block";
+            }
+        });
+}
+
 onMounted(()=>{
     // 加载偏好设置
     let tempDisplayEffect = localStorage.getItem("displayEffect");
@@ -117,66 +173,22 @@ onMounted(()=>{
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();
 
-    // 获取背景图片
-    let url = "https://api.unsplash.com/photos/random?";
-    let data = {
-        "client_id": clientId,
-        "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
-        "topics": imageTopics.value,
-        "content_filter": "high",
+    // 设置背景图片，防抖节流
+    let lastRequestTime = localStorage.getItem("lastImageRequestTime");
+    let nowTimeStamp = new Date().getTime();
+    if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+        getWallpaper();
     }
-    httpRequest(url, data, "GET")
-        .then(function(resultData){
-            imageDisplay.value = "block";
-            componentDisplay.value = "block";
-            mobileComponentDisplay.value ="none";
-            imageData.value = resultData;
-
-            // 修改主题颜色
-            if (resultData.color !== null) {
-                let componentBackgroundColor = getComponentBackgroundColor(resultData.color);
-                let componentFontColor = getFontColor(componentBackgroundColor);
-                themeColor.value = {
-                    "componentBackgroundColor": componentBackgroundColor,
-                    "componentFontColor": componentFontColor,
-                };
-
-                let bodyBackgroundColor = resultData.color;
-                let bodyFontColor = getFontColor(bodyBackgroundColor);
-                changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
-            }
-        })
-        .catch(function(){
-            // 获取图片失败时显示默认图片
-            // Message.error("获取图片失败");
-            imageDisplay.value = "block";
-            componentDisplay.value = "block";
-            mobileComponentDisplay.value ="none";
-            imageData.value = defaultImage;
-
-            // 修改主题颜色
-            if (defaultImage.color !== null) {
-                let componentBackgroundColor = getComponentBackgroundColor(defaultImage.color);
-                let componentFontColor = getFontColor(componentBackgroundColor);
-                themeColor.value = {
-                    "componentBackgroundColor": componentBackgroundColor,
-                    "componentFontColor": componentFontColor,
-                };
-
-                let bodyBackgroundColor = defaultImage.color;
-                let bodyFontColor = getFontColor(bodyBackgroundColor);
-                changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
-            }
-
-        })
-        .finally(function () {
-            // 小屏显示底部按钮
-            if(device === "iPhone" || device === "Android") {
-                componentDisplay.value = "none";
-                mobileComponentDisplay.value ="block";
-            }
-        })
-    ;
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 60* 1000) {  // 必须多于一分钟才能进行新的请求
+        getWallpaper();
+    }
+    else {  // 一分钟之内使用上一次请求结果
+        let lastImage = localStorage.getItem("lastImage");
+        if (lastImage) {
+            lastImage = JSON.parse(lastImage);
+            setWallpaper(lastImage);
+        }
+    }
 });
 </script>
 

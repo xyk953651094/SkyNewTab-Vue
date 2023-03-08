@@ -256,11 +256,11 @@ export function getDevice() {
 }
 
 // 过渡动画
-export function changeThemeColor(element, backgroundColor, fontColor, time = 100) {
+export function changeThemeColor(element, backgroundColor, fontColor, time = 1000) {
     $(element).animate({
         backgroundColor: backgroundColor,
         color: fontColor,
-    }, time);
+    }, {queue: false, duration: time});
 }
 
 export function fadeIn(element, time = 300) {

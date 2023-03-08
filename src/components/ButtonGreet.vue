@@ -63,6 +63,41 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
+function setHoliday(data) {
+    let holidayContent = data.solarTerms;
+    if (data.typeDes !== "休息日" && data.typeDes !== "工作日"){
+        holidayContent = holidayContent + " · " + data.typeDes;
+    }
+    if (data.solarTerms.indexOf("后") === -1) {
+        holidayContent = "今日" + holidayContent;
+    }
+
+    greetContent.value += "｜" + holidayContent;
+    calendar.value += "｜" + data.yearTips + data.chineseZodiac + "年｜" + data.lunarCalendar;
+    suit.value = data.suit.replace(/\./g, " · ");
+    avoid.value = data.avoid.replace(/\./g, " · ");
+}
+
+function getHoliday() {
+    let url = "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3;
+    let data = {
+        "app_id": "cicgheqakgmpjclo",
+        "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
+    };
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
+            localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            if (resultData.code === 1) {
+                localStorage.setItem("lastHoliday", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+                setHoliday(resultData.data);
+            }
+        })
+        .catch(function(){
+            // 请求失败也更新请求时间，防止超时后无信息可显示
+            localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+        })
+}
+
 onMounted(() => {
     let hours = new Date().getHours();
     if (hours >= 6 && hours < 18) {
@@ -77,29 +112,22 @@ onMounted(() => {
     let calendarDetails = getTimeDetails(new Date());
     calendar.value = calendarDetails.showDate4 + " " + calendarDetails.showWeek
 
-    let url = "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3;
-    let data = {
-        "app_id": "cicgheqakgmpjclo",
-        "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
-    };
-    httpRequest(url, data, "GET")
-        .then(function(resultData){
-            if (resultData.code === 1) {
-                let holidayContent = resultData.data.solarTerms;
-                if (resultData.data.typeDes !== "休息日" && resultData.data.typeDes !== "工作日"){
-                    holidayContent = holidayContent + " · " + resultData.data.typeDes;
-                }
-                if (resultData.data.solarTerms.indexOf("后") === -1) {
-                    holidayContent = "今日" + holidayContent;
-                }
-
-                greetContent.value += "｜" + holidayContent;
-                calendar.value += "｜" + resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" + resultData.data.lunarCalendar;
-                suit.value = resultData.data.suit.replace(/\./g, " · ");
-                avoid.value = resultData.data.avoid.replace(/\./g, " · ");
-            }
-        })
-        .catch(function(){})
+    // 防抖节流
+    let lastRequestTime = localStorage.getItem("lastHolidayRequestTime");
+    let nowTimeStamp = new Date().getTime();
+    if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+        getHoliday();
+    }
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+        getHoliday();
+    }
+    else {  // 一小时之内使用上一次请求结果
+        let lastHoliday = localStorage.getItem("lastHoliday");
+        if (lastHoliday) {
+            lastHoliday = JSON.parse(lastHoliday);
+            setHoliday(lastHoliday);
+        }
+    }
 })
 </script>
 
