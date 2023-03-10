@@ -5,14 +5,14 @@
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
                         <button-greet :theme-color="themeColor"/>
-                        <button-weather :theme-color="themeColor"/>
+                        <button-weather :theme-color="themeColor" :display="componentDisplay"/>
                     </a-space>
                 </a-col>
                 <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
                         <button-download :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <button-html-link :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <button-preference :theme-color="themeColor" :display="componentDisplay"
+                        <button-preference :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
@@ -30,7 +30,7 @@
             <a-row justify="space-around">
                 <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
                     <a-space>
-                        <button-preference :theme-color="themeColor" :display="mobileComponentDisplay"
+                        <button-preference :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
@@ -42,8 +42,8 @@
                 </a-col>
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
-                        <ButtonAuthor :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <ButtonCreateTime :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-author :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <button-create-time :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -59,8 +59,8 @@ import {
     getComponentBackgroundColor,
     setColorTheme,
     getFontColor,
+    httpRequest,
 } from "./javascripts/publicFunctions";
-import {Message} from "@arco-design/web-vue";
 
 import ButtonGreet from "../src/components/ButtonGreet";
 import ButtonHtmlLink from "../src/components/ButtonHtmlLink";
@@ -71,12 +71,11 @@ import ButtonAuthor from "../src/components/ButtonAuthor";
 import ButtonCreateTime from "../src/components/ButtonCreateTime";
 import ButtonWeather from "../src/components/ButtonWeather";
 import ButtonPreference from "../src/components/ButtonPreference";
-const $ = require("jquery");
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
 let imageDisplay = ref("none");
-let imageData = ref({});
+let imageData = ref("");
 let themeColor = ref( {
     "componentBackgroundColor": "",
     "componentFontColor": ""
@@ -104,6 +103,62 @@ const getSearchEngine = (value) => {
     searchEngine.value = value;
 }
 
+// 请求完成后处理步骤
+function setWallpaper(data) {
+    imageDisplay.value = "block";
+    componentDisplay.value = "block";
+    mobileComponentDisplay.value ="none";
+    imageData.value = data;
+
+    // 修改主题颜色
+    if (data.color !== null) {
+        let componentBackgroundColor = getComponentBackgroundColor(data.color);
+        let componentFontColor = getFontColor(componentBackgroundColor);
+        themeColor.value = {
+            "componentBackgroundColor": componentBackgroundColor,
+            "componentFontColor": componentFontColor,
+        };
+
+        let bodyBackgroundColor = data.color;
+        let bodyFontColor = getFontColor(bodyBackgroundColor);
+        changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
+    }
+}
+
+function getWallpaper() {
+    let url = "https://api.unsplash.com/photos/random?";
+    let data = {
+        "client_id": clientId,
+        "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
+        "topics": imageTopics.value,
+        "content_filter": "high",
+    }
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
+            setWallpaper(resultData);
+        })
+        .catch(function(){
+            // Message.error("获取图片失败");
+            // 请求失败也更新请求时间，防止超时后无信息可显示
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            // 获取图片失败时显示上次图片
+            let lastImage = localStorage.getItem("lastImage");
+            if (lastImage) {
+                lastImage = JSON.parse(lastImage);
+                setWallpaper(lastImage);
+            }
+        })
+        .finally(function () {
+            // 小屏显示底部按钮
+            if(device === "iPhone" || device === "Android") {
+                componentDisplay.value = "none";
+                mobileComponentDisplay.value ="block";
+            }
+        });
+}
+
 onMounted(()=>{
     // 加载偏好设置
     let tempDisplayEffect = localStorage.getItem("displayEffect");
@@ -118,48 +173,22 @@ onMounted(()=>{
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();
 
-    // 获取背景图片
-    $.ajax({
-        url: "https://api.unsplash.com/photos/random?",
-        headers: {
-            "Authorization": "Client-ID " + clientId,
-        },
-        type: "GET",
-        data: {
-            "client_id": clientId,
-            "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
-            "topics": imageTopics.value,
-            "content_filter": "high",
-        },
-        timeout: 10000,
-        success: (resultData) => {
-            imageDisplay.value = "block";
-            componentDisplay.value = "block";
-            mobileComponentDisplay.value ="none";
-            imageData.value = resultData;
-
-            let componentBackgroundColor = getComponentBackgroundColor(resultData.color);
-            let componentFontColor = getFontColor(componentBackgroundColor);
-            themeColor.value = {
-                "componentBackgroundColor": componentBackgroundColor,
-                "componentFontColor": componentFontColor,
-            };
-
-            // 小屏显示底部按钮
-            if(device === "iPhone" || device === "Android") {
-                componentDisplay.value = "none";
-                mobileComponentDisplay.value ="block";
-            }
-
-            //设置body颜色
-            let bodyBackgroundColor = resultData.color;
-            let bodyFontColor = getFontColor(bodyBackgroundColor);
-            changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
-        },
-        error: () => {
-            Message.error("获取图片失败");
+    // 设置背景图片，防抖节流
+    let lastRequestTime = localStorage.getItem("lastImageRequestTime");
+    let nowTimeStamp = new Date().getTime();
+    if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+        getWallpaper();
+    }
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 60* 1000) {  // 必须多于一分钟才能进行新的请求
+        getWallpaper();
+    }
+    else {  // 一分钟之内使用上一次请求结果
+        let lastImage = localStorage.getItem("lastImage");
+        if (lastImage) {
+            lastImage = JSON.parse(lastImage);
+            setWallpaper(lastImage);
         }
-    });
+    }
 });
 </script>
 

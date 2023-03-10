@@ -1,21 +1,17 @@
 <template>
     <a-space>
         <a-popover position="tl"
+                   :title="calendar"
                    :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
             <a-button type="primary" shape="round" size="large" id="buttonGreet" class="componentTheme zIndexHigh"
                       :style="{ cursor: 'default'}">
                 <template #icon>
-                    <icon-sun :style="{display: showSun}"/>
-                    <icon-moon :style="{display: showMoon}"/>
+                    <i :class="greetIcon"></i>
                 </template>
                 {{ greetContent }}
             </a-button>
-            <template #title>
-                <p><icon-calendar />{{" " + calendar}}</p>
-            </template>
-
             <template #content>
                 <p><icon-check-circle />{{" 宜：" + suit}}</p>
                 <p><icon-close-circle />{{" 忌：" + avoid}}</p>
@@ -27,9 +23,14 @@
 <script setup>
 import "../stylesheets/publicStyles.css"
 import {defineProps, onMounted, ref, watch} from "vue"
-import {IconSun, IconMoon, IconCalendar, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
-import {getTimeDetails, getGreet, getHoliday, getChineseHoliday, changeThemeColor} from "../javascripts/publicFunctions";
-const $ = require("jquery");
+import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
+import {
+    getTimeDetails,
+    getGreetContent,
+    getGreetIcon,
+    changeThemeColor,
+    httpRequest,
+} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
@@ -46,7 +47,8 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let greetContent = ref(getGreet());
+let greetIcon = ref(getGreetIcon());
+let greetContent = ref(getGreetContent());
 let calendar = ref("暂无信息");
 let showSun = ref("block");
 let showMoon = ref("none");
@@ -61,6 +63,41 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
+function setHoliday(data) {
+    let holidayContent = data.solarTerms;
+    if (data.typeDes !== "休息日" && data.typeDes !== "工作日"){
+        holidayContent = holidayContent + " · " + data.typeDes;
+    }
+    if (data.solarTerms.indexOf("后") === -1) {
+        holidayContent = "今日" + holidayContent;
+    }
+
+    greetContent.value += "｜" + holidayContent;
+    calendar.value += "｜" + data.yearTips + data.chineseZodiac + "年｜" + data.lunarCalendar;
+    suit.value = data.suit.replace(/\./g, " · ");
+    avoid.value = data.avoid.replace(/\./g, " · ");
+}
+
+function getHoliday() {
+    let url = "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3;
+    let data = {
+        "app_id": "cicgheqakgmpjclo",
+        "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
+    };
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
+            localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            if (resultData.code === 1) {
+                localStorage.setItem("lastHoliday", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+                setHoliday(resultData.data);
+            }
+        })
+        .catch(function(){
+            // 请求失败也更新请求时间，防止超时后无信息可显示
+            localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+        })
+}
+
 onMounted(() => {
     let hours = new Date().getHours();
     if (hours >= 6 && hours < 18) {
@@ -72,33 +109,25 @@ onMounted(() => {
         showMoon.value = "block";
     }
 
-    let holidayParameters = {
-        "app_id": "cicgheqakgmpjclo",
-        "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
-    };
-
     let calendarDetails = getTimeDetails(new Date());
     calendar.value = calendarDetails.showDate4 + " " + calendarDetails.showWeek
-    $.ajax({
-        url: "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3,
-        type: "GET",
-        data: holidayParameters,
-        timeout: 10000,
-        success: (resultData) => {
-            if (resultData.code === 1) {
-                let holidayContent = resultData.data.solarTerms;
-                if (resultData.data.solarTerms.indexOf("后") === -1) {
-                    holidayContent = "今日" + holidayContent;
-                }
 
-                greetContent.value += "｜" + holidayContent + getHoliday() + getChineseHoliday(resultData.data.lunarCalendar);
-                calendar.value += "｜" + resultData.data.yearTips + resultData.data.chineseZodiac + "年｜" + resultData.data.lunarCalendar;
-                suit.value = resultData.data.suit.replace(/\./g, " · ");
-                avoid.value = resultData.data.avoid.replace(/\./g, " · ");
-            }
-        },
-        error: function () {}
-    });
+    // 防抖节流
+    let lastRequestTime = localStorage.getItem("lastHolidayRequestTime");
+    let nowTimeStamp = new Date().getTime();
+    if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+        getHoliday();
+    }
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+        getHoliday();
+    }
+    else {  // 一小时之内使用上一次请求结果
+        let lastHoliday = localStorage.getItem("lastHoliday");
+        if (lastHoliday) {
+            lastHoliday = JSON.parse(lastHoliday);
+            setHoliday(lastHoliday);
+        }
+    }
 })
 </script>
 

@@ -1,8 +1,7 @@
 <template>
     <a-space>
         <a-tooltip content="偏好设置" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="buttonPreference" class="componentTheme zIndexHigh" @click="onclick"
-                      :style="{display: display}">
+            <a-button type="primary" shape="round" size="large" id="buttonPreference" class="componentTheme zIndexHigh" @click="onclick">
                 <template #icon>
                     <icon-more-vertical />
                 </template>
@@ -133,14 +132,7 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
-    },
-    display: {
-        type: String,
-        default: () => {
-            return "none";
-        },
-        required: true
-    },
+    }
 });
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -258,6 +250,7 @@ const imageTopicsCheckboxOnChange = (values) =>  {
     }
 }
 
+// 搜索引擎
 const searchEngineRadioOnChange = (value) => {
     emit("searchEngine", value);
     localStorage.setItem("searchEngine", value);

@@ -1,25 +1,23 @@
 <template>
     <a-space>
         <a-popover
+                :title="region"
                 :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                 :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
             <a-button type="primary" shape="round" size="large" id="buttonWeather" class="componentTheme zIndexHigh"
                       :style="{display: display}">
+                <template #icon>
+                    <i :class="weatherIcon"></i>
+                </template>
                 {{ weatherInfo }}
             </a-button>
-            <template #title>
-                <p><icon-location />{{" " + region}}</p>
-            </template>
             <template #content>
-                <a-typography-paragraph>
-                    <ul>
-                        <li>{{"空气质量：" + pm25}}</li>
-                        <li>{{"降雨概率：" + rainfall}}</li>
-                        <li>{{"视线距离：" + visibility}}</li>
-                        <li>{{"风速情况：" + windInfo}}</li>
-                    </ul>
-                </a-typography-paragraph>
+                <p><i className="bi bi-moisture"></i>{{" 空气湿度：" + humidity}}</p>
+                <p><i className="bi bi-water"></i>{{" 空气质量：" + pm25}}</p>
+                <p><i className="bi bi-cloud-rain"></i>{{" 降雨概率：" + rainfall}}</p>
+                <p><i className="bi bi-eye"></i>{{" 视线距离：" + visibility}}</p>
+                <p><i className="bi bi-wind"></i>{{" 风速情况：" + windInfo}}</p>
             </template>
         </a-popover>
     </a-space>
@@ -27,9 +25,8 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {IconLocation} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
-import $ from "jquery";
+import {device} from "../javascripts/publicConstants";
+import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
@@ -46,13 +43,15 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let display = ref("none");
-let weatherInfo = ref("暂无天气信息");
-let region = ref("暂无地区信息");
-let pm25 = ref("暂无PM2.5信息");
-let rainfall = ref("暂无降雨信息");
-let visibility = ref("暂无视距信息");
-let windInfo = ref("暂无风况信息");
+let display = ref("block");
+let weatherIcon = ref("");
+let weatherInfo = ref("暂无信息");
+let region = ref("暂无信息");
+let humidity = ref("暂无信息")
+let pm25 = ref("暂无信息");
+let rainfall = ref("暂无信息");
+let visibility = ref("暂无信息");
+let windInfo = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -62,28 +61,57 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-onMounted(() => {
-    $.ajax({
-        url: "https://v2.jinrishici.com/info",
-        type: "GET",
-        timeout: 10000,
-        success: (resultData) => {
+function setWeather(data) {
+    weatherIcon.value = getWeatherIcon(data.weatherData.weather);
+    weatherInfo.value = data.weatherData.weather  + "｜"
+        + data.weatherData.temperature + "°C";
+    region.value = data.region.replace("|", " · ");
+    humidity.value = data.weatherData.humidity;
+    pm25.value = data.weatherData.pm25;
+    rainfall.value = data.weatherData.rainfall + "%";
+    visibility.value = data.weatherData.visibility;
+    windInfo.value = data.weatherData.windDirection + data.weatherData.windPower + "级";
+}
+
+function getWeather() {
+    let url = "https://v2.jinrishici.com/info";
+    let data = {};
+    httpRequest(url, data, "GET")
+        .then(function(resultData){
+            localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             if (resultData.status === "success"  && resultData.data.weatherData !== null) {
-                display.value = "block";
-                weatherInfo.value = resultData.data.weatherData.weather  + "｜"
-                    + resultData.data.weatherData.temperature + "°C";
-                region.value = resultData.data.region.replace("|", " · ");
-                pm25.value = resultData.data.weatherData.pm25;
-                rainfall.value = resultData.data.weatherData.rainfall + "%";
-                visibility.value = resultData.data.weatherData.visibility;
-                windInfo.value = resultData.data.weatherData.windDirection + resultData.data.weatherData.windPower + "级";
+                localStorage.setItem("lastWeather", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+                setWeather(resultData.data.weatherData);
             }
-            else {
-                display.value = "none";
+        })
+        .catch(function(){
+            // 请求失败也更新请求时间，防止超时后无信息可显示
+            localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+        })
+}
+
+onMounted(() => {
+    if(device === "iPhone" || device === "Android") {
+        display.value = "none";
+    }
+    else {
+        // 防抖节流
+        let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
+        let nowTimeStamp = new Date().getTime();
+        if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+            getWeather();
+        }
+        else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+            getWeather();
+        }
+        else {  // 一小时之内使用上一次请求结果
+            let lastWeather = localStorage.getItem("lastWeather");
+            if (lastWeather) {
+                lastWeather = JSON.parse(lastWeather);
+                setWeather(lastWeather);
             }
-        },
-        error: function () {}
-    });
+        }
+    }
 })
 </script>
 
