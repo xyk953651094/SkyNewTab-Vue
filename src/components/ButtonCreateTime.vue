@@ -1,6 +1,10 @@
 <template>
     <a-space>
-        <a-tooltip :content=tooltipContent position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
+        <a-popover position="tl"
+                   :title="popoverTitle"
+                   :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+                   :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+        >
             <a-button type="primary" shape="round" size="large" id="buttonCreateTime" class="componentTheme zIndexHigh"
                       :style="{display: display}">
                 <template #icon>
@@ -8,18 +12,25 @@
                 </template>
                 {{ createTime }}
             </a-button>
-        </a-tooltip>
+            <template #content>
+                <p><icon-info-circle />{{" 图片描述：" + description}}</p>
+                <p><icon-message />{{" 附加描述：" + altDescription}}</p>
+            </template>
+        </a-popover>
     </a-space>
 </template>
 
 <script setup>
 import {defineProps, ref, watch} from "vue"
-import {IconCalendarClock} from "@arco-design/web-vue/es/icon";
+import {IconInfoCircle, IconMessage} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let tooltipContent = ref("");
+let createTime = ref("暂无信息");
+let popoverTitle = ref("暂无信息");
+let description = ref("暂无信息");
+let altDescription = ref("暂无信息");
 
 const props = defineProps({
     themeColor: {
@@ -45,8 +56,6 @@ const props = defineProps({
     }
 });
 
-let createTime = ref("暂无拍摄日期信息");
-
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
@@ -58,7 +67,13 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 watch(() => props.imageData, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         createTime.value = props.imageData.created_at.split("T")[0];
-        tooltipContent.value = "拍摄日期：" + createTime.value;
+        popoverTitle.value = "拍摄日期：" + createTime.value;
+        if (props.imageData.description) {
+            description.value = props.imageData.description;
+        }
+        if (props.imageData.alt_description) {
+            altDescription.value = props.imageData.alt_description;
+        }
     }
 })
 </script>
