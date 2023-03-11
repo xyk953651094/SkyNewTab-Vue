@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-popover position="tl"
+        <a-popover position="tr"
                    :title="popoverTitle"
                    :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
@@ -13,8 +13,8 @@
                 {{ createTime }}
             </a-button>
             <template #content>
-                <p><icon-info-circle />{{" 图片描述：" + description}}</p>
-                <p><icon-message />{{" 附加描述：" + altDescription}}</p>
+                <p class="createTimePopoverP"><icon-info-circle />{{" 图片描述：" + (description == null? "暂无信息" : description)}}</p>
+                <p class="createTimePopoverP"><icon-message />{{" 附加描述：" + (altDescription == null? "暂无信息" : altDescription)}}</p>
             </template>
         </a-popover>
     </a-space>
@@ -24,6 +24,7 @@
 import {defineProps, ref, watch} from "vue"
 import {IconInfoCircle, IconMessage} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
+import "../stylesheets/createTime.less"
 
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -68,16 +69,8 @@ watch(() => props.imageData, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         createTime.value = props.imageData.created_at.split("T")[0];
         popoverTitle.value = "拍摄日期：" + createTime.value;
-        if (props.imageData.description) {
-            description.value = props.imageData.description;
-        }
-        if (props.imageData.alt_description) {
-            altDescription.value = props.imageData.alt_description;
-        }
+        description.value = props.imageData.description;
+        altDescription.value = props.imageData.alt_description;
     }
 })
 </script>
-
-<style scoped>
-
-</style>

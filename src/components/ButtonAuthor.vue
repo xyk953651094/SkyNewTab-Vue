@@ -1,14 +1,31 @@
 <template>
     <a-space>
-        <a-tooltip content="前往作者主页" :background-color="backgroundColor" :content-style="{color: fontColor}">
+        <a-popover
+            :title="'摄影师：' + authorName"
+            :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+            :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+        >
             <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="componentTheme zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{ authorName }}
+                {{ "by " + authorName + " on Unsplash" }}
             </a-button>
-        </a-tooltip>
+            <template #content>
+                <div class="authorPopoverContentDiv">
+                    <div class="avatarDiv center">
+                        <Avatar size={32}>
+                            <img :src="userAvatar"/>
+                        </Avatar>
+                    </div>
+                    <div class="userDiv">
+                        <p class="authorPopoverP"><i class="bi bi-person"></i>{{" " + userName}}</p>
+                        <p class="authorPopoverP"><i class="bi bi-geo-alt"></i>{{userLocation == null? " 暂无信息" : " " + userLocation}}</p>
+                    </div>
+                </div>
+            </template>
+        </a-popover>
     </a-space>
 </template>
 
@@ -17,7 +34,8 @@ import {defineProps, ref, watch} from "vue"
 import {IconCamera} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor} from "../javascripts/publicFunctions";
-import {Message} from "@arco-design/web-vue";
+import {Avatar, Message} from "@arco-design/web-vue";
+import "../stylesheets/author.less"
 
 const props = defineProps({
     themeColor: {
@@ -45,7 +63,10 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let authorName = ref("暂无作者信息");
+let authorName = ref("暂无信息");
+let userAvatar = ref("");
+let userName = ref("暂无信息");
+let userLocation = ref("暂无信息");
 let authorLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -58,7 +79,10 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        authorName.value = "by " + props.imageData.user.name  + " on Unsplash";
+        authorName.value = props.imageData.user.name;
+        userAvatar.value = props.imageData.user.profile_image.large;
+        userName.value = props.imageData.user.username;
+        userLocation.value = props.imageData.user.location;
         authorLink.value = props.imageData.user.links.html
     }
 })
