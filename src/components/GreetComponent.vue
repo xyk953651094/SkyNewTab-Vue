@@ -30,7 +30,7 @@ import {
     getGreetIcon,
     changeThemeColor,
     httpRequest,
-} from "../javascripts/publicFunctions";
+} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {

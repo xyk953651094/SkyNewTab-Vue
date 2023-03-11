@@ -22,7 +22,8 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect} from "../javascripts/publicFunctions";
+import {imageDynamicEffect} from "@/javascripts/publicFunctions";
+import "../stylesheets/wallpaperComponent.less"
 
 const props = defineProps({
     display: {
@@ -102,10 +103,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.backgroundImage {
-    position: fixed;
-    top: -1%;
-    left: -1%;
-    object-fit: cover;
-}
+/*.backgroundImage {*/
+/*    position: fixed;*/
+/*    top: -1%;*/
+/*    left: -1%;*/
+/*    object-fit: cover;*/
+/*}*/
 </style>

@@ -13,11 +13,11 @@
                 {{ weatherInfo }}
             </a-button>
             <template #content>
-                <p><i className="bi bi-moisture"></i>{{" 空气湿度：" + humidity}}</p>
-                <p><i className="bi bi-water"></i>{{" 空气质量：" + pm25}}</p>
-                <p><i className="bi bi-cloud-rain"></i>{{" 降雨概率：" + rainfall}}</p>
-                <p><i className="bi bi-eye"></i>{{" 视线距离：" + visibility}}</p>
-                <p><i className="bi bi-wind"></i>{{" 风速情况：" + windInfo}}</p>
+                <p><i class="bi bi-moisture"></i>{{" 空气湿度：" + humidity}}</p>
+                <p><i class="bi bi-water"></i>{{" 空气质量：" + pm25}}</p>
+                <p><i class="bi bi-cloud-rain"></i>{{" 降雨概率：" + rainfall}}</p>
+                <p><i class="bi bi-eye"></i>{{" 视线距离：" + visibility}}</p>
+                <p><i class="bi bi-wind"></i>{{" 风速情况：" + windInfo}}</p>
             </template>
         </a-popover>
     </a-space>
@@ -25,8 +25,8 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {device} from "../javascripts/publicConstants";
-import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts/publicFunctions";
+import {device} from "@/javascripts/publicConstants";
+import {getWeatherIcon, changeThemeColor, httpRequest} from "@/javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {

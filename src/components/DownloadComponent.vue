@@ -14,8 +14,8 @@
 <script setup>
 import {defineProps, ref, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
-import {unsplashUrl, clientId} from "../javascripts/publicConstants";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {unsplashUrl, clientId} from "@/javascripts/publicConstants";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({

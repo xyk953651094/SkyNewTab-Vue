@@ -101,14 +101,11 @@
 </template>
 
 <script setup>
-// import CardDonation from "@/components/CardDonation";
-// import CardOtherApp from "@/components/CardOtherApp";
-
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {device} from "../javascripts/publicConstants";
+import {device} from "@/javascripts/publicConstants";
 const $ = require("jquery");
 
 let visible = ref(false);

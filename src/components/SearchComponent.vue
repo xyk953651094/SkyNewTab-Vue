@@ -16,9 +16,10 @@
 </template>
 
 <script setup>
-import "../stylesheets/publicStyles.less"
+// import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
-import {fadeIn, fadeOut} from "../javascripts/publicFunctions";
+import {fadeIn, fadeOut} from "@/javascripts/publicFunctions";
+import "../stylesheets/searchComponent.less"
 
 let showMask = ref("none");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
@@ -65,36 +66,5 @@ const onPressEnter = () => {
 </script>
 
 <style scoped>
-#inputSearch {
-    width: 750px;
-    border-radius: calc(36px * 0.5);
-}
 
-.mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    display: none;
-}
-
-/*移动端竖屏样式*/
-@media screen and (max-width: 500px) and (orientation:portrait) {
-    #inputSearch {
-        width: 350px;
-        border-radius: calc(36px * 0.5);
-    }
-}
-
-/*移动端横屏样式*/
-@media screen and (max-width: 1000px) and (orientation:landscape) {
-    #inputSearch {
-        width: 600px;
-        border-radius: calc(36px * 0.5);
-    }
-}
 </style>

@@ -4,15 +4,15 @@
             <a-row justify="space-around">
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
-                        <button-greet :theme-color="themeColor"/>
-                        <button-weather :theme-color="themeColor" :display="componentDisplay"/>
+                        <greet-component :theme-color="themeColor"/>
+                        <weather-component :theme-color="themeColor" :display="componentDisplay"/>
                     </a-space>
                 </a-col>
                 <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
-                        <button-download :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <button-html-link :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <button-preference :theme-color="themeColor"
+                        <download-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <preference-component :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
@@ -23,27 +23,27 @@
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
-            <input-search :search-engine="searchEngine"/>
-            <image-wallpaper :display="imageDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
+            <search-component :search-engine="searchEngine"/>
+            <wallpaper-component :display="imageDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
                 <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
                     <a-space>
-                        <button-preference :theme-color="themeColor"
+                        <preference-component :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
                                            @dynamicEffect="getDynamicEffect"
                                            @imageTopics="getImageTopics"
                                            @searchEngine="getSearchEngine"
                         />
-                        <button-download :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
-                        <button-html-link :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
+                        <download-component :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
+                        <html-link-component :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
-                        <button-author :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <button-create-time :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <author-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+                        <create-time-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -61,16 +61,17 @@ import {
     getFontColor,
     httpRequest,
 } from "./javascripts/publicFunctions";
+import "./stylesheets/publicStyles.less"
 
-import ButtonGreet from "../src/components/ButtonGreet";
-import ButtonHtmlLink from "../src/components/ButtonHtmlLink";
-import ButtonDownload from "../src/components/ButtonDownload";
-import InputSearch from "../src/components/InputSearch";
-import ImageWallpaper from "../src/components/ImageWallpaper"
-import ButtonAuthor from "../src/components/ButtonAuthor";
-import ButtonCreateTime from "../src/components/ButtonCreateTime";
-import ButtonWeather from "../src/components/ButtonWeather";
-import ButtonPreference from "../src/components/ButtonPreference";
+import GreetComponent from "./components/GreetComponent.vue";
+import HtmlLinkComponent from "./components/HtmlLinkComponent.vue";
+import DownloadComponent from "./components/DownloadComponent.vue";
+import SearchComponent from "./components/SearchComponent.vue";
+import WallpaperComponent from "./components/WallpaperComponent.vue"
+import AuthorComponent from "./components/AuthorComponent.vue";
+import CreateTimeComponent from "./components/CreateTimeComponent.vue";
+import WeatherComponent from "./components/WeatherComponent.vue";
+import PreferenceComponent from "./components/PreferenceComponent.vue";
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
@@ -193,32 +194,5 @@ onMounted(()=>{
 </script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-    background-color: #FFFFFF;
-    overflow: hidden;
-}
-
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    height: 100%;
-}
-
-#header {
-    padding-top: 30px;
-}
-
-#footer {
-    padding-bottom: 30px;
-}
 
 </style>
