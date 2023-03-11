@@ -22,7 +22,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect} from "@/javascripts/publicFunctions";
+import {imageDynamicEffect} from "../javascripts//publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 
 const props = defineProps({

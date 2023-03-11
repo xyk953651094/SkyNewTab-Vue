@@ -63,15 +63,15 @@ import {
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
 
-import GreetComponent from "./components/GreetComponent.vue";
-import HtmlLinkComponent from "./components/HtmlLinkComponent.vue";
-import DownloadComponent from "./components/DownloadComponent.vue";
-import SearchComponent from "./components/SearchComponent.vue";
-import WallpaperComponent from "./components/WallpaperComponent.vue"
-import AuthorComponent from "./components/AuthorComponent.vue";
-import CreateTimeComponent from "./components/CreateTimeComponent.vue";
-import WeatherComponent from "./components/WeatherComponent.vue";
-import PreferenceComponent from "./components/PreferenceComponent.vue";
+import GreetComponent from "./components/greetComponent.vue";
+import HtmlLinkComponent from "./components/htmlLinkComponent.vue";
+import DownloadComponent from "./components/downloadComponent.vue";
+import SearchComponent from "./components/searchComponent.vue";
+import WallpaperComponent from "./components/wallpaperComponent.vue"
+import AuthorComponent from "./components/authorComponent.vue";
+import CreateTimeComponent from "./components/createTimeComponent.vue";
+import WeatherComponent from "./components/weatherComponent.vue";
+import PreferenceComponent from "./components/preferenceComponent.vue";
 
 let componentDisplay = ref("none");
 let mobileComponentDisplay = ref("none");
@@ -180,7 +180,7 @@ onMounted(()=>{
     if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
         getWallpaper();
     }
-    else if(nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一分钟才能进行新的请求
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
         getWallpaper();
     }
     else {  // 一分钟之内使用上一次请求结果

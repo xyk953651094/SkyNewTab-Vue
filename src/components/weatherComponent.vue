@@ -25,8 +25,8 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {device} from "@/javascripts/publicConstants";
-import {getWeatherIcon, changeThemeColor, httpRequest} from "@/javascripts/publicFunctions";
+import {device} from "../javascripts//publicConstants";
+import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts//publicFunctions";
 
 const props = defineProps({
     themeColor: {

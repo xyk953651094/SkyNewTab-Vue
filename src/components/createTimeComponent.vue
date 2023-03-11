@@ -23,7 +23,7 @@
 <script setup>
 import {defineProps, ref, watch} from "vue"
 import {IconInfoCircle, IconMessage} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {changeThemeColor} from "../javascripts//publicFunctions";
 import "../stylesheets/createTimeComponent.less"
 
 let backgroundColor = ref("");
