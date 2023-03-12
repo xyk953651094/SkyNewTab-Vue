@@ -15,7 +15,7 @@
 import {defineProps, ref, watch} from "vue";
 import {IconDownload} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl, clientId} from "../javascripts//publicConstants";
-import {changeThemeColor} from "../javascripts//publicFunctions";
+import {changeThemeColor, httpRequest} from "../javascripts//publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -62,21 +62,18 @@ watch(() => props.imageData, (newValue, oldValue) => {
 
 const onclick = () => {
     if (downloadLink.value.length !== 0) {
-        let downloadXHR = new XMLHttpRequest();
-        downloadXHR.open("GET", downloadLink.value + "?client_id=" + clientId);
-        downloadXHR.onload = function () {
-            if (downloadXHR.status === 200) {
-                let downloadUrl = JSON.parse(downloadXHR.responseText).url + unsplashUrl;
-                window.open(downloadUrl);
-            }
-            else {
-                Message.error("获取下载链接失败");
-            }
+        let url = this.state.downloadLink;
+        let data = {
+            "client_id": clientId,
         }
-        downloadXHR.onerror = function () {
-            Message.error("获取下载链接失败");
-        }
-        downloadXHR.send();
+        httpRequest(url, data, "GET")
+            .then(function(resultData){
+                window.open(resultData.url + unsplashUrl);
+            })
+            .catch(function(){
+                Message.error("下载 Unsplash 图片失败");
+            })
+            .finally(function(){});
     } else {
         Message.error("无下载链接");
     }
