@@ -68,7 +68,13 @@ const onclick = () => {
         }
         httpRequest(url, data, "GET")
             .then(function(resultData){
-                window.open(resultData.url + unsplashUrl);
+                // window.open(resultData.url + unsplashUrl);
+                let a = document.createElement("a");
+                a.href = resultData.url + unsplashUrl;
+                a.download = "unsplashWallpaper.jpg";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             })
             .catch(function(){
                 Message.error("下载 Unsplash 图片失败");
