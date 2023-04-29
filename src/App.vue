@@ -2,15 +2,15 @@
     <a-layout style="height: 100%">
         <a-layout-header id="header">
             <a-row justify="space-around">
-                <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
+                <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
                         <greet-component :theme-color="themeColor"/>
                         <weather-component :theme-color="themeColor" :display="componentDisplay"/>
                     </a-space>
                 </a-col>
-                <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
+                <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
-                        <download-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+<!--                        <download-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>-->
                         <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <preference-component :theme-color="themeColor"
                                            @displayEffect="getDisplayEffect"
@@ -28,22 +28,10 @@
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
-                <a-col :xs="22" :sm="22" :md="0" :lg="0" :xl="0" :xxl="0" style="text-align: left">
-                    <a-space>
-                        <preference-component :theme-color="themeColor"
-                                           @displayEffect="getDisplayEffect"
-                                           @dynamicEffect="getDynamicEffect"
-                                           @imageTopics="getImageTopics"
-                                           @searchEngine="getSearchEngine"
-                        />
-                        <download-component :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
-                        <html-link-component :theme-color="themeColor" :display="mobileComponentDisplay" :image-data="imageData"/>
-                    </a-space>
-                </a-col>
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
                         <author-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <create-time-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+<!--                        <create-time-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>-->
                     </a-space>
                 </a-col>
             </a-row>
@@ -65,16 +53,15 @@ import "./stylesheets/publicStyles.less"
 
 import GreetComponent from "./components/greetComponent.vue";
 import HtmlLinkComponent from "./components/htmlLinkComponent.vue";
-import DownloadComponent from "./components/downloadComponent.vue";
+// import DownloadComponent from "./components/downloadComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
 import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";
-import CreateTimeComponent from "./components/createTimeComponent.vue";
+// import CreateTimeComponent from "./components/createTimeComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
 
 let componentDisplay = ref("none");
-let mobileComponentDisplay = ref("none");
 let imageDisplay = ref("none");
 let imageData = ref("");
 let themeColor = ref( {
@@ -108,7 +95,6 @@ const getSearchEngine = (value) => {
 function setWallpaper(data) {
     imageDisplay.value = "block";
     componentDisplay.value = "block";
-    mobileComponentDisplay.value ="none";
     imageData.value = data;
 
     // 修改主题颜色
@@ -151,13 +137,7 @@ function getWallpaper() {
                 setWallpaper(lastImage);
             }
         })
-        .finally(function () {
-            // 小屏显示底部按钮
-            if(device === "iPhone" || device === "Android") {
-                componentDisplay.value = "none";
-                mobileComponentDisplay.value ="block";
-            }
-        });
+        .finally(function () {});
 }
 
 onMounted(()=>{
