@@ -18,7 +18,7 @@
 <script setup>
 // import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
-import {fadeIn, fadeOut} from "../javascripts//publicFunctions";
+import {fadeIn, fadeOut} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
 
 let showMask = ref("none");

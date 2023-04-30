@@ -22,7 +22,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect} from "../javascripts//publicFunctions";
+import {imageDynamicEffect} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 
 const props = defineProps({
@@ -35,13 +35,6 @@ const props = defineProps({
     },
     imageData: {
         type: Object,
-        required: true
-    },
-    displayEffect: {
-        type: String,
-        default: () => {
-            return "regular";
-        },
         required: true
     },
     dynamicEffect: {
@@ -57,17 +50,9 @@ let imageLink = ref("");
 let loadImageLink = ref("");
 
 watch(() => props.imageData, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        if(props.displayEffect === "regular") {
-            imageLink.value = props.imageData.urls.regular;
-        }
-        else if (props.displayEffect === "full") {
-            imageLink.value = props.imageData.urls.full;
-        }
-        else if (props.displayEffect === "raw") {
-            imageLink.value = props.imageData.urls.raw;
-        }
-        loadImageLink.value = props.imageData.urls.thumb;
+    if (newValue !== oldValue && newValue) {
+        imageLink.value = props.imageData.displayUrl;
+        loadImageLink.value = props.imageData.previewUrl;
     }
 })
 

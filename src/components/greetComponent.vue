@@ -79,12 +79,13 @@ function setHoliday(data) {
 }
 
 function getHoliday() {
+    let headers = {};
     let url = "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3;
     let data = {
         "app_id": "cicgheqakgmpjclo",
         "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
     };
-    httpRequest(url, data, "GET")
+    httpRequest(headers, url, data, "GET")
         .then(function(resultData){
             localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             if (resultData.code === 1) {

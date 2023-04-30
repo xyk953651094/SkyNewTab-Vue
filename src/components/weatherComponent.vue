@@ -25,8 +25,8 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {device} from "../javascripts//publicConstants";
-import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts//publicFunctions";
+import {device} from "../javascripts/publicConstants";
+import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
@@ -74,9 +74,10 @@ function setWeather(data) {
 }
 
 function getWeather() {
+    let headers = {};
     let url = "https://v2.jinrishici.com/info";
     let data = {};
-    httpRequest(url, data, "GET")
+    httpRequest(headers, url, data, "GET")
         .then(function(resultData){
             localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             if (resultData.status === "success"  && resultData.data.weatherData !== null) {

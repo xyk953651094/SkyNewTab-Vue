@@ -3,9 +3,10 @@ import "jquery-color"
 const $ = require("jquery");
 
 // 网络请求
-export function httpRequest(url, data, method) {
+export function httpRequest(headers, url, data, method) {
     return new Promise(function(resolve,reject){
         $.ajax({
+            headers: headers,
             url: url,
             type: method,
             data: data,

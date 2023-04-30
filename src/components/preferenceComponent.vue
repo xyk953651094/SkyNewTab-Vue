@@ -29,14 +29,14 @@
                                 <icon-settings />
                             </template>
                             <a-form layout="vertical" :model="formInitialValues" auto-label-width>
-                                <a-form-item field="displayEffectRadio" label="图片质量（推荐选择标准）">
-                                    <a-radio-group v-model="formInitialValues.displayEffectRadio" @change="displayEffectRadioOnChange">
-                                        <a-radio value="regular">标准</a-radio>
-                                        <a-radio value="full">较高</a-radio>
-                                        <a-radio value="raw">最高</a-radio>
+                                <a-form-item field="searchEngineRadio" label="搜索引擎">
+                                    <a-radio-group v-model="formInitialValues.searchEngineRadio" @change="searchEngineRadioOnChange">
+                                        <a-radio value="bing">必应</a-radio>
+                                        <a-radio value="baidu">百度</a-radio>
+                                        <a-radio value="google">谷歌</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="dynamicEffectRadio" label="动效样式（推荐选择全部）">
+                                <a-form-item field="dynamicEffectRadio" label="图片动效（推荐选择全部）">
                                     <a-radio-group v-model="formInitialValues.dynamicEffectRadio" @change="dynamicEffectRadioOnChange">
                                         <a-radio value="close">关闭</a-radio>
                                         <a-radio value="translate">平移</a-radio>
@@ -44,37 +44,10 @@
                                         <a-radio value="all">全部</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
-                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
-                                        <a-row>
-                                            <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="3d-renders"         value="CDwuwXJAbEw">3D渲染</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="textures-patterns"  value="iUIsnVtjB0Y">纹理</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="experimental"       value="qPYsDzvJOYc">实验</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="architecture"       value="rnSKDHwwYUk">建筑</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="nature"             value="6sMVjTLSkeQ">自然</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="business-work"      value="aeu6rL-j6ew">商务</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="fashion"            value="S4MKLAsBB74">时尚</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="film"               value="hmenvQhUmxM">电影</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="food-drink"         value="xjPR4hlkBGA">饮食</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="health"             value="_hb-dl4Q-4U">健康</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="people"             value="towJZFskpGg">人物</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="interiors"          value="R_Fyn-Gwtlw">精神</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="street-photography" value="xHxYTMHLgOc">街头</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="animals"            value="Jpg6Kidl-Hk">动物</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="spirituality"       value="_8zFHuhRhyo">灵魂</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="arts-culture"       value="bDo48cUhwnY">文化</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="history"            value="dijpbw99kQQ">历史</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
-                                        </a-row>
-                                    </a-checkbox-group>
-                                </a-form-item>
-                                <a-form-item field="searchEngineRadio" label="搜索引擎">
-                                    <a-radio-group v-model="formInitialValues.searchEngineRadio" @change="searchEngineRadioOnChange">
-                                      <a-radio value="bing">必应</a-radio>
-                                      <a-radio value="baidu">百度</a-radio>
-                                      <a-radio value="google">谷歌</a-radio>
+                                <a-form-item field="imageSourceRadio" label="图片来源">
+                                    <a-radio-group v-model="formInitialValues.imageSourceRadio" @change="imageSourceRadioOnChange">
+                                        <a-radio value="Unsplash">Unsplash</a-radio>
+                                        <a-radio value="Pexels">Pexels</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                             </a-form>
@@ -86,12 +59,12 @@
                                 <icon-link />
                             </template>
                             <a-list size="small" :bordered="false">
-                                <a-list-item><a-link href="https://unsplash.com/">Unsplash.com</a-link></a-list-item>
-                                <a-list-item><a-link href="https://www.pexels.com/">Pexels.com</a-link></a-list-item>
-                                <a-list-item><a-link href="https://pixabay.com/">Pixabay.com</a-link></a-list-item>
+                                <a-list-item><a-link href="https://unsplash.com/" target="_blank">Unsplash.com</a-link></a-list-item>
+                                <a-list-item><a-link href="https://www.pexels.com/" target="_blank">Pexels.com</a-link></a-list-item>
+                                <a-list-item><a-link href="https://pixabay.com/" target="_blank">Pixabay.com</a-link></a-list-item>
                             </a-list>
                         </a-card>
-                    </a-col>>
+                    </a-col>
                 </a-row>
                 <template #footer>
                     <a-button type="text" href="https://github.com/xyk953651094" target="_blank">
@@ -109,9 +82,9 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMoreVertical, IconSettings, IconLink} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts//publicFunctions";
+import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {device} from "../javascripts//publicConstants";
+import {device} from "../javascripts/publicConstants";
 const $ = require("jquery");
 
 let visible = ref(false);
@@ -119,10 +92,9 @@ let drawerPosition = ref("right");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let formInitialValues = ref({
-    displayEffectRadio: "regular",
+    searchEngineRadio: "bing",
     dynamicEffectRadio: "all",
-    imageTopicsCheckbox: ["Fzo3zuOHN6w"],
-    searchEngineRadio: "bing"
+    imageSourceRadio: "Unsplash",
 })
 
 const props = defineProps({
@@ -148,19 +120,14 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 onMounted(() => {
     // 初始化偏好设置
-    let tempDisplayEffectRadio = localStorage.getItem("displayEffect");
-    let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
-    let tempImageTopicsCheckbox = localStorage.getItem("imageTopics");
-    if (tempImageTopicsCheckbox !== null) {
-        tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
-    }
     let tempSearchEngineRadio = localStorage.getItem("searchEngine");
+    let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
+    let tempImageSourceRadio = localStorage.getItem("imageSource");
 
     formInitialValues.value =  {
-        displayEffectRadio: tempDisplayEffectRadio === null ? "regular" : tempDisplayEffectRadio,
-        dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
-        imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
         searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
+        dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
+        imageSourceRadio: tempImageSourceRadio === null ? "Unsplash": tempImageSourceRadio,
     }
 
     // 屏幕适配
@@ -220,38 +187,7 @@ const handleCancel = () => {
     visible.value = false;
 }
 
-const emit = defineEmits(["displayEffect","dynamicEffect","imageTopics", "searchEngine"]);
-
-// 图片质量
-const displayEffectRadioOnChange = (value) => {
-    emit("displayEffect", value);
-    localStorage.setItem("displayEffect", value);
-    Message.success("调整成功，新的图片质量将在下次加载时生效");
-}
-
-// 动效样式
-const dynamicEffectRadioOnChange = (value) => {
-    emit("dynamicEffect", value);
-    localStorage.setItem("dynamicEffect", value);
-    Message.success("调整成功，新的显示效果已生效");
-}
-
-// 图片主题
-const imageTopicsCheckboxOnChange = (values) =>  {
-    let value = "";
-    for (let i = 0; i < values.length; i++) {
-        value += values[i];
-        if (i !== values.length - 1) {
-            value += ",";
-        }
-    }
-    emit("imageTopics", value);
-    localStorage.setItem("imageTopics", value);
-    Message.success("调整成功，新的主题将在下次加载时生效");
-    if (values.length === 0) {
-        Message.info("全不选与全选的效果一样");
-    }
-}
+const emit = defineEmits(["searchEngine", "dynamicEffect","imageSource"]);
 
 // 搜索引擎
 const searchEngineRadioOnChange = (value) => {
@@ -259,6 +195,23 @@ const searchEngineRadioOnChange = (value) => {
     localStorage.setItem("searchEngine", value);
     Message.success("已更换搜索引擎");
 }
+
+// 动效样式
+const dynamicEffectRadioOnChange = (value) => {
+    emit("dynamicEffect", value);
+    localStorage.setItem("dynamicEffect", value);
+    Message.success("已更换显示效果");
+}
+
+// 搜索引擎
+const imageSourceRadioOnChange = (value) => {
+    emit("imageSource", value);
+    localStorage.setItem("imageSource", value);
+    Message.success("已更换图片来源");
+    localStorage.removeItem("lastImageRequestTime");
+    window.location.reload();
+}
+
 </script>
 
 <style scoped>

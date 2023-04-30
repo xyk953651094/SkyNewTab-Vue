@@ -10,13 +10,11 @@
                 </a-col>
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
-<!--                        <download-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>-->
                         <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <preference-component :theme-color="themeColor"
-                                           @displayEffect="getDisplayEffect"
-                                           @dynamicEffect="getDynamicEffect"
-                                           @imageTopics="getImageTopics"
-                                           @searchEngine="getSearchEngine"
+                                              @searchEngine="getSearchEngine"
+                                              @dynamicEffect="getDynamicEffect"
+                                              @imageSource="getImageSource"
                         />
                     </a-space>
                 </a-col>
@@ -24,14 +22,13 @@
         </a-layout-header>
         <a-layout-content class="center">
             <search-component :search-engine="searchEngine"/>
-            <wallpaper-component :display="imageDisplay" :image-data="imageData" :display-effect="displayEffect" :dynamic-effect="dynamicEffect"/>
+            <wallpaper-component :display="imageDisplay" :image-data="imageData" :dynamic-effect="dynamicEffect"/>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
-                        <author-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-<!--                        <create-time-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>-->
+                        <author-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData" :image-source="imageSource"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -53,11 +50,9 @@ import "./stylesheets/publicStyles.less"
 
 import GreetComponent from "./components/greetComponent.vue";
 import HtmlLinkComponent from "./components/htmlLinkComponent.vue";
-// import DownloadComponent from "./components/downloadComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
 import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";
-// import CreateTimeComponent from "./components/createTimeComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
 
@@ -70,25 +65,20 @@ let themeColor = ref( {
 });
 
 // 配置偏好设置
-let displayEffect = ref("regular");
-let dynamicEffect = ref("all");
-let imageTopics = ref("Fzo3zuOHN6w");
 let searchEngine = ref("bing");
+let dynamicEffect = ref("all");
+let imageSource = ref("Unsplash");
 
-const getDisplayEffect = (value) => {
-    displayEffect.value = value;
-};
+const getSearchEngine = (value) => {
+    searchEngine.value = value;
+}
 
 const getDynamicEffect = (value) => {
     dynamicEffect.value = value;
 }
 
-const getImageTopics = (value) => {
-    imageTopics.value = value;
-}
-
-const getSearchEngine = (value) => {
-    searchEngine.value = value;
+const getImageSource = (value) => {
+    imageSource.value = value;
 }
 
 // 请求完成后处理步骤
@@ -112,19 +102,58 @@ function setWallpaper(data) {
     }
 }
 
-function getWallpaper() {
-    let url = "https://api.unsplash.com/photos/random?";
-    let data = {
-        "client_id": clientId,
-        "orientation": (device === "iPhone" || device === "Android")? "portrait" : "landscape",
-        "topics": imageTopics.value,
-        "content_filter": "high",
+function getWallpaper(imageSource) {
+    let headers = {};
+    let url = "";
+    let data = {};
+
+    switch (imageSource) {
+        case "Unsplash":
+            url = "https://api.unsplash.com/photos/random?";
+            data = {
+                "client_id": clientId,
+                "orientation": (device === "iPhone" || device === "Android") ? "portrait" : "landscape",
+                "content_filter": "high",
+            };
+            break;
+        case "Pexels":
+            headers = { "authorization": "sbJpn7uRC2FAknG1nefeRAYquBuMxyP68BaJ2joKCr6MtxAjqwBvth6h"};
+            url = "https://api.pexels.com/v1/curated";
+            data = {
+                "per_page": 1,
+            };
+            break;
     }
-    httpRequest(url, data, "GET")
+
+    httpRequest(headers, url, data, "GET")
         .then(function(resultData){
+            let imageData = {};
+            switch (imageSource) {
+                case "Unsplash":
+                    imageData = {
+                        displayUrl: resultData.urls.regular,
+                        previewUrl: resultData.urls.small,
+                        imageLink: resultData.links.html,
+                        userName: resultData.user.name,
+                        userLink: resultData.user.links.html,
+                        color: resultData.color,
+                    };
+                    break;
+                case "Pexels":
+                    imageData = {
+                        displayUrl: resultData.photos[0].src.landscape,
+                        previewUrl: resultData.photos[0].src.tiny,
+                        imageLink: resultData.photos[0].url,
+                        userName: resultData.photos[0].photographer,
+                        userLink: resultData.photos[0].photographer_url,
+                        color: resultData.photos[0].avg_color,
+                    };
+                    break;
+            }
+
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-            localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
-            setWallpaper(resultData);
+            localStorage.setItem("lastImage", JSON.stringify(imageData));               // 保存请求结果，防抖节流
+            setWallpaper(imageData);
         })
         .catch(function(){
             // Message.error("获取图片失败");
@@ -142,14 +171,13 @@ function getWallpaper() {
 
 onMounted(()=>{
     // 加载偏好设置
-    let tempDisplayEffect = localStorage.getItem("displayEffect");
-    let tempDynamicEffect = localStorage.getItem("dynamicEffect");
-    let tempImageTopics = localStorage.getItem("imageTopics");
     let tempSearchEngine = localStorage.getItem("searchEngine");
-    displayEffect.value = tempDisplayEffect === null ? "regular" : tempDisplayEffect;
-    dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
-    imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
+    let tempDynamicEffect = localStorage.getItem("dynamicEffect");
+    let tempImageSource = localStorage.getItem("imageSource");
+
     searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
+    dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
+    imageSource.value = tempImageSource === null ? "Unsplash" : tempImageSource;
 
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();
@@ -158,10 +186,10 @@ onMounted(()=>{
     let lastRequestTime = localStorage.getItem("lastImageRequestTime");
     let nowTimeStamp = new Date().getTime();
     if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
-        getWallpaper();
+        getWallpaper(imageSource.value);
     }
     else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
-        getWallpaper();
+        getWallpaper(imageSource.value);
     }
     else {  // 一分钟之内使用上一次请求结果
         let lastImage = localStorage.getItem("lastImage");
