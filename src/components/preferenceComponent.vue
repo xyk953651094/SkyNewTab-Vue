@@ -80,19 +80,25 @@
                             </a-form>
                         </a-card>
                     </a-col>
-<!--                    <a-col :span="24">-->
-<!--                        <card-donation :theme-color="themeColor"/>-->
-<!--                    </a-col>-->
-<!--                    <a-col :span="24">-->
-<!--                        <card-other-app :theme-color="themeColor"/>-->
-<!--                    </a-col>-->
+                    <a-col :span="24">
+                        <a-card title="网站链接" size="small" >
+                            <template #extra>
+                                <icon-link />
+                            </template>
+                            <a-list size="small" :bordered="false">
+                                <a-list-item><a-link href="https://unsplash.com/">Unsplash.com</a-link></a-list-item>
+                                <a-list-item><a-link href="https://www.pexels.com/">Pexels.com</a-link></a-list-item>
+                                <a-list-item><a-link href="https://pixabay.com/">Pixabay.com</a-link></a-list-item>
+                            </a-list>
+                        </a-card>
+                    </a-col>>
                 </a-row>
                 <template #footer>
                     <a-button type="text" href="https://github.com/xyk953651094" target="_blank">
                         <template #icon>
                             <icon-github />
                         </template>
-                        前往作者主页（捐赠支持、其它作品
+                        作者主页
                     </a-button>
                 </template>
             </a-drawer>
@@ -102,7 +108,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconSettings, IconLink} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts//publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {device} from "../javascripts//publicConstants";
