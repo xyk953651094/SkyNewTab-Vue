@@ -56,6 +56,8 @@ import AuthorComponent from "./components/authorComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
 
+const $ = require("jquery");
+
 let componentDisplay = ref("none");
 let imageDisplay = ref("none");
 let imageData = ref("");
@@ -198,6 +200,42 @@ onMounted(()=>{
             setWallpaper(lastImage);
         }
     }
+
+    // 修改各类弹窗样式
+    $("body").bind("DOMNodeInserted", () => {
+        // popover
+        let popoverEle = $(".arco-popover");
+        if (popoverEle.length && popoverEle.length > 0) {
+            $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-popover-popup-arrow").css({"backgroundColor": themeColor.value.componentBackgroundColor, border: "1px solid " + themeColor.value.componentBackgroundColor});
+        }
+
+        // message
+        let messageEle = $(".arco-message");
+        if(messageEle.length && messageEle.length > 0) {
+            messageEle.css({"backgroundColor": themeColor.value.componentBackgroundColor, "border-color": themeColor.value.componentBackgroundColor});
+            $(".arco-message-icon").css("color", themeColor.value.componentFontColor);
+            $(".arco-message-content").css("color", themeColor.value.componentFontColor);
+        }
+
+        // drawer
+        let drawerEle = $(".arco-drawer");
+        if (drawerEle.length && drawerEle.length > 0) {
+            $(".arco-drawer-close-btn").css("color", themeColor.value.componentFontColor);
+            $(".arco-drawer-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-card-header-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
+            $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
+            $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
+            $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
+            $(".arco-collapse-item-header").css({"backgroundColor": themeColor.value.componentBackgroundColor, "color": themeColor.value.componentFontColor});
+            $(".arco-collapse-item-content").css({"backgroundColor": themeColor.value.componentBackgroundColor, "color": themeColor.value.componentFontColor});
+            $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-drawer-footer").css("textAlign", "center");
+            $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
+            $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, opacity: 0.6});
+        }
+    });
 });
 </script>
 
