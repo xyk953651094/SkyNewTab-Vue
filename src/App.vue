@@ -221,6 +221,7 @@ onMounted(()=>{
         // drawer
         let drawerEle = $(".arco-drawer");
         if (drawerEle.length && drawerEle.length > 0) {
+            $(".arco-drawer-header").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-drawer-close-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-title").css("color", themeColor.value.componentFontColor);
             $(".arco-card-header-title").css("color", themeColor.value.componentFontColor);
@@ -231,7 +232,7 @@ onMounted(()=>{
             $(".arco-collapse-item-header").css({"backgroundColor": themeColor.value.componentBackgroundColor, "color": themeColor.value.componentFontColor});
             $(".arco-collapse-item-content").css({"backgroundColor": themeColor.value.componentBackgroundColor, "color": themeColor.value.componentFontColor});
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-drawer-footer").css("textAlign", "center");
+            $(".arco-drawer-footer").css({"borderBottomColor": themeColor.value.componentFontColor, "textAlign": "center"});
             $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
             $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, opacity: 0.6});
         }

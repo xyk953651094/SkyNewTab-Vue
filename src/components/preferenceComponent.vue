@@ -25,6 +25,7 @@
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
                         <a-card title="偏好设置" size="small"
+                                :style="{border: '1px solid' + fontColor}"
                                 :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
                                 :body-style="{backgroundColor: backgroundColor}"
                         >
@@ -58,6 +59,7 @@
                     </a-col>
                     <a-col :span="24">
                         <a-card title="网站链接" size="small"
+                                :style="{border: '1px solid' + fontColor}"
                                 :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
                                 :body-style="{backgroundColor: backgroundColor}"
                         >
@@ -73,6 +75,7 @@
                     </a-col>
                     <a-col :span="24">
                         <a-card title="今日热搜" size="small"
+                                :style="{border: '1px solid' + fontColor}"
                                 :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
                                 :body-style="{backgroundColor: backgroundColor}"
                         >
