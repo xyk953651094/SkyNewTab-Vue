@@ -54,6 +54,12 @@
                                         <a-radio value="Pexels">Pexels</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
+                                <a-form-item field="clearStorageButton" label="其他设置">
+                                    <a-button type="primary" status="danger"
+                                              @click="handleClearStorageButtonClick">
+                                        重置设置
+                                    </a-button>
+                                </a-form-item>
                             </a-form>
                         </a-card>
                     </a-col>
@@ -188,6 +194,15 @@ const imageSourceRadioOnChange = (value) => {
     localStorage.setItem("imageSource", value);
     Message.success("已更换图片来源");
     localStorage.removeItem("lastImageRequestTime");
+    window.location.reload();
+}
+
+// 重置设置
+const handleClearStorageButtonClick = () => {
+    localStorage.setItem("searchEngine", "bing");
+    localStorage.setItem("dynamicEffect", "all");
+    localStorage.setItem("imageSource", "Unsplash");
+    Message.success("已重置设置");
     window.location.reload();
 }
 
