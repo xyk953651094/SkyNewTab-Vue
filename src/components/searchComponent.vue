@@ -1,18 +1,18 @@
 <template>
-    <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
-    <a-space direction="vertical"  class="zIndexHigh">
+    <a-col :span="24" class="center">
+        <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
         <a-input-search
             id="inputSearch"
             allow-clear
             placeholder="按下 Enter 键搜索"
             size="large"
-            class="componentTheme"
+            class="zIndexHigh"
             @focus="onFocus"
             @blur="onBlur"
             @search="onSearch"
             @press-enter="onPressEnter"
         />
-    </a-space>
+    </a-col>
 </template>
 
 <script setup>

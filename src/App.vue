@@ -21,8 +21,11 @@
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
-            <search-component :search-engine="searchEngine"/>
             <wallpaper-component :display="imageDisplay" :image-data="imageData" :dynamic-effect="dynamicEffect"/>
+            <a-space direction="vertical">
+                <search-component :search-engine="searchEngine"/>
+                <collection-component :theme-color="themeColor"/>
+            </a-space>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="space-around">
@@ -55,6 +58,7 @@ import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
+import CollectionComponent from "@/components/collectionComponent.vue";
 
 const $ = require("jquery");
 
