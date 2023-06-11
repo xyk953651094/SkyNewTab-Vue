@@ -87,8 +87,8 @@ function showAddModal() {
         collections = JSON.parse(tempCollections);
     }
     if(collections.length < collectionMaxSize.value) {
-        $("#webNameInput").val("");
-        $("#webUrlInput").val("");
+        $("#webNameInput").children("input").val("");
+        $("#webUrlInput").children("input").val("");
 
         displayAddModal.value = true
     }

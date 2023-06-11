@@ -243,6 +243,19 @@ onMounted(()=>{
             $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
             $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, opacity: 0.6});
         }
+
+        // modal
+        let modalEle = $(".arco-modal");
+        if (modalEle.length && modalEle.length > 0) {
+            $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
+            $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-modal-close-btn").css("color", themeColor.value.componentFontColor);
+            $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
+            $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
+            $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
+            $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+        }
     });
 });
 </script>

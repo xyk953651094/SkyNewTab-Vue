@@ -94,7 +94,7 @@ function showAddModal() {
         todos = JSON.parse(tempTodos);
     }
     if(todos.length < todoMaxSize.value) {
-        $("#todoInput").val("");
+        $("#todoInput").children("input").val("");
         displayAddModal.value = true
     }
     else {
