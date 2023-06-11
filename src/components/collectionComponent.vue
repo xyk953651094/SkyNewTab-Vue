@@ -70,6 +70,7 @@ let fontColor = ref("");
 let displayAddModal = ref(false);
 let displayEditModal = ref(false);
 let listData = ref([]);
+let collectionMaxSize = ref(5);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -85,7 +86,7 @@ function showAddModal() {
     if(tempCollections){
         collections = JSON.parse(tempCollections);
     }
-    if(collections.length < 5) {
+    if(collections.length < collectionMaxSize.value) {
         $("#webNameInput").val("");
         $("#webUrlInput").val("");
 
@@ -105,11 +106,16 @@ function handleAddModalOk() {
         if(tempCollections){
             collections = JSON.parse(tempCollections);
         }
-        collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now ()});
-        localStorage.setItem("collections", JSON.stringify(collections));
+        if(collections.length < collectionMaxSize.value) {
+            collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now ()});
+            localStorage.setItem("collections", JSON.stringify(collections));
 
-        displayAddModal.value = false;
-        Message.success("添加成功");
+            displayAddModal.value = false;
+            Message.success("添加成功");
+        }
+        else {
+            Message.error("链接数量最多为5个");
+        }
     }
     else {
         Message.error("网页名称或网页地址不能为空");
@@ -145,14 +151,16 @@ function handleRemoveCollection(item) {
     let tempCollections = localStorage.getItem("collections");
     if(tempCollections){
         collections = JSON.parse(tempCollections);
-        let index = 0;
+        let index = -1;
         for(let i = 0; i < collections.length; i++) {
             if (item.timeStamp === collections[i].timeStamp) {
                 index = i;
                 break;
             }
         }
-        collections.splice(index, 1);
+        if(index !== -1) {
+            collections.splice(index, 1);
+        }
         localStorage.setItem("collections", JSON.stringify(collections));
 
         listData.value = collections

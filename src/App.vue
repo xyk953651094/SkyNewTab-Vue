@@ -10,6 +10,7 @@
                 </a-col>
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
+                        <todo-component :theme-color="themeColor"/>
                         <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <preference-component :theme-color="themeColor"
                                               @searchEngine="getSearchEngine"
@@ -59,6 +60,7 @@ import AuthorComponent from "./components/authorComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
 import CollectionComponent from "@/components/collectionComponent.vue";
+import TodoComponent from "@/components/todoComponent.vue";
 
 const $ = require("jquery");
 
@@ -212,6 +214,7 @@ onMounted(()=>{
         if (popoverEle.length && popoverEle.length > 0) {
             $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
             $(".arco-popover-popup-arrow").css({"backgroundColor": themeColor.value.componentBackgroundColor, border: "1px solid " + themeColor.value.componentBackgroundColor});
+            $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
         }
 
         // message

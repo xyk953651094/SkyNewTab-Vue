@@ -1,0 +1,160 @@
+<template>
+    <a-space>
+        <a-popover
+            :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+            :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+            :style="{width: '200px'}"
+            trigger="click"
+        >
+            <template #title>
+                <a-row>
+                    <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
+                        <a-typography-text :style="{color: fontColor}">待办事项</a-typography-text>
+                    </a-col>
+                    <a-col :span="12" :style="{textAlign: 'right'}">
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
+                            <template #icon>
+                                <icon-plus />
+                            </template>
+                        </a-button>
+                    </a-col>
+                </a-row>
+            </template>
+            <a-badge :count="checkboxOptions.length">
+                <a-button type="primary" shape="round" size="large" id="buttonTodo" class="componentTheme zIndexHigh">
+                    <template #icon>
+                        <icon-check-square />
+                    </template>
+                </a-button>
+            </a-badge>
+            <template #content>
+                <a-checkbox-group direction="vertical" :options="checkboxOptions" @change="checkboxOnChange"/>
+            </template>
+        </a-popover>
+    </a-space>
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
+        <template #title>添加待办事项</template>
+        <a-form>
+            <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
+                <a-input placeholder="请输入待办内容" id="todoInput"/>
+            </a-form-item>
+        </a-form>
+    </a-modal>
+</template>
+
+<script setup>
+import {defineProps, onMounted, ref, watch} from "vue";
+import {IconCheckSquare, IconPlus} from "@arco-design/web-vue/es/icon";
+import {changeThemeColor} from "../javascripts/publicFunctions";
+import {Message} from "@arco-design/web-vue";
+
+const $ = require("jquery");
+
+const props = defineProps({
+    themeColor: {
+        type: Object,
+        required: true,
+        default: ()=> {
+            return {
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
+    }
+});
+
+let backgroundColor = ref("");
+let fontColor = ref("");
+let displayAddModal = ref(false);
+let checkboxOptions = ref([]);
+let todoMaxSize = ref(5);
+
+onMounted(()=>{
+    let todos = [];
+    let tempTodos = localStorage.getItem("todos");
+    if(tempTodos){
+        todos = JSON.parse(tempTodos);
+    }
+
+    checkboxOptions.value = todos
+})
+
+watch(() => props.themeColor, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#buttonTodo", backgroundColor.value, fontColor.value);
+    }
+})
+
+function showAddModal() {
+    let todos = [];
+    let tempTodos = localStorage.getItem("todos");
+    if(tempTodos){
+        todos = JSON.parse(tempTodos);
+    }
+    if(todos.length < todoMaxSize.value) {
+        $("#todoInput").val("");
+        displayAddModal.value = true
+    }
+    else {
+        Message.error("待办数量最多为5个");
+    }
+}
+
+function handleAddModalOk() {
+    let todoContent = $("#todoInput").children("input").val();
+    if(todoContent && todoContent.length > 0) {
+        let todos = [];
+        let tempTodos = localStorage.getItem("todos");
+        if(tempTodos){
+            todos = JSON.parse(tempTodos);
+        }
+        if(todos.length < todoMaxSize.value) {
+            todos.push({"label": todoContent, "value": todoContent});
+            localStorage.setItem("todos", JSON.stringify(todos));
+
+            displayAddModal.value = false;
+            checkboxOptions.value = todos;
+            Message.success("添加成功");
+        }
+        else {
+            Message.error("待办数量最多为5个");
+        }
+    }
+    else {
+        Message.error("待办内容不能为空");
+    }
+}
+
+function handleAddModalCancel() {
+    displayAddModal.value =  false
+}
+
+function checkboxOnChange(checkedValues) {
+    console.log('checked = ', checkedValues);
+    let todos = [];
+    let tempTodos = localStorage.getItem("todos");
+    if(tempTodos){
+        todos = JSON.parse(tempTodos);
+        let index = -1;
+        for(let i = 0; i < todos.length; i++) {
+            if (checkedValues[checkedValues.length - 1] === todos[i].label) {
+                index = i;
+                break;
+            }
+        }
+        if(index !== -1) {
+            todos.splice(index, 1);
+        }
+        localStorage.setItem("todos", JSON.stringify(todos));
+
+        checkboxOptions.value = todos;
+    }
+}
+
+</script>
+
+<style scoped>
+
+</style>
