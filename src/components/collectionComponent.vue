@@ -1,6 +1,6 @@
 <template>
-    <a-col :span="24" class="center zIndexHigh">
-        <a-space>
+    <a-col :span="24" class="center">
+        <a-space class="zIndexHigh">
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">百度</a-button>
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">淘宝</a-button>
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">京东</a-button>
@@ -14,34 +14,34 @@
                       @click="showEditModal">
                 <template #icon><icon-edit /></template>
             </a-button>
-            <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
-                <template #title>添加链接</template>
-                <a-form>
-                    <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
-                        <a-input placeholder="请输入网站名称" id="webNameInput"/>
-                    </a-form-item>
-                    <a-form-item field="post" label="网站地址" :rules="[{required:true,message:'网页地址不能为空'}]" :validate-trigger="['change','input']">
-                        <a-input placeholder="请输入网站地址" id="webUrlInput"/>
-                    </a-form-item>
-                </a-form>
-            </a-modal>
-            <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel">
-                <template #title>编辑链接</template>
-                <a-list>
-                    <a-list-item v-for="item in listData" :key="item.timestamp">
-                        <a-list-item-meta :title=item.webName :description=item.webUrl>
-                        </a-list-item-meta>
-                        <template #actions>
-                            <a-button type="text" status="danger" @click="handleRemoveCollection(item)">
-                                <template #icon><icon-delete /></template>
-                                删除
-                            </a-button>
-                        </template>
-                    </a-list-item>
-                </a-list>
-            </a-modal>
         </a-space>
     </a-col>
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
+        <template #title>添加链接</template>
+        <a-form>
+            <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
+                <a-input placeholder="请输入网站名称" id="webNameInput"/>
+            </a-form-item>
+            <a-form-item field="post" label="网站地址" :rules="[{required:true,message:'网页地址不能为空'}]" :validate-trigger="['change','input']">
+                <a-input placeholder="请输入网站地址" id="webUrlInput"/>
+            </a-form-item>
+        </a-form>
+    </a-modal>
+    <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel">
+        <template #title>编辑链接</template>
+        <a-list>
+            <a-list-item v-for="item in listData" :key="item.timestamp">
+                <a-list-item-meta :title=item.webName :description=item.webUrl>
+                </a-list-item-meta>
+                <template #actions>
+                    <a-button type="text" status="danger" @click="handleRemoveCollection(item)">
+                        <template #icon><icon-delete /></template>
+                        删除
+                    </a-button>
+                </template>
+            </a-list-item>
+        </a-list>
+    </a-modal>
 </template>
 
 <script setup>

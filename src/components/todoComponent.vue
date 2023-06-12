@@ -4,7 +4,6 @@
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '200px'}"
-            trigger="click"
         >
             <template #title>
                 <a-row>

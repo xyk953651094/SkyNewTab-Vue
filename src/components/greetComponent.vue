@@ -129,6 +129,11 @@ onMounted(() => {
             setHoliday(lastHoliday);
         }
     }
+
+    setInterval(()=>{
+        greetIcon.value = getGreetIcon();
+        greetContent.value = getGreetContent();
+    }, 60 * 1000);
 })
 </script>
 

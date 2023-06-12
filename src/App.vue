@@ -23,7 +23,8 @@
         </a-layout-header>
         <a-layout-content class="center">
             <wallpaper-component :display="imageDisplay" :image-data="imageData" :dynamic-effect="dynamicEffect"/>
-            <a-space direction="vertical">
+            <a-space direction="vertical" align="center">
+                <clock-component :theme-color="themeColor" />
                 <search-component :search-engine="searchEngine"/>
                 <collection-component :theme-color="themeColor"/>
             </a-space>
@@ -61,6 +62,7 @@ import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
 import CollectionComponent from "@/components/collectionComponent.vue";
 import TodoComponent from "@/components/todoComponent.vue";
+import ClockComponent from "@/components/clockComponent.vue";
 
 const $ = require("jquery");
 
