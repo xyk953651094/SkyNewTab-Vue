@@ -1,14 +1,14 @@
 <template>
     <a-row>
         <a-space align="center" size="mini" id="clock" class="zIndexHigh">
-            <a-typography-text :style="{fontSize: '60px', height: '60px', lineHeight: '60px', color: backgroundColor}">
+            <a-typography-text class="clockText" :style="{color: backgroundColor}">
                 {{currentTime}}
             </a-typography-text>
             <a-space align="center" size="mini" direction="vertical">
-                <a-typography-text :style="{fontSize: '20px', height: '20px', lineHeight: '20px', color: backgroundColor}">
+                <a-typography-text class="dateText" :style="{color: backgroundColor}">
                     {{currentWeek}}
                 </a-typography-text>
-                <a-typography-text :style="{fontSize: '20px', height: '20px', lineHeight: '20px', color: backgroundColor}">
+                <a-typography-text class="dateText" :style="{color: backgroundColor}">
                     {{currentDate}}
                 </a-typography-text>
             </a-space>
@@ -19,6 +19,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {getTimeDetails} from "../javascripts/publicFunctions";
+import "../stylesheets/clockComponent.less"
 
 const props = defineProps({
     themeColor: {
@@ -35,17 +36,16 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let timeDetails = ref(getTimeDetails(new Date()));
-let currentTime = ref(timeDetails.value.showTime);
-let currentWeek = ref(timeDetails.value.showWeek);
-let currentDate = ref(timeDetails.value.showDate4);
+let currentTime = ref(getTimeDetails(new Date()).showTime);
+let currentWeek = ref(getTimeDetails(new Date()).showWeek);
+let currentDate = ref(getTimeDetails(new Date()).showDate);
 
 onMounted(()=>{
     setInterval(()=>{
-        timeDetails.value = getTimeDetails(new Date());
-        currentTime.value = timeDetails.value.showTime;
-        currentWeek.value = timeDetails.value.showWeek;
-        currentDate.value = timeDetails.value.showDate4;
+        let timeDetails = getTimeDetails(new Date());
+        currentTime.value = timeDetails.showTime;
+        currentWeek.value = timeDetails.showWeek;
+        currentDate.value = timeDetails.showDate;
     }, 1000);
 })
 

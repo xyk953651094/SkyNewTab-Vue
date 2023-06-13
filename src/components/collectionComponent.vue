@@ -1,11 +1,11 @@
 <template>
     <a-col :span="24" class="center">
         <a-space class="zIndexHigh">
-            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">百度</a-button>
-            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">淘宝</a-button>
-            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">京东</a-button>
-            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">支付宝</a-button>
-            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}">微博</a-button>
+            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
+                      v-for="item in collectionData" :key="item.timeStamp" @click="handleCollectionClick(item)">
+                {{item.webName}}
+            </a-button>
+
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
                       @click="showAddModal">
                 <template #icon><icon-plus /></template>
@@ -30,7 +30,7 @@
     <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel">
         <template #title>编辑链接</template>
         <a-list>
-            <a-list-item v-for="item in listData" :key="item.timestamp">
+            <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-list-item-meta :title=item.webName :description=item.webUrl>
                 </a-list-item-meta>
                 <template #actions>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import {IconPlus, IconEdit, IconDelete} from "@arco-design/web-vue/es/icon";
 // import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
@@ -69,8 +69,18 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let displayAddModal = ref(false);
 let displayEditModal = ref(false);
-let listData = ref([]);
+let collectionData = ref([]);
 let collectionMaxSize = ref(5);
+
+onMounted(()=>{
+    let collections = [];
+    let tempCollections = localStorage.getItem("collections");
+
+    if(tempCollections){
+        collections = JSON.parse(tempCollections);
+        collectionData.value = collections
+    }
+})
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -78,6 +88,10 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         fontColor.value = props.themeColor.componentFontColor;
     }
 })
+
+function handleCollectionClick(item) {
+    window.open(item.webUrl);
+}
 
 // 添加导航弹窗
 function showAddModal() {
@@ -112,6 +126,10 @@ function handleAddModalOk() {
 
             displayAddModal.value = false;
             Message.success("添加成功");
+
+            collectionData.value = collections
+
+            // this.$forceUpdate();
         }
         else {
             Message.error("链接数量最多为5个");
@@ -135,7 +153,7 @@ function showEditModal() {
     }
 
     displayEditModal.value = true;
-    listData.value = collections;
+    collectionData.value = collections;
 }
 
 function handleEditModalOk() {
@@ -163,7 +181,9 @@ function handleRemoveCollection(item) {
         }
         localStorage.setItem("collections", JSON.stringify(collections));
 
-        listData.value = collections
+        collectionData.value = collections
+
+        // this.$forceUpdate();
     }
 }
 

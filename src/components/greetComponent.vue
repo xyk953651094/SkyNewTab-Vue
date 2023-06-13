@@ -10,7 +10,7 @@
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
-                {{ greetContent }}
+                {{ greetContent + "｜" + holidayContent }}
             </a-button>
             <template #content>
                 <p><icon-check-circle />{{" 宜：" + suit}}</p>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import "../stylesheets/publicStyles.css"
+import "../stylesheets/publicStyles.less"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
 import {
@@ -49,9 +49,9 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let greetIcon = ref(getGreetIcon());
 let greetContent = ref(getGreetContent());
-let calendar = ref("暂无信息");
-let showSun = ref("block");
-let showMoon = ref("none");
+let holidayContent = ref("暂无信息");
+let timeDetails = ref(getTimeDetails(new Date()));
+let calendar = ref(timeDetails.value.showDate4 + " " + timeDetails.value.showWeek);
 let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
 
@@ -64,16 +64,17 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 function setHoliday(data) {
-    let holidayContent = data.solarTerms;
+    let tempHolidayContent = data.solarTerms;
     if (data.typeDes !== "休息日" && data.typeDes !== "工作日"){
-        holidayContent = holidayContent + " · " + data.typeDes;
+        tempHolidayContent = tempHolidayContent + " · " + data.typeDes;
     }
     if (data.solarTerms.indexOf("后") === -1) {
-        holidayContent = "今日" + holidayContent;
+        tempHolidayContent = "今日" + tempHolidayContent;
     }
 
-    greetContent.value += "｜" + holidayContent;
-    calendar.value += "｜" + data.yearTips + data.chineseZodiac + "年｜" + data.lunarCalendar;
+    holidayContent.value = tempHolidayContent;
+    calendar.value = timeDetails.value.showDate4 + " " + timeDetails.value.showWeek + "｜" +
+        data.yearTips + data.chineseZodiac + "年｜" + data.lunarCalendar;
     suit.value = data.suit.replace(/\./g, " · ");
     avoid.value = data.avoid.replace(/\./g, " · ");
 }
@@ -100,19 +101,6 @@ function getHoliday() {
 }
 
 onMounted(() => {
-    let hours = new Date().getHours();
-    if (hours >= 6 && hours < 18) {
-        showSun.value = "block";
-        showMoon.value = "none";
-    }
-    else {
-        showSun.value = "none";
-        showMoon.value = "block";
-    }
-
-    let calendarDetails = getTimeDetails(new Date());
-    calendar.value = calendarDetails.showDate4 + " " + calendarDetails.showWeek
-
     // 防抖节流
     let lastRequestTime = localStorage.getItem("lastHolidayRequestTime");
     let nowTimeStamp = new Date().getTime();

@@ -58,7 +58,7 @@ export function getTimeDetails() {
         minute: minute,
         second: second,
         showWeek: week,
-        showDate: year + "-" + month + "-" + day,
+        showDate: year + "/" + month + "/" + day,
         showDate2: year + "." + month + "." + day,
         showDate3: year + month + day,
         showDate4: year + "年" + month + "月" + day + "日",

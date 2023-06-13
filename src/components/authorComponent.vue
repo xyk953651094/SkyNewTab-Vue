@@ -18,7 +18,6 @@ import {IconCamera} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import "../stylesheets/authorComponent.less"
 
 const props = defineProps({
     themeColor: {
