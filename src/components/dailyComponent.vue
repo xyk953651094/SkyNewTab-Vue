@@ -32,7 +32,7 @@
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
                         <a-list-item-meta :title=item.title :description=item.description></a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" status="danger" @click="removeDaily(item)">
+                            <a-button type="text" shape="circle" status="danger" @click="removeDaily(item)" :style="{color: fontColor}">
                                 <template #icon><icon-delete /></template>
                             </a-button>
                         </template>
