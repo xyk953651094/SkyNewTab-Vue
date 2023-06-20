@@ -10,6 +10,7 @@
                 </a-col>
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
                     <a-space>
+                        <daily-component :theme-color="themeColor"/>
                         <todo-component :theme-color="themeColor"/>
                         <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <preference-component :theme-color="themeColor"
@@ -63,6 +64,7 @@ import PreferenceComponent from "./components/preferenceComponent.vue";
 import CollectionComponent from "@/components/collectionComponent.vue";
 import TodoComponent from "@/components/todoComponent.vue";
 import ClockComponent from "@/components/clockComponent.vue";
+import DailyComponent from "@/components/dailyComponent.vue";
 
 const $ = require("jquery");
 

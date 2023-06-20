@@ -107,7 +107,7 @@ function showAddModal() {
         displayAddModal.value = true
     }
     else {
-        Message.error("链接数量最多为5个");
+        Message.error("链接数量最多为" + collectionMaxSize.value + "个");
     }
 }
 
@@ -132,7 +132,7 @@ function handleAddModalOk() {
             // this.$forceUpdate();
         }
         else {
-            Message.error("链接数量最多为5个");
+            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
         }
     }
     else {

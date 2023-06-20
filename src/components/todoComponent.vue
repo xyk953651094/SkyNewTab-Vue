@@ -97,7 +97,7 @@ function showAddModal() {
         displayAddModal.value = true
     }
     else {
-        Message.error("待办数量最多为5个");
+        Message.error("待办数量最多为" + todoMaxSize.value + "个");
     }
 }
 
@@ -118,7 +118,7 @@ function handleAddModalOk() {
             Message.success("添加成功");
         }
         else {
-            Message.error("待办数量最多为5个");
+            Message.error("待办数量最多为" + todoMaxSize.value + "个");
         }
     }
     else {
