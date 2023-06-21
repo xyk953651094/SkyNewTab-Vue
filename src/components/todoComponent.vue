@@ -3,18 +3,23 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '200px'}"
+            :style="{width: '300px'}"
             trigger="click"
         >
             <template #title>
                 <a-row>
                     <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
-                        <a-typography-text :style="{color: fontColor}">待办事项</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{"待办事项 " + todoSize + " / " + todoMaxSize}}</a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
                         <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
                             <template #icon>
                                 <icon-plus />
+                            </template>
+                        </a-button>
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllTodos">
+                            <template #icon>
+                                <icon-delete />
                             </template>
                         </a-button>
                     </a-col>
@@ -44,7 +49,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCheckSquare, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconCheckSquare, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
@@ -67,6 +72,7 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let displayAddModal = ref(false);
 let checkboxOptions = ref([]);
+let todoSize = ref(0);
 let todoMaxSize = ref(5);
 
 onMounted(()=>{
@@ -76,7 +82,8 @@ onMounted(()=>{
         todos = JSON.parse(tempTodos);
     }
 
-    checkboxOptions.value = todos
+    checkboxOptions.value = todos;
+    todoSize.value = todos.length;
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -86,6 +93,16 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         changeThemeColor("#buttonTodo", backgroundColor.value, fontColor.value);
     }
 })
+
+function removeAllTodos() {
+    let tempTodos = localStorage.getItem("todos");
+    if(tempTodos){
+        localStorage.removeItem("todos");
+
+        checkboxOptions.value = [];
+        todoSize.value = 0;
+    }
+}
 
 function showAddModal() {
     let todos = [];
@@ -116,6 +133,7 @@ function handleAddModalOk() {
 
             displayAddModal.value = false;
             checkboxOptions.value = todos;
+            todoSize.value = todos.length;
             Message.success("添加成功");
         }
         else {
@@ -150,6 +168,7 @@ function checkboxOnChange(checkedValues) {
         localStorage.setItem("todos", JSON.stringify(todos));
 
         checkboxOptions.value = todos;
+        todoSize.value = todos.length;
     }
 }
 

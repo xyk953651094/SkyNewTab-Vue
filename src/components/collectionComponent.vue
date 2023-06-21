@@ -17,7 +17,7 @@
         </a-space>
     </a-col>
     <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
-        <template #title>添加链接</template>
+        <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
             <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
                 <a-input placeholder="请输入网站名称" id="webNameInput"/>
@@ -28,7 +28,7 @@
         </a-form>
     </a-modal>
     <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel">
-        <template #title>编辑链接</template>
+        <template #title>{{"编辑链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-list>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-list-item-meta :title=item.webName :description=item.webUrl>
@@ -70,6 +70,7 @@ let fontColor = ref("");
 let displayAddModal = ref(false);
 let displayEditModal = ref(false);
 let collectionData = ref([]);
+let collectionSize = ref(0);
 let collectionMaxSize = ref(5);
 
 onMounted(()=>{
@@ -78,7 +79,8 @@ onMounted(()=>{
 
     if(tempCollections){
         collections = JSON.parse(tempCollections);
-        collectionData.value = collections
+        collectionData.value = collections;
+        collectionSize.value = collections.length;
     }
 })
 
@@ -127,9 +129,8 @@ function handleAddModalOk() {
             displayAddModal.value = false;
             Message.success("添加成功");
 
-            collectionData.value = collections
-
-            // this.$forceUpdate();
+            collectionData.value = collections;
+            collectionSize.value = collections.length;
         }
         else {
             Message.error("链接数量最多为" + collectionMaxSize.value + "个");
@@ -181,9 +182,8 @@ function handleRemoveCollection(item) {
         }
         localStorage.setItem("collections", JSON.stringify(collections));
 
-        collectionData.value = collections
-
-        // this.$forceUpdate();
+        collectionData.value = collections;
+        collectionSize.value = collections.length;
     }
 }
 

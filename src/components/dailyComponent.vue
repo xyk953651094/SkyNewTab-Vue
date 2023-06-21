@@ -3,18 +3,23 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '200px'}"
+            :style="{width: '300px'}"
             trigger="click"
         >
             <template #title>
                 <a-row>
                     <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
-                        <a-typography-text :style="{color: fontColor}">倒数日</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{"倒数日 " + dailySize + " / " + dailyMaxSize }}</a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
                         <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
                             <template #icon>
                                 <icon-plus />
+                            </template>
+                        </a-button>
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllDaily">
+                            <template #icon>
+                                <icon-delete />
                             </template>
                         </a-button>
                     </a-col>
@@ -33,7 +38,7 @@
                         <a-list-item-meta :title=item.title :description=item.description></a-list-item-meta>
                         <template #actions>
                             <a-button type="text" shape="circle" status="danger" @click="removeDaily(item)" :style="{color: fontColor}">
-                                <template #icon><icon-delete /></template>
+                                <template #icon><icon-close /></template>
                             </a-button>
                         </template>
                     </a-list-item>
@@ -79,6 +84,7 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let displayAddModal = ref(false);
 let listItems = ref([]);
+let dailySize = ref(0);
 let dailyMaxSize = ref(5);
 let selectedTimeStamp = ref(0);
 
@@ -89,7 +95,8 @@ onMounted(()=>{
         daily = JSON.parse(tempDaily);
     }
 
-    listItems.value = daily
+    listItems.value = daily;
+    dailySize.value = daily.length;
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -99,6 +106,16 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         changeThemeColor("#buttonDaily", backgroundColor.value, fontColor.value);
     }
 })
+
+function removeAllDaily() {
+    let tempDaily = localStorage.getItem("daily");
+    if(tempDaily){
+        localStorage.removeItem("daily");
+
+        listItems.value = [];
+        dailySize.value = 0;
+    }
+}
 
 function removeDaily(item) {
     let daily = [];
@@ -118,6 +135,7 @@ function removeDaily(item) {
         localStorage.setItem("daily", JSON.stringify(daily));
 
         listItems.value = daily
+        dailySize.value = daily.length;
     }
 }
 
@@ -160,6 +178,7 @@ function handleAddModalOk() {
 
             displayAddModal.value = false;
             listItems.value = daily;
+            dailySize.value = daily.length;
             Message.success("添加成功");
         }
         else {
