@@ -219,6 +219,7 @@ onMounted(()=>{
             $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
             $(".arco-popover-popup-arrow").css({"backgroundColor": themeColor.value.componentBackgroundColor, border: "1px solid " + themeColor.value.componentBackgroundColor});
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
+            $(".arco-list-item:not(:last-child)").css("borderBottom", "1px solid" + themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-image").css("color", themeColor.value.componentFontColor);

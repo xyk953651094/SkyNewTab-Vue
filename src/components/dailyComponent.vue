@@ -35,7 +35,11 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
-                        <a-list-item-meta :title=item.title :description=item.description></a-list-item-meta>
+                        <a-list-item-meta :title=item.title :description=item.description>
+<!--                            <template #description>-->
+<!--                                <a-typography-text :style="{color: (item.status === 'expired' ? 'red':'blue')}">{{item.description}}</a-typography-text>-->
+<!--                            </template>-->
+                        </a-list-item-meta>
                         <template #actions>
                             <a-button type="text" shape="circle" status="danger" @click="removeDaily(item)" :style="{color: fontColor}">
                                 <template #icon><icon-close /></template>
@@ -165,15 +169,17 @@ function handleAddModalOk() {
         }
         if(daily.length < dailyMaxSize.value) {
             let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
-            let description;
+            let description, status;
             if (todayTimeStamp - selectedTimeStamp.value > 0) {
                 description = "已过 " + ((todayTimeStamp - selectedTimeStamp.value) / 86400000) + " 天";
+                status = "expired";
             }
             else {
                 description = "还剩 " + ((selectedTimeStamp.value - todayTimeStamp) / 86400000) + " 天";
+                status = "not expired";
             }
 
-            daily.push({"title": title, "description": description, "timeStamp": Date.now ()});
+            daily.push({"title": title, "description": description, "status": status, "timeStamp": Date.now ()});
             localStorage.setItem("daily", JSON.stringify(daily));
 
             displayAddModal.value = false;
