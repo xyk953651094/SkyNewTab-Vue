@@ -219,7 +219,7 @@ onMounted(()=>{
             $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
             $(".arco-popover-popup-arrow").css({"backgroundColor": themeColor.value.componentBackgroundColor, border: "1px solid " + themeColor.value.componentBackgroundColor});
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-list-item:not(:last-child)").css("borderBottom", "1px solid" + themeColor.value.componentFontColor);
+            $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
@@ -247,10 +247,11 @@ onMounted(()=>{
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
             $(".arco-collapse-item-header").css({"backgroundColor": themeColor.value.componentBackgroundColor, "color": themeColor.value.componentFontColor});
             $(".arco-collapse-item-content").css({"backgroundColor": themeColor.value.componentBackgroundColor, "color": themeColor.value.componentFontColor});
+            $(".arco-list-item:not(:last-child)").css("borderBottom", "1px solid" + themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-drawer-footer").css({"borderBottomColor": themeColor.value.componentFontColor, "textAlign": "center"});
+            $(".arco-drawer-footer").css({"borderTopColor": themeColor.value.componentFontColor, "textAlign": "center"});
             $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
-            $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, opacity: 0.6});
+            $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, opacity: 0.6});  // TODO: 等待arco design 的 dawer 支持 mask-style属性
         }
 
         // modal

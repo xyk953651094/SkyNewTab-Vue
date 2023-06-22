@@ -16,7 +16,7 @@
             </a-button>
         </a-space>
     </a-col>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
         <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
             <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
@@ -27,14 +27,14 @@
             </a-form-item>
         </a-form>
     </a-modal>
-    <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel">
+    <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
         <template #title>{{"编辑链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-list>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-list-item-meta :title=item.webName :description=item.webUrl>
                 </a-list-item-meta>
                 <template #actions>
-                    <a-button type="text" status="danger" @click="handleRemoveCollection(item)">
+                    <a-button type="text" @click="handleRemoveCollection(item)" :style="{color: fontColor}">
                         <template #icon><icon-delete /></template>
                         删除
                     </a-button>

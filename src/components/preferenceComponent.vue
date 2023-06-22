@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="偏好设置" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
+        <a-tooltip content="菜单栏" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonPreference" class="componentTheme zIndexHigh" @click="onclick">
                 <template #icon>
                     <icon-more-vertical />
@@ -48,6 +48,16 @@
                                         <a-radio value="all">全部</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
+                                <a-form-item field="backgroundMaskSwitch" label="背景模糊">
+                                    <a-switch>
+                                        <template #checked>
+                                            已开启
+                                        </template>
+                                        <template #unchecked>
+                                            已关闭
+                                        </template>
+                                    </a-switch>
+                                </a-form-item>
                                 <a-form-item field="imageSourceRadio" label="图片来源">
                                     <a-radio-group v-model="formInitialValues.imageSourceRadio" @change="imageSourceRadioOnChange">
                                         <a-radio value="Unsplash">Unsplash</a-radio>
@@ -55,8 +65,10 @@
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="clearStorageButton" label="其他设置">
-                                    <a-button type="primary" status="danger"
-                                              @click="handleClearStorageButtonClick">
+                                    <a-button type="primary" shape="round" status="danger" @click="handleClearStorageButtonClick">
+                                        <template #icon>
+                                            <icon-redo />
+                                        </template>
                                         重置设置
                                     </a-button>
                                 </a-form-item>
@@ -79,17 +91,6 @@
                             </a-list>
                         </a-card>
                     </a-col>
-                    <a-col :span="24">
-                        <a-card title="今日热搜" size="small"
-                                :style="{border: '1px solid' + fontColor}"
-                                :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
-                                :body-style="{backgroundColor: backgroundColor}"
-                        >
-                            <template #extra>
-                                <icon-search />
-                            </template>
-                        </a-card>
-                    </a-col>
                 </a-row>
                 <template #footer>
                     <a-button type="text" href="https://github.com/xyk953651094" target="_blank">
@@ -106,7 +107,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconMoreVertical, IconSettings, IconLink, IconSearch} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconSettings, IconLink} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {device} from "../javascripts/publicConstants";

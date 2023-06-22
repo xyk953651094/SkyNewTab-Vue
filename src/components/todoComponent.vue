@@ -37,11 +37,14 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
         <template #title>添加待办事项</template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
                 <a-input placeholder="请输入待办内容" id="todoInput"/>
+            </a-form-item>
+            <a-form-item field="todoRate" label="优先级别" :rules="[{required:true,message:'优先级别不能为空'}]" :validate-trigger="['change','input']">
+                <a-rate @change="rateOnChange"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -74,6 +77,7 @@ let displayAddModal = ref(false);
 let checkboxOptions = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
+let priority = ref(0);
 
 onMounted(()=>{
     let todos = [];
@@ -112,7 +116,8 @@ function showAddModal() {
     }
     if(todos.length < todoMaxSize.value) {
         $("#todoInput").children("input").val("");
-        displayAddModal.value = true
+        displayAddModal.value = true;
+        priority.value = 0;
     }
     else {
         Message.error("待办数量最多为" + todoMaxSize.value + "个");
@@ -128,7 +133,8 @@ function handleAddModalOk() {
             todos = JSON.parse(tempTodos);
         }
         if(todos.length < todoMaxSize.value) {
-            todos.push({"label": todoContent, "value": todoContent});
+            todoContent = todoContent + " ";
+            todos.push({"label": todoContent + "★".repeat(priority.value), "value": todoContent + "★".repeat(priority.value)});
             localStorage.setItem("todos", JSON.stringify(todos));
 
             displayAddModal.value = false;
@@ -170,6 +176,10 @@ function checkboxOnChange(checkedValues) {
         checkboxOptions.value = todos;
         todoSize.value = todos.length;
     }
+}
+
+function rateOnChange(value) {
+    priority.value = value;
 }
 
 </script>

@@ -50,7 +50,7 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel">
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
         <template #title>添加倒数日</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" :rules="[{required:true,message:'标题不能为空'}]" :validate-trigger="['change','input']">
@@ -151,7 +151,8 @@ function showAddModal() {
     }
     if(daily.length < dailyMaxSize.value) {
         $("#dailyInput").children("input").val("");
-        displayAddModal.value = true
+        displayAddModal.value = true;
+        selectedTimeStamp.value = 0;
     }
     else {
         Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
