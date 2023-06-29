@@ -48,16 +48,6 @@
                                         <a-radio value="all">全部</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="backgroundMaskSwitch" label="背景模糊">
-                                    <a-switch>
-                                        <template #checked>
-                                            已开启
-                                        </template>
-                                        <template #unchecked>
-                                            已关闭
-                                        </template>
-                                    </a-switch>
-                                </a-form-item>
                                 <a-form-item field="imageSourceRadio" label="图片来源">
                                     <a-radio-group v-model="formInitialValues.imageSourceRadio" @change="imageSourceRadioOnChange">
                                         <a-radio value="Unsplash">Unsplash</a-radio>

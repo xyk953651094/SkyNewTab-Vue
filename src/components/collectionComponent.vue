@@ -1,10 +1,11 @@
 <template>
     <a-col :span="24" class="center">
         <a-space class="zIndexHigh">
-            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
-                      v-for="item in collectionData" :key="item.timeStamp" @click="handleCollectionClick(item)">
-                {{item.webName}}
-            </a-button>
+            <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :content="item.webUrl" position="bottom" :background-color="backgroundColor" :content-style="{color: fontColor}">
+                <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}" @click="handleCollectionClick(item)">
+                    {{item.webName}}
+                </a-button>
+            </a-tooltip>
 
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
                       @click="showAddModal">
@@ -16,18 +17,18 @@
             </a-button>
         </a-space>
     </a-col>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
             <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入网站名称" id="webNameInput"/>
+                <a-input placeholder="请输入网站名称" id="webNameInput" maxLength="5" showWordLimit/>
             </a-form-item>
             <a-form-item field="post" label="网站地址" :rules="[{required:true,message:'网页地址不能为空'}]" :validate-trigger="['change','input']">
                 <a-input placeholder="请输入网站地址" id="webUrlInput"/>
             </a-form-item>
         </a-form>
     </a-modal>
-    <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
+    <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel" :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"编辑链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-list>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
@@ -103,8 +104,8 @@ function showAddModal() {
         collections = JSON.parse(tempCollections);
     }
     if(collections.length < collectionMaxSize.value) {
-        $("#webNameInput").children("input").val("");
-        $("#webUrlInput").children("input").val("");
+        // $("#webNameInput").children("input").val("");
+        // $("#webUrlInput").children("input").val("");
 
         displayAddModal.value = true
     }

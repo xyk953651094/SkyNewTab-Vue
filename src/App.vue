@@ -12,7 +12,6 @@
                     <a-space>
                         <daily-component :theme-color="themeColor"/>
                         <todo-component :theme-color="themeColor"/>
-                        <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                         <preference-component :theme-color="themeColor"
                                               @searchEngine="getSearchEngine"
                                               @dynamicEffect="getDynamicEffect"
@@ -35,6 +34,7 @@
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
                         <author-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData" :image-source="imageSource"/>
+                        <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -101,16 +101,16 @@ function setWallpaper(data) {
 
     // 修改主题颜色
     if (data.color !== null) {
+        let bodyBackgroundColor = data.color;
+        let bodyFontColor = getFontColor(bodyBackgroundColor);
+        changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
+
         let componentBackgroundColor = getComponentBackgroundColor(data.color);
         let componentFontColor = getFontColor(componentBackgroundColor);
         themeColor.value = {
             "componentBackgroundColor": componentBackgroundColor,
             "componentFontColor": componentFontColor,
         };
-
-        let bodyBackgroundColor = data.color;
-        let bodyFontColor = getFontColor(bodyBackgroundColor);
-        changeThemeColor("body", bodyBackgroundColor, bodyFontColor);
     }
 }
 
@@ -200,7 +200,7 @@ onMounted(()=>{
     if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
         getWallpaper(imageSource.value);
     }
-    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一分钟才能进行新的请求
         getWallpaper(imageSource.value);
     }
     else {  // 一分钟之内使用上一次请求结果
@@ -251,7 +251,9 @@ onMounted(()=>{
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-footer").css({"borderTopColor": themeColor.value.componentFontColor, "textAlign": "center"});
             $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
-            $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, opacity: 0.6});  // TODO: 等待arco design 的 dawer 支持 mask-style属性
+            // $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, "opacity": 0.6});  // TODO: 等待arco design 的 dawer 支持 mask-style属性
+            $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
+
         }
 
         // modal

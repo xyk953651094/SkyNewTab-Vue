@@ -37,14 +37,15 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>添加待办事项</template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入待办内容" id="todoInput"/>
+                <a-input placeholder="请输入待办内容" id="todoInput" maxLength="10" showWordLimit/>
             </a-form-item>
             <a-form-item field="todoRate" label="优先级别" :rules="[{required:true,message:'优先级别不能为空'}]" :validate-trigger="['change','input']">
-                <a-rate @change="rateOnChange"/>
+                <!--TODO:rate深色主题下底色问题，无法与React版保持一致-->
+                <a-rate @change="rateOnChange" :allow-clear="true" :color="fontColor"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -115,7 +116,7 @@ function showAddModal() {
         todos = JSON.parse(tempTodos);
     }
     if(todos.length < todoMaxSize.value) {
-        $("#todoInput").children("input").val("");
+        // $("#todoInput").children("input").val("");
         displayAddModal.value = true;
         priority.value = 0;
     }
@@ -148,6 +149,7 @@ function handleAddModalOk() {
     }
     else {
         Message.error("待办内容不能为空");
+        event.preventDefault();
     }
 }
 

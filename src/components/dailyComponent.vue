@@ -50,11 +50,11 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" :mask-style="{backgroundColor: backgroundColor, opacity: 0.6}">
+    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>添加倒数日</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" :rules="[{required:true,message:'标题不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入标题" id="dailyInput"/>
+                <a-input placeholder="请输入标题" id="dailyInput" maxLength="10" showWordLimit/>
             </a-form-item>
             <a-form-item field="dailyDatePicker" label="日期" :rules="[{required:true,message:'日期不能为空'}]" :validate-trigger="['change']">
                 <a-date-picker @change="datePickerOnChange" id="dailyDatePicker"/>
@@ -150,7 +150,7 @@ function showAddModal() {
         daily = JSON.parse(tempDaily);
     }
     if(daily.length < dailyMaxSize.value) {
-        $("#dailyInput").children("input").val("");
+        // $("#dailyInput").children("input").val("");
         displayAddModal.value = true;
         selectedTimeStamp.value = 0;
     }
@@ -174,6 +174,10 @@ function handleAddModalOk() {
             if (todayTimeStamp - selectedTimeStamp.value > 0) {
                 description = "已过 " + ((todayTimeStamp - selectedTimeStamp.value) / 86400000) + " 天";
                 status = "expired";
+            }
+            else if (todayTimeStamp - selectedTimeStamp.value === 0) {
+                description = "就是今天";
+                status = "today";
             }
             else {
                 description = "还剩 " + ((selectedTimeStamp.value - todayTimeStamp) / 86400000) + " 天";
