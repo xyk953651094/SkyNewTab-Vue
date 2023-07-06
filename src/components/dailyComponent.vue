@@ -51,7 +51,7 @@
         </a-popover>
     </a-space>
     <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
-        <template #title>添加倒数日</template>
+        <template #title>{{"添加倒数日 " + dailySize + " / " + dailyMaxSize}}</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" :rules="[{required:true,message:'标题不能为空'}]" :validate-trigger="['change','input']">
                 <a-input placeholder="请输入标题" id="dailyInput" maxLength="10" showWordLimit/>

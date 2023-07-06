@@ -1,6 +1,6 @@
 <template>
     <a-space>
-        <a-tooltip content="菜单栏" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
+        <a-tooltip content="菜单栏" position="br" :background-color="backgroundColor" :content-style="{color: fontColor}">
             <a-button type="primary" shape="round" size="large" id="buttonPreference" class="componentTheme zIndexHigh" @click="onclick">
                 <template #icon>
                     <icon-more-vertical />

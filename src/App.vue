@@ -26,7 +26,9 @@
             <a-space direction="vertical" align="center">
                 <clock-component :theme-color="themeColor" />
                 <search-component :search-engine="searchEngine"/>
-                <collection-component :theme-color="themeColor"/>
+                <a-col :xs="0" :sm="0" :md="24" :lg="24" :xl="24" :xxl="24">
+                    <collection-component :theme-color="themeColor"/>
+                </a-col>
             </a-space>
         </a-layout-content>
         <a-layout-footer id="footer">

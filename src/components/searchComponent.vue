@@ -2,7 +2,7 @@
     <a-col :span="24" class="center">
         <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
         <a-input-search
-            id="inputSearch"
+            id="searchInput"
             allow-clear
             placeholder="按下 Enter 键搜索"
             size="large"
@@ -60,7 +60,7 @@ const onSearch = (value) => {
 }
 
 const onPressEnter = () => {
-    let value = document.getElementById("inputSearch").firstElementChild.value;
+    let value = document.getElementById("searchInput").firstElementChild.value;
     window.location.href = searchEngineUrl.value + value;
 }
 </script>

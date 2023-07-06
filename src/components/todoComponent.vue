@@ -38,7 +38,7 @@
         </a-popover>
     </a-space>
     <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
-        <template #title>添加待办事项</template>
+        <template #title>{{"添加待办事项 " + todoSize + " / " + todoMaxSize}}</template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
                 <a-input placeholder="请输入待办内容" id="todoInput" maxLength="10" showWordLimit/>
