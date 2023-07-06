@@ -54,7 +54,7 @@
         <template #title>{{"添加倒数日 " + dailySize + " / " + dailyMaxSize}}</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" :rules="[{required:true,message:'标题不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入标题" id="dailyInput" maxLength="10" showWordLimit/>
+                <a-input placeholder="请输入标题" id="dailyInput" maxLength="10" allow-clear showWordLimit/>
             </a-form-item>
             <a-form-item field="dailyDatePicker" label="日期" :rules="[{required:true,message:'日期不能为空'}]" :validate-trigger="['change']">
                 <a-date-picker @change="datePickerOnChange" id="dailyDatePicker"/>

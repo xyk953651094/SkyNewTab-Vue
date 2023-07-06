@@ -21,10 +21,10 @@
         <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
             <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入网站名称" id="webNameInput" maxLength="5" showWordLimit/>
+                <a-input placeholder="请输入网站名称" id="webNameInput" maxLength="5" allow-clear showWordLimit/>
             </a-form-item>
             <a-form-item field="post" label="网站地址" :rules="[{required:true,message:'网页地址不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入网站地址" id="webUrlInput"/>
+                <a-input placeholder="请输入网站地址" id="webUrlInput" allow-clear/>
             </a-form-item>
         </a-form>
     </a-modal>

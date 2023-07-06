@@ -3,14 +3,14 @@
         <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
         <a-input-search
             id="searchInput"
-            allow-clear
-            placeholder="按下 Enter 键搜索"
-            size="large"
             class="zIndexHigh"
+            placeholder="按下 Enter 键搜索"
             @focus="onFocus"
             @blur="onBlur"
             @search="onSearch"
             @press-enter="onPressEnter"
+            size="large"
+            allow-clear
         />
     </a-col>
 </template>

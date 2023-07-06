@@ -41,7 +41,7 @@
         <template #title>{{"添加待办事项 " + todoSize + " / " + todoMaxSize}}</template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入待办内容" id="todoInput" maxLength="10" showWordLimit/>
+                <a-input placeholder="请输入待办内容" id="todoInput" maxLength="10" allow-clear showWordLimit/>
             </a-form-item>
             <a-form-item field="todoRate" label="优先级别" :rules="[{required:true,message:'优先级别不能为空'}]" :validate-trigger="['change','input']">
                 <!--TODO:rate深色主题下底色问题，无法与React版保持一致-->
