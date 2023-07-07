@@ -70,12 +70,7 @@ export function getTimeDetails() {
 
 // 判断字符串是否合规
 export function isEmptyString(param) {
-    if(typeof param === "string") {
-        return (param.length === 0);
-    }
-    else {
-        return false;
-    }
+    return (param === null || param === undefined || param.length === 0);
 }
 
 // 根据当前时间段返回问候语

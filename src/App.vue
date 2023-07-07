@@ -36,7 +36,7 @@
                 <a-col :xs="0" :sm="0" :md="22" :lg="22" :xl="22" :xxl="22" style="text-align: right">
                     <a-space>
                         <author-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
-                        <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>
+<!--                        <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>-->
                     </a-space>
                 </a-col>
             </a-row>
@@ -57,7 +57,7 @@ import {
 import "./stylesheets/publicStyles.less"
 
 import GreetComponent from "./components/greetComponent.vue";
-import HtmlLinkComponent from "./components/htmlLinkComponent.vue";
+// import HtmlLinkComponent from "./components/htmlLinkComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
 import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";

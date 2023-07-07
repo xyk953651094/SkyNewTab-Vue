@@ -13,8 +13,16 @@
                 {{ greetContent + "｜" + holidayContent }}
             </a-button>
             <template #content>
-                <p><icon-check-circle />{{" 宜：" + suit}}</p>
-                <p><icon-close-circle />{{" 忌：" + avoid}}</p>
+                <a-space direction="vertical" size="mini" fill>
+                    <a-space>
+                        <icon-check-circle />
+                        <a-typography-text :style="{color: fontColor}">{{" 宜：" + suit}}</a-typography-text>
+                    </a-space>
+                    <a-space>
+                        <icon-close-circle />
+                        <a-typography-text :style="{color: fontColor}">{{" 忌：" + avoid}}</a-typography-text>
+                    </a-space>
+                </a-space>
             </template>
         </a-popover>
     </a-space>
