@@ -11,7 +11,16 @@
             @press-enter="onPressEnter"
             size="large"
             allow-clear
-        />
+        >
+            <template #prefix>
+                <a-avatar :size="24">
+                    <img
+                        alt="图标"
+                        :src="searchEngineIconUrl"
+                    />
+                </a-avatar>
+            </template>
+        </a-input-search>
     </a-col>
 </template>
 
@@ -23,6 +32,7 @@ import "../stylesheets/searchComponent.less"
 
 let showMask = ref("none");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
+let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
 
 const props = defineProps({
     searchEngine: {
@@ -37,10 +47,22 @@ const props = defineProps({
 watch(() => props.searchEngine, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         switch (props.searchEngine) {
-            case "bing": searchEngineUrl.value = "https://www.bing.com/search?q="; break;
-            case "baidu": searchEngineUrl.value = "https://www.baidu.com/s?wd="; break;
-            case "google": searchEngineUrl.value = "https://www.google.com/search?q="; break;
-            default: searchEngineUrl.value = "https://www.bing.com/search?q="; break;
+            case "bing":
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                searchEngineIconUrl.value = "https://www.bing.com/favicon.ico";
+                break;
+            case "baidu":
+                searchEngineUrl.value = "https://www.baidu.com/s?wd=";
+                searchEngineIconUrl.value = "https://www.baidu.com/favicon.ico";
+                break;
+            case "google":
+                searchEngineUrl.value = "https://www.google.com/search?q=";
+                searchEngineIconUrl.value = "https://www.google.com/favicon.ico";
+                break;
+            default:
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                searchEngineIconUrl.value = "https://www.bing.com/favicon.ico";
+                break;
         }
     }
 })

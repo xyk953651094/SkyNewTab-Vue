@@ -56,7 +56,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        htmlLink.value = props.imageData.imageLink;
+        htmlLink.value = props.imageData.links.html;
     }
 })
 

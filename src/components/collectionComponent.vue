@@ -33,6 +33,14 @@
         <a-list>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-list-item-meta :title=item.webName :description=item.webUrl>
+                    <template #avatar>
+                        <a-avatar>
+                            <img
+                                alt="图标"
+                                :src="item.webUrl + '/favicon.ico'"
+                            />
+                        </a-avatar>
+                    </template>
                 </a-list-item-meta>
                 <template #actions>
                     <a-button type="text" @click="handleRemoveCollection(item)" :style="{color: fontColor}">

@@ -6,7 +6,7 @@
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{ "by " + authorName + " on " + imageSource }}
+                {{"by " + authorName + " on Unsplash"}}
             </a-button>
         </a-tooltip>
     </a-space>
@@ -41,20 +41,12 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    imageSource: {
-        type: String,
-        default: () => {
-            return "Unsplash";
-        },
-        required: true
-    }
 });
 
 let backgroundColor = ref("");
 let fontColor = ref("");
 let authorName = ref("暂无信息");
 let authorLink = ref("");
-let imageSource = ref("Unsplash");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
@@ -66,8 +58,8 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        authorName.value = props.imageData.userName;
-        authorLink.value = props.imageData.userLink
+        authorName.value = props.imageData.user.name;
+        authorLink.value = props.imageData.user.links.html;
     }
 })
 

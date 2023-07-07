@@ -43,24 +43,47 @@ const props = defineProps({
             return "all";
         },
         required: true
-    }
+    },
+    imageQuality: {
+        type: String,
+        default: () => {
+            return "regular";
+        },
+        required: true
+    },
 });
 
 let imageLink = ref("");
 let loadImageLink = ref("");
-
-watch(() => props.imageData, (newValue, oldValue) => {
-    if (newValue !== oldValue && newValue) {
-        imageLink.value = props.imageData.displayUrl;
-        loadImageLink.value = props.imageData.previewUrl;
-    }
-})
 
 watch(() => props.dynamicEffect, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         let backgroundImage = document.getElementById("backgroundImage");
         if (backgroundImage instanceof HTMLElement) {
             imageDynamicEffect(backgroundImage, props.dynamicEffect);
+        }
+    }
+})
+
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue && newValue) {
+        switch (props.imageQuality) {
+            case "full":
+                imageLink.value = props.imageData.urls.full;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
+            case "regular":
+                imageLink.value = props.imageData.urls.regular;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
+            case "small":
+                imageLink.value = props.imageData.urls.small;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
+            default:
+                imageLink.value = props.imageData.urls.regular;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
         }
     }
 })

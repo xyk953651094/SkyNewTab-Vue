@@ -40,18 +40,19 @@
                                         <a-radio value="google">谷歌</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="dynamicEffectRadio" label="图片动效（推荐选择全部）">
+                                <a-form-item field="dynamicEffectRadio" label="图片动效（推荐视差）">
                                     <a-radio-group v-model="formInitialValues.dynamicEffectRadio" @change="dynamicEffectRadioOnChange">
-                                        <a-radio value="close">关闭</a-radio>
+                                        <a-radio value="all">视差</a-radio>
                                         <a-radio value="translate">平移</a-radio>
                                         <a-radio value="rotate">旋转</a-radio>
-                                        <a-radio value="all">全部</a-radio>
+                                        <a-radio value="close">关闭</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageSourceRadio" label="图片来源">
-                                    <a-radio-group v-model="formInitialValues.imageSourceRadio" @change="imageSourceRadioOnChange">
-                                        <a-radio value="Unsplash">Unsplash</a-radio>
-                                        <a-radio value="Pexels">Pexels</a-radio>
+                                <a-form-item field="imageQualityRadio" label="图片质量（推荐标准）">
+                                    <a-radio-group v-model="formInitialValues.imageQualityRadio" @change="imageQualityRadioOnChange">
+                                        <a-radio value="full">高</a-radio>
+                                        <a-radio value="regular">标准</a-radio>
+                                        <a-radio value="small">低</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="clearStorageButton" label="其他设置">
@@ -109,7 +110,7 @@ let fontColor = ref("");
 let formInitialValues = ref({
     searchEngineRadio: "bing",
     dynamicEffectRadio: "all",
-    imageSourceRadio: "Unsplash",
+    imageQualityRadio: "regular",
 })
 
 const props = defineProps({
@@ -137,12 +138,12 @@ onMounted(() => {
     // 初始化偏好设置
     let tempSearchEngineRadio = localStorage.getItem("searchEngine");
     let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
-    let tempImageSourceRadio = localStorage.getItem("imageSource");
+    let tempImageQualityRadio = localStorage.getItem("imageQuality");
 
     formInitialValues.value =  {
         searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
         dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
-        imageSourceRadio: tempImageSourceRadio === null ? "Unsplash": tempImageSourceRadio,
+        imageQualityRadio: tempImageQualityRadio === null ? "regular": tempImageQualityRadio,
     }
 
     // 屏幕适配
@@ -163,7 +164,7 @@ const handleCancel = () => {
     visible.value = false;
 }
 
-const emit = defineEmits(["searchEngine", "dynamicEffect","imageSource"]);
+const emit = defineEmits(["searchEngine", "dynamicEffect","imageQuality"]);
 
 // 搜索引擎
 const searchEngineRadioOnChange = (value) => {
@@ -180,11 +181,10 @@ const dynamicEffectRadioOnChange = (value) => {
 }
 
 // 搜索引擎
-const imageSourceRadioOnChange = (value) => {
-    emit("imageSource", value);
-    localStorage.setItem("imageSource", value);
-    Message.success("已更换图片来源");
-    localStorage.removeItem("lastImageRequestTime");
+const imageQualityRadioOnChange = (value) => {
+    emit("imageQuality", value);
+    localStorage.setItem("imageQuality", value);
+    Message.success("已更新图片质量");
     window.location.reload();
 }
 
@@ -192,7 +192,7 @@ const imageSourceRadioOnChange = (value) => {
 const handleClearStorageButtonClick = () => {
     localStorage.setItem("searchEngine", "bing");
     localStorage.setItem("dynamicEffect", "all");
-    localStorage.setItem("imageSource", "Unsplash");
+    localStorage.setItem("imageQuality", "Unsplash");
     Message.success("已重置设置");
     window.location.reload();
 }
