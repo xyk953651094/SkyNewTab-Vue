@@ -55,8 +55,34 @@
                                         <a-radio value="small">低</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
+                                <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
+                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
+                                        <a-row>
+                                            <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="3d-renders"         value="CDwuwXJAbEw">3D渲染</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="textures-patterns"  value="iUIsnVtjB0Y">纹理</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="experimental"       value="qPYsDzvJOYc">实验</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="architecture"       value="rnSKDHwwYUk">建筑</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="nature"             value="6sMVjTLSkeQ">自然</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="business-work"      value="aeu6rL-j6ew">商务</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="fashion"            value="S4MKLAsBB74">时尚</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="film"               value="hmenvQhUmxM">电影</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="food-drink"         value="xjPR4hlkBGA">饮食</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="health"             value="_hb-dl4Q-4U">健康</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="people"             value="towJZFskpGg">人物</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="interiors"          value="R_Fyn-Gwtlw">精神</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="street-photography" value="xHxYTMHLgOc">街头</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="animals"            value="Jpg6Kidl-Hk">动物</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="spirituality"       value="_8zFHuhRhyo">灵魂</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="arts-culture"       value="bDo48cUhwnY">文化</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="history"            value="dijpbw99kQQ">历史</a-checkbox></a-col>
+                                            <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
+                                        </a-row>
+                                    </a-checkbox-group>
+                                </a-form-item>
                                 <a-form-item field="clearStorageButton" label="其他设置">
-                                    <a-button type="primary" shape="round" status="danger" @click="handleClearStorageButtonClick">
+                                    <a-button type="text" shape="round" @click="handleClearStorageButtonClick" :style="{color: fontColor}">
                                         <template #icon>
                                             <icon-redo />
                                         </template>
@@ -76,15 +102,30 @@
                                 <icon-link />
                             </template>
                             <a-list size="small" :bordered="false">
-                                <a-list-item><a-link href="https://unsplash.com/" target="_blank">Unsplash.com</a-link></a-list-item>
-                                <a-list-item><a-link href="https://www.pexels.com/" target="_blank">Pexels.com</a-link></a-list-item>
-                                <a-list-item><a-link href="https://pixabay.com/" target="_blank">Pixabay.com</a-link></a-list-item>
+                                <a-list-item>
+                                    <a-space>
+                                        <a-avatar :size="24" shape="square" image-url="https://unsplash.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                        <a-button type="text" shape="round" href="https://unsplash.com/" target="_blank" :style="{color: fontColor}">Unsplash.com</a-button>
+                                    </a-space>
+                                </a-list-item>
+                                <a-list-item>
+                                    <a-space>
+                                        <a-avatar :size="24" shape="square" image-url="https://www.pexels.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                        <a-button type="text" shape="round" href="https://www.pexels.com/" target="_blank" :style="{color: fontColor}">Pexels.com</a-button>
+                                    </a-space>
+                                </a-list-item>
+                                <a-list-item>
+                                    <a-space>
+                                        <a-avatar :size="24" shape="square" image-url="https://pixabay.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                        <a-button type="text" shape="round" href="https://pixabay.com/" target="_blank" :style="{color: fontColor}">Pixabay.com</a-button>
+                                    </a-space>
+                                </a-list-item>
                             </a-list>
                         </a-card>
                     </a-col>
                 </a-row>
                 <template #footer>
-                    <a-button type="text" href="https://github.com/xyk953651094" target="_blank">
+                    <a-button type="text" shape="round" href="https://github.com/xyk953651094" target="_blank" :style="{color: fontColor}">
                         <template #icon>
                             <icon-github />
                         </template>
@@ -111,6 +152,7 @@ let formInitialValues = ref({
     searchEngineRadio: "bing",
     dynamicEffectRadio: "all",
     imageQualityRadio: "regular",
+    imageTopicsCheckbox: ["Fzo3zuOHN6w"],
 })
 
 const props = defineProps({
@@ -139,11 +181,16 @@ onMounted(() => {
     let tempSearchEngineRadio = localStorage.getItem("searchEngine");
     let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
     let tempImageQualityRadio = localStorage.getItem("imageQuality");
+    let tempImageTopicsCheckbox = localStorage.getItem("imageTopics");
+    if (tempImageTopicsCheckbox !== null) {
+        tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
+    }
 
     formInitialValues.value =  {
         searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
         dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
         imageQualityRadio: tempImageQualityRadio === null ? "regular": tempImageQualityRadio,
+        imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
     }
 
     // 屏幕适配
@@ -164,7 +211,7 @@ const handleCancel = () => {
     visible.value = false;
 }
 
-const emit = defineEmits(["searchEngine", "dynamicEffect","imageQuality"]);
+const emit = defineEmits(["searchEngine", "dynamicEffect","imageQuality","imageTopics"]);
 
 // 搜索引擎
 const searchEngineRadioOnChange = (value) => {
@@ -180,7 +227,7 @@ const dynamicEffectRadioOnChange = (value) => {
     Message.success("已更换显示效果");
 }
 
-// 搜索引擎
+// 图片质量
 const imageQualityRadioOnChange = (value) => {
     emit("imageQuality", value);
     localStorage.setItem("imageQuality", value);
@@ -188,12 +235,27 @@ const imageQualityRadioOnChange = (value) => {
     window.location.reload();
 }
 
+// 图片主题
+const imageTopicsCheckboxOnChange = (values) =>  {
+    let value = "";
+    for (let i = 0; i < values.length; i++) {
+        value += values[i];
+        if (i !== values.length - 1) {
+            value += ",";
+        }
+    }
+    emit("imageTopics", value);
+    localStorage.setItem("imageTopics", value);
+    Message.success("调整成功，新的主题将在下次加载时生效");
+    if (values.length === 0) {
+        Message.info("全不选与全选的效果一样");
+    }
+}
+
 // 重置设置
 const handleClearStorageButtonClick = () => {
-    localStorage.setItem("searchEngine", "bing");
-    localStorage.setItem("dynamicEffect", "all");
-    localStorage.setItem("imageQuality", "Unsplash");
-    Message.success("已重置设置");
+    localStorage.clear();
+    Message.success("已重置所有内容");
     window.location.reload();
 }
 

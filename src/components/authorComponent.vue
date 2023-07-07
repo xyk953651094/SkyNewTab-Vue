@@ -18,24 +18,22 @@
                     <a-list-item>
                         <a-list-item-meta :title=authorName >
                             <template #avatar>
-                                <a-avatar>
-                                    <img alt="avatar" :src="authorIconUrl"/>
-                                </a-avatar>
+                                <a-avatar :image-url="authorIconUrl" :style="{backgroundColor: 'transparent'}"/>
                             </template>
                             <template #description>
                                 <a-space>
                                     <a-space>
-                                        <i className="bi bi-collection"></i>
+                                        <i class="bi bi-collection"></i>
                                         <a-typography-text :style="{color: fontColor}">{{" " + authorCollections}}</a-typography-text>
                                     </a-space>
-                                    <a-divider direction="vertical" />
+                                    <a-divider direction="vertical" :style="{borderColor: fontColor}"/>
                                     <a-space>
-                                        <i className="bi bi-heart"></i>
+                                        <i class="bi bi-heart"></i>
                                         <a-typography-text :style="{color: fontColor}">{{" " + authorLikes}}</a-typography-text>
                                     </a-space>
-                                    <a-divider direction="vertical" />
+                                    <a-divider direction="vertical" :style="{borderColor: fontColor}"/>
                                     <a-space>
-                                        <i className="bi bi-images"></i>
+                                        <i class="bi bi-images"></i>
                                         <a-typography-text :style="{color: fontColor}">{{" " + authorPhotos}}</a-typography-text>
                                     </a-space>
                                 </a-space>
@@ -50,9 +48,7 @@
                     <a-list-item>
                         <a-list-item-meta :title=imageLocation :description=imageDescription>
                             <template #avatar>
-                                <a-avatar shape="square">
-                                    <img alt="avatar" :src="imagePreviewUrl"/>
-                                </a-avatar>
+                                <a-avatar shape="square" :image-url="imagePreviewUrl" :style="{backgroundColor: 'transparent'}"/>
                             </template>
                         </a-list-item-meta>
                         <template #actions>

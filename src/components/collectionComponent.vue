@@ -34,12 +34,7 @@
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-list-item-meta :title=item.webName :description=item.webUrl>
                     <template #avatar>
-                        <a-avatar>
-                            <img
-                                alt="图标"
-                                :src="item.webUrl + '/favicon.ico'"
-                            />
-                        </a-avatar>
+                        <a-avatar :image-url="item.webUrl + '/favicon.ico'" :style="{backgroundColor: 'transparent'}"/>
                     </template>
                 </a-list-item-meta>
                 <template #actions>

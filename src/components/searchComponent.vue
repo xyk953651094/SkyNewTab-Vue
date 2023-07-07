@@ -13,12 +13,7 @@
             allow-clear
         >
             <template #prefix>
-                <a-avatar :size="24">
-                    <img
-                        alt="图标"
-                        :src="searchEngineIconUrl"
-                    />
-                </a-avatar>
+                <a-avatar :size="24" :image-url="searchEngineIconUrl" :style="{backgroundColor: 'transparent'}"/>
             </template>
         </a-input-search>
     </a-col>

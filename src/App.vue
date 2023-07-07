@@ -16,6 +16,7 @@
                                               @searchEngine="getSearchEngine"
                                               @dynamicEffect="getDynamicEffect"
                                               @imageQuality="getImageQuality"
+                                              @imageTopics="getImageTopics"
                         />
                     </a-space>
                 </a-col>
@@ -83,6 +84,7 @@ let themeColor = ref( {
 let searchEngine = ref("bing");
 let dynamicEffect = ref("all");
 let imageQuality = ref("regular");
+let imageTopics = ref("Fzo3zuOHN6w");
 
 const getSearchEngine = (value) => {
     searchEngine.value = value;
@@ -94,6 +96,10 @@ const getDynamicEffect = (value) => {
 
 const getImageQuality = (value) => {
     imageQuality.value = value;
+}
+
+const getImageTopics = (value) => {
+    imageTopics.value = value;
 }
 
 // 请求完成后处理步骤
@@ -123,6 +129,7 @@ function getWallpaper() {
     let data = {
         "client_id": clientId,
         "orientation": (device === "iPhone" || device === "Android") ? "portrait" : "landscape",
+        "topics": imageTopics.value,
         "content_filter": "high",
     };
 
@@ -155,10 +162,12 @@ onMounted(()=>{
     let tempSearchEngine = localStorage.getItem("searchEngine");
     let tempDynamicEffect = localStorage.getItem("dynamicEffect");
     let tempImageQuality = localStorage.getItem("imageQuality");
+    let tempImageTopics = localStorage.getItem("imageTopics");
 
     searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
     dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
     imageQuality.value = tempImageQuality === null ? "regular" : tempImageQuality;
+    imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
 
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();
