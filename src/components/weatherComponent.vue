@@ -13,11 +13,28 @@
                 {{ weatherInfo }}
             </a-button>
             <template #content>
-                <p><i className="bi bi-moisture"></i>{{" 空气湿度：" + humidity}}</p>
-                <p><i className="bi bi-water"></i>{{" 空气质量：" + pm25}}</p>
-                <p><i className="bi bi-cloud-rain"></i>{{" 降雨概率：" + rainfall}}</p>
-                <p><i className="bi bi-eye"></i>{{" 视线距离：" + visibility}}</p>
-                <p><i className="bi bi-wind"></i>{{" 风速情况：" + windInfo}}</p>
+                <a-space direction="vertical" size="mini" fill>
+                    <a-space>
+                        <i class="bi bi-moisture"></i>
+                        <a-typography-text :style="{color: fontColor}">{{" 空气湿度：" + humidity}}</a-typography-text>
+                    </a-space>
+                    <a-space>
+                        <i class="bi bi-water"></i>
+                        <a-typography-text :style="{color: fontColor}">{{" 空气质量：" + pm25}}</a-typography-text>
+                    </a-space>
+                    <a-space>
+                        <i class="bi bi-cloud-rain"></i>
+                        <a-typography-text :style="{color: fontColor}">{{" 降雨概率：" + rainfall}}</a-typography-text>
+                    </a-space>
+                    <a-space>
+                        <i class="bi bi-eye"></i>
+                        <a-typography-text :style="{color: fontColor}">{{" 视线距离：" + visibility}}</a-typography-text>
+                    </a-space>
+                    <a-space>
+                        <i class="bi bi-wind"></i>
+                        <a-typography-text :style="{color: fontColor}">{{" 风速情况：" + windInfo}}</a-typography-text>
+                    </a-space>
+                </a-space>
             </template>
         </a-popover>
     </a-space>
@@ -74,9 +91,10 @@ function setWeather(data) {
 }
 
 function getWeather() {
+    let headers = {};
     let url = "https://v2.jinrishici.com/info";
     let data = {};
-    httpRequest(url, data, "GET")
+    httpRequest(headers, url, data, "GET")
         .then(function(resultData){
             localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             if (resultData.status === "success"  && resultData.data.weatherData !== null) {

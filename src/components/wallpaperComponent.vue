@@ -23,6 +23,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {imageDynamicEffect} from "../javascripts/publicFunctions";
+import "../stylesheets/wallpaperComponent.less"
 
 const props = defineProps({
     display: {
@@ -36,45 +37,53 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    displayEffect: {
-        type: String,
-        default: () => {
-            return "regular";
-        },
-        required: true
-    },
     dynamicEffect: {
         type: String,
         default: () => {
             return "all";
         },
         required: true
-    }
+    },
+    imageQuality: {
+        type: String,
+        default: () => {
+            return "regular";
+        },
+        required: true
+    },
 });
 
 let imageLink = ref("");
 let loadImageLink = ref("");
-
-watch(() => props.imageData, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        if(props.displayEffect === "regular") {
-            imageLink.value = props.imageData.urls.regular;
-        }
-        else if (props.displayEffect === "full") {
-            imageLink.value = props.imageData.urls.full;
-        }
-        else if (props.displayEffect === "raw") {
-            imageLink.value = props.imageData.urls.raw;
-        }
-        loadImageLink.value = props.imageData.urls.thumb;
-    }
-})
 
 watch(() => props.dynamicEffect, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         let backgroundImage = document.getElementById("backgroundImage");
         if (backgroundImage instanceof HTMLElement) {
             imageDynamicEffect(backgroundImage, props.dynamicEffect);
+        }
+    }
+})
+
+watch(() => props.imageData, (newValue, oldValue) => {
+    if (newValue !== oldValue && newValue) {
+        switch (props.imageQuality) {
+            case "full":
+                imageLink.value = props.imageData.urls.full;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
+            case "regular":
+                imageLink.value = props.imageData.urls.regular;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
+            case "small":
+                imageLink.value = props.imageData.urls.small;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
+            default:
+                imageLink.value = props.imageData.urls.regular;
+                loadImageLink.value = props.imageData.urls.small;
+                break;
         }
     }
 })
@@ -102,10 +111,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.backgroundImage {
-    position: fixed;
-    top: -1%;
-    left: -1%;
-    object-fit: cover;
-}
+/*.backgroundImage {*/
+/*    position: fixed;*/
+/*    top: -1%;*/
+/*    left: -1%;*/
+/*    object-fit: cover;*/
+/*}*/
 </style>

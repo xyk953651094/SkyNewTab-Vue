@@ -3,9 +3,10 @@ import "jquery-color"
 const $ = require("jquery");
 
 // 网络请求
-export function httpRequest(url, data, method) {
+export function httpRequest(headers, url, data, method) {
     return new Promise(function(resolve,reject){
         $.ajax({
+            headers: headers,
             url: url,
             type: method,
             data: data,
@@ -57,10 +58,11 @@ export function getTimeDetails() {
         minute: minute,
         second: second,
         showWeek: week,
-        showDate: year + "-" + month + "-" + day,
+        showDate: year + "/" + month + "/" + day,
         showDate2: year + "." + month + "." + day,
         showDate3: year + month + day,
         showDate4: year + "年" + month + "月" + day + "日",
+        showDate5: year + "-" + month + "-" + day,
         showTime: hour + ":" + minute,
         showLocaleDate: "农历" + localeDate.split(" ")[0] + "日"
     };
@@ -68,12 +70,7 @@ export function getTimeDetails() {
 
 // 判断字符串是否合规
 export function isEmptyString(param) {
-    if(typeof param === "string") {
-        return (param.length === 0);
-    }
-    else {
-        return false;
-    }
+    return (param === null || param === undefined || param.length === 0);
 }
 
 // 根据当前时间段返回问候语
@@ -256,7 +253,7 @@ export function getDevice() {
 }
 
 // 过渡动画
-export function changeThemeColor(element, backgroundColor, fontColor, time = 1000) {
+export function changeThemeColor(element, backgroundColor, fontColor, time = 500) {
     $(element).animate({
         backgroundColor: backgroundColor,
         color: fontColor,

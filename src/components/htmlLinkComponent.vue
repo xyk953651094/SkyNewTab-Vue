@@ -1,25 +1,22 @@
 <template>
     <a-space>
-        <a-tooltip :content=tooltipContent position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="buttonCreateTime" class="componentTheme zIndexHigh"
+        <a-tooltip content="前往图片主页" position="tr" :background-color="backgroundColor" :content-style="{color: fontColor}">
+            <a-button type="primary" shape="round" size="large" id="buttonHtmlLink" class="componentTheme zIndexHigh" @click="onclick"
                       :style="{display: display}">
                 <template #icon>
-                    <icon-calendar-clock />
+                    <icon-link/>
                 </template>
-                {{ createTime }}
             </a-button>
         </a-tooltip>
     </a-space>
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue"
-import {IconCalendarClock} from "@arco-design/web-vue/es/icon";
+import {defineProps, ref, watch} from "vue";
+import {IconLink} from "@arco-design/web-vue/es/icon";
+import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor} from "../javascripts/publicFunctions";
-
-let backgroundColor = ref("");
-let fontColor = ref("");
-let tooltipContent = ref("");
+import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -45,22 +42,31 @@ const props = defineProps({
     }
 });
 
-let createTime = ref("暂无拍摄日期信息");
+let backgroundColor = ref("");
+let fontColor = ref("");
+let htmlLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonCreateTime", backgroundColor.value, fontColor.value);
+        changeThemeColor("#buttonHtmlLink", backgroundColor.value, fontColor.value);
     }
 })
 
 watch(() => props.imageData, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
-        createTime.value = props.imageData.created_at.split("T")[0];
-        tooltipContent.value = "拍摄日期：" + createTime.value;
+    if (newValue !== oldValue) {
+        htmlLink.value = props.imageData.links.html;
     }
 })
+
+const onclick = () => {
+    if (htmlLink.value.length !== 0) {
+        window.open(htmlLink.value + unsplashUrl);
+    } else {
+        Message.error("无跳转链接");
+    }
+}
 </script>
 
 <style scoped>
