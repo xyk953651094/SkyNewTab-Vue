@@ -1,7 +1,7 @@
 <template>
     <a-space>
         <a-tooltip content="菜单栏" position="br" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="buttonPreference" class="componentTheme zIndexHigh" @click="onclick">
+            <a-button type="primary" shape="round" size="large" id="preferenceBtn" class="componentTheme zIndexHigh" @click="showDrawerBtnOnClick">
                 <template #icon>
                     <icon-more-vertical />
                 </template>
@@ -82,7 +82,7 @@
                                     </a-checkbox-group>
                                 </a-form-item>
                                 <a-form-item field="clearStorageButton" label="其他设置">
-                                    <a-button type="text" shape="round" @click="handleClearStorageButtonClick" :style="{color: fontColor}">
+                                    <a-button type="text" shape="round" @click="clearStorageBtnOnClick" :style="{color: fontColor}">
                                         <template #icon>
                                             <icon-redo />
                                         </template>
@@ -172,7 +172,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonPreference", backgroundColor.value, fontColor.value);
+        changeThemeColor("#preferenceBtn", backgroundColor.value, fontColor.value);
     }
 })
 
@@ -199,7 +199,7 @@ onMounted(() => {
     }
 })
 
-const onclick = () => {
+const showDrawerBtnOnClick = () => {
     visible.value = true;
 };
 
@@ -253,7 +253,7 @@ const imageTopicsCheckboxOnChange = (values) =>  {
 }
 
 // 重置设置
-const handleClearStorageButtonClick = () => {
+const clearStorageBtnOnClick = () => {
     localStorage.clear();
     Message.success("已重置所有内容");
     window.location.reload();

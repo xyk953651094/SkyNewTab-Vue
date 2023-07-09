@@ -7,7 +7,9 @@
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '500px'}"
         >
-            <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="componentTheme zIndexHigh" :style="{display: display}">
+            <a-button type="primary" shape="round" size="large" id="authorBtn" class="componentTheme zIndexHigh"
+                      @click="authorBtnOnClick"
+                      :style="{display: display}">
                 <template #icon>
                     <icon-camera/>
                 </template>
@@ -40,7 +42,7 @@
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" @click="gotoUser" :style="{color: fontColor}">
+                            <a-button type="text" shape="circle" @click="gotoUserBtnOnClick" :style="{color: fontColor}">
                                 <template #icon><icon-link /></template>
                             </a-button>
                         </template>
@@ -52,7 +54,7 @@
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" @click="gotoImage" :style="{color: fontColor}">
+                            <a-button type="text" shape="circle" @click="gotoImageBtnOnClick" :style="{color: fontColor}">
                                 <template #icon><icon-link /></template>
                             </a-button>
                         </template>
@@ -111,7 +113,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonAuthor", backgroundColor.value, fontColor.value);
+        changeThemeColor("#authorBtn", backgroundColor.value, fontColor.value);
     }
 })
 
@@ -130,18 +132,22 @@ watch(() => props.imageData, (newValue, oldValue) => {
     }
 })
 
-const gotoImage = () => {
+function authorBtnOnClick() {
+    window.open(authorLink.value);
+}
+
+function gotoUserBtnOnClick() {
     if(authorLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
+        window.open(authorLink.value + unsplashUrl);
     }
     else {
         Message.error("无跳转链接");
     }
 }
 
-const gotoUser = () => {
+function gotoImageBtnOnClick() {
     if(authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl);
+        window.open(imageLink.value + unsplashUrl);
     }
     else {
         Message.error("无跳转链接");

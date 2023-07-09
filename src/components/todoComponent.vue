@@ -11,12 +11,12 @@
                         <a-typography-text :style="{color: fontColor}">{{"待办事项 " + todoSize + " / " + todoMaxSize}}</a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModalBtnOnClick">
                             <template #icon>
                                 <icon-plus />
                             </template>
                         </a-button>
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllTodos">
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllBtnOnClick">
                             <template #icon>
                                 <icon-delete />
                             </template>
@@ -25,7 +25,7 @@
                 </a-row>
             </template>
             <a-badge :count="checkboxOptions.length">
-                <a-button type="primary" shape="round" size="large" id="buttonTodo" class="componentTheme zIndexHigh">
+                <a-button type="primary" shape="round" size="large" id="todoBtn" class="componentTheme zIndexHigh">
                     <template #icon>
                         <icon-check-square />
                     </template>
@@ -36,7 +36,7 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayModal" @ok="modalOkBtnOnClick" @cancel="modalCancelBtnOnClick" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"添加待办事项 " + todoSize + " / " + todoMaxSize}}</template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
@@ -73,7 +73,7 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let displayAddModal = ref(false);
+let displayModal = ref(false);
 let checkboxOptions = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
@@ -94,11 +94,11 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonTodo", backgroundColor.value, fontColor.value);
+        changeThemeColor("#todoBtn", backgroundColor.value, fontColor.value);
     }
 })
 
-function removeAllTodos() {
+function removeAllBtnOnClick() {
     let tempTodos = localStorage.getItem("todos");
     if(tempTodos){
         localStorage.removeItem("todos");
@@ -108,7 +108,7 @@ function removeAllTodos() {
     }
 }
 
-function showAddModal() {
+function showAddModalBtnOnClick() {
     let todos = [];
     let tempTodos = localStorage.getItem("todos");
     if(tempTodos){
@@ -116,7 +116,7 @@ function showAddModal() {
     }
     if(todos.length < todoMaxSize.value) {
         // $("#todoInput").children("input").val("");
-        displayAddModal.value = true;
+        displayModal.value = true;
         priority.value = 0;
     }
     else {
@@ -124,7 +124,7 @@ function showAddModal() {
     }
 }
 
-function handleAddModalOk() {
+function modalOkBtnOnClick() {
     let todoContent = $("#todoInput").children("input").val();
     if(todoContent && todoContent.length > 0) {
         let todos = [];
@@ -137,7 +137,7 @@ function handleAddModalOk() {
             todos.push({"label": todoContent + "★".repeat(priority.value), "value": todoContent + "★".repeat(priority.value)});
             localStorage.setItem("todos", JSON.stringify(todos));
 
-            displayAddModal.value = false;
+            displayModal.value = false;
             checkboxOptions.value = todos;
             todoSize.value = todos.length;
             Message.success("添加成功");
@@ -152,8 +152,8 @@ function handleAddModalOk() {
     }
 }
 
-function handleAddModalCancel() {
-    displayAddModal.value =  false
+function modalCancelBtnOnClick() {
+    displayModal.value =  false
 }
 
 function checkboxOnChange(checkedValues) {

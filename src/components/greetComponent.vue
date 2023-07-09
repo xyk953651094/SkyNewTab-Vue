@@ -5,8 +5,8 @@
                    :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
-            <a-button type="primary" shape="round" size="large" id="buttonGreet" class="componentTheme zIndexHigh"
-                      :style="{ cursor: 'default'}">
+            <a-button type="primary" shape="round" size="large" id="greetBtn" class="componentTheme zIndexHigh"
+                      @click="greetBtnOnClick">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -50,6 +50,13 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    searchEngine: {
+        type: String,
+        required: true,
+        default: ()=> {
+            return "bing"
+        }
     }
 });
 
@@ -58,6 +65,7 @@ let fontColor = ref("");
 let greetIcon = ref(getGreetIcon());
 let greetContent = ref(getGreetContent());
 let holidayContent = ref("暂无信息");
+let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let timeDetails = ref(getTimeDetails(new Date()));
 let calendar = ref(timeDetails.value.showDate4 + " " + timeDetails.value.showWeek);
 let suit = ref("暂无信息");
@@ -67,9 +75,32 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonGreet", backgroundColor.value, fontColor.value);
+        changeThemeColor("#greetBtn", backgroundColor.value, fontColor.value);
     }
-})
+});
+
+watch(() => props.searchEngine, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        switch (newValue) {
+            case "bing":
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                break;
+            case "baidu":
+                searchEngineUrl.value = "https://www.baidu.com/s?wd=";
+                break;
+            case "google":
+                searchEngineUrl.value = "https://www.google.com/search?q=";
+                break;
+            default:
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                break;
+        }
+    }
+});
+
+function greetBtnOnClick() {
+    window.open(searchEngineUrl.value + "日历", "_blank",);
+}
 
 function setHoliday(data) {
     let tempHolidayContent = data.solarTerms;

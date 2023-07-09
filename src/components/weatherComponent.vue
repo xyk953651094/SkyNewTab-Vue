@@ -5,8 +5,8 @@
                 :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                 :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
         >
-            <a-button type="primary" shape="round" size="large" id="buttonWeather" class="componentTheme zIndexHigh"
-                      :style="{display: display}">
+            <a-button type="primary" shape="round" size="large" id="weatherBtn" class="componentTheme zIndexHigh"
+                      @click="weatherBtnOnClick">
                 <template #icon>
                     <i :class="weatherIcon"></i>
                 </template>
@@ -42,7 +42,6 @@
 
 <script setup>
 import {defineProps, ref, watch, onMounted} from "vue";
-import {device} from "../javascripts/publicConstants";
 import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts/publicFunctions";
 
 const props = defineProps({
@@ -55,14 +54,21 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    searchEngine: {
+        type: String,
+        required: true,
+        default: ()=> {
+            return "bing"
+        }
     }
 });
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let display = ref("block");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无信息");
+let searchEngineUrl = ref("https://www.bing.com/search?q=")
 let region = ref("暂无信息");
 let humidity = ref("暂无信息")
 let pm25 = ref("暂无信息");
@@ -74,9 +80,32 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonWeather", backgroundColor.value, fontColor.value);
+        changeThemeColor("#weatherBtn", backgroundColor.value, fontColor.value);
     }
-})
+});
+
+watch(() => props.searchEngine, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        switch (newValue) {
+            case "bing":
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                break;
+            case "baidu":
+                searchEngineUrl.value = "https://www.baidu.com/s?wd=";
+                break;
+            case "google":
+                searchEngineUrl.value = "https://www.google.com/search?q=";
+                break;
+            default:
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                break;
+        }
+    }
+});
+
+function weatherBtnOnClick() {
+    window.open(searchEngineUrl.value + "天气", "_blank",);
+}
 
 function setWeather(data) {
     weatherIcon.value = getWeatherIcon(data.weatherData.weather);
@@ -109,25 +138,20 @@ function getWeather() {
 }
 
 onMounted(() => {
-    if(device === "iPhone" || device === "Android") {
-        display.value = "none";
+    // 防抖节流
+    let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
+    let nowTimeStamp = new Date().getTime();
+    if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+        getWeather();
     }
-    else {
-        // 防抖节流
-        let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
-        let nowTimeStamp = new Date().getTime();
-        if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
-            getWeather();
-        }
-        else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
-            getWeather();
-        }
-        else {  // 一小时之内使用上一次请求结果
-            let lastWeather = localStorage.getItem("lastWeather");
-            if (lastWeather) {
-                lastWeather = JSON.parse(lastWeather);
-                setWeather(lastWeather);
-            }
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+        getWeather();
+    }
+    else {  // 一小时之内使用上一次请求结果
+        let lastWeather = localStorage.getItem("lastWeather");
+        if (lastWeather) {
+            lastWeather = JSON.parse(lastWeather);
+            setWeather(lastWeather);
         }
     }
 })

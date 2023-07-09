@@ -11,12 +11,12 @@
                         <a-typography-text :style="{color: fontColor}">{{"倒数日 " + dailySize + " / " + dailyMaxSize }}</a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModalBtnOnClick">
                             <template #icon>
                                 <icon-plus />
                             </template>
                         </a-button>
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllDaily">
+                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllBtnOnClick">
                             <template #icon>
                                 <icon-delete />
                             </template>
@@ -25,7 +25,7 @@
                 </a-row>
             </template>
             <a-badge :count="listItems.length">
-                <a-button type="primary" shape="round" size="large" id="buttonDaily" class="componentTheme zIndexHigh">
+                <a-button type="primary" shape="round" size="large" id="dailyBtn" class="componentTheme zIndexHigh">
                     <template #icon>
                         <icon-calendar-clock />
                     </template>
@@ -40,7 +40,7 @@
 <!--                            </template>-->
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" status="danger" @click="removeDaily(item)" :style="{color: fontColor}">
+                            <a-button type="text" shape="circle" status="danger" @click="removeBtnOnClick(item)" :style="{color: fontColor}">
                                 <template #icon><icon-close /></template>
                             </a-button>
                         </template>
@@ -49,7 +49,7 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayModal" @ok="modalOkBtnOnClick" @cancel="modalCancelBtnOnClick" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"添加倒数日 " + dailySize + " / " + dailyMaxSize}}</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" :rules="[{required:true,message:'标题不能为空'}]" :validate-trigger="['change','input']">
@@ -85,7 +85,7 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let displayAddModal = ref(false);
+let displayModal = ref(false);
 let listItems = ref([]);
 let dailySize = ref(0);
 let dailyMaxSize = ref(5);
@@ -106,11 +106,11 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonDaily", backgroundColor.value, fontColor.value);
+        changeThemeColor("#dailyBtn", backgroundColor.value, fontColor.value);
     }
 })
 
-function removeAllDaily() {
+function removeAllBtnOnClick() {
     let tempDaily = localStorage.getItem("daily");
     if(tempDaily){
         localStorage.removeItem("daily");
@@ -120,7 +120,7 @@ function removeAllDaily() {
     }
 }
 
-function removeDaily(item) {
+function removeBtnOnClick(item) {
     let daily = [];
     let tempDaily = localStorage.getItem("daily");
     if(tempDaily){
@@ -142,7 +142,7 @@ function removeDaily(item) {
     }
 }
 
-function showAddModal() {
+function showAddModalBtnOnClick() {
     let daily = [];
     let tempDaily = localStorage.getItem("daily");
     if(tempDaily){
@@ -150,7 +150,7 @@ function showAddModal() {
     }
     if(daily.length < dailyMaxSize.value) {
         // $("#dailyInput").children("input").val("");
-        displayAddModal.value = true;
+        displayModal.value = true;
         selectedTimeStamp.value = 0;
     }
     else {
@@ -158,7 +158,7 @@ function showAddModal() {
     }
 }
 
-function handleAddModalOk() {
+function modalOkBtnOnClick() {
     let title = $("#dailyInput").children("input").val();
 
     if(title && title.length > 0 && selectedTimeStamp.value !== 0) {
@@ -186,7 +186,7 @@ function handleAddModalOk() {
             daily.push({"title": title, "description": description, "status": status, "timeStamp": Date.now ()});
             localStorage.setItem("daily", JSON.stringify(daily));
 
-            displayAddModal.value = false;
+            displayModal.value = false;
             listItems.value = daily;
             dailySize.value = daily.length;
             Message.success("添加成功");
@@ -200,8 +200,8 @@ function handleAddModalOk() {
     }
 }
 
-function handleAddModalCancel() {
-    displayAddModal.value =  false
+function modalCancelBtnOnClick() {
+    displayModal.value =  false
 }
 
 function datePickerOnChange(value, date, dateString) {

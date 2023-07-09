@@ -4,8 +4,8 @@
             <a-row justify="space-around">
                 <a-col :xs="0" :sm="0" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: left">
                     <a-space>
-                        <greet-component :theme-color="themeColor"/>
-                        <weather-component :theme-color="themeColor" :display="componentDisplay"/>
+                        <greet-component :theme-color="themeColor" :search-engine="searchEngine"/>
+                        <weather-component :theme-color="themeColor" :search-engine="searchEngine"/>
                     </a-space>
                 </a-col>
                 <a-col :xs="22" :sm="22" :md="10" :lg="10" :xl="10" :xxl="10" style="text-align: right">
@@ -23,7 +23,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content class="center">
-            <wallpaper-component :display="imageDisplay" :image-data="imageData" :dynamic-effect="dynamicEffect" :image-quality="imageQuality"/>
+            <wallpaper-component :display="componentDisplay" :image-data="imageData" :dynamic-effect="dynamicEffect" :image-quality="imageQuality"/>
             <a-space direction="vertical" align="center">
                 <clock-component :theme-color="themeColor" />
                 <search-component :search-engine="searchEngine"/>
@@ -58,7 +58,6 @@ import {
 import "./stylesheets/publicStyles.less"
 
 import GreetComponent from "./components/greetComponent.vue";
-// import HtmlLinkComponent from "./components/htmlLinkComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
 import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";
@@ -73,7 +72,6 @@ import {Message} from "@arco-design/web-vue";
 const $ = require("jquery");
 
 let componentDisplay = ref("none");
-let imageDisplay = ref("none");
 let imageData = ref("");
 let themeColor = ref( {
     "componentBackgroundColor": "",
@@ -104,7 +102,6 @@ const getImageTopics = (value) => {
 
 // 请求完成后处理步骤
 function setWallpaper(data) {
-    imageDisplay.value = "block";
     componentDisplay.value = "block";
     imageData.value = data;
 

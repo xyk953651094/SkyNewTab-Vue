@@ -2,22 +2,23 @@
     <a-col :span="24" class="center">
         <a-space class="zIndexHigh">
             <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :content="item.webUrl" position="bottom" :background-color="backgroundColor" :content-style="{color: fontColor}">
-                <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}" @click="handleCollectionClick(item)">
+                <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
+                          @click="collectionBtnOnClick(item)">
                     {{item.webName}}
                 </a-button>
             </a-tooltip>
 
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
-                      @click="showAddModal">
+                      @click="showAddModalBtnOnClick">
                 <template #icon><icon-plus /></template>
             </a-button>
             <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
-                      @click="showEditModal">
+                      @click="showEditModalBtnOnClick">
                 <template #icon><icon-edit /></template>
             </a-button>
         </a-space>
     </a-col>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayAddModal" @ok="addModalOkBtnOnClick" @cancel="addModalCancelBtnOnClick" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
             <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
@@ -28,7 +29,7 @@
             </a-form-item>
         </a-form>
     </a-modal>
-    <a-modal v-model:visible="displayEditModal" @ok="handleEditModalOk" @cancel="handleEditModalCancel" :mask-style="{backdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayEditModal" @ok="editModalOkBtnOnClick" @cancel="editModalCancelBtnOnClick" :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"编辑链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-list>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
@@ -38,7 +39,7 @@
                     </template>
                 </a-list-item-meta>
                 <template #actions>
-                    <a-button type="text" @click="handleRemoveCollection(item)" :style="{color: fontColor}">
+                    <a-button type="text" @click="removeBtnOnClick(item)" :style="{color: fontColor}">
                         <template #icon><icon-delete /></template>
                         删除
                     </a-button>
@@ -95,12 +96,12 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-function handleCollectionClick(item) {
+function collectionBtnOnClick(item) {
     window.open(item.webUrl);
 }
 
 // 添加导航弹窗
-function showAddModal() {
+function showAddModalBtnOnClick() {
     let collections = [];
     let tempCollections = localStorage.getItem("collections");
     if(tempCollections){
@@ -117,7 +118,7 @@ function showAddModal() {
     }
 }
 
-function handleAddModalOk() {
+function addModalOkBtnOnClick() {
     let webName = $("#webNameInput").children("input").val();
     let webUrl = $("#webUrlInput").children("input").val();
     if(webName && webUrl && webName.length > 0 && webUrl.length > 0) {
@@ -145,12 +146,12 @@ function handleAddModalOk() {
     }
 }
 
-function handleAddModalCancel() {
+function addModalCancelBtnOnClick() {
     displayAddModal.value = false
 }
 
 // 编辑导航弹窗
-function showEditModal() {
+function showEditModalBtnOnClick() {
     let collections = [];
     let tempCollections = localStorage.getItem("collections");
     if(tempCollections){
@@ -161,15 +162,15 @@ function showEditModal() {
     collectionData.value = collections;
 }
 
-function handleEditModalOk() {
+function editModalOkBtnOnClick() {
     displayEditModal.value = false;
 }
 
-function handleEditModalCancel() {
+function editModalCancelBtnOnClick() {
     displayEditModal.value = false;
 }
 
-function handleRemoveCollection(item) {
+function removeBtnOnClick(item) {
     let collections = [];
     let tempCollections = localStorage.getItem("collections");
     if(tempCollections){
