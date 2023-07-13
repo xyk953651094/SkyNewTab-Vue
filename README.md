@@ -14,7 +14,7 @@
 * 图片来源：https://unsplash.com
 
 ## 安装
-* [Chrome 网上应用商店](https://chrome.google.com/webstore/detail/odoenlibdoinhncgedhpbiehcadmakom/related)
+* [Chrome 网上应用商店](https://chrome.google.com/webstore/detail/odoenlibdoinhncgedhpbiehcadmakom)
 * [Edge 外接程序商店](https://microsoftedge.microsoft.com/addons/detail/dilcoahhajibnbanbabkcljjobgpomdc)
 * Firefox 附加组件商店（由于与 [SkyNewTab-React](https://github.com/xyk953651094/SkyNewTab-React) 重复，本插件不上架 Firefox 附加组件商店）
 * 下载本页面提供的文件进行安装
