@@ -19,9 +19,11 @@
 * [Chrome 网上应用商店](https://chrome.google.com/webstore/detail/odoenlibdoinhncgedhpbiehcadmakom)
 * [Edge 外接程序商店](https://microsoftedge.microsoft.com/addons/detail/dilcoahhajibnbanbabkcljjobgpomdc)
 * Firefox 附加组件商店（由于与 [SkyNewTab-React](https://github.com/xyk953651094/SkyNewTab-React) 重复，本插件不上架 Firefox 附加组件商店）
+* App Store & Mac App Stroe：由于成本原因（付不起每年99美元苹果开发者账号费用，悲），暂不上架苹果应用商店
 * 下载本页面提供的文件进行安装
 
 ## 效果展示
+### Chromium & Firefox
 <img width="1440" alt="截屏2023-07-11 15 33 09" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/24da3d03-c91b-4fb4-9fee-727e9988f23c">
 
 <img width="1440" alt="截屏2023-07-11 15 33 33" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/932e31fd-10d0-4a74-ae5b-c95393a87414">
@@ -33,5 +35,11 @@
 <img width="1440" alt="截屏2023-07-11 15 34 25" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/475241b3-6702-4893-ad2e-0d856dd7b3a2">
 
 <img width="1440" alt="截屏2023-07-11 15 34 45" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/83ead43b-52f4-4f3a-b289-21b418849ace">
+
+### Safari for iPhone
+
+### Safari for iPad
+
+### Safari for Mac
 
 
