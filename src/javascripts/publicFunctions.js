@@ -125,8 +125,11 @@ export function getWeatherIcon(weatherInfo) {
     if( weatherInfo.indexOf("晴") !== -1 ) {
         return "bi bi-sun"
     }
-    else if( weatherInfo.indexOf("云") !== -1 ) {
+    else if( weatherInfo.indexOf("阴") !== -1 ) {
         return "bi bi-cloud"
+    }
+    else if( weatherInfo.indexOf("云") !== -1 ) {
+        return "bi bi-clouds"
     }
     else if ( weatherInfo.indexOf("雨") !== -1 ) {
         return "bi bi-cloud-rain"

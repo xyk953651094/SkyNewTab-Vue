@@ -18,13 +18,13 @@
             </a-button>
         </a-space>
     </a-col>
-    <a-modal v-model:visible="displayAddModal" @ok="addModalOkBtnOnClick" @cancel="addModalCancelBtnOnClick" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayAddModal" @ok="addModalOkBtnOnClick" @cancel="addModalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)'}">
         <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
-            <a-form-item field="name" label="网站名称" :rules="[{required:true,message:'网页名称不能为空'}]" :validate-trigger="['change','input']">
+            <a-form-item field="name" label="网站名称" validate-trigger="change" required>
                 <a-input placeholder="请输入网站名称" id="webNameInput" maxLength="5" allow-clear showWordLimit/>
             </a-form-item>
-            <a-form-item field="post" label="网站地址" :rules="[{required:true,message:'网页地址不能为空'}]" :validate-trigger="['change','input']">
+            <a-form-item field="post" label="网站地址" validate-trigger="change" required>
                 <a-input placeholder="请输入网站地址" id="webUrlInput" allow-clear/>
             </a-form-item>
         </a-form>

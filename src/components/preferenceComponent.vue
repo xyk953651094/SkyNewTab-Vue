@@ -84,9 +84,9 @@
                                 <a-form-item field="clearStorageButton" label="其他设置">
                                     <a-button type="text" shape="round" @click="clearStorageBtnOnClick" :style="{color: fontColor}">
                                         <template #icon>
-                                            <icon-redo />
+                                            <icon-delete />
                                         </template>
-                                        重置设置
+                                        清空缓存
                                     </a-button>
                                 </a-form-item>
                             </a-form>
@@ -125,12 +125,20 @@
                     </a-col>
                 </a-row>
                 <template #footer>
-                    <a-button type="text" shape="round" href="https://github.com/xyk953651094" target="_blank" :style="{color: fontColor}">
-                        <template #icon>
-                            <icon-github />
-                        </template>
-                        作者主页
-                    </a-button>
+                    <a-space>
+                        <a-button type="text" shape="round" href="https://github.com/xyk953651094" target="_blank" :style="{color: fontColor}">
+                            <template #icon>
+                                <icon-github />
+                            </template>
+                            主页
+                        </a-button>
+                        <a-button type="text" shape="round" href="https://afdian.net/a/xyk953651094" target="_blank" :style="{color: fontColor}">
+                            <template #icon>
+                                <icon-thumb-up />
+                            </template>
+                            捐赠
+                        </a-button>
+                    </a-space>
                 </template>
             </a-drawer>
         </a-tooltip>
@@ -139,7 +147,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconMoreVertical, IconSettings, IconLink} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconDelete, IconSettings, IconGithub, IconThumbUp, IconLink} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {device} from "../javascripts/publicConstants";

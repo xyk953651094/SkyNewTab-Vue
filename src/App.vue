@@ -63,10 +63,10 @@ import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
 import PreferenceComponent from "./components/preferenceComponent.vue";
-import CollectionComponent from "@/components/collectionComponent.vue";
-import TodoComponent from "@/components/todoComponent.vue";
-import ClockComponent from "@/components/clockComponent.vue";
-import DailyComponent from "@/components/dailyComponent.vue";
+import CollectionComponent from "./components/collectionComponent.vue";
+import TodoComponent from "./components/todoComponent.vue";
+import ClockComponent from "./components/clockComponent.vue";
+import DailyComponent from "./components/dailyComponent.vue";
 import {Message} from "@arco-design/web-vue";
 
 const $ = require("jquery");
@@ -175,7 +175,7 @@ onMounted(()=>{
     if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
         getWallpaper();
     }
-    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一分钟才能进行新的请求
         getWallpaper();
     }
     else {  // 一分钟之内使用上一次请求结果
