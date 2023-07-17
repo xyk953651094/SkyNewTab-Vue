@@ -37,9 +37,9 @@
 <img width="1440" alt="截屏2023-07-11 15 34 45" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/83ead43b-52f4-4f3a-b289-21b418849ace">
 
 ### Safari for iPhone
-<img width="500" alt="截屏2023-07-15 13 08 07" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/72215256-045c-45f8-a88d-f7e1907f9e67">
+<img width="400" alt="截屏2023-07-15 13 08 07" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/72215256-045c-45f8-a88d-f7e1907f9e67">
 
-<img width="500" alt="截屏2023-07-15 13 05 23" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/161cb1a7-1659-4931-8ac4-f0e1fab88f7c">
+<img width="400" alt="截屏2023-07-15 13 05 23" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/161cb1a7-1659-4931-8ac4-f0e1fab88f7c">
 
 ### Safari for iPad
 <img alt="截屏2023-07-15 13 05 23" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/dbaf85f2-6a39-4198-9fec-a739c6d36734">
