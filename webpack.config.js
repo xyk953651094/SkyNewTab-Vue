@@ -13,6 +13,7 @@ module.exports = {
     // },
     entry: {
         mainPage: path.resolve(__dirname, "./src/main.js"),
+        popup: path.resolve(__dirname, "./src/popup.js"),
     },
     output: {
         filename: '[name].bundle.js',
@@ -55,7 +56,21 @@ module.exports = {
             title: '云开新标签页',
             filename: 'mainPage.html',
             template: 'public/index.html',
-            chunks: ['mainPage']
+            chunks: ['mainPage'],
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true
+            }
+        }),
+        new HtmlWebpackPlugin({
+            title: '云开新标签页弹窗',
+            filename: 'popup.html',
+            template: 'public/popup.html',
+            chunks: ['popup'],
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true
+            }
         }),
         new VueLoaderPlugin(),
         new CopyWebpackPlugin({

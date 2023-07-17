@@ -49,7 +49,7 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayModal" @ok="modalOkBtnOnClick" @cancel="modalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayModal" @ok="modalOkBtnOnClick" @cancel="modalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
         <template #title>{{"添加倒数日 " + dailySize + " / " + dailyMaxSize}}</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" validate-trigger="change" required>

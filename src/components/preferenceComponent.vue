@@ -132,9 +132,15 @@
                             </template>
                             主页
                         </a-button>
+                      <a-button type="text" shape="round" href="https://xyk953651094.blogspot.com" target="_blank" :style="{color: fontColor}">
+                        <template #icon>
+                          <icon-message />
+                        </template>
+                        博客
+                      </a-button>
                         <a-button type="text" shape="round" href="https://afdian.net/a/xyk953651094" target="_blank" :style="{color: fontColor}">
                             <template #icon>
-                                <icon-thumb-up />
+                                <icon-gift />
                             </template>
                             捐赠
                         </a-button>
@@ -147,7 +153,15 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconMoreVertical, IconDelete, IconSettings, IconGithub, IconThumbUp, IconLink} from "@arco-design/web-vue/es/icon";
+import {
+  IconMoreVertical,
+  IconDelete,
+  IconSettings,
+  IconLink,
+  IconGithub,
+  IconMessage,
+  IconGift,
+} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {device} from "../javascripts/publicConstants";
