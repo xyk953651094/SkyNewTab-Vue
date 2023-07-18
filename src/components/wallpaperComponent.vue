@@ -9,21 +9,16 @@
         :style="{display: display}"
     >
         <template #loader>
-            <img
-                width="102%"
-                height="102%"
-                :src="loadImageLink"
-                class="backgroundImage zIndexLow"
-                style="filter: blur(5px);"
-            />
+            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>
         </template>
     </a-image>
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect} from "../javascripts/publicFunctions";
+import {imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
+import {decode} from "blurhash"
 
 const props = defineProps({
     display: {
@@ -55,6 +50,7 @@ const props = defineProps({
 
 let imageLink = ref("");
 let loadImageLink = ref("");
+let blurHashCode = ref("");
 
 watch(() => props.dynamicEffect, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -86,6 +82,21 @@ watch(() => props.imageData, (newValue, oldValue) => {
                 break;
         }
     }
+
+    blurHashCode.value = newValue.blur_hash;
+    if (!isEmptyString(blurHashCode.value)) {
+        const blurHashCanvas = document.getElementById("blurHashCanvas");
+        if (blurHashCanvas instanceof HTMLCanvasElement) {
+            let blurHashImage = decode(blurHashCode.value, window.innerWidth, window.innerHeight);
+            let ctx = blurHashCanvas.getContext("2d");
+            if (ctx) {
+                const imageData = new ImageData(blurHashImage, window.innerWidth, window.innerHeight);
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            blurHashCanvas.className = "blurHashCanvas zIndexLow wallpaperFadeIn";
+        }
+    }
 })
 
 onMounted(() => {
@@ -111,10 +122,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/*.backgroundImage {*/
-/*    position: fixed;*/
-/*    top: -1%;*/
-/*    left: -1%;*/
-/*    object-fit: cover;*/
-/*}*/
+
 </style>
