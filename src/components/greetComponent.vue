@@ -146,7 +146,7 @@ onMounted(() => {
     if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
         getHoliday();
     }
-    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+    else if(nowTimeStamp - parseInt(lastRequestTime) > 4 * 60 * 60 * 1000) {  // 必须多于四小时才能进行新的请求
         getHoliday();
     }
     else {  // 一小时之内使用上一次请求结果
@@ -160,7 +160,7 @@ onMounted(() => {
     setInterval(()=>{
         greetIcon.value = getGreetIcon();
         greetContent.value = getGreetContent();
-    }, 60 * 1000);
+    }, 60 * 60 * 1000);
 })
 </script>
 
