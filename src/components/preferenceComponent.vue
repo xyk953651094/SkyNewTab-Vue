@@ -10,6 +10,7 @@
                 :width="340"
                 :height="500"
                 :visible="visible"
+                :closable="false"
                 :placement="drawerPosition"
                 :drawer-style="{
                     backgroundColor: backgroundColor,

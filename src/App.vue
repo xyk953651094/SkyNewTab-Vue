@@ -74,7 +74,7 @@ const $ = require("jquery");
 let componentDisplay = ref("none");
 let imageData = ref("");
 let themeColor = ref( {
-    "imageThemeColor": "",
+    "themeColor": "",
     "componentBackgroundColor": "",
     "componentFontColor": ""
 });
@@ -218,7 +218,7 @@ onMounted(()=>{
         let drawerEle = $(".arco-drawer");
         if (drawerEle.length && drawerEle.length > 0) {
             $(".arco-drawer-header").css("borderBottomColor", themeColor.value.componentFontColor);
-            $(".arco-drawer-close-btn").css("color", themeColor.value.componentFontColor);
+            // $(".arco-drawer-close-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-title").css("color", themeColor.value.componentFontColor);
             $(".arco-card-header-title").css("color", themeColor.value.componentFontColor);
             $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
@@ -230,7 +230,7 @@ onMounted(()=>{
             $(".arco-list-item:not(:last-child)").css("borderBottom", "1px solid" + themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-footer").css({"borderTopColor": themeColor.value.componentFontColor, "textAlign": "center"});
-            $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
+            // $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
             // $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, "opacity": 0.6});  // TODO: 等待arco design 的 dawer 支持 mask-style属性
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
 
@@ -241,7 +241,7 @@ onMounted(()=>{
         if (modalEle.length && modalEle.length > 0) {
             $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
             $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-modal-close-btn").css("color", themeColor.value.componentFontColor);
+            // $(".arco-modal-close-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);

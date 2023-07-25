@@ -18,7 +18,7 @@
             </a-button>
         </a-space>
     </a-col>
-    <a-modal v-model:visible="displayAddModal" @ok="addModalOkBtnOnClick" @cancel="addModalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayAddModal" :closable="false" @ok="addModalOkBtnOnClick" @cancel="addModalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
         <template #title>{{"添加链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-form>
             <a-form-item field="name" label="网站名称" validate-trigger="change" required>
@@ -29,7 +29,7 @@
             </a-form-item>
         </a-form>
     </a-modal>
-    <a-modal v-model:visible="displayEditModal" @ok="editModalOkBtnOnClick" @cancel="editModalCancelBtnOnClick" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayEditModal" :closable="false" @ok="editModalOkBtnOnClick" @cancel="editModalCancelBtnOnClick" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
         <template #title>{{"编辑链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-list>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">

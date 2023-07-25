@@ -42,7 +42,7 @@
 <!--                            </template>-->
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" status="danger" @click="removeBtnOnClick(item)" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                            <a-button type="text" shape="circle" size="mini" @click="removeBtnOnClick(item)" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                                 <template #icon><icon-close /></template>
                             </a-button>
                         </template>
@@ -51,7 +51,7 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayModal" @ok="modalOkBtnOnClick" @cancel="modalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
+    <a-modal v-model:visible="displayModal" :closable="false" @ok="modalOkBtnOnClick" @cancel="modalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
         <template #title>{{"添加倒数日 " + dailySize + " / " + dailyMaxSize}}</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题" validate-trigger="change" required>
