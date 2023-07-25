@@ -1,25 +1,29 @@
 <template>
-    <a-row>
-        <a-space align="center" size="mini" id="clock" class="zIndexHigh">
-            <a-typography-text class="clockText" :style="{color: backgroundColor}">
-                {{currentTime}}
-            </a-typography-text>
-            <a-space align="center" size="mini" direction="vertical">
-                <a-typography-text class="dateText" :style="{color: backgroundColor}">
-                    {{currentWeek}}
+    <a-row justify="center">
+        <a-col :span="24" class="zIndexHigh" :style="{padding: '5px', borderRadius: '10px'}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+            <a-space align="center" size="mini" id="clock">
+                <a-typography-text class="clockText" :style="{color: backgroundColor}">
+                    {{currentTime}}
                 </a-typography-text>
-                <a-typography-text class="dateText" :style="{color: backgroundColor}">
-                    {{currentDate}}
-                </a-typography-text>
+                <a-space align="center" size="mini" direction="vertical">
+                    <a-typography-text class="dateText" :style="{color: backgroundColor}">
+                        {{currentWeek}}
+                    </a-typography-text>
+                    <a-typography-text class="dateText" :style="{color: backgroundColor}">
+                        {{currentDate}}
+                    </a-typography-text>
+                </a-space>
             </a-space>
-        </a-space>
+        </a-col>
     </a-row>
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {getTimeDetails} from "../javascripts/publicFunctions";
-import "../stylesheets/clockComponent.less"
+import "../stylesheets/clockComponent.less";
+
+const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
@@ -56,6 +60,18 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         fontColor.value = props.themeColor.componentFontColor;
     }
 })
+
+function btnMouseOver() {
+    this.style.backgroundColor = backgroundColor.value;
+    $(".clockText").css("color", fontColor.value);
+    $(".dateText").css("color", fontColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    $(".clockText").css("color", backgroundColor.value);
+    $(".dateText").css("color", backgroundColor.value);
+}
 
 </script>
 

@@ -8,9 +8,9 @@
         :preview=false
         :style="{display: display}"
     >
-        <template #loader>
-            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>
-        </template>
+<!--        <template #loader>-->
+<!--            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>-->
+<!--        </template>-->
     </a-image>
 </template>
 
