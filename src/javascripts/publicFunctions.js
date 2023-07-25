@@ -1,5 +1,6 @@
-import {lightThemeArray, darkThemeArray} from "../javascripts/publicConstants";
+import {darkThemeArray, lightThemeArray} from "../javascripts/publicConstants";
 import "jquery-color"
+
 const $ = require("jquery");
 
 // 网络请求
@@ -162,18 +163,18 @@ export function setColorTheme() {
     let body = document.getElementsByTagName("body")[0];
     body.style.backgroundColor = theme[randomNum].bodyBackgroundColor;  // 设置body背景颜色
 
-    let returnValue = {
+    return {
+        "themeColor": theme[randomNum].bodyBackgroundColor,
         "componentBackgroundColor": theme[randomNum].componentBackgroundColor,
         "componentFontColor": getFontColor(theme[randomNum].componentBackgroundColor),
-    }
-    return returnValue;  // 返回各组件背景颜色
+    };  // 返回各组件背景颜色
 }
 
 // 根据图片背景颜色获取反色主题
-export function getComponentBackgroundColor(color) {
-    color = "0x" + color.replace("#", '');
+export function getReverseColor(color) {
+    color = "0x" + color.replace("#", "");
     let newColor = "000000" + (0xFFFFFF - parseInt(color)).toString(16);
-    return '#' + newColor.substring(newColor.length-6, newColor.length);
+    return "#" + newColor.substring(newColor.length-6, newColor.length);
 }
 
 // 根据元素背景颜色获取字体颜色
@@ -185,13 +186,13 @@ export function getFontColor(color) {
         let b = parseInt(rgb[3], 16);
         let gray = Math.round(r * 0.299 + g * 0.587 + b * 0.114);
         if (gray > 128) {
-            return '#000000';
+            return "#000000";
         } else {
-            return '#ffffff';
+            return "#ffffff";
         }
     }
     else {
-        return '#ffffff';
+        return "#ffffff";
     }
 }
 
@@ -249,9 +250,9 @@ export function imageDynamicEffect(element, effectType) {
 // 判断设备型号
 export function getDevice() {
     let ua = navigator.userAgent;
-    if(ua.indexOf('iPhone') > -1) { return 'iPhone' }
-    else if(ua.indexOf('iPad') > -1) { return 'iPad' }
-    else if(ua.indexOf('Android') > -1) { return 'Android' }
+    if(ua.indexOf("iPhone") > -1) { return "iPhone" }
+    else if(ua.indexOf("iPad") > -1) { return "iPad" }
+    else if(ua.indexOf("Android") > -1) { return "Android" }
     else { return '' }
 }
 

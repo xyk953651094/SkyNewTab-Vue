@@ -11,16 +11,18 @@
                         <a-typography-text :style="{color: fontColor}">{{"待办事项 " + todoSize + " / " + todoMaxSize}}</a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModalBtnOnClick">
-                            <template #icon>
-                                <icon-plus />
-                            </template>
-                        </a-button>
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllBtnOnClick">
-                            <template #icon>
-                                <icon-delete />
-                            </template>
-                        </a-button>
+                        <a-space>
+                            <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut" @click="showAddModalBtnOnClick">
+                                <template #icon>
+                                    <icon-plus />
+                                </template>
+                            </a-button>
+                            <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut" @click="removeAllBtnOnClick">
+                                <template #icon>
+                                    <icon-delete />
+                                </template>
+                            </a-button>
+                        </a-space>
                     </a-col>
                 </a-row>
             </template>
@@ -53,7 +55,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCheckSquare, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const $ = require("jquery");
@@ -64,6 +66,7 @@ const props = defineProps({
         required: true,
         default: ()=> {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -71,6 +74,7 @@ const props = defineProps({
     }
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
@@ -92,11 +96,22 @@ onMounted(()=>{
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
         changeThemeColor("#todoBtn", backgroundColor.value, fontColor.value);
     }
 })
+
+function btnMouseOver() {
+  this.style.backgroundColor = hoverColor.value;
+  this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+  this.style.backgroundColor = "transparent";
+  this.style.color = fontColor.value;
+}
 
 function removeAllBtnOnClick() {
     let tempTodos = localStorage.getItem("todos");

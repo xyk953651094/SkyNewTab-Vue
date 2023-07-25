@@ -42,7 +42,7 @@
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" @click="gotoUserBtnOnClick" :style="{color: fontColor}">
+                            <a-button type="text" shape="circle" @click="gotoUserBtnOnClick" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                                 <template #icon><icon-link /></template>
                             </a-button>
                         </template>
@@ -54,7 +54,7 @@
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" @click="gotoImageBtnOnClick" :style="{color: fontColor}">
+                            <a-button type="text" shape="circle" @click="gotoImageBtnOnClick" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                                 <template #icon><icon-link /></template>
                             </a-button>
                         </template>
@@ -69,7 +69,7 @@
 import {defineProps, ref, watch} from "vue"
 import {IconCamera, IconLink} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "../javascripts/publicConstants";
-import {changeThemeColor, isEmptyString} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -77,6 +77,7 @@ const props = defineProps({
         type: Object,
         default: ()=> {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -96,6 +97,7 @@ const props = defineProps({
     },
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let authorName = ref("暂无信息");
@@ -111,6 +113,7 @@ let imageDescription = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if(newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
         changeThemeColor("#authorBtn", backgroundColor.value, fontColor.value);
@@ -131,6 +134,16 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imageDescription.value = isEmptyString(props.imageData.alt_description)? "暂无信息" : props.imageData.alt_description;
     }
 })
+
+function btnMouseOver() {
+  this.style.backgroundColor = hoverColor.value;
+  this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+  this.style.backgroundColor = "transparent";
+  this.style.color = fontColor.value;
+}
 
 function authorBtnOnClick() {
     window.open(authorLink.value);

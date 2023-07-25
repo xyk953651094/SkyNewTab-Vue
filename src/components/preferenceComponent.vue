@@ -82,7 +82,9 @@
                                     </a-checkbox-group>
                                 </a-form-item>
                                 <a-form-item field="clearStorageButton" label="其他设置">
-                                    <a-button type="text" shape="round" @click="clearStorageBtnOnClick" :style="{color: fontColor}">
+                                    <a-button type="text" shape="round" @click="clearStorageBtnOnClick" :style="{color: fontColor}" id="clearStorageBtn"
+                                              :onmouseover="btnMouseOver" :onmouseout="btnMouseOut"
+                                    >
                                         <template #icon>
                                             <icon-delete />
                                         </template>
@@ -105,19 +107,22 @@
                                 <a-list-item>
                                     <a-space>
                                         <a-avatar :size="24" shape="square" image-url="https://unsplash.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
-                                        <a-button type="text" shape="round" href="https://unsplash.com/" target="_blank" :style="{color: fontColor}">Unsplash.com</a-button>
+                                        <a-button type="text" shape="round" href="https://unsplash.com/" target="_blank" :style="{color: fontColor}"
+                                                  :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">Unsplash.com</a-button>
                                     </a-space>
                                 </a-list-item>
                                 <a-list-item>
                                     <a-space>
                                         <a-avatar :size="24" shape="square" image-url="https://www.pexels.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
-                                        <a-button type="text" shape="round" href="https://www.pexels.com/" target="_blank" :style="{color: fontColor}">Pexels.com</a-button>
+                                        <a-button type="text" shape="round" href="https://www.pexels.com/" target="_blank" :style="{color: fontColor}"
+                                                  :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">Pexels.com</a-button>
                                     </a-space>
                                 </a-list-item>
                                 <a-list-item>
                                     <a-space>
                                         <a-avatar :size="24" shape="square" image-url="https://pixabay.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
-                                        <a-button type="text" shape="round" href="https://pixabay.com/" target="_blank" :style="{color: fontColor}">Pixabay.com</a-button>
+                                        <a-button type="text" shape="round" href="https://pixabay.com/" target="_blank" :style="{color: fontColor}"
+                                                  :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">Pixabay.com</a-button>
                                     </a-space>
                                 </a-list-item>
                             </a-list>
@@ -126,19 +131,19 @@
                 </a-row>
                 <template #footer>
                     <a-space>
-                        <a-button type="text" shape="round" href="https://github.com/xyk953651094" target="_blank" :style="{color: fontColor}">
+                        <a-button type="text" shape="round" href="https://github.com/xyk953651094" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                             <template #icon>
                                 <icon-github />
                             </template>
                             主页
                         </a-button>
-                      <a-button type="text" shape="round" href="https://xyk953651094.blogspot.com" target="_blank" :style="{color: fontColor}">
+                      <a-button type="text" shape="round" href="https://xyk953651094.blogspot.com" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                         <template #icon>
                           <icon-message />
                         </template>
                         博客
                       </a-button>
-                        <a-button type="text" shape="round" href="https://afdian.net/a/xyk953651094" target="_blank" :style="{color: fontColor}">
+                        <a-button type="text" shape="round" href="https://afdian.net/a/xyk953651094" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                             <template #icon>
                                 <icon-gift />
                             </template>
@@ -162,12 +167,13 @@ import {
   IconMessage,
   IconGift,
 } from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {device} from "../javascripts/publicConstants";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let formInitialValues = ref({
@@ -183,6 +189,7 @@ const props = defineProps({
         required: true,
         default: ()=> {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -192,6 +199,7 @@ const props = defineProps({
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
         changeThemeColor("#preferenceBtn", backgroundColor.value, fontColor.value);
@@ -234,6 +242,16 @@ const handleCancel = () => {
 }
 
 const emit = defineEmits(["searchEngine", "dynamicEffect","imageQuality","imageTopics"]);
+
+function btnMouseOver() {
+    this.style.backgroundColor = hoverColor.value;
+    this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = fontColor.value;
+}
 
 // 搜索引擎
 const searchEngineRadioOnChange = (value) => {

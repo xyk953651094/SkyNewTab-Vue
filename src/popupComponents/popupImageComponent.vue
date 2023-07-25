@@ -7,19 +7,19 @@
         :style="{borderRadius: '10px'}"
     />
     <a-space direction="vertical">
-      <a-button type="text" shape="round" :href="authorLink" target="_blank" :style="{color: fontColor}">
+      <a-button type="text" shape="round" :href="authorLink" target="_blank" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut" :style="{color: fontColor}">
         <template #icon>
           <icon-user />
         </template>
         {{authorName}}
       </a-button>
-      <a-button type="text" shape="round" :href="imageLink" target="_blank" :style="{color: fontColor}">
+      <a-button type="text" shape="round" :href="imageLink" target="_blank" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut" :style="{color: fontColor}">
         <template #icon>
           <icon-location />
         </template>
         {{imageLocation}}
       </a-button>
-      <a-button type="text" shape="round" :href="imageLink" target="_blank" :style="{color: fontColor}">
+      <a-button type="text" shape="round" :href="imageLink" target="_blank" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut" :style="{color: fontColor}">
         <template #icon>
           <icon-info-circle />
         </template>
@@ -32,7 +32,7 @@
 <script setup>
 import {defineProps, ref, watch} from "vue";
 import {IconUser, IconLocation, IconInfoCircle} from "@arco-design/web-vue/es/icon";
-import {isEmptyString} from "../javascripts/publicFunctions";
+import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 
 const props = defineProps({
@@ -66,6 +66,16 @@ watch(() => props.imageData, (newValue, oldValue) => {
       imageDescription.value = isEmptyString(props.imageData.alt_description)? "暂无信息" : props.imageData.alt_description;
   }
 })
+
+function btnMouseOver() {
+  this.style.backgroundColor = props.imageData.color;
+  this.style.color = getFontColor(props.imageData.color);
+}
+
+function btnMouseOut() {
+  this.style.backgroundColor = "transparent";
+  this.style.color = props.fontColor;
+}
 
 </script>
 

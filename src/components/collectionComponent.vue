@@ -39,7 +39,7 @@
                     </template>
                 </a-list-item-meta>
                 <template #actions>
-                    <a-button type="text" @click="removeBtnOnClick(item)" :style="{color: fontColor}">
+                    <a-button type="text" shape="round" @click="removeBtnOnClick(item)" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                         <template #icon><icon-delete /></template>
                         删除
                     </a-button>
@@ -54,6 +54,7 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconPlus, IconEdit, IconDelete} from "@arco-design/web-vue/es/icon";
 // import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
+import {getFontColor} from "@/javascripts/publicFunctions";
 
 const $ = require("jquery");
 
@@ -63,6 +64,7 @@ const props = defineProps({
         required: true,
         default: ()=> {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -70,6 +72,7 @@ const props = defineProps({
     }
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayAddModal = ref(false);
@@ -91,10 +94,21 @@ onMounted(()=>{
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
     }
 })
+
+function btnMouseOver() {
+  this.style.backgroundColor = hoverColor.value;
+  this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+  this.style.backgroundColor = "transparent";
+  this.style.color = fontColor.value;
+}
 
 function collectionBtnOnClick(item) {
     window.open(item.webUrl);

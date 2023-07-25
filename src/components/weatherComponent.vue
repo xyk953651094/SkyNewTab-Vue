@@ -50,6 +50,7 @@ const props = defineProps({
         required: true,
         default: ()=> {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
