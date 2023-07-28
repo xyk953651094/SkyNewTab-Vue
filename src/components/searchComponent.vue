@@ -3,7 +3,7 @@
         <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
         <a-input-search
             id="searchInput"
-            class="zIndexHigh"
+            class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
             @focus="onFocus"
             @blur="onBlur"
@@ -62,21 +62,21 @@ watch(() => props.searchEngine, (newValue, oldValue) => {
     }
 })
 
-const onFocus = () => {
+function onFocus() {
     fadeIn("#mask", 300);
     showMask.value = "block";
 }
 
-const onBlur = () => {
+function onBlur() {
     fadeOut("#mask", 300);
     // showMask.value = "none";
 }
 
-const onSearch = (value) => {
+function onSearch(value) {
     window.location.href = searchEngineUrl.value + value;
 }
 
-const onPressEnter = () => {
+function onPressEnter() {
     let value = document.getElementById("searchInput").firstElementChild.value;
     window.location.href = searchEngineUrl.value + value;
 }

@@ -16,6 +16,10 @@
                       @click="showEditModalBtnOnClick">
                 <template #icon><icon-edit /></template>
             </a-button>
+            <a-button type="primary" shape="round" class="componentTheme" :style="{color: fontColor, backgroundColor: backgroundColor}"
+                      @click="removeAllBtnOnClick">
+              <template #icon><icon-delete /></template>
+            </a-button>
         </a-space>
     </a-col>
     <a-modal v-model:visible="displayAddModal" :closable="false" @ok="addModalOkBtnOnClick" @cancel="addModalCancelBtnOnClick" unmount-on-close :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
@@ -32,6 +36,14 @@
     <a-modal v-model:visible="displayEditModal" :closable="false" @ok="editModalOkBtnOnClick" @cancel="editModalCancelBtnOnClick" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}">
         <template #title>{{"编辑链接 " + collectionSize + " / " + collectionMaxSize}}</template>
         <a-list>
+            <template #header>
+                <a-row justify="end">
+                    <a-button type="text" shape="round" @click="removeAllBtnOnClick" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                      <template #icon><icon-delete /></template>
+                      全部删除
+                    </a-button>
+                </a-row>
+            </template>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-list-item-meta :title=item.webName :description=item.webUrl>
                     <template #avatar>
@@ -54,7 +66,7 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconPlus, IconEdit, IconDelete} from "@arco-design/web-vue/es/icon";
 // import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {getFontColor} from "@/javascripts/publicFunctions";
+import {getFontColor} from "../javascripts/publicFunctions";
 
 const $ = require("jquery");
 
@@ -101,6 +113,7 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 function btnMouseOver() {
+  console.log(hoverColor.value)
   this.style.backgroundColor = hoverColor.value;
   this.style.color = getFontColor(hoverColor.value);
 }
@@ -204,6 +217,17 @@ function removeBtnOnClick(item) {
         collectionData.value = collections;
         collectionSize.value = collections.length;
     }
+}
+
+function removeAllBtnOnClick() {
+  let tempCollections = localStorage.getItem("collections");
+  if(tempCollections){
+    localStorage.removeItem("collections");
+
+    collectionData.value = [];
+    collectionSize.value = 0;
+    Message.success("删除成功");
+  }
 }
 
 </script>

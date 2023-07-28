@@ -247,6 +247,7 @@ onMounted(()=>{
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+            $(".arco-modal-footer > .arco-btn").removeClass("arco-btn-shape-square").addClass("arco-btn-shape-round");
         }
     });
 });

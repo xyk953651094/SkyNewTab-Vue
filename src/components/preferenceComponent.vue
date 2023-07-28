@@ -104,29 +104,23 @@
                             <template #extra>
                                 <icon-link />
                             </template>
-                            <a-list size="small" :bordered="false">
-                                <a-list-item>
-                                    <a-space>
-                                        <a-avatar :size="24" shape="square" image-url="https://unsplash.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
-                                        <a-button type="text" shape="round" href="https://unsplash.com/" target="_blank" :style="{color: fontColor}"
-                                                  :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">Unsplash.com</a-button>
-                                    </a-space>
-                                </a-list-item>
-                                <a-list-item>
-                                    <a-space>
-                                        <a-avatar :size="24" shape="square" image-url="https://www.pexels.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
-                                        <a-button type="text" shape="round" href="https://www.pexels.com/" target="_blank" :style="{color: fontColor}"
-                                                  :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">Pexels.com</a-button>
-                                    </a-space>
-                                </a-list-item>
-                                <a-list-item>
-                                    <a-space>
-                                        <a-avatar :size="24" shape="square" image-url="https://pixabay.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
-                                        <a-button type="text" shape="round" href="https://pixabay.com/" target="_blank" :style="{color: fontColor}"
-                                                  :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">Pixabay.com</a-button>
-                                    </a-space>
-                                </a-list-item>
-                            </a-list>
+                            <a-space direction="vertical">
+                                <a-button type="text" shape="round" href="https://unsplash.com/" target="_blank" :style="{color: fontColor}"
+                                          :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                                    <a-avatar :size="16" shape="square" image-url="https://unsplash.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                    &nbsp;&nbsp;Unsplash.com
+                                </a-button>
+                                <a-button type="text" shape="round" href="https://www.pexels.com/" target="_blank" :style="{color: fontColor}"
+                                          :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                                    <a-avatar :size="16" shape="square" image-url="https://www.pexels.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                    &nbsp;&nbsp;Pexels.com
+                                </a-button>
+                                <a-button type="text" shape="round" href="https://pixabay.com/" target="_blank" :style="{color: fontColor}"
+                                          :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                                    <a-avatar :size="16" shape="square" image-url="https://pixabay.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                    &nbsp;&nbsp;Pixabay.com
+                                </a-button>
+                            </a-space>
                         </a-card>
                     </a-col>
                 </a-row>
@@ -138,12 +132,12 @@
                             </template>
                             主页
                         </a-button>
-                      <a-button type="text" shape="round" href="https://xyk953651094.blogspot.com" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
-                        <template #icon>
-                          <icon-message />
-                        </template>
-                        博客
-                      </a-button>
+                        <a-button type="text" shape="round" href="https://xyk953651094.blogspot.com" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                            <template #icon>
+                              <icon-message />
+                            </template>
+                            博客
+                        </a-button>
                         <a-button type="text" shape="round" href="https://afdian.net/a/xyk953651094" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
                             <template #icon>
                                 <icon-gift />
@@ -230,15 +224,15 @@ onMounted(() => {
     }
 })
 
-const showDrawerBtnOnClick = () => {
+function showDrawerBtnOnClick() {
     visible.value = true;
-};
+}
 
-const handleOk = () => {
+function handleOk() {
     visible.value = false;
-};
+}
 
-const handleCancel = () => {
+function handleCancel() {
     visible.value = false;
 }
 
@@ -255,21 +249,21 @@ function btnMouseOut() {
 }
 
 // 搜索引擎
-const searchEngineRadioOnChange = (value) => {
+function searchEngineRadioOnChange(value) {
     emit("searchEngine", value);
     localStorage.setItem("searchEngine", value);
     Message.success("已更换搜索引擎");
 }
 
 // 动效样式
-const dynamicEffectRadioOnChange = (value) => {
+function dynamicEffectRadioOnChange(value) {
     emit("dynamicEffect", value);
     localStorage.setItem("dynamicEffect", value);
     Message.success("已更换显示效果");
 }
 
 // 图片质量
-const imageQualityRadioOnChange = (value) => {
+function imageQualityRadioOnChange(value) {
     emit("imageQuality", value);
     localStorage.setItem("imageQuality", value);
     Message.success("已更新图片质量");
@@ -277,7 +271,7 @@ const imageQualityRadioOnChange = (value) => {
 }
 
 // 图片主题
-const imageTopicsCheckboxOnChange = (values) =>  {
+function imageTopicsCheckboxOnChange(values)  {
     let value = "";
     for (let i = 0; i < values.length; i++) {
         value += values[i];
@@ -294,7 +288,7 @@ const imageTopicsCheckboxOnChange = (values) =>  {
 }
 
 // 重置设置
-const clearStorageBtnOnClick = () => {
+function clearStorageBtnOnClick() {
     localStorage.clear();
     Message.success("已重置所有内容");
     window.location.reload();
