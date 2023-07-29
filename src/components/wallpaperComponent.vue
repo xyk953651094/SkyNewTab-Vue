@@ -1,16 +1,16 @@
 <template>
     <a-image
         id="backgroundImage"
-        width="102%"
-        height="102%"
-        class="backgroundImage zIndexLow"
-        :src="imageLink"
         :preview=false
+        :src="imageLink"
         :style="{display: display}"
+        class="backgroundImage zIndexLow"
+        height="102%"
+        width="102%"
     >
-<!--        <template #loader>-->
-<!--            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>-->
-<!--        </template>-->
+        <template #loader>
+            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>
+        </template>
     </a-image>
 </template>
 

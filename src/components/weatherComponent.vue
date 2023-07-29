@@ -1,11 +1,11 @@
 <template>
     <a-space>
         <a-popover
-                :title="region"
-                :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
-                :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+            :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
+            :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+            :title="region"
         >
-            <a-button type="primary" shape="round" size="large" id="weatherBtn" class="componentTheme zIndexHigh"
+            <a-button id="weatherBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary"
                       @click="weatherBtnOnClick">
                 <template #icon>
                     <i :class="weatherIcon"></i>
@@ -13,26 +13,27 @@
                 {{ weatherInfo }}
             </a-button>
             <template #content>
-                <a-space direction="vertical" size="mini" fill>
+                <a-space direction="vertical" fill size="mini">
                     <a-space>
                         <i class="bi bi-moisture"></i>
-                        <a-typography-text :style="{color: fontColor}">{{" 空气湿度：" + humidity}}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{ " 空气湿度：" + humidity }}</a-typography-text>
                     </a-space>
                     <a-space>
                         <i class="bi bi-water"></i>
-                        <a-typography-text :style="{color: fontColor}">{{" 空气质量：" + pm25}}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{ " 空气质量：" + pm25 }}</a-typography-text>
                     </a-space>
                     <a-space>
                         <i class="bi bi-cloud-rain"></i>
-                        <a-typography-text :style="{color: fontColor}">{{" 降雨概率：" + rainfall}}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{ " 降雨概率：" + rainfall }}</a-typography-text>
                     </a-space>
                     <a-space>
                         <i class="bi bi-eye"></i>
-                        <a-typography-text :style="{color: fontColor}">{{" 视线距离：" + visibility}}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{ " 视线距离：" + visibility }}
+                        </a-typography-text>
                     </a-space>
                     <a-space>
                         <i class="bi bi-wind"></i>
-                        <a-typography-text :style="{color: fontColor}">{{" 风速情况：" + windInfo}}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{ " 风速情况：" + windInfo }}</a-typography-text>
                     </a-space>
                 </a-space>
             </template>
@@ -41,14 +42,14 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch, onMounted} from "vue";
-import {getWeatherIcon, changeThemeColor, httpRequest} from "../javascripts/publicFunctions";
+import {defineProps, onMounted, ref, watch} from "vue";
+import {changeThemeColor, getWeatherIcon, httpRequest} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     themeColor: {
         type: Object,
         required: true,
-        default: ()=> {
+        default: () => {
             return {
                 "themeColor": "",
                 "componentBackgroundColor": "",
@@ -59,7 +60,7 @@ const props = defineProps({
     searchEngine: {
         type: String,
         required: true,
-        default: ()=> {
+        default: () => {
             return "bing"
         }
     }
@@ -110,7 +111,7 @@ function weatherBtnOnClick() {
 
 function setWeather(data) {
     weatherIcon.value = getWeatherIcon(data.weatherData.weather);
-    weatherInfo.value = data.weatherData.weather  + "｜"
+    weatherInfo.value = data.weatherData.weather + "｜"
         + data.weatherData.temperature + "°C";
     region.value = data.region.replace("|", " · ");
     humidity.value = data.weatherData.humidity;
@@ -125,14 +126,14 @@ function getWeather() {
     let url = "https://v2.jinrishici.com/info";
     let data = {};
     httpRequest(headers, url, data, "GET")
-        .then(function(resultData){
+        .then(function (resultData) {
             localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-            if (resultData.status === "success"  && resultData.data.weatherData !== null) {
+            if (resultData.status === "success" && resultData.data.weatherData !== null) {
                 localStorage.setItem("lastWeather", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
                 setWeather(resultData.data.weatherData);
             }
         })
-        .catch(function(){
+        .catch(function () {
             // 请求失败也更新请求时间，防止超时后无信息可显示
             localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
         })
@@ -142,13 +143,11 @@ onMounted(() => {
     // 防抖节流
     let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
     let nowTimeStamp = new Date().getTime();
-    if(lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+    if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
         getWeather();
-    }
-    else if(nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+    } else if (nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
         getWeather();
-    }
-    else {  // 一小时之内使用上一次请求结果
+    } else {  // 一小时之内使用上一次请求结果
         let lastWeather = localStorage.getItem("lastWeather");
         if (lastWeather) {
             lastWeather = JSON.parse(lastWeather);

@@ -1,48 +1,52 @@
 <template>
     <a-space>
-        <a-tooltip content="菜单栏" position="br" :background-color="backgroundColor" :content-style="{color: fontColor}">
-            <a-button type="primary" shape="round" size="large" id="preferenceBtn" class="componentTheme zIndexHigh" @click="showDrawerBtnOnClick">
+        <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="菜单栏"
+                   position="br">
+            <a-button id="preferenceBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary"
+                      @click="showDrawerBtnOnClick">
                 <template #icon>
-                    <icon-more-vertical />
+                    <icon-more-vertical/>
                 </template>
             </a-button>
             <a-drawer
-                :width="340"
-                :height="500"
-                :visible="visible"
                 :closable="false"
-                :placement="drawerPosition"
                 :drawer-style="{
                     backgroundColor: backgroundColor,
                     color: fontColor
                 }"
-                @ok="handleOk"
-                @cancel="handleCancel"
+                :height="500"
+                :placement="drawerPosition"
+                :visible="visible"
+                :width="340"
                 unmountOnClose
+                @cancel="handleCancel"
+                @ok="handleOk"
             >
                 <template #title>
-                    {{"菜单栏"}}
+                    {{ "菜单栏" }}
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <a-card title="偏好设置" size="small"
+                        <a-card :body-style="{backgroundColor: backgroundColor}" :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
-                                :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
-                                :body-style="{backgroundColor: backgroundColor}"
+                                size="small"
+                                title="偏好设置"
                         >
                             <template #extra>
-                                <icon-settings />
+                                <icon-settings/>
                             </template>
-                            <a-form layout="vertical" :model="formInitialValues" auto-label-width>
+                            <a-form :model="formInitialValues" auto-label-width layout="vertical">
                                 <a-form-item field="searchEngineRadio" label="搜索引擎">
-                                    <a-radio-group v-model="formInitialValues.searchEngineRadio" @change="searchEngineRadioOnChange">
+                                    <a-radio-group v-model="formInitialValues.searchEngineRadio"
+                                                   @change="searchEngineRadioOnChange">
                                         <a-radio value="bing">必应</a-radio>
                                         <a-radio value="baidu">百度</a-radio>
                                         <a-radio value="google">谷歌</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="dynamicEffectRadio" label="图片动效（推荐视差）">
-                                    <a-radio-group v-model="formInitialValues.dynamicEffectRadio" @change="dynamicEffectRadioOnChange">
+                                    <a-radio-group v-model="formInitialValues.dynamicEffectRadio"
+                                                   @change="dynamicEffectRadioOnChange">
                                         <a-radio value="all">视差</a-radio>
                                         <a-radio value="translate">平移</a-radio>
                                         <a-radio value="rotate">旋转</a-radio>
@@ -50,44 +54,89 @@
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageQualityRadio" label="图片质量（推荐标准）">
-                                    <a-radio-group v-model="formInitialValues.imageQualityRadio" @change="imageQualityRadioOnChange">
+                                    <a-radio-group v-model="formInitialValues.imageQualityRadio"
+                                                   @change="imageQualityRadioOnChange">
                                         <a-radio value="full">高</a-radio>
                                         <a-radio value="regular">标准</a-radio>
                                         <a-radio value="small">低</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
-                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox" direction="horizontal" @change="imageTopicsCheckboxOnChange">
+                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox"
+                                                      direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
-                                            <a-col :span="12"><a-checkbox name="travel"             value="Fzo3zuOHN6w">旅游</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="wallpapers"         value="bo8jQKTaE0Y">壁纸</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="3d-renders"         value="CDwuwXJAbEw">3D渲染</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="textures-patterns"  value="iUIsnVtjB0Y">纹理</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="experimental"       value="qPYsDzvJOYc">实验</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="architecture"       value="rnSKDHwwYUk">建筑</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="nature"             value="6sMVjTLSkeQ">自然</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="business-work"      value="aeu6rL-j6ew">商务</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="fashion"            value="S4MKLAsBB74">时尚</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="film"               value="hmenvQhUmxM">电影</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="food-drink"         value="xjPR4hlkBGA">饮食</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="health"             value="_hb-dl4Q-4U">健康</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="people"             value="towJZFskpGg">人物</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="interiors"          value="R_Fyn-Gwtlw">精神</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="street-photography" value="xHxYTMHLgOc">街头</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="animals"            value="Jpg6Kidl-Hk">动物</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="spirituality"       value="_8zFHuhRhyo">灵魂</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="arts-culture"       value="bDo48cUhwnY">文化</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="history"            value="dijpbw99kQQ">历史</a-checkbox></a-col>
-                                            <a-col :span="12"><a-checkbox name="athletics"          value="Bn-DjrcBrwo">体育</a-checkbox></a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="travel" value="Fzo3zuOHN6w">旅游</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="wallpapers" value="bo8jQKTaE0Y">壁纸</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="3d-renders" value="CDwuwXJAbEw">3D渲染</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="textures-patterns" value="iUIsnVtjB0Y">纹理
+                                                </a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="experimental" value="qPYsDzvJOYc">实验</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="architecture" value="rnSKDHwwYUk">建筑</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="nature" value="6sMVjTLSkeQ">自然</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="business-work" value="aeu6rL-j6ew">商务</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="fashion" value="S4MKLAsBB74">时尚</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="film" value="hmenvQhUmxM">电影</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="food-drink" value="xjPR4hlkBGA">饮食</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="health" value="_hb-dl4Q-4U">健康</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="people" value="towJZFskpGg">人物</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="interiors" value="R_Fyn-Gwtlw">精神</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="street-photography" value="xHxYTMHLgOc">街头
+                                                </a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="animals" value="Jpg6Kidl-Hk">动物</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="spirituality" value="_8zFHuhRhyo">灵魂</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="arts-culture" value="bDo48cUhwnY">文化</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="history" value="dijpbw99kQQ">历史</a-checkbox>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-checkbox name="athletics" value="Bn-DjrcBrwo">体育</a-checkbox>
+                                            </a-col>
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
                                 <a-form-item field="clearStorageButton" label="其他设置">
-                                    <a-button type="text" shape="round" @click="clearStorageBtnOnClick" :style="{color: fontColor}" id="clearStorageBtn"
-                                              :onmouseover="btnMouseOver" :onmouseout="btnMouseOut"
+                                    <a-button id="clearStorageBtn" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor}" shape="round"
+                                              type="text" @click="clearStorageBtnOnClick"
                                     >
                                         <template #icon>
-                                            <icon-delete />
+                                            <icon-delete/>
                                         </template>
                                         清空缓存
                                     </a-button>
@@ -96,28 +145,34 @@
                         </a-card>
                     </a-col>
                     <a-col :span="24">
-                        <a-card title="网站链接" size="small"
+                        <a-card :body-style="{backgroundColor: backgroundColor}" :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
-                                :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
-                                :body-style="{backgroundColor: backgroundColor}"
+                                size="small"
+                                title="网站链接"
                         >
                             <template #extra>
-                                <icon-link />
+                                <icon-link/>
                             </template>
                             <a-space direction="vertical">
-                                <a-button type="text" shape="round" href="https://unsplash.com/" target="_blank" :style="{color: fontColor}"
-                                          :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
-                                    <a-avatar :size="16" shape="square" image-url="https://unsplash.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://unsplash.com/"
+                                          shape="round"
+                                          target="_blank" type="text">
+                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://unsplash.com/favicon.ico"
+                                              shape="square"/>
                                     &nbsp;&nbsp;Unsplash.com
                                 </a-button>
-                                <a-button type="text" shape="round" href="https://www.pexels.com/" target="_blank" :style="{color: fontColor}"
-                                          :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
-                                    <a-avatar :size="16" shape="square" image-url="https://www.pexels.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://www.pexels.com/"
+                                          shape="round"
+                                          target="_blank" type="text">
+                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://www.pexels.com/favicon.ico"
+                                              shape="square"/>
                                     &nbsp;&nbsp;Pexels.com
                                 </a-button>
-                                <a-button type="text" shape="round" href="https://pixabay.com/" target="_blank" :style="{color: fontColor}"
-                                          :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
-                                    <a-avatar :size="16" shape="square" image-url="https://pixabay.com/favicon.ico" :style="{backgroundColor: 'transparent'}"/>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://pixabay.com/"
+                                          shape="round"
+                                          target="_blank" type="text">
+                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://pixabay.com/favicon.ico"
+                                              shape="square"/>
                                     &nbsp;&nbsp;Pixabay.com
                                 </a-button>
                             </a-space>
@@ -126,21 +181,24 @@
                 </a-row>
                 <template #footer>
                     <a-space>
-                        <a-button type="text" shape="round" href="https://github.com/xyk953651094" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://github.com/xyk953651094"
+                                  shape="round" target="_blank" type="text">
                             <template #icon>
-                                <icon-github />
+                                <icon-github/>
                             </template>
                             主页
                         </a-button>
-                        <a-button type="text" shape="round" href="https://xyk953651094.blogspot.com" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://xyk953651094.blogspot.com"
+                                  shape="round" target="_blank" type="text">
                             <template #icon>
-                              <icon-message />
+                                <icon-message/>
                             </template>
                             博客
                         </a-button>
-                        <a-button type="text" shape="round" href="https://afdian.net/a/xyk953651094" target="_blank" :style="{color: fontColor}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
+                                  shape="round" target="_blank" type="text">
                             <template #icon>
-                                <icon-gift />
+                                <icon-gift/>
                             </template>
                             捐赠
                         </a-button>
@@ -154,13 +212,13 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {
-  IconMoreVertical,
-  IconDelete,
-  IconSettings,
-  IconLink,
-  IconGithub,
-  IconMessage,
-  IconGift,
+    IconDelete,
+    IconGift,
+    IconGithub,
+    IconLink,
+    IconMessage,
+    IconMoreVertical,
+    IconSettings,
 } from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
@@ -182,7 +240,7 @@ const props = defineProps({
     themeColor: {
         type: Object,
         required: true,
-        default: ()=> {
+        default: () => {
             return {
                 "themeColor": "",
                 "componentBackgroundColor": "",
@@ -211,15 +269,15 @@ onMounted(() => {
         tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
     }
 
-    formInitialValues.value =  {
+    formInitialValues.value = {
         searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
         dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
-        imageQualityRadio: tempImageQualityRadio === null ? "regular": tempImageQualityRadio,
+        imageQualityRadio: tempImageQualityRadio === null ? "regular" : tempImageQualityRadio,
         imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
     }
 
     // 屏幕适配
-    if(device === "iPhone" || device === "Android") {
+    if (device === "iPhone" || device === "Android") {
         drawerPosition.value = "bottom";
     }
 })
@@ -236,7 +294,7 @@ function handleCancel() {
     visible.value = false;
 }
 
-const emit = defineEmits(["searchEngine", "dynamicEffect","imageQuality","imageTopics"]);
+const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics"]);
 
 function btnMouseOver() {
     this.style.backgroundColor = hoverColor.value;
@@ -271,7 +329,7 @@ function imageQualityRadioOnChange(value) {
 }
 
 // 图片主题
-function imageTopicsCheckboxOnChange(values)  {
+function imageTopicsCheckboxOnChange(values) {
     let value = "";
     for (let i = 0; i < values.length; i++) {
         value += values[i];

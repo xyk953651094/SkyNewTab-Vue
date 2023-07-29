@@ -1,19 +1,19 @@
 <template>
     <a-col :span="24" class="center">
-        <div id="mask" class="mask zIndexMiddle" :style="{display: showMask}"/>
+        <div id="mask" :style="{display: showMask}" class="mask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
+            allow-clear
             class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
-            @focus="onFocus"
+            size="large"
             @blur="onBlur"
+            @focus="onFocus"
             @search="onSearch"
             @press-enter="onPressEnter"
-            size="large"
-            allow-clear
         >
             <template #prefix>
-                <a-avatar :size="24" :image-url="searchEngineIconUrl" :style="{backgroundColor: 'transparent'}"/>
+                <a-avatar :image-url="searchEngineIconUrl" :size="24" :style="{backgroundColor: 'transparent'}"/>
             </template>
         </a-input-search>
     </a-col>
@@ -32,7 +32,7 @@ let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
 const props = defineProps({
     searchEngine: {
         type: String,
-        default: ()=> {
+        default: () => {
             return "bing";
         },
         required: true
@@ -40,7 +40,7 @@ const props = defineProps({
 });
 
 watch(() => props.searchEngine, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
+    if (newValue !== oldValue) {
         switch (props.searchEngine) {
             case "bing":
                 searchEngineUrl.value = "https://www.bing.com/search?q=";

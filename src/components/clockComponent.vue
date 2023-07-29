@@ -1,16 +1,17 @@
 <template>
     <a-row justify="center">
-        <a-col :span="24" class="zIndexHigh" :style="{padding: '5px', borderRadius: '10px'}" :onmouseover="btnMouseOver" :onmouseout="btnMouseOut">
-            <a-space align="center" size="mini" id="clock">
-                <a-typography-text class="clockText" :style="{color: backgroundColor}">
-                    {{currentTime}}
+        <a-col :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :span="24" :style="{padding: '5px', borderRadius: '10px'}"
+               class="zIndexHigh">
+            <a-space id="clock" align="center" size="mini">
+                <a-typography-text :style="{color: backgroundColor}" class="clockText">
+                    {{ currentTime }}
                 </a-typography-text>
-                <a-space align="center" size="mini" direction="vertical">
-                    <a-typography-text class="dateText" :style="{color: backgroundColor}">
-                        {{currentWeek}}
+                <a-space align="center" direction="vertical" size="mini">
+                    <a-typography-text :style="{color: backgroundColor}" class="dateText">
+                        {{ currentWeek }}
                     </a-typography-text>
-                    <a-typography-text class="dateText" :style="{color: backgroundColor}">
-                        {{currentDate}}
+                    <a-typography-text :style="{color: backgroundColor}" class="dateText">
+                        {{ currentDate }}
                     </a-typography-text>
                 </a-space>
             </a-space>
@@ -29,7 +30,7 @@ const props = defineProps({
     themeColor: {
         type: Object,
         required: true,
-        default: ()=> {
+        default: () => {
             return {
                 "themeColor": "",
                 "componentBackgroundColor": "",
@@ -45,8 +46,8 @@ let currentTime = ref(getTimeDetails(new Date()).showTime);
 let currentWeek = ref(getTimeDetails(new Date()).showWeek);
 let currentDate = ref(getTimeDetails(new Date()).showDate);
 
-onMounted(()=>{
-    setInterval(()=>{
+onMounted(() => {
+    setInterval(() => {
         let timeDetails = getTimeDetails(new Date());
         currentTime.value = timeDetails.showTime;
         currentWeek.value = timeDetails.showWeek;
