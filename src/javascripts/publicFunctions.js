@@ -23,8 +23,7 @@ export function httpRequest(headers, url, data, method) {
 }
 
 // 获取日期与时间
-export function getTimeDetails() {
-    let param = new Date();
+export function getTimeDetails(param) {
     let year = param.getFullYear();
     let month = param.getMonth() + 1;
     let day = param.getDate();

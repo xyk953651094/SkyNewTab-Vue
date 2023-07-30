@@ -83,12 +83,11 @@
                     </template>
                 </a-list-item-meta>
                 <template #actions>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
                               type="text" @click="removeBtnOnClick(item)">
                         <template #icon>
-                            <icon-delete/>
+                            <icon-close/>
                         </template>
-                        删除
                     </a-button>
                 </template>
             </a-list-item>
@@ -98,7 +97,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconEdit, IconPlus, IconCompass, IconLink} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconClose, IconEdit, IconPlus, IconCompass, IconLink} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 

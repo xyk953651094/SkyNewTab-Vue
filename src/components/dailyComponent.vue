@@ -43,10 +43,7 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
-                        <a-list-item-meta :description=item.description :title=item.title>
-                            <!--                            <template #description>-->
-                            <!--                                <a-typography-text :style="{color: (item.status === 'expired' ? 'red':'blue')}">{{item.description}}</a-typography-text>-->
-                            <!--                            </template>-->
+                        <a-list-item-meta :description="getTimeDetails(new Date(item.selectedTimeStamp)).showDate5 + ' ' + item.description" :title="item.title">
                         </a-list-item-meta>
                         <template #actions>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
@@ -206,7 +203,7 @@ function modalOkBtnOnClick() {
                 status = "not expired";
             }
 
-            daily.push({"title": title, "description": description, "status": status, "timeStamp": Date.now()});
+            daily.push({"title": title, "description": description, "status": status, "selectedTimeStamp": selectedTimeStamp.value, "timeStamp": Date.now()});
             localStorage.setItem("daily", JSON.stringify(daily));
 
             displayModal.value = false;

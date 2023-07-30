@@ -52,8 +52,7 @@
                 <a-input id="todoInput" allow-clear maxLength="10" placeholder="请输入待办内容" showWordLimit/>
             </a-form-item>
             <a-form-item field="todoRate" label="优先级别" required validate-trigger="change">
-                <!--TODO:rate深色主题下底色问题，无法与React版保持一致-->
-                <a-rate :allow-clear="true" :color="fontColor" @change="rateOnChange"/>
+                <a-rate default-value="1" :allow-clear="true" :color="hoverColor" @change="rateOnChange"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -88,7 +87,7 @@ let displayModal = ref(false);
 let checkboxOptions = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
-let priority = ref(0);
+let priority = ref(1);
 
 onMounted(() => {
     let todos = [];
@@ -139,7 +138,7 @@ function showAddModalBtnOnClick() {
     if (todos.length < todoMaxSize.value) {
         // $("#todoInput").children("input").val("");
         displayModal.value = true;
-        priority.value = 0;
+        priority.value = 1;
     } else {
         Message.error("待办数量最多为" + todoMaxSize.value + "个");
     }

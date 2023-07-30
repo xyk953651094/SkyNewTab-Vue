@@ -64,12 +64,14 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 function btnMouseOver() {
     this.style.backgroundColor = backgroundColor.value;
+    this.classList.add("componentTheme");
     $(".clockText").css("color", fontColor.value);
     $(".dateText").css("color", fontColor.value);
 }
 
 function btnMouseOut() {
     this.style.backgroundColor = "transparent";
+    this.classList.remove("componentTheme");
     $(".clockText").css("color", backgroundColor.value);
     $(".dateText").css("color", backgroundColor.value);
 }
