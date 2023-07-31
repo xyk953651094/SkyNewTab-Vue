@@ -8,40 +8,49 @@
             <template #title>
                 <a-row>
                     <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
-                        <a-typography-text :style="{color: fontColor}">{{"倒数日 " + dailySize + " / " + dailyMaxSize }}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">{{
+                                "倒数日 " + dailySize + " / " + dailyMaxSize
+                            }}
+                        </a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
-                            <template #icon>
-                                <icon-plus />
-                            </template>
-                        </a-button>
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllDaily">
-                            <template #icon>
-                                <icon-delete />
-                            </template>
-                        </a-button>
+                        <a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      size="mini" type="text"
+                                      @click="showAddModalBtnOnClick">
+                                <template #icon>
+                                    <icon-plus/>
+                                </template>
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      size="mini" type="text"
+                                      @click="removeAllBtnOnClick">
+                                <template #icon>
+                                    <icon-delete/>
+                                </template>
+                            </a-button>
+                        </a-space>
                     </a-col>
                 </a-row>
             </template>
             <a-badge :count="listItems.length">
-                <a-button type="primary" shape="round" size="large" id="buttonDaily" class="componentTheme zIndexHigh">
+                <a-button id="dailyBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
                     <template #icon>
-                        <icon-calendar-clock />
+                        <icon-calendar-clock/>
                     </template>
                 </a-button>
             </a-badge>
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
-                        <a-list-item-meta :title=item.title :description=item.description>
-<!--                            <template #description>-->
-<!--                                <a-typography-text :style="{color: (item.status === 'expired' ? 'red':'blue')}">{{item.description}}</a-typography-text>-->
-<!--                            </template>-->
+                        <a-list-item-meta :description="getTimeDetails(new Date(item.selectedTimeStamp)).showDate5 + ' ' + item.description" :title="item.title">
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" status="danger" @click="removeDaily(item)" :style="{color: fontColor}">
-                                <template #icon><icon-close /></template>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      size="mini" type="text" @click="removeBtnOnClick(item)">
+                                <template #icon>
+                                    <icon-close/>
+                                </template>
                             </a-button>
                         </template>
                     </a-list-item>
@@ -49,14 +58,15 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
-        <template #title>{{"添加倒数日 " + dailySize + " / " + dailyMaxSize}}</template>
+    <a-modal v-model:visible="displayModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}" unmount-on-close
+             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
+        <template #title>{{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}</template>
         <a-form>
-            <a-form-item field="dailyInput" label="标题" :rules="[{required:true,message:'标题不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入标题" id="dailyInput" maxLength="10" allow-clear showWordLimit/>
+            <a-form-item field="dailyInput" label="标题" required validate-trigger="change">
+                <a-input id="dailyInput" allow-clear maxLength="10" placeholder="请输入标题" showWordLimit/>
             </a-form-item>
-            <a-form-item field="dailyDatePicker" label="日期" :rules="[{required:true,message:'日期不能为空'}]" :validate-trigger="['change']">
-                <a-date-picker @change="datePickerOnChange" id="dailyDatePicker"/>
+            <a-form-item field="dailyDatePicker" label="日期" required validate-trigger="change">
+                <a-date-picker id="dailyDatePicker" @change="datePickerOnChange"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -65,7 +75,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getTimeDetails} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const $ = require("jquery");
@@ -74,8 +84,9 @@ const props = defineProps({
     themeColor: {
         type: Object,
         required: true,
-        default: ()=> {
+        default: () => {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -83,18 +94,19 @@ const props = defineProps({
     }
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let displayAddModal = ref(false);
+let displayModal = ref(false);
 let listItems = ref([]);
 let dailySize = ref(0);
 let dailyMaxSize = ref(5);
 let selectedTimeStamp = ref(0);
 
-onMounted(()=>{
+onMounted(() => {
     let daily = [];
     let tempDaily = localStorage.getItem("daily");
-    if(tempDaily){
+    if (tempDaily) {
         daily = JSON.parse(tempDaily);
     }
 
@@ -104,15 +116,26 @@ onMounted(()=>{
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonDaily", backgroundColor.value, fontColor.value);
+        changeThemeColor("#dailyBtn", backgroundColor.value, fontColor.value);
     }
 })
 
-function removeAllDaily() {
+function btnMouseOver() {
+    this.style.backgroundColor = hoverColor.value;
+    this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = fontColor.value;
+}
+
+function removeAllBtnOnClick() {
     let tempDaily = localStorage.getItem("daily");
-    if(tempDaily){
+    if (tempDaily) {
         localStorage.removeItem("daily");
 
         listItems.value = [];
@@ -120,19 +143,19 @@ function removeAllDaily() {
     }
 }
 
-function removeDaily(item) {
+function removeBtnOnClick(item) {
     let daily = [];
     let tempDaily = localStorage.getItem("daily");
-    if(tempDaily){
+    if (tempDaily) {
         daily = JSON.parse(tempDaily);
         let index = -1;
-        for(let i = 0; i < daily.length; i++) {
+        for (let i = 0; i < daily.length; i++) {
             if (item.timeStamp === daily[i].timeStamp) {
                 index = i;
                 break;
             }
         }
-        if(index !== -1) {
+        if (index !== -1) {
             daily.splice(index, 1);
         }
         localStorage.setItem("daily", JSON.stringify(daily));
@@ -142,66 +165,61 @@ function removeDaily(item) {
     }
 }
 
-function showAddModal() {
+function showAddModalBtnOnClick() {
     let daily = [];
     let tempDaily = localStorage.getItem("daily");
-    if(tempDaily){
+    if (tempDaily) {
         daily = JSON.parse(tempDaily);
     }
-    if(daily.length < dailyMaxSize.value) {
+    if (daily.length < dailyMaxSize.value) {
         // $("#dailyInput").children("input").val("");
-        displayAddModal.value = true;
+        displayModal.value = true;
         selectedTimeStamp.value = 0;
-    }
-    else {
+    } else {
         Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
     }
 }
 
-function handleAddModalOk() {
+function modalOkBtnOnClick() {
     let title = $("#dailyInput").children("input").val();
 
-    if(title && title.length > 0 && selectedTimeStamp.value !== 0) {
+    if (title && title.length > 0 && selectedTimeStamp.value !== 0) {
         let daily = [];
         let tempDaily = localStorage.getItem("daily");
-        if(tempDaily){
+        if (tempDaily) {
             daily = JSON.parse(tempDaily);
         }
-        if(daily.length < dailyMaxSize.value) {
+        if (daily.length < dailyMaxSize.value) {
             let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
             let description, status;
             if (todayTimeStamp - selectedTimeStamp.value > 0) {
                 description = "已过 " + ((todayTimeStamp - selectedTimeStamp.value) / 86400000) + " 天";
                 status = "expired";
-            }
-            else if (todayTimeStamp - selectedTimeStamp.value === 0) {
+            } else if (todayTimeStamp - selectedTimeStamp.value === 0) {
                 description = "就是今天";
                 status = "today";
-            }
-            else {
+            } else {
                 description = "还剩 " + ((selectedTimeStamp.value - todayTimeStamp) / 86400000) + " 天";
                 status = "not expired";
             }
 
-            daily.push({"title": title, "description": description, "status": status, "timeStamp": Date.now ()});
+            daily.push({"title": title, "description": description, "status": status, "selectedTimeStamp": selectedTimeStamp.value, "timeStamp": Date.now()});
             localStorage.setItem("daily", JSON.stringify(daily));
 
-            displayAddModal.value = false;
+            displayModal.value = false;
             listItems.value = daily;
             dailySize.value = daily.length;
             Message.success("添加成功");
-        }
-        else {
+        } else {
             Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
         }
-    }
-    else {
+    } else {
         Message.error("倒数日内容不能为空");
     }
 }
 
-function handleAddModalCancel() {
-    displayAddModal.value =  false
+function modalCancelBtnOnClick() {
+    displayModal.value = false
 }
 
 function datePickerOnChange(value, date, dateString) {

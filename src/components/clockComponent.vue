@@ -1,32 +1,38 @@
 <template>
-    <a-row>
-        <a-space align="center" size="mini" id="clock" class="zIndexHigh">
-            <a-typography-text class="clockText" :style="{color: backgroundColor}">
-                {{currentTime}}
-            </a-typography-text>
-            <a-space align="center" size="mini" direction="vertical">
-                <a-typography-text class="dateText" :style="{color: backgroundColor}">
-                    {{currentWeek}}
+    <a-row justify="center">
+        <a-col :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :span="24" :style="{padding: '5px', borderRadius: '10px'}"
+               class="zIndexHigh">
+            <a-space id="clock" align="center" size="mini">
+                <a-typography-text :style="{color: backgroundColor}" class="clockText">
+                    {{ currentTime }}
                 </a-typography-text>
-                <a-typography-text class="dateText" :style="{color: backgroundColor}">
-                    {{currentDate}}
-                </a-typography-text>
+                <a-space align="center" direction="vertical" size="mini">
+                    <a-typography-text :style="{color: backgroundColor}" class="dateText">
+                        {{ currentWeek }}
+                    </a-typography-text>
+                    <a-typography-text :style="{color: backgroundColor}" class="dateText">
+                        {{ currentDate }}
+                    </a-typography-text>
+                </a-space>
             </a-space>
-        </a-space>
+        </a-col>
     </a-row>
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {getTimeDetails} from "../javascripts/publicFunctions";
-import "../stylesheets/clockComponent.less"
+import "../stylesheets/clockComponent.less";
+
+const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
         type: Object,
         required: true,
-        default: ()=> {
+        default: () => {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -40,8 +46,8 @@ let currentTime = ref(getTimeDetails(new Date()).showTime);
 let currentWeek = ref(getTimeDetails(new Date()).showWeek);
 let currentDate = ref(getTimeDetails(new Date()).showDate);
 
-onMounted(()=>{
-    setInterval(()=>{
+onMounted(() => {
+    setInterval(() => {
         let timeDetails = getTimeDetails(new Date());
         currentTime.value = timeDetails.showTime;
         currentWeek.value = timeDetails.showWeek;
@@ -55,6 +61,20 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         fontColor.value = props.themeColor.componentFontColor;
     }
 })
+
+function btnMouseOver() {
+    this.style.backgroundColor = backgroundColor.value;
+    this.classList.add("componentTheme");
+    $(".clockText").css("color", fontColor.value);
+    $(".dateText").css("color", fontColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.classList.remove("componentTheme");
+    $(".clockText").css("color", backgroundColor.value);
+    $(".dateText").css("color", backgroundColor.value);
+}
 
 </script>
 

@@ -1,59 +1,92 @@
 <template>
     <a-space>
         <a-popover
-            title="图片信息"
-            position="tr"
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '500px'}"
+            position="tr"
+            title="图片信息"
         >
-            <a-button type="primary" shape="round" size="large" id="buttonAuthor" class="componentTheme zIndexHigh" :style="{display: display}">
+            <a-button id="authorBtn" :style="{display: display}" class="componentTheme zIndexHigh" shape="round" size="large"
+                      type="primary"
+                      @click="authorBtnOnClick">
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{"by " + authorName + " on Unsplash"}}
+                {{ "by " + authorName + " on Unsplash" }}
             </a-button>
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item>
-                        <a-list-item-meta :title=authorName >
+                        <a-list-item-meta>
                             <template #avatar>
                                 <a-avatar :image-url="authorIconUrl" :style="{backgroundColor: 'transparent'}"/>
+                            </template>
+                            <template #title>
+                                <a-space>
+                                    <icon-user/>
+                                    <a-typography-text :style="{color: fontColor}">{{ " " + authorName }}
+                                    </a-typography-text>
+                                </a-space>
                             </template>
                             <template #description>
                                 <a-space>
                                     <a-space>
                                         <i class="bi bi-collection"></i>
-                                        <a-typography-text :style="{color: fontColor}">{{" " + authorCollections}}</a-typography-text>
+                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorCollections }}
+                                        </a-typography-text>
                                     </a-space>
-                                    <a-divider direction="vertical" :style="{borderColor: fontColor}"/>
+                                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
                                     <a-space>
                                         <i class="bi bi-heart"></i>
-                                        <a-typography-text :style="{color: fontColor}">{{" " + authorLikes}}</a-typography-text>
+                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorLikes }}
+                                        </a-typography-text>
                                     </a-space>
-                                    <a-divider direction="vertical" :style="{borderColor: fontColor}"/>
+                                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
                                     <a-space>
                                         <i class="bi bi-images"></i>
-                                        <a-typography-text :style="{color: fontColor}">{{" " + authorPhotos}}</a-typography-text>
+                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorPhotos }}
+                                        </a-typography-text>
                                     </a-space>
                                 </a-space>
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" @click="gotoUser" :style="{color: fontColor}">
-                                <template #icon><icon-link /></template>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      type="text" @click="gotoUserBtnOnClick">
+                                <template #icon>
+                                    <icon-link/>
+                                </template>
                             </a-button>
                         </template>
                     </a-list-item>
                     <a-list-item>
-                        <a-list-item-meta :title=imageLocation :description=imageDescription>
+                        <a-list-item-meta>
                             <template #avatar>
-                                <a-avatar shape="square" :image-url="imagePreviewUrl" :style="{backgroundColor: 'transparent'}"/>
+                                <a-avatar :image-url="imagePreviewUrl" :style="{backgroundColor: 'transparent'}"
+                                          shape="square"/>
+                            </template>
+                            <template #title>
+                                <a-space>
+                                    <icon-location/>
+                                    <a-typography-text :style="{color: fontColor}">{{ " " + imageLocation }}
+                                    </a-typography-text>
+                                </a-space>
+                            </template>
+                            <template #description>
+                                <a-space>
+                                    <icon-info-circle/>
+                                    <a-typography-text :style="{color: fontColor}">{{ " " + imageDescription }}
+                                    </a-typography-text>
+                                </a-space>
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-button type="text" shape="circle" @click="gotoImage" :style="{color: fontColor}">
-                                <template #icon><icon-link /></template>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="circle" type="text" @click="gotoImageBtnOnClick">
+                                <template #icon>
+                                    <icon-link/>
+                                </template>
                             </a-button>
                         </template>
                     </a-list-item>
@@ -65,16 +98,17 @@
 
 <script setup>
 import {defineProps, ref, watch} from "vue"
-import {IconCamera, IconLink} from "@arco-design/web-vue/es/icon";
+import {IconCamera, IconInfoCircle, IconLink, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "../javascripts/publicConstants";
-import {changeThemeColor, isEmptyString} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
         type: Object,
-        default: ()=> {
+        default: () => {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -94,6 +128,7 @@ const props = defineProps({
     },
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let authorName = ref("暂无信息");
@@ -108,10 +143,11 @@ let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
-    if(newValue !== oldValue) {
+    if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonAuthor", backgroundColor.value, fontColor.value);
+        changeThemeColor("#authorBtn", backgroundColor.value, fontColor.value);
     }
 })
 
@@ -125,25 +161,37 @@ watch(() => props.imageData, (newValue, oldValue) => {
         authorPhotos.value = props.imageData.user.total_photos;
         imageLink.value = props.imageData.links.html;
         imagePreviewUrl.value = props.imageData.urls.thumb;
-        imageLocation.value = isEmptyString(props.imageData.location.name)? "暂无信息" : props.imageData.location.name;
-        imageDescription.value = isEmptyString(props.imageData.alt_description)? "暂无信息" : props.imageData.alt_description;
+        imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
+        imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
     }
 })
 
-const gotoImage = () => {
-    if(authorLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
-    }
-    else {
+function btnMouseOver() {
+    this.style.backgroundColor = hoverColor.value;
+    this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = fontColor.value;
+}
+
+function authorBtnOnClick() {
+    window.open(authorLink.value);
+}
+
+function gotoUserBtnOnClick() {
+    if (authorLink.value.length !== 0) {
+        window.open(authorLink.value + unsplashUrl);
+    } else {
         Message.error("无跳转链接");
     }
 }
 
-const gotoUser = () => {
-    if(authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl);
-    }
-    else {
+function gotoImageBtnOnClick() {
+    if (authorLink.value.length !== 0) {
+        window.open(imageLink.value + unsplashUrl);
+    } else {
         Message.error("无跳转链接");
     }
 }

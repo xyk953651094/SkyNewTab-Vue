@@ -8,43 +8,51 @@
             <template #title>
                 <a-row>
                     <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
-                        <a-typography-text :style="{color: fontColor}">{{"待办事项 " + todoSize + " / " + todoMaxSize}}</a-typography-text>
+                        <a-typography-text :style="{color: fontColor}">
+                            {{ "待办事项 " + todoSize + " / " + todoMaxSize }}
+                        </a-typography-text>
                     </a-col>
                     <a-col :span="12" :style="{textAlign: 'right'}">
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="showAddModal">
-                            <template #icon>
-                                <icon-plus />
-                            </template>
-                        </a-button>
-                        <a-button type="text" shape="circle" size="mini" :style="{color: fontColor}" @click="removeAllTodos">
-                            <template #icon>
-                                <icon-delete />
-                            </template>
-                        </a-button>
+                        <a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      size="mini" type="text"
+                                      @click="showAddModalBtnOnClick">
+                                <template #icon>
+                                    <icon-plus/>
+                                </template>
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      size="mini" type="text"
+                                      @click="removeAllBtnOnClick">
+                                <template #icon>
+                                    <icon-delete/>
+                                </template>
+                            </a-button>
+                        </a-space>
                     </a-col>
                 </a-row>
             </template>
             <a-badge :count="checkboxOptions.length">
-                <a-button type="primary" shape="round" size="large" id="buttonTodo" class="componentTheme zIndexHigh">
+                <a-button id="todoBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
                     <template #icon>
-                        <icon-check-square />
+                        <icon-check-square/>
                     </template>
                 </a-button>
             </a-badge>
             <template #content>
-                <a-checkbox-group direction="vertical" :options="checkboxOptions" @change="checkboxOnChange"/>
+                <a-checkbox-group :options="checkboxOptions" direction="vertical" @change="checkboxOnChange"/>
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayAddModal" @ok="handleAddModalOk" @cancel="handleAddModalCancel" unmountOnExit :mask-style="{backdropFilter: 'blur(10px)'}">
-        <template #title>{{"添加待办事项 " + todoSize + " / " + todoMaxSize}}</template>
+    <a-modal v-model:visible="displayModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}" unmount-on-close
+             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
+        <template #title>{{ "添加待办事项 " + todoSize + " / " + todoMaxSize }}</template>
         <a-form>
-            <a-form-item field="todoInput" label="待办内容" :rules="[{required:true,message:'待办内容不能为空'}]" :validate-trigger="['change','input']">
-                <a-input placeholder="请输入待办内容" id="todoInput" maxLength="10" allow-clear showWordLimit/>
+            <a-form-item field="todoInput" label="待办内容" required validate-trigger="change">
+                <a-input id="todoInput" allow-clear maxLength="10" placeholder="请输入待办内容" showWordLimit/>
             </a-form-item>
-            <a-form-item field="todoRate" label="优先级别" :rules="[{required:true,message:'优先级别不能为空'}]" :validate-trigger="['change','input']">
-                <!--TODO:rate深色主题下底色问题，无法与React版保持一致-->
-                <a-rate @change="rateOnChange" :allow-clear="true" :color="fontColor"/>
+            <a-form-item field="todoRate" label="优先级别" required validate-trigger="change">
+                <a-rate default-value="1" :allow-clear="true" :color="hoverColor" @change="rateOnChange"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -53,7 +61,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCheckSquare, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const $ = require("jquery");
@@ -62,8 +70,9 @@ const props = defineProps({
     themeColor: {
         type: Object,
         required: true,
-        default: ()=> {
+        default: () => {
             return {
+                "themeColor": "",
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
@@ -71,18 +80,19 @@ const props = defineProps({
     }
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let displayAddModal = ref(false);
+let displayModal = ref(false);
 let checkboxOptions = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
-let priority = ref(0);
+let priority = ref(1);
 
-onMounted(()=>{
+onMounted(() => {
     let todos = [];
     let tempTodos = localStorage.getItem("todos");
-    if(tempTodos){
+    if (tempTodos) {
         todos = JSON.parse(tempTodos);
     }
 
@@ -92,15 +102,26 @@ onMounted(()=>{
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#buttonTodo", backgroundColor.value, fontColor.value);
+        changeThemeColor("#todoBtn", backgroundColor.value, fontColor.value);
     }
 })
 
-function removeAllTodos() {
+function btnMouseOver() {
+    this.style.backgroundColor = hoverColor.value;
+    this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = fontColor.value;
+}
+
+function removeAllBtnOnClick() {
     let tempTodos = localStorage.getItem("todos");
-    if(tempTodos){
+    if (tempTodos) {
         localStorage.removeItem("todos");
 
         checkboxOptions.value = [];
@@ -108,68 +129,68 @@ function removeAllTodos() {
     }
 }
 
-function showAddModal() {
+function showAddModalBtnOnClick() {
     let todos = [];
     let tempTodos = localStorage.getItem("todos");
-    if(tempTodos){
+    if (tempTodos) {
         todos = JSON.parse(tempTodos);
     }
-    if(todos.length < todoMaxSize.value) {
+    if (todos.length < todoMaxSize.value) {
         // $("#todoInput").children("input").val("");
-        displayAddModal.value = true;
-        priority.value = 0;
-    }
-    else {
+        displayModal.value = true;
+        priority.value = 1;
+    } else {
         Message.error("待办数量最多为" + todoMaxSize.value + "个");
     }
 }
 
-function handleAddModalOk() {
+function modalOkBtnOnClick() {
     let todoContent = $("#todoInput").children("input").val();
-    if(todoContent && todoContent.length > 0) {
+    if (todoContent && todoContent.length > 0) {
         let todos = [];
         let tempTodos = localStorage.getItem("todos");
-        if(tempTodos){
+        if (tempTodos) {
             todos = JSON.parse(tempTodos);
         }
-        if(todos.length < todoMaxSize.value) {
+        if (todos.length < todoMaxSize.value) {
             todoContent = todoContent + " ";
-            todos.push({"label": todoContent + "★".repeat(priority.value), "value": todoContent + "★".repeat(priority.value)});
+            todos.push({
+                "label": todoContent + "★".repeat(priority.value),
+                "value": todoContent + "★".repeat(priority.value)
+            });
             localStorage.setItem("todos", JSON.stringify(todos));
 
-            displayAddModal.value = false;
+            displayModal.value = false;
             checkboxOptions.value = todos;
             todoSize.value = todos.length;
             Message.success("添加成功");
-        }
-        else {
+        } else {
             Message.error("待办数量最多为" + todoMaxSize.value + "个");
         }
-    }
-    else {
+    } else {
         Message.error("待办内容不能为空");
         event.preventDefault();
     }
 }
 
-function handleAddModalCancel() {
-    displayAddModal.value =  false
+function modalCancelBtnOnClick() {
+    displayModal.value = false
 }
 
 function checkboxOnChange(checkedValues) {
     console.log('checked = ', checkedValues);
     let todos = [];
     let tempTodos = localStorage.getItem("todos");
-    if(tempTodos){
+    if (tempTodos) {
         todos = JSON.parse(tempTodos);
         let index = -1;
-        for(let i = 0; i < todos.length; i++) {
+        for (let i = 0; i < todos.length; i++) {
             if (checkedValues[checkedValues.length - 1] === todos[i].label) {
                 index = i;
                 break;
             }
         }
-        if(index !== -1) {
+        if (index !== -1) {
             todos.splice(index, 1);
         }
         localStorage.setItem("todos", JSON.stringify(todos));
