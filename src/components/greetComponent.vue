@@ -14,14 +14,29 @@
             </a-button>
             <template #content>
                 <a-space direction="vertical" fill size="mini">
-                    <a-space>
-                        <icon-check-circle/>
-                        <a-typography-text :style="{color: fontColor}">{{ " 宜：" + suit }}</a-typography-text>
-                    </a-space>
-                    <a-space>
-                        <icon-close-circle/>
-                        <a-typography-text :style="{color: fontColor}">{{ " 忌：" + avoid }}</a-typography-text>
-                    </a-space>
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                              shape="round" type="text">
+                        <template #icon>
+                            <icon-check-circle/>
+                        </template>
+                        {{ "宜：" + suit }}
+                    </a-button>
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                              shape="round" type="text">
+                        <template #icon>
+                            <icon-close-circle/>
+                        </template>
+                        {{ "忌：" + avoid }}
+                    </a-button>
+
+<!--                    <a-space>-->
+<!--                        <icon-check-circle/>-->
+<!--                        <a-typography-text :style="{color: fontColor}">{{ " 宜：" + suit }}</a-typography-text>-->
+<!--                    </a-space>-->
+<!--                    <a-space>-->
+<!--                        <icon-close-circle/>-->
+<!--                        <a-typography-text :style="{color: fontColor}">{{ " 忌：" + avoid }}</a-typography-text>-->
+<!--                    </a-space>-->
                 </a-space>
             </template>
         </a-popover>
@@ -33,7 +48,7 @@ import "../stylesheets/publicStyles.less"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
 import {
-    changeThemeColor,
+    changeThemeColor, getFontColor,
     getGreetContent,
     getGreetIcon,
     getTimeDetails,
@@ -61,6 +76,7 @@ const props = defineProps({
     }
 });
 
+let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let greetIcon = ref(getGreetIcon());
@@ -74,6 +90,7 @@ let avoid = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
         changeThemeColor("#greetBtn", backgroundColor.value, fontColor.value);
@@ -119,6 +136,16 @@ watch(() => props.searchEngine, (newValue, oldValue) => {
         }
     }
 });
+
+function btnMouseOver() {
+    this.style.backgroundColor = hoverColor.value;
+    this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = fontColor.value;
+}
 
 function greetBtnOnClick() {
     window.open(searchEngineUrl.value + "日历", "_blank",);

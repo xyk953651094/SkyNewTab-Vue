@@ -23,31 +23,63 @@
                                 <a-avatar :image-url="authorIconUrl" :style="{backgroundColor: 'transparent'}"/>
                             </template>
                             <template #title>
-                                <a-space>
-                                    <icon-user/>
-                                    <a-typography-text :style="{color: fontColor}">{{ " " + authorName }}
-                                    </a-typography-text>
-                                </a-space>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+                                          shape="round" type="text">
+                                    <template #icon>
+                                        <icon-user/>
+                                    </template>
+                                    {{ authorName.length < btnMaxSize? authorName : authorName.substring(0, btnMaxSize) + "..." }}
+                                </a-button>
+
+<!--                                <a-space>-->
+<!--                                    <icon-user/>-->
+<!--                                    <a-typography-text :style="{color: fontColor}">{{ " " + authorName }}-->
+<!--                                    </a-typography-text>-->
+<!--                                </a-space>-->
                             </template>
                             <template #description>
                                 <a-space>
-                                    <a-space>
-                                        <i class="bi bi-collection"></i>
-                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorCollections }}
-                                        </a-typography-text>
-                                    </a-space>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-collection"></i>
+                                        </template>
+                                        {{ " " + authorCollections }}
+                                    </a-button>
                                     <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
-                                    <a-space>
-                                        <i class="bi bi-heart"></i>
-                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorLikes }}
-                                        </a-typography-text>
-                                    </a-space>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-heart"></i>
+                                        </template>
+                                        {{ " " + authorLikes }}
+                                    </a-button>
                                     <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
-                                    <a-space>
-                                        <i class="bi bi-images"></i>
-                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorPhotos }}
-                                        </a-typography-text>
-                                    </a-space>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-images"></i>
+                                        </template>
+                                        {{ " " + authorPhotos }}
+                                    </a-button>
+
+<!--                                    <a-space>-->
+<!--                                        <i class="bi bi-collection"></i>-->
+<!--                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorCollections }}-->
+<!--                                        </a-typography-text>-->
+<!--                                    </a-space>-->
+<!--                                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>-->
+<!--                                    <a-space>-->
+<!--                                        <i class="bi bi-heart"></i>-->
+<!--                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorLikes }}-->
+<!--                                        </a-typography-text>-->
+<!--                                    </a-space>-->
+<!--                                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>-->
+<!--                                    <a-space>-->
+<!--                                        <i class="bi bi-images"></i>-->
+<!--                                        <a-typography-text :style="{color: fontColor}">{{ " " + authorPhotos }}-->
+<!--                                        </a-typography-text>-->
+<!--                                    </a-space>-->
                                 </a-space>
                             </template>
                         </a-list-item-meta>
@@ -67,18 +99,34 @@
                                           shape="square"/>
                             </template>
                             <template #title>
-                                <a-space>
-                                    <icon-location/>
-                                    <a-typography-text :style="{color: fontColor}">{{ " " + imageLocation }}
-                                    </a-typography-text>
-                                </a-space>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+                                          shape="round" type="text">
+                                    <template #icon>
+                                        <icon-location/>
+                                    </template>
+                                    {{ imageLocation.length < btnMaxSize? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
+                                </a-button>
+
+<!--                                <a-space>-->
+<!--                                    <icon-location/>-->
+<!--                                    <a-typography-text :style="{color: fontColor}">{{ " " + imageLocation }}-->
+<!--                                    </a-typography-text>-->
+<!--                                </a-space>-->
                             </template>
                             <template #description>
-                                <a-space>
-                                    <icon-info-circle/>
-                                    <a-typography-text :style="{color: fontColor}">{{ " " + imageDescription }}
-                                    </a-typography-text>
-                                </a-space>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+                                          shape="round" type="text">
+                                    <template #icon>
+                                        <icon-info-circle/>
+                                    </template>
+                                    {{ imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..." }}
+                                </a-button>
+
+<!--                                <a-space>-->
+<!--                                    <icon-info-circle/>-->
+<!--                                    <a-typography-text :style="{color: fontColor}">{{ " " + imageDescription }}-->
+<!--                                    </a-typography-text>-->
+<!--                                </a-space>-->
                             </template>
                         </a-list-item-meta>
                         <template #actions>
@@ -141,6 +189,7 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
+let btnMaxSize = ref(45);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
