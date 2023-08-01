@@ -35,13 +35,13 @@
     </a-col>
     <a-modal v-model:visible="displayAddModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              unmount-on-close @cancel="addModalCancelBtnOnClick"
-             @ok="addModalOkBtnOnClick">
+             @ok="addModalOkBtnOnClick" :onBeforeOk="addModalBeforeOk">
         <template #title>{{ "添加链接 " + collectionSize + " / " + collectionMaxSize }}</template>
         <a-form>
-            <a-form-item field="name" label="网站名称" required validate-trigger="change">
+            <a-form-item field="name" label="网站名称">
                 <a-input id="webNameInput" allow-clear maxLength="5" placeholder="请输入网站名称" showWordLimit/>
             </a-form-item>
-            <a-form-item field="post" label="网站地址" required validate-trigger="change">
+            <a-form-item field="post" label="网站地址">
                 <a-input id="webUrlInput" allow-clear placeholder="请输入网站地址"/>
             </a-form-item>
         </a-form>
@@ -175,7 +175,7 @@ function showAddModalBtnOnClick() {
     }
 }
 
-function addModalOkBtnOnClick() {
+function addModalBeforeOk() {
     let webName = $("#webNameInput").children("input").val();
     let webUrl = $("#webUrlInput").children("input").val();
     if (webName && webUrl && webName.length > 0 && webUrl.length > 0) {
@@ -185,20 +185,36 @@ function addModalOkBtnOnClick() {
             collections = JSON.parse(tempCollections);
         }
         if (collections.length < collectionMaxSize.value) {
-            collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
-            localStorage.setItem("collections", JSON.stringify(collections));
-
-            displayAddModal.value = false;
-            Message.success("添加成功");
-
-            collectionData.value = collections;
-            collectionSize.value = collections.length;
-        } else {
-            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
+            return true;
         }
-    } else {
-        Message.error("网页名称或网页地址不能为空");
+        else {
+            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
+            return false;
+        }
     }
+    else {
+        Message.error("网页内容不能为空");
+        return false;
+    }
+}
+
+function addModalOkBtnOnClick() {
+    let webName = $("#webNameInput").children("input").val();
+    let webUrl = $("#webUrlInput").children("input").val();
+    let collections = [];
+    let tempCollections = localStorage.getItem("collections");
+    if (tempCollections) {
+        collections = JSON.parse(tempCollections);
+    }
+
+    collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
+    localStorage.setItem("collections", JSON.stringify(collections));
+
+    displayAddModal.value = false;
+    Message.success("添加成功");
+
+    collectionData.value = collections;
+    collectionSize.value = collections.length;
 }
 
 function addModalCancelBtnOnClick() {

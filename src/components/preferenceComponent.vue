@@ -39,9 +39,38 @@
                                 <a-form-item field="searchEngineRadio" label="搜索引擎">
                                     <a-radio-group v-model="formInitialValues.searchEngineRadio"
                                                    @change="searchEngineRadioOnChange">
-                                        <a-radio value="bing">必应</a-radio>
-                                        <a-radio value="baidu">百度</a-radio>
-                                        <a-radio value="google">谷歌</a-radio>
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="baidu">Baidu</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="bing">Bing</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="brave">Brave</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="duckduckgo">DuckDuckGo</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="ghostery">Ghostery</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="google">Google</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="sogou">Sogou</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="startpage">StartPage</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="wuzhuiso">Wuhuiso</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="yandex">Yandex</a-radio>
+                                            </a-col>
+                                        </a-row>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="dynamicEffectRadio" label="图片动效（推荐视差）">

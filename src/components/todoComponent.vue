@@ -45,13 +45,13 @@
         </a-popover>
     </a-space>
     <a-modal v-model:visible="displayModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}" unmount-on-close
-             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
+             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick" :onBeforeOk="modalBeforeOk">
         <template #title>{{ "添加待办事项 " + todoSize + " / " + todoMaxSize }}</template>
         <a-form>
-            <a-form-item field="todoInput" label="待办内容" required validate-trigger="change">
+            <a-form-item field="todoInput" label="待办内容">
                 <a-input id="todoInput" allow-clear maxLength="10" placeholder="请输入待办内容" showWordLimit/>
             </a-form-item>
-            <a-form-item field="todoRate" label="优先级别" required validate-trigger="change">
+            <a-form-item field="todoRate" label="优先级别">
                 <a-rate default-value="1" :allow-clear="true" :color="hoverColor" @change="rateOnChange"/>
             </a-form-item>
         </a-form>
@@ -136,7 +136,6 @@ function showAddModalBtnOnClick() {
         todos = JSON.parse(tempTodos);
     }
     if (todos.length < todoMaxSize.value) {
-        // $("#todoInput").children("input").val("");
         displayModal.value = true;
         priority.value = 1;
     } else {
@@ -144,7 +143,7 @@ function showAddModalBtnOnClick() {
     }
 }
 
-function modalOkBtnOnClick() {
+function modalBeforeOk() {
     let todoContent = $("#todoInput").children("input").val();
     if (todoContent && todoContent.length > 0) {
         let todos = [];
@@ -153,24 +152,38 @@ function modalOkBtnOnClick() {
             todos = JSON.parse(tempTodos);
         }
         if (todos.length < todoMaxSize.value) {
-            todoContent = todoContent + " ";
-            todos.push({
-                "label": todoContent + "★".repeat(priority.value),
-                "value": todoContent + "★".repeat(priority.value)
-            });
-            localStorage.setItem("todos", JSON.stringify(todos));
-
-            displayModal.value = false;
-            checkboxOptions.value = todos;
-            todoSize.value = todos.length;
-            Message.success("添加成功");
-        } else {
-            Message.error("待办数量最多为" + todoMaxSize.value + "个");
+            return true;
         }
-    } else {
-        Message.error("待办内容不能为空");
-        event.preventDefault();
+        else {
+            Message.error("待办数量最多为" + todoMaxSize.value + "个");
+            return false;
+        }
     }
+    else {
+        Message.error("待办内容不能为空");
+        return false;
+    }
+}
+
+function modalOkBtnOnClick() {
+    let todoContent = $("#todoInput").children("input").val();
+    let todos = [];
+    let tempTodos = localStorage.getItem("todos");
+    if (tempTodos) {
+        todos = JSON.parse(tempTodos);
+    }
+
+    todoContent = todoContent + " ";
+    todos.push({
+        "label": todoContent + "★".repeat(priority.value),
+        "value": todoContent + "★".repeat(priority.value)
+    });
+    localStorage.setItem("todos", JSON.stringify(todos));
+
+    displayModal.value = false;
+    checkboxOptions.value = todos;
+    todoSize.value = todos.length;
+    Message.success("添加成功");
 }
 
 function modalCancelBtnOnClick() {

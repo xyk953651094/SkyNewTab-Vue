@@ -59,13 +59,13 @@
         </a-popover>
     </a-space>
     <a-modal v-model:visible="displayModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}" unmount-on-close
-             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
+             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick" :onBeforeOk="modalBeforeOk">
         <template #title>{{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}</template>
         <a-form>
-            <a-form-item field="dailyInput" label="标题" required validate-trigger="change">
+            <a-form-item field="dailyInput" label="标题">
                 <a-input id="dailyInput" allow-clear maxLength="10" placeholder="请输入标题" showWordLimit/>
             </a-form-item>
-            <a-form-item field="dailyDatePicker" label="日期" required validate-trigger="change">
+            <a-form-item field="dailyDatePicker" label="日期">
                 <a-date-picker id="dailyDatePicker" @change="datePickerOnChange"/>
             </a-form-item>
         </a-form>
@@ -180,9 +180,8 @@ function showAddModalBtnOnClick() {
     }
 }
 
-function modalOkBtnOnClick() {
+function modalBeforeOk() {
     let title = $("#dailyInput").children("input").val();
-
     if (title && title.length > 0 && selectedTimeStamp.value !== 0) {
         let daily = [];
         let tempDaily = localStorage.getItem("daily");
@@ -190,32 +189,47 @@ function modalOkBtnOnClick() {
             daily = JSON.parse(tempDaily);
         }
         if (daily.length < dailyMaxSize.value) {
-            let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
-            let description, status;
-            if (todayTimeStamp - selectedTimeStamp.value > 0) {
-                description = "已过 " + ((todayTimeStamp - selectedTimeStamp.value) / 86400000) + " 天";
-                status = "expired";
-            } else if (todayTimeStamp - selectedTimeStamp.value === 0) {
-                description = "就是今天";
-                status = "today";
-            } else {
-                description = "还剩 " + ((selectedTimeStamp.value - todayTimeStamp) / 86400000) + " 天";
-                status = "not expired";
-            }
-
-            daily.push({"title": title, "description": description, "status": status, "selectedTimeStamp": selectedTimeStamp.value, "timeStamp": Date.now()});
-            localStorage.setItem("daily", JSON.stringify(daily));
-
-            displayModal.value = false;
-            listItems.value = daily;
-            dailySize.value = daily.length;
-            Message.success("添加成功");
-        } else {
-            Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
+            return true;
         }
-    } else {
-        Message.error("倒数日内容不能为空");
+        else {
+            Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
+            return false;
+        }
     }
+    else {
+        Message.error("倒数日内容不能为空");
+        return false;
+    }
+}
+
+function modalOkBtnOnClick() {
+    let title = $("#dailyInput").children("input").val();
+    let daily = [];
+    let tempDaily = localStorage.getItem("daily");
+    if (tempDaily) {
+        daily = JSON.parse(tempDaily);
+    }
+
+    let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
+    let description, status;
+    if (todayTimeStamp - selectedTimeStamp.value > 0) {
+        description = "已过 " + ((todayTimeStamp - selectedTimeStamp.value) / 86400000) + " 天";
+        status = "expired";
+    } else if (todayTimeStamp - selectedTimeStamp.value === 0) {
+        description = "就是今天";
+        status = "today";
+    } else {
+        description = "还剩 " + ((selectedTimeStamp.value - todayTimeStamp) / 86400000) + " 天";
+        status = "not expired";
+    }
+
+    daily.push({"title": title, "description": description, "status": status, "selectedTimeStamp": selectedTimeStamp.value, "timeStamp": Date.now()});
+    localStorage.setItem("daily", JSON.stringify(daily));
+
+    displayModal.value = false;
+    listItems.value = daily;
+    dailySize.value = daily.length;
+    Message.success("添加成功");
 }
 
 function modalCancelBtnOnClick() {

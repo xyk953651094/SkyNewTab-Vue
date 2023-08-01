@@ -89,14 +89,35 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 watch(() => props.searchEngine, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         switch (newValue) {
-            case "bing":
-                searchEngineUrl.value = "https://www.bing.com/search?q=";
-                break;
             case "baidu":
                 searchEngineUrl.value = "https://www.baidu.com/s?wd=";
                 break;
+            case "bing":
+                searchEngineUrl.value = "https://www.bing.com/search?q=";
+                break;
+            case "brave":
+                searchEngineUrl.value = "https://search.brave.com/search?q=";
+                break;
+            case "duckduckgo":
+                searchEngineUrl.value = "https://duckduckgo.com/?q=";
+                break;
+            case "ghostery":
+                searchEngineUrl.value = "https://ghosterysearch.com/search?q=";
+                break;
             case "google":
                 searchEngineUrl.value = "https://www.google.com/search?q=";
+                break;
+            case "sogou":
+                searchEngineUrl.value = "https://www.sogou.com/web?query=";
+                break;
+            case "startpage":
+                searchEngineUrl.value = "https://startpage.com/do/search?q=";
+                break;
+            case "wuzhuiso":
+                searchEngineUrl.value = "https://www.wuzhuiso.com/s?ie=utf-8&fr=none&q=";
+                break;
+            case "yandex":
+                searchEngineUrl.value = "https://yandex.com/search/?text=";
                 break;
             default:
                 searchEngineUrl.value = "https://www.bing.com/search?q=";
