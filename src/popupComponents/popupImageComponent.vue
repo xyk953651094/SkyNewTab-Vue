@@ -12,21 +12,21 @@
                 <template #icon>
                     <icon-user/>
                 </template>
-                {{ authorName }}
+                {{ authorName.length < btnMaxSize? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
             <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-location/>
                 </template>
-                {{ imageLocation }}
+                {{ imageLocation.length < btnMaxSize? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
             <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-info-circle/>
                 </template>
-                {{ imageDescription }}
+                {{ imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..." }}
             </a-button>
         </a-space>
     </a-space>
@@ -37,6 +37,8 @@ import {defineProps, ref, watch} from "vue";
 import {IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
 import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
+
+const btnMaxSize = 35;
 
 const props = defineProps({
     imageData: {

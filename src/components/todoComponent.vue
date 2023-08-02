@@ -4,6 +4,7 @@
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '300px'}"
+            trigger="click"
         >
             <template #title>
                 <a-row>
@@ -40,6 +41,7 @@
                 </a-button>
             </a-badge>
             <template #content>
+                <a-empty :style="{display: checkboxOptions.length === 0? 'block' : 'none'}"/>
                 <a-checkbox-group :options="checkboxOptions" direction="vertical" @change="checkboxOnChange"/>
             </template>
         </a-popover>

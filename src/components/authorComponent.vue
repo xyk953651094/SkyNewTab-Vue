@@ -5,7 +5,7 @@
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '500px'}"
             position="tr"
-            title="图片信息"
+            title="摄影师与图片信息"
         >
             <a-button id="authorBtn" :style="{display: display}" class="componentTheme zIndexHigh" shape="round" size="large"
                       type="primary"
@@ -151,6 +151,8 @@ import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
+const btnMaxSize = 45;
+
 const props = defineProps({
     themeColor: {
         type: Object,
@@ -189,7 +191,7 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
-let btnMaxSize = ref(45);
+// let btnMaxSize = ref(45);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {

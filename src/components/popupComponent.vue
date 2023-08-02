@@ -53,7 +53,7 @@ import "../stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
 
-const $ = require("jquery")
+const $ = require("jquery");
 
 let imageData = ref({});
 let hoverColor = ref("");

@@ -204,6 +204,7 @@ onMounted(() => {
             $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
+            $(".arco-empty").css("display", "block");
             $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
         }
