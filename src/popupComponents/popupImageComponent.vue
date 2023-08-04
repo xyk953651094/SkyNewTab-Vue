@@ -7,26 +7,31 @@
             width="200px"
         />
         <a-space direction="vertical">
-            <a-button :href="authorLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+            <a-button :href="authorLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-user/>
                 </template>
-                {{ authorName.length < btnMaxSize? authorName : authorName.substring(0, btnMaxSize) + "..." }}
+                {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+            <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-location/>
                 </template>
-                {{ imageLocation.length < btnMaxSize? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
+                {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+            <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-info-circle/>
                 </template>
-                {{ imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..." }}
+                {{
+                    imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
+                }}
             </a-button>
         </a-space>
     </a-space>

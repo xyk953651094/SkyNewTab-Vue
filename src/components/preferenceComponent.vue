@@ -27,7 +27,8 @@
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <a-card :body-style="{backgroundColor: backgroundColor}" :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
+                        <a-card :body-style="{backgroundColor: backgroundColor}"
+                                :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
                                 size="small"
                                 title="偏好设置"
@@ -174,7 +175,8 @@
                         </a-card>
                     </a-col>
                     <a-col :span="24">
-                        <a-card :body-style="{backgroundColor: backgroundColor}" :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
+                        <a-card :body-style="{backgroundColor: backgroundColor}"
+                                :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
                                 size="small"
                                 title="网站链接"
@@ -183,24 +185,30 @@
                                 <icon-link/>
                             </template>
                             <a-space direction="vertical">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://unsplash.com/"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor}" href="https://unsplash.com/"
                                           shape="round"
                                           target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://unsplash.com/favicon.ico"
+                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                              image-url="https://unsplash.com/favicon.ico"
                                               shape="square"/>
                                     &nbsp;&nbsp;Unsplash.com
                                 </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://www.pexels.com/"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor}" href="https://www.pexels.com/"
                                           shape="round"
                                           target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://www.pexels.com/favicon.ico"
+                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                              image-url="https://www.pexels.com/favicon.ico"
                                               shape="square"/>
                                     &nbsp;&nbsp;Pexels.com
                                 </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://pixabay.com/"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor}" href="https://pixabay.com/"
                                           shape="round"
                                           target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://pixabay.com/favicon.ico"
+                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                              image-url="https://pixabay.com/favicon.ico"
                                               shape="square"/>
                                     &nbsp;&nbsp;Pixabay.com
                                 </a-button>
@@ -210,21 +218,24 @@
                 </a-row>
                 <template #footer>
                     <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://github.com/xyk953651094"
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                  href="https://github.com/xyk953651094"
                                   shape="round" target="_blank" type="text">
                             <template #icon>
                                 <icon-github/>
                             </template>
                             主页
                         </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://xyk953651094.blogspot.com"
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                  href="https://xyk953651094.blogspot.com"
                                   shape="round" target="_blank" type="text">
                             <template #icon>
                                 <icon-message/>
                             </template>
                             博客
                         </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                  href="https://afdian.net/a/xyk953651094"
                                   shape="round" target="_blank" type="text">
                             <template #icon>
                                 <icon-gift/>

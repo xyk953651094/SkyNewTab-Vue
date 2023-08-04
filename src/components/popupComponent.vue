@@ -1,7 +1,8 @@
 <template>
     <a-layout class="popupLayout">
         <a-layout-header class="popupHeader">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" href="https://github.com/xyk953651094"
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor, cursor: 'default'}" href="https://github.com/xyk953651094"
                       shape="round" target="_blank"
                       type="text">
                 <template #icon>
@@ -18,21 +19,24 @@
         </a-layout-content>
         <a-layout-footer class="popupFooter">
             <a-space>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://github.com/xyk953651094"
+                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                          href="https://github.com/xyk953651094"
                           shape="round" target="_blank" type="text">
                     <template #icon>
                         <icon-github/>
                     </template>
                     主页
                 </a-button>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://xyk953651094.blogspot.com"
+                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                          href="https://xyk953651094.blogspot.com"
                           shape="round" target="_blank" type="text">
                     <template #icon>
                         <icon-message/>
                     </template>
                     博客
                 </a-button>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
+                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                          href="https://afdian.net/a/xyk953651094"
                           shape="round" target="_blank" type="text">
                     <template #icon>
                         <icon-gift/>

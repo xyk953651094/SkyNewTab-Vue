@@ -14,63 +14,46 @@
             </a-button>
             <template #content>
                 <a-space direction="vertical" fill size="mini">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <i class="bi bi-moisture"></i>
                         </template>
                         {{ " 空气湿度：" + humidity }}
                     </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <i class="bi bi-water"></i>
                         </template>
                         {{ " 空气质量：" + pm25 }}
                     </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <i class="bi bi-cloud-rain"></i>
                         </template>
                         {{ " 降雨概率：" + rainfall }}
                     </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <i class="bi bi-eye"></i>
                         </template>
                         {{ " 视线距离：" + visibility }}
                     </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <i class="bi bi-wind"></i>
                         </template>
                         {{ " 风速情况：" + windInfo }}
                     </a-button>
-
-<!--                    <a-space>-->
-<!--                        <i class="bi bi-moisture"></i>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 空气湿度：" + humidity }}</a-typography-text>-->
-<!--                    </a-space>-->
-<!--                    <a-space>-->
-<!--                        <i class="bi bi-water"></i>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 空气质量：" + pm25 }}</a-typography-text>-->
-<!--                    </a-space>-->
-<!--                    <a-space>-->
-<!--                        <i class="bi bi-cloud-rain"></i>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 降雨概率：" + rainfall }}</a-typography-text>-->
-<!--                    </a-space>-->
-<!--                    <a-space>-->
-<!--                        <i class="bi bi-eye"></i>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 视线距离：" + visibility }}-->
-<!--                        </a-typography-text>-->
-<!--                    </a-space>-->
-<!--                    <a-space>-->
-<!--                        <i class="bi bi-wind"></i>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 风速情况：" + windInfo }}</a-typography-text>-->
-<!--                    </a-space>-->
                 </a-space>
             </template>
         </a-popover>

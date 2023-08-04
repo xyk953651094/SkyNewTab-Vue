@@ -14,29 +14,22 @@
             </a-button>
             <template #content>
                 <a-space direction="vertical" fill size="mini">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <icon-check-circle/>
                         </template>
                         {{ "宜：" + suit }}
                     </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
                               shape="round" type="text">
                         <template #icon>
                             <icon-close-circle/>
                         </template>
                         {{ "忌：" + avoid }}
                     </a-button>
-
-<!--                    <a-space>-->
-<!--                        <icon-check-circle/>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 宜：" + suit }}</a-typography-text>-->
-<!--                    </a-space>-->
-<!--                    <a-space>-->
-<!--                        <icon-close-circle/>-->
-<!--                        <a-typography-text :style="{color: fontColor}">{{ " 忌：" + avoid }}</a-typography-text>-->
-<!--                    </a-space>-->
                 </a-space>
             </template>
         </a-popover>
@@ -48,7 +41,8 @@ import "../stylesheets/publicStyles.less"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
 import {
-    changeThemeColor, getFontColor,
+    changeThemeColor,
+    getFontColor,
     getGreetContent,
     getGreetIcon,
     getTimeDetails,

@@ -16,19 +16,21 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
                                       type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{"添加倒数日"}}
+                                {{ "添加倒数日" }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
                                       type="text" @click="removeAllBtnOnClick">
                                 <template #icon>
                                     <icon-delete/>
                                 </template>
-                                {{"全部删除"}}
+                                {{ "全部删除" }}
                             </a-button>
                         </a-space>
                     </a-col>
@@ -44,28 +46,32 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
-                        <a-row justify="space-between" :style="{width: '95%'}">
+                        <a-row :style="{width: '95%'}" justify="space-between">
                             <a-col :span="10">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{item.title}}
+                                    {{ item.title }}
                                 </a-button>
                             </a-col>
                             <a-col :span="8" :style="{textAlign: 'center'}">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{getTimeDetails(new Date(item.selectedTimeStamp)).showDate5}}
+                                    {{ getTimeDetails(new Date(item.selectedTimeStamp)).showDate5 }}
                                 </a-button>
                             </a-col>
                             <a-col :span="6" :style="{textAlign: 'right'}">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{getDailyDescription(item.selectedTimeStamp)}}
+                                    {{ getDailyDescription(item.selectedTimeStamp) }}
                                 </a-button>
                             </a-col>
                         </a-row>
                         <template #actions>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="circle"
                                       type="text" @click="removeBtnOnClick(item)">
                                 <template #icon>
                                     <icon-delete/>
@@ -77,8 +83,10 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}" unmount-on-close
-             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick" :onBeforeOk="modalBeforeOk">
+    <a-modal v-model:visible="displayModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             :onBeforeOk="modalBeforeOk"
+             unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>{{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}</template>
         <a-form>
             <a-form-item field="dailyInput" label="标题">
@@ -209,13 +217,11 @@ function modalBeforeOk() {
         }
         if (daily.length < dailyMaxSize.value) {
             return true;
-        }
-        else {
+        } else {
             Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
             return false;
         }
-    }
-    else {
+    } else {
         Message.error("倒数日内容不能为空");
         return false;
     }

@@ -15,19 +15,21 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
                                       type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{"添加待办事项"}}
+                                {{ "添加待办事项" }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
                                       type="text" @click="removeAllBtnOnClick">
                                 <template #icon>
                                     <icon-delete/>
                                 </template>
-                                {{"全部删除"}}
+                                {{ "全部删除" }}
                             </a-button>
                         </a-space>
                     </a-col>
@@ -43,25 +45,28 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">
-                        <a-row justify="space-between" :style="{width: '95%'}">
+                        <a-row :style="{width: '95%'}" justify="space-between">
                             <a-col :span="12">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{item.title}}
+                                    {{ item.title }}
                                 </a-button>
                             </a-col>
                             <a-col :span="12">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{item.priority}}
+                                    {{ item.priority }}
                                 </a-button>
                             </a-col>
                         </a-row>
                         <template #actions>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="circle"
                                       type="text" @click="finishBtnOnClick(item)">
                                 <template #icon>
-                                    <icon-check />
+                                    <icon-check/>
                                 </template>
                             </a-button>
                         </template>
@@ -70,15 +75,17 @@
             </template>
         </a-popover>
     </a-space>
-    <a-modal v-model:visible="displayModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}" unmount-on-close
-             @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick" :onBeforeOk="modalBeforeOk">
+    <a-modal v-model:visible="displayModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             :onBeforeOk="modalBeforeOk"
+             unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>{{ "添加待办事项 " + todoSize + " / " + todoMaxSize }}</template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容">
                 <a-input id="todoInput" allow-clear maxLength="10" placeholder="请输入待办内容" showWordLimit/>
             </a-form-item>
             <a-form-item field="todoRate" label="优先级别">
-                <a-rate default-value="1" :allow-clear="true" :color="hoverColor" @change="rateOnChange"/>
+                <a-rate :allow-clear="true" :color="hoverColor" default-value="1" @change="rateOnChange"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -86,7 +93,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCheckSquare, IconDelete, IconPlus, IconCheck} from "@arco-design/web-vue/es/icon";
+import {IconCheck, IconCheckSquare, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
@@ -201,13 +208,11 @@ function modalBeforeOk() {
         }
         if (todos.length < todoMaxSize.value) {
             return true;
-        }
-        else {
+        } else {
             Message.error("待办数量最多为" + todoMaxSize.value + "个");
             return false;
         }
-    }
-    else {
+    } else {
         Message.error("待办内容不能为空");
         return false;
     }
