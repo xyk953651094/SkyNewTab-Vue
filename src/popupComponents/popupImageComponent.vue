@@ -5,7 +5,12 @@
             :style="{borderRadius: '10px'}"
             alt="图片加载失败"
             width="200px"
-        />
+            height="120px"
+        >
+            <template #loader>
+                <canvas id="popupCanvas" class="popupCanvas"></canvas>
+            </template>
+        </a-image>
         <a-space direction="vertical">
             <a-button :href="authorLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                       :style="{color: fontColor}" shape="round"
@@ -42,6 +47,7 @@ import {defineProps, ref, watch} from "vue";
 import {IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
 import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
+import {decode} from "blurhash";
 
 const btnMaxSize = 35;
 
@@ -65,15 +71,31 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
+let blurHashCode = ref("");
 
 watch(() => props.imageData, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
+    if (newValue !== oldValue && newValue) {
         authorName.value = props.imageData.user.name;
         authorLink.value = props.imageData.user.links.html;
         imageLink.value = props.imageData.links.html;
         imagePreviewUrl.value = props.imageData.urls.thumb;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
+
+        blurHashCode.value = newValue.blur_hash;
+        if (!isEmptyString(blurHashCode.value)) {
+            const popupCanvas = document.getElementById("popupCanvas");
+            if (popupCanvas instanceof HTMLCanvasElement) {
+                let blurHashImage = decode(blurHashCode.value, popupCanvas.width, popupCanvas.height);
+                let ctx = popupCanvas.getContext("2d");
+                if (ctx) {
+                    const imageData = new ImageData(blurHashImage, popupCanvas.width, popupCanvas.height);
+                    ctx.putImageData(imageData, 0, 0);
+                }
+
+                popupCanvas.className = "popupCanvas wallpaperFadeIn";
+            }
+        }
     }
 })
 
