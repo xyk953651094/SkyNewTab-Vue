@@ -22,7 +22,7 @@
                 </a-col>
             </a-row>
         </a-layout-header>
-        <a-layout-content class="center">
+        <a-layout-content id="content" class="center">
             <wallpaper-component :display="componentDisplay" :dynamic-effect="dynamicEffect" :image-data="imageData"
                                  :image-quality="imageQuality"/>
             <a-space align="center" direction="vertical">
@@ -39,7 +39,6 @@
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :theme-color="themeColor"/>
-                        <!--                        <html-link-component :theme-color="themeColor" :display="componentDisplay" :image-data="imageData"/>-->
                     </a-space>
                 </a-col>
             </a-row>
