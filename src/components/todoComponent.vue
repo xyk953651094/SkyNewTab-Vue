@@ -3,31 +3,31 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '300px'}"
-            trigger="click"
+            :style="{width: '500px'}"
+            position="br"
         >
             <template #title>
-                <a-row>
-                    <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
+                <a-row align="center">
+                    <a-col :span="10">
                         <a-typography-text :style="{color: fontColor}">
                             {{ "待办事项 " + todoSize + " / " + todoMaxSize }}
                         </a-typography-text>
                     </a-col>
-                    <a-col :span="12" :style="{textAlign: 'right'}">
+                    <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
-                                      size="mini" type="text"
-                                      @click="showAddModalBtnOnClick">
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                                      type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
+                                {{"添加待办事项"}}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
-                                      size="mini" type="text"
-                                      @click="removeAllBtnOnClick">
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                                      type="text" @click="removeAllBtnOnClick">
                                 <template #icon>
                                     <icon-delete/>
                                 </template>
+                                {{"全部删除"}}
                             </a-button>
                         </a-space>
                     </a-col>
@@ -41,8 +41,32 @@
                 </a-button>
             </a-badge>
             <template #content>
-                <a-empty :style="{display: checkboxOptions.length === 0? 'block' : 'none'}"/>
-                <a-checkbox-group :options="checkboxOptions" direction="vertical" @change="checkboxOnChange"/>
+                <a-list :bordered=false>
+                    <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">
+                        <a-row justify="space-between" :style="{width: '95%'}">
+                            <a-col :span="12">
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          type="text">
+                                    {{item.title}}
+                                </a-button>
+                            </a-col>
+                            <a-col :span="12">
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          type="text">
+                                    {{item.priority}}
+                                </a-button>
+                            </a-col>
+                        </a-row>
+                        <template #actions>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                                      type="text" @click="finishBtnOnClick(item)">
+                                <template #icon>
+                                    <icon-check />
+                                </template>
+                            </a-button>
+                        </template>
+                    </a-list-item>
+                </a-list>
             </template>
         </a-popover>
     </a-space>
@@ -62,7 +86,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCheckSquare, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconCheckSquare, IconDelete, IconPlus, IconCheck} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
@@ -131,6 +155,28 @@ function removeAllBtnOnClick() {
     }
 }
 
+function finishBtnOnClick(item) {
+    let todos = [];
+    let tempTodos = localStorage.getItem("todos");
+    if (tempTodos) {
+        todos = JSON.parse(tempTodos);
+        let index = -1;
+        for (let i = 0; i < todos.length; i++) {
+            if (item.timeStamp === todos[i].timeStamp) {
+                index = i;
+                break;
+            }
+        }
+        if (index !== -1) {
+            todos.splice(index, 1);
+        }
+        localStorage.setItem("todos", JSON.stringify(todos));
+
+        checkboxOptions.value = todos;
+        todoSize.value = todos.length;
+    }
+}
+
 function showAddModalBtnOnClick() {
     let todos = [];
     let tempTodos = localStorage.getItem("todos");
@@ -175,10 +221,10 @@ function modalOkBtnOnClick() {
         todos = JSON.parse(tempTodos);
     }
 
-    todoContent = todoContent + " ";
     todos.push({
-        "label": todoContent + "★".repeat(priority.value),
-        "value": todoContent + "★".repeat(priority.value)
+        "title": todoContent,
+        "priority": "★".repeat(priority.value),
+        "timeStamp": Date.now()
     });
     localStorage.setItem("todos", JSON.stringify(todos));
 
@@ -190,29 +236,6 @@ function modalOkBtnOnClick() {
 
 function modalCancelBtnOnClick() {
     displayModal.value = false
-}
-
-function checkboxOnChange(checkedValues) {
-    console.log('checked = ', checkedValues);
-    let todos = [];
-    let tempTodos = localStorage.getItem("todos");
-    if (tempTodos) {
-        todos = JSON.parse(tempTodos);
-        let index = -1;
-        for (let i = 0; i < todos.length; i++) {
-            if (checkedValues[checkedValues.length - 1] === todos[i].label) {
-                index = i;
-                break;
-            }
-        }
-        if (index !== -1) {
-            todos.splice(index, 1);
-        }
-        localStorage.setItem("todos", JSON.stringify(todos));
-
-        checkboxOptions.value = todos;
-        todoSize.value = todos.length;
-    }
 }
 
 function rateOnChange(value) {

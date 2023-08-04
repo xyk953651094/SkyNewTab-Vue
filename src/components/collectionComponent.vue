@@ -49,10 +49,14 @@
     <a-modal v-model:visible="displayEditModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              @cancel="editModalCancelBtnOnClick"
              @ok="editModalOkBtnOnClick">
-        <template #title>{{ "编辑链接 " + collectionSize + " / " + collectionMaxSize }}</template>
-        <a-list>
-            <template #header>
-                <a-row justify="end">
+        <template #title>
+            <a-row align="center" :style="{width: '100%'}">
+                <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "编辑链接 " + collectionSize + " / " + collectionMaxSize }}
+                    </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
                               type="text" @click="removeAllBtnOnClick">
                         <template #icon>
@@ -60,33 +64,33 @@
                         </template>
                         全部删除
                     </a-button>
-                </a-row>
-            </template>
+                </a-col>
+            </a-row>
+        </template>
+        <a-list :bordered=false>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
-                <a-list-item-meta>
+                <a-list-item-meta :title="item.webName">
                     <template #avatar>
                         <a-avatar :image-url="item.webUrl + '/favicon.ico'" :style="{backgroundColor: 'transparent'}"/>
                     </template>
-                    <template #title>
-                        <a-space>
-                            <icon-compass/>
-                            <a-typography-text :style="{color: fontColor}">{{ " " + item.webName }}
-                            </a-typography-text>
-                        </a-space>
-                    </template>
+<!--                    <template #title>-->
+<!--                        <a-space>-->
+<!--                            <icon-compass/>-->
+<!--                            <a-typography-text :style="{color: fontColor}">{{ " " + item.webName }}-->
+<!--                            </a-typography-text>-->
+<!--                        </a-space>-->
+<!--                    </template>-->
                     <template #description>
-                        <a-space>
-                            <icon-link/>
-                            <a-typography-text editable :style="{color: fontColor}" v-model:editText="editText">{{ " " + item.webUrl }}
-                            </a-typography-text>
-                        </a-space>
+                        <a-typography-text :style="{color: fontColor}">
+                            {{ item.webUrl.length < 40? item.webUrl : item.webUrl.substring(0, 40) + "..." }}
+                        </a-typography-text>
                     </template>
                 </a-list-item-meta>
                 <template #actions>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
                               type="text" @click="removeBtnOnClick(item)">
                         <template #icon>
-                            <icon-close/>
+                            <icon-delete/>
                         </template>
                     </a-button>
                 </template>
@@ -97,7 +101,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconClose, IconEdit, IconPlus, IconCompass, IconLink} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconEdit, IconPlus} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 
@@ -125,7 +129,6 @@ let displayEditModal = ref(false);
 let collectionData = ref([]);
 let collectionSize = ref(0);
 let collectionMaxSize = ref(5);
-let editText = ref("");
 
 onMounted(() => {
     let collections = [];

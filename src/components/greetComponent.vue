@@ -3,7 +3,7 @@
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
                    :title="calendar"
-                   position="tl"
+                   position="bl"
         >
             <a-button id="greetBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary"
                       @click="greetBtnOnClick">

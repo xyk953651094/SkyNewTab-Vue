@@ -3,32 +3,32 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '300px'}"
-            trigger="click"
+            :style="{width: '500px'}"
+            position="br"
         >
             <template #title>
-                <a-row>
-                    <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
+                <a-row align="center">
+                    <a-col :span="10">
                         <a-typography-text :style="{color: fontColor}">{{
                                 "倒数日 " + dailySize + " / " + dailyMaxSize
                             }}
                         </a-typography-text>
                     </a-col>
-                    <a-col :span="12" :style="{textAlign: 'right'}">
+                    <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
-                                      size="mini" type="text"
-                                      @click="showAddModalBtnOnClick">
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                                      type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
+                                {{"添加倒数日"}}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
-                                      size="mini" type="text"
-                                      @click="removeAllBtnOnClick">
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+                                      type="text" @click="removeAllBtnOnClick">
                                 <template #icon>
                                     <icon-delete/>
                                 </template>
+                                {{"全部删除"}}
                             </a-button>
                         </a-space>
                     </a-col>
@@ -44,13 +44,31 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
-                        <a-list-item-meta :description="getTimeDetails(new Date(item.selectedTimeStamp)).showDate5 + ' ' + item.description" :title="item.title">
-                        </a-list-item-meta>
+                        <a-row justify="space-between" :style="{width: '95%'}">
+                            <a-col :span="10">
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          type="text">
+                                    {{item.title}}
+                                </a-button>
+                            </a-col>
+                            <a-col :span="8" :style="{textAlign: 'center'}">
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          type="text">
+                                    {{getTimeDetails(new Date(item.selectedTimeStamp)).showDate5}}
+                                </a-button>
+                            </a-col>
+                            <a-col :span="6" :style="{textAlign: 'right'}">
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          type="text">
+                                    {{getDailyDescription(item.selectedTimeStamp)}}
+                                </a-button>
+                            </a-col>
+                        </a-row>
                         <template #actions>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
-                                      size="mini" type="text" @click="removeBtnOnClick(item)">
+                                      type="text" @click="removeBtnOnClick(item)">
                                 <template #icon>
-                                    <icon-close/>
+                                    <icon-delete/>
                                 </template>
                             </a-button>
                         </template>
@@ -211,20 +229,11 @@ function modalOkBtnOnClick() {
         daily = JSON.parse(tempDaily);
     }
 
-    let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
-    let description, status;
-    if (todayTimeStamp - selectedTimeStamp.value > 0) {
-        description = "已过 " + ((todayTimeStamp - selectedTimeStamp.value) / 86400000) + " 天";
-        status = "expired";
-    } else if (todayTimeStamp - selectedTimeStamp.value === 0) {
-        description = "就是今天";
-        status = "today";
-    } else {
-        description = "还剩 " + ((selectedTimeStamp.value - todayTimeStamp) / 86400000) + " 天";
-        status = "not expired";
-    }
-
-    daily.push({"title": title, "description": description, "status": status, "selectedTimeStamp": selectedTimeStamp.value, "timeStamp": Date.now()});
+    daily.push({
+        "title": title,
+        "selectedTimeStamp": selectedTimeStamp.value,
+        "timeStamp": Date.now()
+    });
     localStorage.setItem("daily", JSON.stringify(daily));
 
     displayModal.value = false;
@@ -235,6 +244,19 @@ function modalOkBtnOnClick() {
 
 function modalCancelBtnOnClick() {
     displayModal.value = false
+}
+
+function getDailyDescription(selectedTimeStamp) {
+    let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
+    let description;
+    if (todayTimeStamp - selectedTimeStamp > 0) {
+        description = "已过 " + ((todayTimeStamp - selectedTimeStamp) / 86400000) + " 天";
+    } else if (todayTimeStamp - selectedTimeStamp === 0) {
+        description = "就是今天";
+    } else {
+        description = "还剩 " + ((selectedTimeStamp - todayTimeStamp) / 86400000) + " 天";
+    }
+    return description;
 }
 
 function datePickerOnChange(value, date, dateString) {

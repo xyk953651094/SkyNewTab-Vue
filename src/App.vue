@@ -198,7 +198,7 @@ onMounted(() => {
             $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
             $(".arco-popover-popup-arrow").css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
-                border: "1px solid " + themeColor.value.componentBackgroundColor
+                "border": "1px solid " + themeColor.value.componentBackgroundColor
             });
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
@@ -255,13 +255,15 @@ onMounted(() => {
         let modalEle = $(".arco-modal");
         if (modalEle.length && modalEle.length > 0) {
             $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
+            $(".arco-modal-header").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
-            // $(".arco-modal-close-btn").css("color", themeColor.value.componentFontColor);
+            $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+            $(".arco-modal-footer").css("borderTopColor", themeColor.value.componentFontColor);
             $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
             $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {
