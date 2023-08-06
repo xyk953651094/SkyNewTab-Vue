@@ -37,7 +37,7 @@
                 </a-row>
             </template>
             <a-badge :count="listItems.length">
-                <a-button id="dailyBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
+                <a-button id="dailyBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary" :style="{cursor: 'default'}">
                     <template #icon>
                         <icon-calendar-clock/>
                     </template>

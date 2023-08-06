@@ -36,7 +36,7 @@
                 </a-row>
             </template>
             <a-badge :count="checkboxOptions.length">
-                <a-button id="todoBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
+                <a-button id="todoBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary" :style="{cursor: 'default'}">
                     <template #icon>
                         <icon-check-square/>
                     </template>

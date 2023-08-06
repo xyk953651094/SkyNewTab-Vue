@@ -38,7 +38,7 @@
                 <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
-                                          :theme-color="themeColor"/>
+                                          :theme-color="themeColor" :search-engine="searchEngine"/>
                     </a-space>
                 </a-col>
             </a-row>

@@ -4,15 +4,15 @@
             :src="imagePreviewUrl"
             :style="{borderRadius: '10px'}"
             alt="图片加载失败"
-            width="200px"
-            height="120px"
+            width="300px"
+            height="180px"
         >
             <template #loader>
                 <canvas id="popupCanvas" class="popupCanvas"></canvas>
             </template>
         </a-image>
         <a-space direction="vertical">
-            <a-button :href="authorLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="authorLinkBtnOnClick"
                       :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
@@ -20,7 +20,23 @@
                 </template>
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageCameraBtnOnClick"
+                      :style="{color: fontColor, cursor: 'default'}"
+                      shape="round" type="text">
+                <template #icon>
+                    <icon-camera />
+                </template>
+                {{ imageCamera }}
+            </a-button>
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor, cursor: 'default'}"
+                      shape="round" type="text">
+                <template #icon>
+                    <icon-clock-circle />
+                </template>
+                {{ imageCreateTime }}
+            </a-button>
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageLocationBtnOnClick"
                       :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
@@ -28,7 +44,7 @@
                 </template>
                 {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :href="imageLink" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"  @click="imageLinkBtnOnClick"
                       :style="{color: fontColor}" shape="round"
                       target="_blank" type="text">
                 <template #icon>
@@ -44,10 +60,12 @@
 
 <script setup>
 import {defineProps, ref, watch} from "vue";
-import {IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
-import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
+import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
+import {getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import {decode} from "blurhash";
+import {Message} from "@arco-design/web-vue";
+import {unsplashUrl} from "../javascripts/publicConstants";
 
 const btnMaxSize = 35;
 
@@ -63,6 +81,13 @@ const props = defineProps({
         },
         required: true
     },
+    searchEngine: {
+        type: String,
+        required: true,
+        default: () => {
+            return "bing"
+        }
+    }
 });
 
 let authorName = ref("暂无信息");
@@ -71,7 +96,10 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
+let imageCreateTime = ref("暂无信息");
+let imageCamera = ref("暂无信息");
 let blurHashCode = ref("");
+let searchEngineUrl = ref("https://www.bing.com/search?q=");
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {
@@ -81,6 +109,8 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imagePreviewUrl.value = props.imageData.urls.thumb;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
+        imageCreateTime.value = props.imageData.created_at;
+        imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
 
         blurHashCode.value = newValue.blur_hash;
         if (!isEmptyString(blurHashCode.value)) {
@@ -99,6 +129,12 @@ watch(() => props.imageData, (newValue, oldValue) => {
     }
 })
 
+watch(() => props.searchEngine, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        searchEngineUrl.value = getSearchEngineDetail(newValue).searchEngineUrl;
+    }
+});
+
 function btnMouseOver() {
     this.style.backgroundColor = props.imageData.color;
     this.style.color = getFontColor(props.imageData.color);
@@ -109,6 +145,37 @@ function btnMouseOut() {
     this.style.color = props.fontColor;
 }
 
+function authorLinkBtnOnClick() {
+    if (authorLink.value.length !== 0) {
+        window.open(authorLink.value + unsplashUrl);
+    } else {
+        Message.error("无跳转链接");
+    }
+}
+
+function imageLinkBtnOnClick() {
+    if (authorLink.value.length !== 0) {
+        window.open(imageLink.value + unsplashUrl);
+    } else {
+        Message.error("无跳转链接");
+    }
+}
+
+function imageLocationBtnOnClick() {
+    if(imageLocation.value !== "暂无信息") {
+        window.open(searchEngineUrl.value + imageLocation.value, "_blank");
+    } else {
+        Message.error("无跳转链接");
+    }
+}
+
+function imageCameraBtnOnClick() {
+    if(imageCamera.value !== "暂无信息") {
+        window.open(searchEngineUrl.value + imageCamera.value, "_blank");
+    } else {
+        Message.error("无跳转链接");
+    }
+}
 </script>
 
 <style scoped>

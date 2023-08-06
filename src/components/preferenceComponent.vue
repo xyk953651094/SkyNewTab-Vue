@@ -240,7 +240,7 @@
                             <template #icon>
                                 <icon-gift/>
                             </template>
-                            捐赠
+                            支持
                         </a-button>
                     </a-space>
                 </template>

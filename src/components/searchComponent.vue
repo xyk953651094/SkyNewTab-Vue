@@ -22,7 +22,7 @@
 <script setup>
 // import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
-import {fadeIn, fadeOut} from "../javascripts/publicFunctions";
+import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
 
 let showMask = ref("none");
@@ -41,53 +41,8 @@ const props = defineProps({
 
 watch(() => props.searchEngine, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        switch (props.searchEngine) {
-
-            case "baidu":
-                searchEngineUrl.value = "https://www.baidu.com/s?wd=";
-                searchEngineIconUrl.value = "https://www.baidu.com/favicon.ico";
-                break;
-            case "bing":
-                searchEngineUrl.value = "https://www.bing.com/search?q=";
-                searchEngineIconUrl.value = "https://www.bing.com/favicon.ico";
-                break;
-            case "brave":
-                searchEngineUrl.value = "https://search.brave.com/search?q=";
-                searchEngineIconUrl.value = "https://cdn.search.brave.com/serp/v2/_app/immutable/assets/favicon.c09fe1a1.ico";
-                break;
-            case "duckduckgo":
-                searchEngineUrl.value = "https://duckduckgo.com/?q=";
-                searchEngineIconUrl.value = "https://duckduckgo.com/favicon.ico";
-                break;
-            case "ghostery":
-                searchEngineUrl.value = "https://ghosterysearch.com/search?q=";
-                searchEngineIconUrl.value = "https://ghosterysearch.com/favicon.ico";
-                break;
-            case "google":
-                searchEngineUrl.value = "https://www.google.com/search?q=";
-                searchEngineIconUrl.value = "https://www.google.com/favicon.ico";
-                break;
-            case "sogou":
-                searchEngineUrl.value = "https://www.sogou.com/web?query=";
-                searchEngineIconUrl.value = "https://www.sogou.com/favicon.ico";
-                break;
-            case "startpage":
-                searchEngineUrl.value = "https://startpage.com/do/search?q=";
-                searchEngineIconUrl.value = "https://www.startpage.com/sp/cdn/favicons/favicon-32x32--default.png";
-                break;
-            case "wuzhuiso":
-                searchEngineUrl.value = "https://www.wuzhuiso.com/s?ie=utf-8&fr=none&q=";
-                searchEngineIconUrl.value = "https://www.wuzhuiso.com/favicon.ico";
-                break;
-            case "yandex":
-                searchEngineUrl.value = "https://yandex.com/search/?text=";
-                searchEngineIconUrl.value = "https://yastatic.net/s3/home-static/_/92/929b10d17990e806734f68758ec917ec.png";
-                break;
-            default:
-                searchEngineUrl.value = "https://www.bing.com/search?q=";
-                searchEngineIconUrl.value = "https://www.bing.com/favicon.ico";
-                break;
-        }
+        searchEngineUrl.value = getSearchEngineDetail(newValue).searchEngineUrl;
+        searchEngineIconUrl.value = getSearchEngineDetail(newValue).searchEngineIconUrl;
     }
 })
 

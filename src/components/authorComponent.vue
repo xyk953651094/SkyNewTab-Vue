@@ -15,7 +15,7 @@
                         <a-space>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                                       shape="round"
-                                      type="text" @click="gotoAuthorBtnOnClick">
+                                      type="text" @click="authorLinkBtnOnClick">
                                 <template #icon>
                                     <icon-link/>
                                 </template>
@@ -23,7 +23,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                                       shape="round"
-                                      type="text" @click="gotoImageBtnOnClick">
+                                      type="text" @click="imageLinkBtnOnClick">
                                 <template #icon>
                                     <icon-link/>
                                 </template>
@@ -36,9 +36,9 @@
             <a-button id="authorBtn" :style="{display: display}" class="componentTheme zIndexHigh" shape="round"
                       size="large"
                       type="primary"
-                      @click="authorBtnOnClick">
+                      @click="authorLinkBtnOnClick">
                 <template #icon>
-                    <icon-camera/>
+                    <icon-imageCamera/>
                 </template>
                 {{ "by " + authorName + " on Unsplash" }}
             </a-button>
@@ -100,8 +100,8 @@
                                           shape="square"/>
                             </template>
                             <template #title>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageLocationBtnOnClick"
+                                          :style="{color: fontColor}"
                                           shape="round" type="text">
                                     <template #icon>
                                         <icon-location/>
@@ -112,16 +112,34 @@
                                 </a-button>
                             </template>
                             <template #description>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          shape="round" type="text">
-                                    <template #icon>
-                                        <icon-info-circle/>
-                                    </template>
-                                    {{
-                                        imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
-                                    }}
-                                </a-button>
+                                <a-space direction="vertical">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <icon-clock-circle />
+                                        </template>
+                                        {{ imageCreateTime }}
+                                    </a-button>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageCameraBtnOnClick"
+                                              :style="{color: fontColor}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <icon-camera />
+                                        </template>
+                                        {{ imageCamera }}
+                                    </a-button>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <icon-info-circle/>
+                                        </template>
+                                        {{
+                                            imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
+                                        }}
+                                    </a-button>
+                                </a-space>
                             </template>
                         </a-list-item-meta>
                     </a-list-item>
@@ -133,9 +151,9 @@
 
 <script setup>
 import {defineProps, ref, watch} from "vue"
-import {IconCamera, IconInfoCircle, IconLink, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
+import {IconClockCircle, IconCamera, IconInfoCircle, IconLink, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "../javascripts/publicConstants";
-import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const btnMaxSize = 50;
@@ -163,11 +181,19 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    searchEngine: {
+        type: String,
+        required: true,
+        default: () => {
+            return "bing"
+        }
+    }
 });
 
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
+let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let authorName = ref("暂无信息");
 let authorLink = ref("");
 let authorIconUrl = ref("");
@@ -178,7 +204,8 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
-// let btnMaxSize = ref(45);
+let imageCreateTime = ref("暂无信息");
+let imageCamera = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -201,8 +228,16 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imagePreviewUrl.value = props.imageData.urls.thumb;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
+        imageCreateTime.value = props.imageData.created_at;
+        imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
     }
 })
+
+watch(() => props.searchEngine, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        searchEngineUrl.value = getSearchEngineDetail(newValue).searchEngineUrl;
+    }
+});
 
 function btnMouseOver() {
     this.style.backgroundColor = hoverColor.value;
@@ -214,11 +249,7 @@ function btnMouseOut() {
     this.style.color = fontColor.value;
 }
 
-function authorBtnOnClick() {
-    window.open(authorLink.value);
-}
-
-function gotoAuthorBtnOnClick() {
+function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
         window.open(authorLink.value + unsplashUrl);
     } else {
@@ -226,9 +257,25 @@ function gotoAuthorBtnOnClick() {
     }
 }
 
-function gotoImageBtnOnClick() {
+function imageLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
         window.open(imageLink.value + unsplashUrl);
+    } else {
+        Message.error("无跳转链接");
+    }
+}
+
+function imageLocationBtnOnClick() {
+    if(imageLocation.value !== "暂无信息") {
+        window.open(searchEngineUrl.value + imageLocation.value, "_blank");
+    } else {
+        Message.error("无跳转链接");
+    }
+}
+
+function imageCameraBtnOnClick() {
+    if(imageCamera.value !== "暂无信息") {
+        window.open(searchEngineUrl.value + imageCamera.value, "_blank");
     } else {
         Message.error("无跳转链接");
     }

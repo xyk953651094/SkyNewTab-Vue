@@ -14,7 +14,7 @@
         <a-layout-content class="popupContent">
             <a-space direction="vertical">
                 <popup-status-component :font-color="fontColor" :image-data="imageData"/>
-                <popup-image-component :font-color="fontColor" :image-data="imageData"/>
+                <popup-image-component :font-color="fontColor" :image-data="imageData" :search-engine="searchEngine"/>
             </a-space>
         </a-layout-content>
         <a-layout-footer class="popupFooter">
@@ -41,7 +41,7 @@
                     <template #icon>
                         <icon-gift/>
                     </template>
-                    捐赠
+                    支持
                 </a-button>
             </a-space>
         </a-layout-footer>
@@ -63,6 +63,7 @@ let imageData = ref({});
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
+let searchEngine = ref("bing");
 
 onMounted(() => {
     let tempImageData = localStorage.getItem("lastImage");
@@ -78,6 +79,9 @@ onMounted(() => {
     } else {
         Message.error("暂无图片信息");
     }
+
+    let tempSearchEngine = localStorage.getItem("searchEngine");
+    searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
 })
 
 function btnMouseOver() {
