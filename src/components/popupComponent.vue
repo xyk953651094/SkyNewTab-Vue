@@ -82,6 +82,20 @@ onMounted(() => {
 
     let tempSearchEngine = localStorage.getItem("searchEngine");
     searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
+
+    // 修改各类弹窗样式
+    $("body").bind("DOMNodeInserted", () => {
+        // message
+        let messageEle = $(".arco-message");
+        if (messageEle.length && messageEle.length > 0) {
+            messageEle.css({
+                "backgroundColor": hoverColor.value,
+                "border-color": hoverColor.value
+            });
+            $(".arco-message-icon").css("color", getFontColor(hoverColor.value));
+            $(".arco-message-content").css("color", getFontColor(hoverColor.value));
+        }
+    })
 })
 
 function btnMouseOver() {

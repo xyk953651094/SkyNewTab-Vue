@@ -44,7 +44,8 @@ import {
     changeThemeColor,
     getFontColor,
     getGreetContent,
-    getGreetIcon, getSearchEngineDetail,
+    getGreetIcon,
+    getSearchEngineDetail,
     getTimeDetails,
     httpRequest,
 } from "../javascripts//publicFunctions";

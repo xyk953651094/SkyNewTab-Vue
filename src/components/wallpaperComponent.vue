@@ -3,22 +3,18 @@
         id="backgroundImage"
         :preview=false
         :src="imageLink"
-        :style="{display: display}"
+        :style="{display: displayImage}"
         class="backgroundImage zIndexLow"
         height="102%"
         width="102%"
     >
-        <template #loader>
-            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>
-        </template>
     </a-image>
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
+import {imageDynamicEffect} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {decode} from "blurhash"
 
 const props = defineProps({
     display: {
@@ -50,7 +46,7 @@ const props = defineProps({
 
 let imageLink = ref("");
 let loadImageLink = ref("");
-let blurHashCode = ref("");
+let displayImage =  ref("none");
 
 watch(() => props.dynamicEffect, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -82,21 +78,6 @@ watch(() => props.imageData, (newValue, oldValue) => {
                 break;
         }
     }
-
-    blurHashCode.value = newValue.blur_hash;
-    if (!isEmptyString(blurHashCode.value)) {
-        const blurHashCanvas = document.getElementById("blurHashCanvas");
-        if (blurHashCanvas instanceof HTMLCanvasElement) {
-            let blurHashImage = decode(blurHashCode.value, window.innerWidth, window.innerHeight);
-            let ctx = blurHashCanvas.getContext("2d");
-            if (ctx) {
-                const imageData = new ImageData(blurHashImage, window.innerWidth, window.innerHeight);
-                ctx.putImageData(imageData, 0, 0);
-            }
-
-            blurHashCanvas.className = "blurHashCanvas zIndexLow wallpaperFadeIn";
-        }
-    }
 })
 
 onMounted(() => {
@@ -105,9 +86,10 @@ onMounted(() => {
 
     if (backgroundImage instanceof HTMLElement) {
         backgroundImage.onload = function () {
+            displayImage.value = "block";
+
             // 设置动态效果
             backgroundImage.className = "backgroundImage zIndexLow wallpaperFadeIn";
-            // fadeIn("#backgroundImage", 3000);
             setTimeout(() => {
                 backgroundImage.style.transform = "scale(1.05)";
                 backgroundImage.style.transition = "5s";

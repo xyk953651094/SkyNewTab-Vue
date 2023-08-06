@@ -38,7 +38,7 @@
                       type="primary"
                       @click="authorLinkBtnOnClick">
                 <template #icon>
-                    <icon-imageCamera/>
+                    <icon-camera/>
                 </template>
                 {{ "by " + authorName + " on Unsplash" }}
             </a-button>
@@ -100,9 +100,10 @@
                                           shape="square"/>
                             </template>
                             <template #title>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageLocationBtnOnClick"
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor}"
-                                          shape="round" type="text">
+                                          shape="round"
+                                          type="text" @click="imageLocationBtnOnClick">
                                     <template #icon>
                                         <icon-location/>
                                     </template>
@@ -117,15 +118,16 @@
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
-                                            <icon-clock-circle />
+                                            <icon-clock-circle/>
                                         </template>
                                         {{ imageCreateTime }}
                                     </a-button>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageCameraBtnOnClick"
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}"
-                                              shape="round" type="text">
+                                              shape="round"
+                                              type="text" @click="imageCameraBtnOnClick">
                                         <template #icon>
-                                            <icon-camera />
+                                            <icon-camera/>
                                         </template>
                                         {{ imageCamera }}
                                     </a-button>
@@ -151,7 +153,14 @@
 
 <script setup>
 import {defineProps, ref, watch} from "vue"
-import {IconClockCircle, IconCamera, IconInfoCircle, IconLink, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
+import {
+    IconCamera,
+    IconClockCircle,
+    IconInfoCircle,
+    IconLink,
+    IconLocation,
+    IconUser
+} from "@arco-design/web-vue/es/icon";
 import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
@@ -266,7 +275,7 @@ function imageLinkBtnOnClick() {
 }
 
 function imageLocationBtnOnClick() {
-    if(imageLocation.value !== "暂无信息") {
+    if (imageLocation.value !== "暂无信息") {
         window.open(searchEngineUrl.value + imageLocation.value, "_blank");
     } else {
         Message.error("无跳转链接");
@@ -274,7 +283,7 @@ function imageLocationBtnOnClick() {
 }
 
 function imageCameraBtnOnClick() {
-    if(imageCamera.value !== "暂无信息") {
+    if (imageCamera.value !== "暂无信息") {
         window.open(searchEngineUrl.value + imageCamera.value, "_blank");
     } else {
         Message.error("无跳转链接");

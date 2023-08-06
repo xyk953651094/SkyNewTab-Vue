@@ -1,30 +1,29 @@
 <template>
     <a-space>
         <a-image
+            id="popupImage"
             :src="imagePreviewUrl"
             :style="{borderRadius: '10px'}"
             alt="图片加载失败"
-            width="300px"
             height="180px"
+            width="300px"
         >
-            <template #loader>
-                <canvas id="popupCanvas" class="popupCanvas"></canvas>
-            </template>
         </a-image>
+        <canvas id="popupCanvas" class="popupCanvas" :style="{display: displayCanvas, borderRadius: '10px'}"></canvas>
         <a-space direction="vertical">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="authorLinkBtnOnClick"
-                      :style="{color: fontColor}" shape="round"
-                      target="_blank" type="text">
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                      shape="round" target="_blank"
+                      type="text" @click="authorLinkBtnOnClick">
                 <template #icon>
                     <icon-user/>
                 </template>
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageCameraBtnOnClick"
-                      :style="{color: fontColor, cursor: 'default'}"
-                      shape="round" type="text">
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+                      shape="round"
+                      type="text" @click="imageCameraBtnOnClick">
                 <template #icon>
-                    <icon-camera />
+                    <icon-camera/>
                 </template>
                 {{ imageCamera }}
             </a-button>
@@ -32,21 +31,21 @@
                       :style="{color: fontColor, cursor: 'default'}"
                       shape="round" type="text">
                 <template #icon>
-                    <icon-clock-circle />
+                    <icon-clock-circle/>
                 </template>
                 {{ imageCreateTime }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="imageLocationBtnOnClick"
-                      :style="{color: fontColor}" shape="round"
-                      target="_blank" type="text">
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                      shape="round" target="_blank"
+                      type="text" @click="imageLocationBtnOnClick">
                 <template #icon>
                     <icon-location/>
                 </template>
                 {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"  @click="imageLinkBtnOnClick"
-                      :style="{color: fontColor}" shape="round"
-                      target="_blank" type="text">
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                      shape="round" target="_blank"
+                      type="text" @click="imageLinkBtnOnClick">
                 <template #icon>
                     <icon-info-circle/>
                 </template>
@@ -59,7 +58,7 @@
 </template>
 
 <script setup>
-import {defineProps, ref, watch} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
 import {getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
@@ -90,6 +89,7 @@ const props = defineProps({
     }
 });
 
+let displayCanvas = ref("none");
 let authorName = ref("暂无信息");
 let authorLink = ref("");
 let imageLink = ref("");
@@ -100,6 +100,20 @@ let imageCreateTime = ref("暂无信息");
 let imageCamera = ref("暂无信息");
 let blurHashCode = ref("");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
+
+onMounted(() => {
+    let popupImage = document.getElementById("popupImage");
+    let popupImageDiv = popupImage.parentElement;
+
+    popupImageDiv.style.display = "none";
+    if (popupImage instanceof HTMLElement) {
+        popupImage.onload = function () {
+            document.getElementById("popupCanvas").remove();
+            popupImageDiv.style.display = "block";
+            popupImageDiv.classList.add("wallpaperFadeIn");
+        }
+    }
+})
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {
@@ -123,6 +137,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
                     ctx.putImageData(imageData, 0, 0);
                 }
 
+                displayCanvas.value = "block";
                 popupCanvas.className = "popupCanvas wallpaperFadeIn";
             }
         }
@@ -162,7 +177,7 @@ function imageLinkBtnOnClick() {
 }
 
 function imageLocationBtnOnClick() {
-    if(imageLocation.value !== "暂无信息") {
+    if (imageLocation.value !== "暂无信息") {
         window.open(searchEngineUrl.value + imageLocation.value, "_blank");
     } else {
         Message.error("无跳转链接");
@@ -170,7 +185,7 @@ function imageLocationBtnOnClick() {
 }
 
 function imageCameraBtnOnClick() {
-    if(imageCamera.value !== "暂无信息") {
+    if (imageCamera.value !== "暂无信息") {
         window.open(searchEngineUrl.value + imageCamera.value, "_blank");
     } else {
         Message.error("无跳转链接");
