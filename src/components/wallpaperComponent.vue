@@ -62,21 +62,18 @@ watch(() => props.imageData, (newValue, oldValue) => {
         switch (props.imageQuality) {
             case "full":
                 imageLink.value = props.imageData.urls.full;
-                loadImageLink.value = props.imageData.urls.small;
                 break;
             case "regular":
                 imageLink.value = props.imageData.urls.regular;
-                loadImageLink.value = props.imageData.urls.small;
                 break;
             case "small":
                 imageLink.value = props.imageData.urls.small;
-                loadImageLink.value = props.imageData.urls.small;
                 break;
             default:
                 imageLink.value = props.imageData.urls.regular;
-                loadImageLink.value = props.imageData.urls.small;
                 break;
         }
+        loadImageLink.value = props.imageData.urls.small;
     }
 })
 
@@ -89,15 +86,16 @@ onMounted(() => {
             displayImage.value = "block";
 
             // 设置动态效果
-            backgroundImage.className = "backgroundImage zIndexLow wallpaperFadeIn";
+            backgroundImage.classList.add("wallpaperFadeIn");
             setTimeout(() => {
-                backgroundImage.style.transform = "scale(1.05)";
+                backgroundImage.style.transform = "scale(1.05, 1.05)";
                 backgroundImage.style.transition = "5s";
+
+                setTimeout(() => {
+                    backgroundImageDiv.style.perspective = "500px";
+                    imageDynamicEffect(backgroundImage, props.dynamicEffect);
+                }, 5000);
             }, 2000);
-            setTimeout(() => {
-                backgroundImageDiv.style.perspective = "500px";
-                imageDynamicEffect(backgroundImage, props.dynamicEffect);
-            }, 7000);
         }
     }
 })

@@ -77,10 +77,20 @@
                                 <a-form-item field="dynamicEffectRadio" label="图片动效（推荐视差）">
                                     <a-radio-group v-model="formInitialValues.dynamicEffectRadio"
                                                    @change="dynamicEffectRadioOnChange">
-                                        <a-radio value="all">视差</a-radio>
-                                        <a-radio value="translate">平移</a-radio>
-                                        <a-radio value="rotate">旋转</a-radio>
-                                        <a-radio value="close">关闭</a-radio>
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="all">视差</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="translate">平移</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="rotate">旋转</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="close">关闭</a-radio>
+                                            </a-col>
+                                        </a-row>
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageQualityRadio" label="图片质量（推荐标准）">
