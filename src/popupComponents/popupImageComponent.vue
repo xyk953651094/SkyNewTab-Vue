@@ -9,7 +9,7 @@
             width="300px"
         >
         </a-image>
-        <canvas id="popupCanvas" class="popupCanvas" :style="{display: displayCanvas, borderRadius: '10px'}"></canvas>
+        <canvas id="popupCanvas" :style="{display: displayCanvas, borderRadius: '10px'}" class="popupCanvas"></canvas>
         <a-space direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
@@ -19,7 +19,8 @@
                 </template>
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor, cursor: 'default'}"
                       shape="round"
                       type="text" @click="imageCameraBtnOnClick">
                 <template #icon>

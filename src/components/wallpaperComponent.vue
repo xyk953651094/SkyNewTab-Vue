@@ -46,7 +46,7 @@ const props = defineProps({
 
 let imageLink = ref("");
 let loadImageLink = ref("");
-let displayImage =  ref("none");
+let displayImage = ref("none");
 
 watch(() => props.dynamicEffect, (newValue, oldValue) => {
     if (newValue !== oldValue) {
