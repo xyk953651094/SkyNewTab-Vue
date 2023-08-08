@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '500px'}"
+            :style="{width: '550px'}"
             position="br"
         >
             <template #title>
@@ -48,7 +48,7 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
-                        <a-row :style="{width: '95%'}" justify="space-between">
+                        <a-row>
                             <a-col :span="10">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
@@ -56,18 +56,13 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="8" :style="{textAlign: 'center'}">
+                            <a-col :span="14">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{ getTimeDetails(new Date(item.selectedTimeStamp)).showDate5 }}
-                                </a-button>
-                            </a-col>
-                            <a-col :span="6" :style="{textAlign: 'right'}">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
-                                          type="text">
-                                    {{ getDailyDescription(item.selectedTimeStamp) }}
+                                    {{
+                                        getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + "｜" + getDailyDescription(item.selectedTimeStamp)
+                                    }}
                                 </a-button>
                             </a-col>
                         </a-row>

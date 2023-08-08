@@ -121,7 +121,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
         authorName.value = props.imageData.user.name;
         authorLink.value = props.imageData.user.links.html;
         imageLink.value = props.imageData.links.html;
-        imagePreviewUrl.value = props.imageData.urls.thumb;
+        imagePreviewUrl.value = props.imageData.urls.regular;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
         imageCreateTime.value = props.imageData.created_at;

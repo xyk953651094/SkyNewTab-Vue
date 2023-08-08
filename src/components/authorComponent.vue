@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '500px'}"
+            :style="{minWidth: '550px'}"
             position="tr"
         >
             <template #title>
@@ -45,11 +45,9 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item>
-                        <a-list-item-meta>
-                            <template #avatar>
-                                <a-avatar :image-url="authorIconUrl" :style="{backgroundColor: 'transparent'}"/>
-                            </template>
-                            <template #title>
+                        <a-space>
+                            <a-avatar :image-url="authorIconUrl" :size="64" :style="{backgroundColor: 'transparent'}"/>
+                            <a-space direction="vertical">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           shape="round" type="text">
@@ -60,68 +58,45 @@
                                         authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..."
                                     }}
                                 </a-button>
-                            </template>
-                            <template #description>
                                 <a-space>
+                                    <template #split>
+                                        <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
+                                    </template>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
                                             <i class="bi bi-collection"></i>
                                         </template>
-                                        {{ " " + authorCollections }}
+                                        {{ " " + authorCollections + "个合集" }}
                                     </a-button>
-                                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
                                             <i class="bi bi-heart"></i>
                                         </template>
-                                        {{ " " + authorLikes }}
+                                        {{ " " + authorLikes + "个点赞" }}
                                     </a-button>
-                                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
                                             <i class="bi bi-images"></i>
                                         </template>
-                                        {{ " " + authorPhotos }}
+                                        {{ " " + authorPhotos + "张照片" }}
                                     </a-button>
                                 </a-space>
-                            </template>
-                        </a-list-item-meta>
+                            </a-space>
+                        </a-space>
                     </a-list-item>
                     <a-list-item>
-                        <a-list-item-meta>
-                            <template #avatar>
-                                <a-avatar :image-url="imagePreviewUrl" :style="{backgroundColor: 'transparent'}"
+                        <a-space direction="vertical">
+                            <a-space>
+                                <a-avatar :image-url="imagePreviewUrl" :size="64"
+                                          :style="{backgroundColor: 'transparent'}"
                                           shape="square"/>
-                            </template>
-                            <template #title>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor}"
-                                          shape="round"
-                                          type="text" @click="imageLocationBtnOnClick">
-                                    <template #icon>
-                                        <icon-location/>
-                                    </template>
-                                    {{
-                                        imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
-                                    }}
-                                </a-button>
-                            </template>
-                            <template #description>
                                 <a-space direction="vertical">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <icon-clock-circle/>
-                                        </template>
-                                        {{ imageCreateTime }}
-                                    </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}"
                                               shape="round"
@@ -135,15 +110,34 @@
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
-                                            <icon-info-circle/>
+                                            <icon-clock-circle/>
                                         </template>
-                                        {{
-                                            imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
-                                        }}
+                                        {{ imageCreateTime }}
                                     </a-button>
                                 </a-space>
-                            </template>
-                        </a-list-item-meta>
+                            </a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor}"
+                                      shape="round"
+                                      type="text" @click="imageLocationBtnOnClick">
+                                <template #icon>
+                                    <icon-location/>
+                                </template>
+                                {{
+                                    imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
+                                }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <icon-info-circle/>
+                                </template>
+                                {{
+                                    imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
+                                }}
+                            </a-button>
+                        </a-space>
                     </a-list-item>
                 </a-list>
             </template>
@@ -165,7 +159,7 @@ import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
-const btnMaxSize = 50;
+const btnMaxSize = 65;
 
 const props = defineProps({
     themeColor: {
@@ -229,7 +223,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         authorName.value = props.imageData.user.name;
         authorLink.value = props.imageData.user.links.html;
-        authorIconUrl.value = props.imageData.user.profile_image.small;
+        authorIconUrl.value = props.imageData.user.profile_image.large;
         authorCollections.value = props.imageData.user.total_collections;
         authorLikes.value = props.imageData.user.total_likes;
         authorPhotos.value = props.imageData.user.total_photos;

@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '500px'}"
+            :style="{width: '550px'}"
             position="br"
         >
             <template #title>
@@ -47,7 +47,7 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">
-                        <a-row :style="{width: '95%'}" justify="space-between">
+                        <a-row>
                             <a-col :span="12">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
@@ -59,7 +59,7 @@
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
-                                    {{ item.priority }}
+                                    {{ "优先级：" + item.priority }}
                                 </a-button>
                             </a-col>
                         </a-row>

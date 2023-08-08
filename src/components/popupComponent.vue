@@ -12,10 +12,21 @@
             </a-button>
         </a-layout-header>
         <a-layout-content class="popupContent">
-            <a-space direction="vertical">
-                <popup-status-component :font-color="fontColor" :image-data="imageData"/>
-                <popup-image-component :font-color="fontColor" :image-data="imageData" :search-engine="searchEngine"/>
-            </a-space>
+            <a-list :bordered=false>
+                <a-list-item :style="{borderBottomColor: fontColor}">
+                    <popup-status-component :font-color="fontColor" :image-data="imageData"/>
+                </a-list-item>
+                <a-list-item>
+                    <popup-image-component :font-color="fontColor" :image-data="imageData"
+                                           :search-engine="searchEngine"/>
+                </a-list-item>
+            </a-list>
+
+            <!--            <a-space direction="vertical">-->
+            <!--                <popup-status-component :font-color="fontColor" :image-data="imageData"/>-->
+            <!--                <a-divider :style="{borderColor: fontColor}" />-->
+            <!--                <popup-image-component :font-color="fontColor" :image-data="imageData" :search-engine="searchEngine"/>-->
+            <!--            </a-space>-->
         </a-layout-content>
         <a-layout-footer class="popupFooter">
             <a-space>

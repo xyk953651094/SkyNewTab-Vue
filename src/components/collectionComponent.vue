@@ -74,16 +74,22 @@
         </template>
         <a-list :bordered=false>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
-                <a-list-item-meta :title="item.webName">
-                    <template #avatar>
-                        <a-avatar :image-url="item.webUrl + '/favicon.ico'" :style="{backgroundColor: 'transparent'}"/>
-                    </template>
-                    <template #description>
-                        <a-typography-text :style="{color: fontColor}">
-                            {{ item.webUrl.length < 40 ? item.webUrl : item.webUrl.substring(0, 40) + "..." }}
-                        </a-typography-text>
-                    </template>
-                </a-list-item-meta>
+                <a-row>
+                    <a-col :span="8">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                  type="text">
+                            {{ item.webName }}
+                        </a-button>
+                    </a-col>
+                    <a-col :span="16">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                  type="text">
+                            {{ item.webUrl.length < 30 ? item.webUrl : item.webUrl.substring(0, 30) + "..." }}
+                        </a-button>
+                    </a-col>
+                </a-row>
                 <template #actions>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                               shape="circle"

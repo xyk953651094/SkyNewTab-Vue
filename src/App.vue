@@ -254,7 +254,7 @@ onMounted(() => {
         let modalEle = $(".arco-modal");
         if (modalEle.length && modalEle.length > 0) {
             $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
-            $(".arco-modal-header").css("borderBottomColor", themeColor.value.componentFontColor);
+            $(".arco-modal-header").css("borderBottomColor", "transparent");
             $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
             $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
@@ -262,7 +262,7 @@ onMounted(() => {
             $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
             $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
-            $(".arco-modal-footer").css("borderTopColor", themeColor.value.componentFontColor);
+            $(".arco-modal-footer").css("borderTopColor", "transparent");
             $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
             $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {
