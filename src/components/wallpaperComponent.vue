@@ -48,14 +48,14 @@ let imageLink = ref("");
 let loadImageLink = ref("");
 let displayImage = ref("none");
 
-watch(() => props.dynamicEffect, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        let backgroundImage = document.getElementById("backgroundImage");
-        if (backgroundImage instanceof HTMLElement) {
-            imageDynamicEffect(backgroundImage, props.dynamicEffect);
-        }
-    }
-})
+// watch(() => props.dynamicEffect, (newValue, oldValue) => {
+//     if (newValue !== oldValue) {
+//         let backgroundImage = document.getElementById("backgroundImage");
+//         if (backgroundImage instanceof HTMLElement) {
+//             imageDynamicEffect(backgroundImage, props.dynamicEffect);
+//         }
+//     }
+// })
 
 watch(() => props.imageData, (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {

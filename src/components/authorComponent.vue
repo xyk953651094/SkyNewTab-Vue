@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{minWidth: '550px'}"
+            :style="{width: '550px'}"
             position="tr"
         >
             <template #title>
@@ -59,16 +59,16 @@
                                     }}
                                 </a-button>
                                 <a-space>
-                                    <template #split>
-                                        <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
-                                    </template>
+<!--                                    <template #split>-->
+<!--                                        <a-divider :style="{borderColor: fontColor}" direction="vertical"/>-->
+<!--                                    </template>-->
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
                                             <i class="bi bi-collection"></i>
                                         </template>
-                                        {{ " " + authorCollections + "个合集" }}
+                                        {{ " " + authorCollections + " 个合集" }}
                                     </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
@@ -76,7 +76,7 @@
                                         <template #icon>
                                             <i class="bi bi-heart"></i>
                                         </template>
-                                        {{ " " + authorLikes + "个点赞" }}
+                                        {{ " " + authorLikes + " 个点赞" }}
                                     </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
@@ -84,19 +84,27 @@
                                         <template #icon>
                                             <i class="bi bi-images"></i>
                                         </template>
-                                        {{ " " + authorPhotos + "张照片" }}
+                                        {{ " " + authorPhotos + " 张照片" }}
                                     </a-button>
                                 </a-space>
                             </a-space>
                         </a-space>
                     </a-list-item>
                     <a-list-item>
-                        <a-space direction="vertical">
-                            <a-space>
-                                <a-avatar :image-url="imagePreviewUrl" :size="64"
-                                          :style="{backgroundColor: 'transparent'}"
-                                          shape="square"/>
-                                <a-space direction="vertical">
+                        <a-space>
+                            <a-avatar :image-url="imagePreviewUrl" :size="64"
+                                      :style="{backgroundColor: 'transparent'}"
+                                      shape="square"/>
+                            <a-space direction="vertical">
+                                <a-space wrap>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <icon-clock-circle/>
+                                        </template>
+                                        {{ imageCreateTime }}
+                                    </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}"
                                               shape="round"
@@ -106,37 +114,31 @@
                                         </template>
                                         {{ imageCamera }}
                                     </a-button>
+                                </a-space>
+                                <a-space wrap>
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor}"
+                                              shape="round"
+                                              type="text" @click="imageLocationBtnOnClick">
+                                        <template #icon>
+                                            <icon-location/>
+                                        </template>
+                                        {{
+                                            imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
+                                        }}
+                                    </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
                                         <template #icon>
-                                            <icon-clock-circle/>
+                                            <icon-info-circle/>
                                         </template>
-                                        {{ imageCreateTime }}
+                                        {{
+                                            imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
+                                        }}
                                     </a-button>
                                 </a-space>
                             </a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor}"
-                                      shape="round"
-                                      type="text" @click="imageLocationBtnOnClick">
-                                <template #icon>
-                                    <icon-location/>
-                                </template>
-                                {{
-                                    imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
-                                }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <icon-info-circle/>
-                                </template>
-                                {{
-                                    imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
-                                }}
-                            </a-button>
                         </a-space>
                     </a-list-item>
                 </a-list>
@@ -159,7 +161,7 @@ import {unsplashUrl} from "../javascripts/publicConstants";
 import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
-const btnMaxSize = 65;
+const btnMaxSize = 50;
 
 const props = defineProps({
     themeColor: {
@@ -231,7 +233,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imagePreviewUrl.value = props.imageData.urls.thumb;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
-        imageCreateTime.value = props.imageData.created_at;
+        imageCreateTime.value = getCreateTime(props.imageData.created_at);
         imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
     }
 })
@@ -282,6 +284,10 @@ function imageCameraBtnOnClick() {
     } else {
         Message.error("无跳转链接");
     }
+}
+
+function getCreateTime(createTime) {
+    return createTime.substring(0, createTime.indexOf("T"));
 }
 </script>
 

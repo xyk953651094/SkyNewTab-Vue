@@ -36,7 +36,7 @@
                 </a-row>
             </template>
             <a-badge :count="checkboxOptions.length">
-                <a-button id="todoBtn" :style="{cursor: 'default'}" class="componentTheme zIndexHigh" shape="round"
+                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round"
                           size="large"
                           type="primary">
                     <template #icon>
@@ -48,14 +48,14 @@
                 <a-list :bordered=false>
                     <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">
                         <a-row>
-                            <a-col :span="12">
+                            <a-col :span="10">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="12">
+                            <a-col :span="14">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
@@ -112,9 +112,17 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    simpleMode: {
+        type: Boolean,
+        required: true,
+        default: () => {
+            return false
+        }
     }
 });
 
+let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -141,6 +149,12 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
         changeThemeColor("#todoBtn", backgroundColor.value, fontColor.value);
+    }
+})
+
+watch(() => props.simpleMode, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        display.value = newValue? "none" : "block";
     }
 })
 

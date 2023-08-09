@@ -10,13 +10,14 @@
                 </a-col>
                 <a-col :lg="10" :md="10" :sm="22" :xl="10" :xs="22" :xxl="10" style="text-align: right">
                     <a-space>
-                        <daily-component :theme-color="themeColor"/>
-                        <todo-component :theme-color="themeColor"/>
+                        <daily-component :theme-color="themeColor" :simple-mode="simpleMode"/>
+                        <todo-component :theme-color="themeColor" :simple-mode="simpleMode"/>
                         <preference-component :theme-color="themeColor"
                                               @dynamicEffect="getDynamicEffect"
                                               @imageQuality="getImageQuality"
                                               @imageTopics="getImageTopics"
                                               @searchEngine="getSearchEngine"
+                                              @simpleMode="getSimpleMode"
                         />
                     </a-space>
                 </a-col>
@@ -29,7 +30,7 @@
                 <clock-component :theme-color="themeColor"/>
                 <search-component :search-engine="searchEngine"/>
                 <a-col :lg="24" :md="24" :sm="0" :xl="24" :xs="0" :xxl="24">
-                    <collection-component :theme-color="themeColor"/>
+                    <collection-component :theme-color="themeColor" :simple-mode="simpleMode"/>
                 </a-col>
             </a-space>
         </a-layout-content>
@@ -85,6 +86,7 @@ let searchEngine = ref("bing");
 let dynamicEffect = ref("all");
 let imageQuality = ref("regular");
 let imageTopics = ref("Fzo3zuOHN6w");
+let simpleMode = ref(false);
 
 const getSearchEngine = (value) => {
     searchEngine.value = value;
@@ -100,6 +102,10 @@ const getImageQuality = (value) => {
 
 const getImageTopics = (value) => {
     imageTopics.value = value;
+}
+
+const getSimpleMode = (value) => {
+    simpleMode.value = value;
 }
 
 // 请求完成后处理步骤
@@ -163,11 +169,13 @@ onMounted(() => {
     let tempDynamicEffect = localStorage.getItem("dynamicEffect");
     let tempImageQuality = localStorage.getItem("imageQuality");
     let tempImageTopics = localStorage.getItem("imageTopics");
+    let tempSimpleMode = localStorage.getItem("simpleMode");
 
     searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
     dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
     imageQuality.value = tempImageQuality === null ? "regular" : tempImageQuality;
     imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
+    simpleMode.value = tempSimpleMode === null ? false : JSON.parse(tempSimpleMode);
 
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();

@@ -1,5 +1,5 @@
 <template>
-    <a-col :span="24" class="center">
+    <a-col :span="24" class="center" :style="{display: display}">
         <a-space class="zIndexHigh">
             <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
                        :content="item.webUrl"
@@ -123,9 +123,17 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    simpleMode: {
+        type: Boolean,
+        required: true,
+        default: () => {
+            return false
+        }
     }
 });
 
+let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -151,6 +159,12 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
+    }
+})
+
+watch(() => props.simpleMode, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        display.value = newValue? "none" : "block";
     }
 })
 

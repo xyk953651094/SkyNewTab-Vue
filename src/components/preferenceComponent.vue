@@ -170,7 +170,17 @@
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
-                                <a-form-item field="clearStorageButton" label="其他设置">
+                                <a-form-item field="simpleModeSwitch" label="简洁模式">
+                                    <a-switch v-model="formInitialValues.simpleModeSwitch" @change="simpleModeSwitchOnChange">
+                                        <template #checked>
+                                            已开启
+                                        </template>
+                                        <template #unchecked>
+                                            已关闭
+                                        </template>
+                                    </a-switch>
+                                </a-form-item>
+                                <a-form-item field="clearStorageButton" label="危险设置">
                                     <a-button id="clearStorageBtn" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}" shape="round"
                                               type="text" @click="clearStorageBtnOnClick"
@@ -178,7 +188,7 @@
                                         <template #icon>
                                             <icon-delete/>
                                         </template>
-                                        清空缓存
+                                        清空并重置所有内容
                                     </a-button>
                                 </a-form-item>
                             </a-form>
@@ -284,6 +294,7 @@ let formInitialValues = ref({
     dynamicEffectRadio: "all",
     imageQualityRadio: "regular",
     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
+    simpleModeSwitch: false,
 })
 
 const props = defineProps({
@@ -318,12 +329,14 @@ onMounted(() => {
     if (tempImageTopicsCheckbox !== null) {
         tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
     }
+    let tempSimpleModeSwitch = localStorage.getItem("simpleMode");
 
     formInitialValues.value = {
         searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
         dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
         imageQualityRadio: tempImageQualityRadio === null ? "regular" : tempImageQualityRadio,
         imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
+        simpleModeSwitch: tempSimpleModeSwitch === null ? false : JSON.parse(tempSimpleModeSwitch),
     }
 
     // 屏幕适配
@@ -344,7 +357,7 @@ function handleCancel() {
     visible.value = false;
 }
 
-const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics"]);
+const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics", "simpleMode"]);
 
 function btnMouseOver() {
     this.style.backgroundColor = hoverColor.value;
@@ -367,15 +380,16 @@ function searchEngineRadioOnChange(value) {
 function dynamicEffectRadioOnChange(value) {
     emit("dynamicEffect", value);
     localStorage.setItem("dynamicEffect", value);
-    Message.success("已更换显示效果");
+    Message.success("已更换显示效果，一秒后刷新页面");
+    refreshWindow();
 }
 
 // 图片质量
 function imageQualityRadioOnChange(value) {
     emit("imageQuality", value);
     localStorage.setItem("imageQuality", value);
-    Message.success("已更新图片质量");
-    window.location.reload();
+    Message.success("已更新图片质量，一秒后刷新页面");
+    refreshWindow();
 }
 
 // 图片主题
@@ -389,17 +403,34 @@ function imageTopicsCheckboxOnChange(values) {
     }
     emit("imageTopics", value);
     localStorage.setItem("imageTopics", value);
-    Message.success("调整成功，新的主题将在下次加载时生效");
+    Message.success("已更换图片主题，下次加载时生效");
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
+    }
+}
+
+function simpleModeSwitchOnChange(checked) {
+    emit("simpleMode", checked);
+    localStorage.setItem("simpleMode", checked.toString());
+    if(checked) {
+        Message.success("已开启简洁模式");
+    }
+    else {
+        Message.success("已关闭简洁模式");
     }
 }
 
 // 重置设置
 function clearStorageBtnOnClick() {
     localStorage.clear();
-    Message.success("已重置所有内容");
-    window.location.reload();
+    Message.success("已重置所有内容，1秒后刷新页面");
+    refreshWindow();
+}
+
+function refreshWindow() {
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
 }
 
 </script>
