@@ -170,16 +170,32 @@
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
-                                <a-form-item field="simpleModeSwitch" label="简洁模式">
-                                    <a-switch v-model="formInitialValues.simpleModeSwitch" @change="simpleModeSwitchOnChange">
-                                        <template #checked>
-                                            已开启
-                                        </template>
-                                        <template #unchecked>
-                                            已关闭
-                                        </template>
-                                    </a-switch>
-                                </a-form-item>
+                                <a-row>
+                                    <a-col :span="12">
+                                        <a-form-item field="simpleModeSwitch" label="简洁模式">
+                                            <a-switch v-model="formInitialValues.simpleModeSwitch" @change="simpleModeSwitchOnChange">
+                                                <template #checked>
+                                                    已开启
+                                                </template>
+                                                <template #unchecked>
+                                                    已关闭
+                                                </template>
+                                            </a-switch>
+                                        </a-form-item>
+                                    </a-col>
+                                    <a-col :span="12">
+                                        <a-form-item field="simpleModeSwitch" label="无图模式">
+                                            <a-switch v-model="formInitialValues.noImageModeSwitch" @change="noImageModeSwitchOnChange">
+                                                <template #checked>
+                                                    已开启
+                                                </template>
+                                                <template #unchecked>
+                                                    已关闭
+                                                </template>
+                                            </a-switch>
+                                        </a-form-item>
+                                    </a-col>
+                                </a-row>
                                 <a-form-item field="clearStorageButton" label="危险设置">
                                     <a-button id="clearStorageBtn" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}" shape="round"
@@ -295,6 +311,7 @@ let formInitialValues = ref({
     imageQualityRadio: "regular",
     imageTopicsCheckbox: ["Fzo3zuOHN6w"],
     simpleModeSwitch: false,
+    noImageModeSwitch: false
 })
 
 const props = defineProps({
@@ -310,6 +327,8 @@ const props = defineProps({
         }
     }
 });
+
+const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics", "simpleMode", "noImageMode"]);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -330,6 +349,7 @@ onMounted(() => {
         tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
     }
     let tempSimpleModeSwitch = localStorage.getItem("simpleMode");
+    let tempNoImageModeSwitch = localStorage.getItem("noImageMode");
 
     formInitialValues.value = {
         searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
@@ -337,6 +357,7 @@ onMounted(() => {
         imageQualityRadio: tempImageQualityRadio === null ? "regular" : tempImageQualityRadio,
         imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
         simpleModeSwitch: tempSimpleModeSwitch === null ? false : JSON.parse(tempSimpleModeSwitch),
+        noImageModeSwitch: tempNoImageModeSwitch === null ? false : JSON.parse(tempNoImageModeSwitch),
     }
 
     // 屏幕适配
@@ -356,8 +377,6 @@ function handleOk() {
 function handleCancel() {
     visible.value = false;
 }
-
-const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics", "simpleMode"]);
 
 function btnMouseOver() {
     this.style.backgroundColor = hoverColor.value;
@@ -418,6 +437,18 @@ function simpleModeSwitchOnChange(checked) {
     else {
         Message.success("已关闭简洁模式");
     }
+}
+
+function noImageModeSwitchOnChange(checked) {
+    emit("noImageMode", checked);
+    localStorage.setItem("noImageMode", checked.toString());
+    if(checked) {
+        Message.success("已开启无图模式，1秒后刷新页面");
+    }
+    else {
+        Message.success("已关闭无图模式，1秒后刷新页面");
+    }
+    refreshWindow();
 }
 
 // 重置设置
