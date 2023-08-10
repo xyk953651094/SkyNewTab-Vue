@@ -175,13 +175,6 @@ const props = defineProps({
         },
         required: true
     },
-    display: {
-        type: String,
-        default: () => {
-            return "none";
-        },
-        required: true
-    },
     imageData: {
         type: Object,
         required: true
@@ -195,6 +188,7 @@ const props = defineProps({
     }
 });
 
+let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -240,6 +234,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
 
 watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
+        display.value = newValue.noImageMode ? "none" : "block";
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
     }
 });

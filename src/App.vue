@@ -18,8 +18,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="center">
-            <wallpaper-component :no-image-mode="preferenceData.noImageMode" @imageData="getImageData" :dynamic-effect="preferenceData.dynamicEffect"
-                                 :image-quality="preferenceData.imageQuality" :image-topics="preferenceData.imageTopics"/>
+            <wallpaper-component @imageData="getImageData" preference-data="preferenceData"/>
             <a-space align="center" direction="vertical">
                 <clock-component :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData"/>
@@ -32,8 +31,7 @@
             <a-row justify="center">
                 <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
-                        <author-component :display="componentDisplay" :image-data="imageData"
-                                          :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <author-component :image-data="imageData" :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -61,11 +59,10 @@ import CollectionComponent from "./components/collectionComponent.vue";
 import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "./javascripts/publicConstants";
 
 const $ = require("jquery");
 
-let componentDisplay = ref("none");
 let themeColor = ref({
     "themeColor": "",
     "componentBackgroundColor": "",
@@ -83,7 +80,6 @@ let preferenceData = ref(defaultPreferenceData);
 // let noImageMode = ref(false);
 
 const getImageData = (value) => {
-    componentDisplay.value = "block";
     imageData.value = value;
 
     // 修改主题颜色

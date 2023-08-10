@@ -109,7 +109,7 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconDelete, IconEdit, IconPlus} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
 

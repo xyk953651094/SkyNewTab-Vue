@@ -49,7 +49,7 @@ import {
     getTimeDetails,
     httpRequest,
 } from "../javascripts//publicFunctions";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     themeColor: {

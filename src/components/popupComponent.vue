@@ -61,7 +61,7 @@ import {getFontColor, getReverseColor} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
 

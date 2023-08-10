@@ -24,7 +24,7 @@
 import {defineProps, ref, watch} from "vue";
 import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 let showMask = ref("none");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");

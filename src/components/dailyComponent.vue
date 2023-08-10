@@ -101,7 +101,7 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
 
