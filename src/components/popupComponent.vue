@@ -18,15 +18,9 @@
                 </a-list-item>
                 <a-list-item>
                     <popup-image-component :font-color="fontColor" :image-data="imageData"
-                                           :search-engine="searchEngine"/>
+                                           :preference-data="preferenceData"/>
                 </a-list-item>
             </a-list>
-
-            <!--            <a-space direction="vertical">-->
-            <!--                <popup-status-component :font-color="fontColor" :image-data="imageData"/>-->
-            <!--                <a-divider :style="{borderColor: fontColor}" />-->
-            <!--                <popup-image-component :font-color="fontColor" :image-data="imageData" :search-engine="searchEngine"/>-->
-            <!--            </a-space>-->
         </a-layout-content>
         <a-layout-footer class="popupFooter">
             <a-space>
@@ -67,6 +61,7 @@ import {getFontColor, getReverseColor} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -74,7 +69,7 @@ let imageData = ref({});
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let searchEngine = ref("bing");
+let preferenceData = ref(defaultPreferenceData);
 
 onMounted(() => {
     let tempImageData = localStorage.getItem("lastImage");
@@ -91,8 +86,8 @@ onMounted(() => {
         Message.error("暂无图片信息");
     }
 
-    let tempSearchEngine = localStorage.getItem("searchEngine");
-    searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
+    let tempPreferenceData = localStorage.getItem("preferenceData");
+    preferenceData.value = tempPreferenceData === null ? defaultPreferenceData : tempPreferenceData;
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {

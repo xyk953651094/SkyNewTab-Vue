@@ -65,7 +65,7 @@ import {getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts
 import "../stylesheets/popupComponent.less"
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
-import {unsplashUrl} from "../javascripts/publicConstants";
+import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
 
 const btnMaxSize = 35;
 
@@ -81,11 +81,11 @@ const props = defineProps({
         },
         required: true
     },
-    searchEngine: {
-        type: String,
+    preferenceData: {
+        type: Object,
         required: true,
         default: () => {
-            return "bing"
+            return defaultPreferenceData
         }
     }
 });
@@ -145,9 +145,9 @@ watch(() => props.imageData, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.searchEngine, (newValue, oldValue) => {
+watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        searchEngineUrl.value = getSearchEngineDetail(newValue).searchEngineUrl;
+        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
     }
 });
 
