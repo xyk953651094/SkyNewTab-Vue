@@ -69,6 +69,7 @@ import {
     getWeatherIcon,
     httpRequest
 } from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const props = defineProps({
     themeColor: {
@@ -82,11 +83,11 @@ const props = defineProps({
             }
         }
     },
-    searchEngine: {
-        type: String,
+    preferenceData: {
+        type: Object,
         required: true,
         default: () => {
-            return "bing"
+            return defaultPreferenceData
         }
     }
 });
@@ -113,10 +114,10 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 });
 
-watch(() => props.searchEngine, (newValue, oldValue) => {
+watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         if (newValue !== oldValue) {
-            searchEngineUrl.value = getSearchEngineDetail(newValue).searchEngineUrl;
+            searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
         }
     }
 });

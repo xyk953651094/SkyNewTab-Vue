@@ -4,34 +4,27 @@
             <a-row justify="center">
                 <a-col :lg="10" :md="10" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: left">
                     <a-space>
-                        <greet-component :search-engine="searchEngine" :theme-color="themeColor"/>
-                        <weather-component :search-engine="searchEngine" :theme-color="themeColor"/>
+                        <greet-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <weather-component :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
                 <a-col :lg="10" :md="10" :sm="22" :xl="10" :xs="22" :xxl="10" style="text-align: right">
                     <a-space>
-                        <daily-component :theme-color="themeColor" :simple-mode="simpleMode"/>
-                        <todo-component :theme-color="themeColor" :simple-mode="simpleMode"/>
-                        <preference-component :theme-color="themeColor"
-                                              @dynamicEffect="getDynamicEffect"
-                                              @imageQuality="getImageQuality"
-                                              @imageTopics="getImageTopics"
-                                              @searchEngine="getSearchEngine"
-                                              @simpleMode="getSimpleMode"
-                                              @noImageMode="getNoImageMode"
-                        />
+                        <daily-component :theme-color="themeColor" :preference-data="preferenceData"/>
+                        <todo-component :theme-color="themeColor" :preference-data="preferenceData"/>
+                        <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
                     </a-space>
                 </a-col>
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="center">
-            <wallpaper-component :no-image-mode="noImageMode" @imageData="getImageData" :dynamic-effect="dynamicEffect"
-                                 :image-quality="imageQuality" :image-topics="imageTopics"/>
+            <wallpaper-component :no-image-mode="preferenceData.noImageMode" @imageData="getImageData" :dynamic-effect="preferenceData.dynamicEffect"
+                                 :image-quality="preferenceData.imageQuality" :image-topics="preferenceData.imageTopics"/>
             <a-space align="center" direction="vertical">
                 <clock-component :theme-color="themeColor"/>
-                <search-component :search-engine="searchEngine"/>
+                <search-component :preference-data="preferenceData"/>
                 <a-col :lg="24" :md="24" :sm="0" :xl="24" :xs="0" :xxl="24">
-                    <collection-component :theme-color="themeColor" :simple-mode="simpleMode"/>
+                    <collection-component :theme-color="themeColor" :preference-data="preferenceData"/>
                 </a-col>
             </a-space>
         </a-layout-content>
@@ -40,7 +33,7 @@
                 <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
-                                          :search-engine="searchEngine" :theme-color="themeColor"/>
+                                          :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -68,6 +61,7 @@ import CollectionComponent from "./components/collectionComponent.vue";
 import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -79,12 +73,14 @@ let themeColor = ref({
 });
 
 let imageData = ref(null);
-let searchEngine = ref("bing");
-let dynamicEffect = ref("all");
-let imageQuality = ref("regular");
-let imageTopics = ref("Fzo3zuOHN6w");
-let simpleMode = ref(false);
-let noImageMode = ref(false);
+let preferenceData = ref(defaultPreferenceData);
+
+// let searchEngine = ref("bing");
+// let dynamicEffect = ref("all");
+// let imageQuality = ref("regular");
+// let imageTopics = ref("Fzo3zuOHN6w");
+// let simpleMode = ref(false);
+// let noImageMode = ref(false);
 
 const getImageData = (value) => {
     componentDisplay.value = "block";
@@ -106,45 +102,14 @@ const getImageData = (value) => {
     }
 }
 
-const getSearchEngine = (value) => {
-    searchEngine.value = value;
-}
-
-const getDynamicEffect = (value) => {
-    dynamicEffect.value = value;
-}
-
-const getImageQuality = (value) => {
-    imageQuality.value = value;
-}
-
-const getImageTopics = (value) => {
-    imageTopics.value = value;
-}
-
-const getSimpleMode = (value) => {
-    simpleMode.value = value;
-}
-
-const getNoImageMode = (value) => {
-    noImageMode.value = value;
+const getPreferenceData = (value) => {
+    preferenceData.value = value;
 }
 
 onMounted(() => {
     // 加载偏好设置
-    let tempSearchEngine = localStorage.getItem("searchEngine");
-    let tempDynamicEffect = localStorage.getItem("dynamicEffect");
-    let tempImageQuality = localStorage.getItem("imageQuality");
-    let tempImageTopics = localStorage.getItem("imageTopics");
-    let tempSimpleMode = localStorage.getItem("simpleMode");
-    let tempNoImageMode = localStorage.getItem("noImageMode");
-
-    searchEngine.value = tempSearchEngine === null ? "bing" : tempSearchEngine;
-    dynamicEffect.value = tempDynamicEffect === null ? "all" : tempDynamicEffect;
-    imageQuality.value = tempImageQuality === null ? "regular" : tempImageQuality;
-    imageTopics.value = tempImageTopics === null ? "Fzo3zuOHN6w" : tempImageTopics;
-    simpleMode.value = tempSimpleMode === null ? false : JSON.parse(tempSimpleMode);
-    noImageMode.value = tempNoImageMode === null ? false : JSON.parse(tempNoImageMode);
+    let tempPreferenceData = localStorage.getItem("preferenceData");
+    preferenceData.value = tempPreferenceData === null ? defaultPreferenceData : JSON.parse(tempPreferenceData);
 
     // 未加载图片前随机显示颜色主题
     themeColor.value = setColorTheme();

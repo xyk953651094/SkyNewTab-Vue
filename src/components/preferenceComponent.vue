@@ -36,9 +36,9 @@
                             <template #extra>
                                 <icon-settings/>
                             </template>
-                            <a-form :model="formInitialValues" auto-label-width layout="vertical">
-                                <a-form-item field="searchEngineRadio" label="搜索引擎">
-                                    <a-radio-group v-model="formInitialValues.searchEngineRadio"
+                            <a-form :model="preferenceData" auto-label-width layout="vertical">
+                                <a-form-item field="searchEngine" label="搜索引擎">
+                                    <a-radio-group v-model="preferenceData.searchEngine"
                                                    @change="searchEngineRadioOnChange">
                                         <a-row>
                                             <a-col :span="12">
@@ -74,8 +74,8 @@
                                         </a-row>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="dynamicEffectRadio" label="图片动效（推荐视差）">
-                                    <a-radio-group v-model="formInitialValues.dynamicEffectRadio"
+                                <a-form-item field="dynamicEffect" label="图片动效（推荐视差）">
+                                    <a-radio-group v-model="preferenceData.dynamicEffect"
                                                    @change="dynamicEffectRadioOnChange">
                                         <a-row>
                                             <a-col :span="12">
@@ -93,16 +93,16 @@
                                         </a-row>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageQualityRadio" label="图片质量（推荐标准）">
-                                    <a-radio-group v-model="formInitialValues.imageQualityRadio"
+                                <a-form-item field="imageQuality" label="图片质量（推荐标准）">
+                                    <a-radio-group v-model="preferenceData.imageQuality"
                                                    @change="imageQualityRadioOnChange">
                                         <a-radio value="full">高</a-radio>
                                         <a-radio value="regular">标准</a-radio>
                                         <a-radio value="small">低</a-radio>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
-                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox"
+                                <a-form-item field="imageTopics" label="图片主题（全不选与全选效果一致）">
+                                    <a-checkbox-group v-model="preferenceData.imageTopics"
                                                       direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
                                             <a-col :span="12">
@@ -172,8 +172,8 @@
                                 </a-form-item>
                                 <a-row>
                                     <a-col :span="12">
-                                        <a-form-item field="simpleModeSwitch" label="简洁模式">
-                                            <a-switch v-model="formInitialValues.simpleModeSwitch" @change="simpleModeSwitchOnChange">
+                                        <a-form-item field="simpleMode" label="简洁模式">
+                                            <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
                                                 <template #checked>
                                                     已开启
                                                 </template>
@@ -184,8 +184,8 @@
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
-                                        <a-form-item field="simpleModeSwitch" label="无图模式">
-                                            <a-switch v-model="formInitialValues.noImageModeSwitch" @change="noImageModeSwitchOnChange">
+                                        <a-form-item field="noImageMode" label="无图模式">
+                                            <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
                                                 <template #checked>
                                                     已开启
                                                 </template>
@@ -298,21 +298,14 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {device} from "../javascripts/publicConstants";
+import {defaultPreferenceData, device} from "../javascripts/publicConstants";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let formInitialValues = ref({
-    searchEngineRadio: "bing",
-    dynamicEffectRadio: "all",
-    imageQualityRadio: "regular",
-    imageTopicsCheckbox: ["Fzo3zuOHN6w"],
-    simpleModeSwitch: false,
-    noImageModeSwitch: false
-})
+let preferenceData = ref(defaultPreferenceData);
 
 const props = defineProps({
     themeColor: {
@@ -328,7 +321,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics", "simpleMode", "noImageMode"]);
+const emit = defineEmits(["preferenceData"]);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -341,23 +334,13 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 onMounted(() => {
     // 初始化偏好设置
-    let tempSearchEngineRadio = localStorage.getItem("searchEngine");
-    let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
-    let tempImageQualityRadio = localStorage.getItem("imageQuality");
-    let tempImageTopicsCheckbox = localStorage.getItem("imageTopics");
-    if (tempImageTopicsCheckbox !== null) {
-        tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
+    let tempPreferenceData = localStorage.getItem("preferenceData");
+    if(tempPreferenceData === null) {
+        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+        preferenceData.value = defaultPreferenceData;
     }
-    let tempSimpleModeSwitch = localStorage.getItem("simpleMode");
-    let tempNoImageModeSwitch = localStorage.getItem("noImageMode");
-
-    formInitialValues.value = {
-        searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
-        dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
-        imageQualityRadio: tempImageQualityRadio === null ? "regular" : tempImageQualityRadio,
-        imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
-        simpleModeSwitch: tempSimpleModeSwitch === null ? false : JSON.parse(tempSimpleModeSwitch),
-        noImageModeSwitch: tempNoImageModeSwitch === null ? false : JSON.parse(tempNoImageModeSwitch),
+    else {
+        preferenceData.value = JSON.parse(tempPreferenceData);
     }
 
     // 屏幕适配
@@ -390,38 +373,35 @@ function btnMouseOut() {
 
 // 搜索引擎
 function searchEngineRadioOnChange(value) {
-    emit("searchEngine", value);
-    localStorage.setItem("searchEngine", value);
+    preferenceData.value.searchEngine = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
 }
 
 // 动效样式
 function dynamicEffectRadioOnChange(value) {
-    emit("dynamicEffect", value);
-    localStorage.setItem("dynamicEffect", value);
+    preferenceData.value.dynamicEffect = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换显示效果，一秒后刷新页面");
     refreshWindow();
 }
 
 // 图片质量
 function imageQualityRadioOnChange(value) {
-    emit("imageQuality", value);
-    localStorage.setItem("imageQuality", value);
+    preferenceData.value.imageQuality = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更新图片质量，一秒后刷新页面");
     refreshWindow();
 }
 
 // 图片主题
 function imageTopicsCheckboxOnChange(values) {
-    let value = "";
-    for (let i = 0; i < values.length; i++) {
-        value += values[i];
-        if (i !== values.length - 1) {
-            value += ",";
-        }
-    }
-    emit("imageTopics", value);
-    localStorage.setItem("imageTopics", value);
+    preferenceData.value.imageTopics = values;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换图片主题，下次加载时生效");
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
@@ -429,8 +409,9 @@ function imageTopicsCheckboxOnChange(values) {
 }
 
 function simpleModeSwitchOnChange(checked) {
-    emit("simpleMode", checked);
-    localStorage.setItem("simpleMode", checked.toString());
+    preferenceData.value.simpleMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     if(checked) {
         Message.success("已开启简洁模式");
     }
@@ -440,8 +421,9 @@ function simpleModeSwitchOnChange(checked) {
 }
 
 function noImageModeSwitchOnChange(checked) {
-    emit("noImageMode", checked);
-    localStorage.setItem("noImageMode", checked.toString());
+    preferenceData.value.noImageMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     if(checked) {
         Message.success("已开启无图模式，1秒后刷新页面");
     }

@@ -39,6 +39,15 @@ export let themeArray = [
     {"bodyBackgroundColor": "#FFE7B6", "componentBackgroundColor": "#50543B"},
 ];
 
+export let defaultPreferenceData = {
+    searchEngine: "bing",
+    dynamicEffect: "all",
+    imageQuality: "regular",
+    imageTopics: ["bo8jQKTaE0Y"],
+    simpleMode: false,
+    noImageMode: false,
+}
+
 // 常用变量
 export let device = getDevice();  // 获取当前设备类型
 export let clientId = "ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM";

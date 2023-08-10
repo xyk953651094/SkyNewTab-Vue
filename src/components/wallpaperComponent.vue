@@ -15,34 +15,16 @@
 import {defineProps, onMounted, ref} from "vue";
 import {httpRequest, imageDynamicEffect} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {clientId, device} from "../javascripts/publicConstants";
+import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
-    noImageMode: {
-        type: Boolean,
+    preferenceData: {
+        type: Object,
+        required: true,
         default: () => {
-            return false;
-        },
-        required: true
-    },
-    dynamicEffect: {
-        type: String,
-        default: () => {
-            return "all";
-        },
-        required: true
-    },
-    imageQuality: {
-        type: String,
-        default: () => {
-            return "regular";
-        },
-        required: true
-    },
-    imageTopics: {
-        type: String,
-        required: true
+            return defaultPreferenceData
+        }
     }
 });
 
@@ -59,7 +41,7 @@ function setWallpaper(data) {
     emit("imageData", imageData.value);
 
     // 图片质量
-    switch (props.imageQuality) {
+    switch (props.preferenceData.imageQuality) {
         case "full":
             imageLink.value = imageData.value.urls.full;
             break;
@@ -77,12 +59,20 @@ function setWallpaper(data) {
 }
 
 function getWallpaper() {
+    let tempImageTopics = "";
+    for (let i = 0; i < props.preferenceData.imageTopics.length; i++) {
+        tempImageTopics += props.preferenceData.imageTopics[i];
+        if (i !== props.preferenceData.imageTopics.length - 1) {
+            tempImageTopics += ",";
+        }
+    }
+
     let headers = {};
     let url = "https://api.unsplash.com/photos/random?";
     let data = {
         "client_id": clientId,
         "orientation": (device === "iPhone" || device === "Android") ? "portrait" : "landscape",
-        "topics": props.imageTopics,
+        "topics": tempImageTopics,
         "content_filter": "high",
     };
 
@@ -111,8 +101,12 @@ function getWallpaper() {
 }
 
 onMounted(() => {
-    let tempNoImageMode = localStorage.getItem("noImageMode");
-    let noImageMode = tempNoImageMode === null ? false : JSON.parse(tempNoImageMode);
+    let preferenceData = localStorage.getItem("preferenceData");
+    let noImageMode = false;
+    if (preferenceData) {
+        noImageMode = JSON.parse(preferenceData).noImageMode;
+    }
+
     if(!noImageMode) {
         // 防抖节流
         let lastRequestTime = localStorage.getItem("lastImageRequestTime");
@@ -147,7 +141,7 @@ onMounted(() => {
 
                     setTimeout(() => {
                         backgroundImageDiv.style.perspective = "500px";
-                        imageDynamicEffect(backgroundImage, props.dynamicEffect);
+                        imageDynamicEffect(backgroundImage, props.preferenceData.dynamicEffect);
                     }, 5000);
                 }, 2000);
             }

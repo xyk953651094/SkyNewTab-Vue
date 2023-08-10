@@ -24,25 +24,26 @@
 import {defineProps, ref, watch} from "vue";
 import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 let showMask = ref("none");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
 
 const props = defineProps({
-    searchEngine: {
-        type: String,
+    preferenceData: {
+        type: Object,
+        required: true,
         default: () => {
-            return "bing";
-        },
-        required: true
+            return defaultPreferenceData
+        }
     }
 });
 
-watch(() => props.searchEngine, (newValue, oldValue) => {
+watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        searchEngineUrl.value = getSearchEngineDetail(newValue).searchEngineUrl;
-        searchEngineIconUrl.value = getSearchEngineDetail(newValue).searchEngineIconUrl;
+        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
+        searchEngineIconUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineIconUrl;
     }
 })
 

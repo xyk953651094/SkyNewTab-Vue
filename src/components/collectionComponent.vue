@@ -109,6 +109,7 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconDelete, IconEdit, IconPlus} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -124,11 +125,11 @@ const props = defineProps({
             }
         }
     },
-    simpleMode: {
-        type: Boolean,
+    preferenceData: {
+        type: Object,
         required: true,
         default: () => {
-            return false
+            return defaultPreferenceData
         }
     }
 });
@@ -162,9 +163,9 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.simpleMode, (newValue, oldValue) => {
+watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        display.value = newValue? "none" : "block";
+        display.value = newValue.simpleMode ? "none" : "block";
     }
 })
 

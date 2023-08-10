@@ -36,7 +36,7 @@
                     </a-col>
                 </a-row>
             </template>
-            <a-badge :count="listItems.length">
+            <a-badge :count="listItems.length" :style="{display: display}">
                 <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round"
                           size="large"
                           type="primary">
@@ -101,6 +101,7 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -116,11 +117,11 @@ const props = defineProps({
             }
         }
     },
-    simpleMode: {
-        type: Boolean,
+    preferenceData: {
+        type: Object,
         required: true,
         default: () => {
-            return false
+            return defaultPreferenceData
         }
     }
 });
@@ -155,9 +156,9 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.simpleMode, (newValue, oldValue) => {
+watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        display.value = newValue? "none" : "block";
+        display.value = newValue.simpleMode ? "none" : "block";
     }
 })
 
