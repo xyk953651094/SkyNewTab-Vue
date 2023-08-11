@@ -5,8 +5,8 @@
             :src="imagePreviewUrl"
             :style="{borderRadius: '10px'}"
             alt="图片加载失败"
-            height="180px"
-            width="300px"
+            height="150px"
+            width="250px"
         >
         </a-image>
         <canvas id="popupCanvas" :style="{display: displayCanvas, borderRadius: '10px'}" class="popupCanvas"></canvas>
@@ -18,23 +18,6 @@
                     <icon-user/>
                 </template>
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
-            </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                      :style="{color: fontColor, cursor: 'default'}"
-                      shape="round"
-                      type="text" @click="imageCameraBtnOnClick">
-                <template #icon>
-                    <icon-camera/>
-                </template>
-                {{ imageCamera }}
-            </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                      :style="{color: fontColor, cursor: 'default'}"
-                      shape="round" type="text">
-                <template #icon>
-                    <icon-clock-circle/>
-                </template>
-                {{ imageCreateTime }}
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
@@ -54,6 +37,28 @@
                     imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
                 }}
             </a-button>
+            <a-space>
+                <template #split>
+                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
+                </template>
+                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                          :style="{color: fontColor, cursor: 'default'}"
+                          shape="round" type="text">
+                    <template #icon>
+                        <icon-clock-circle/>
+                    </template>
+                    {{ imageCreateTime }}
+                </a-button>
+                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                          :style="{color: fontColor}"
+                          shape="round"
+                          type="text" @click="imageCameraBtnOnClick">
+                    <template #icon>
+                        <icon-camera/>
+                    </template>
+                    {{ imageCamera }}
+                </a-button>
+            </a-space>
         </a-space>
     </a-space>
 </template>
@@ -67,7 +72,7 @@ import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
 
-const btnMaxSize = 35;
+const btnMaxSize = 45;
 
 const props = defineProps({
     imageData: {
@@ -124,7 +129,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imagePreviewUrl.value = props.imageData.urls.regular;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
-        imageCreateTime.value = props.imageData.created_at;
+        imageCreateTime.value = getCreateTime(props.imageData.created_at);
         imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
 
         blurHashCode.value = newValue.blur_hash;
@@ -191,6 +196,10 @@ function imageCameraBtnOnClick() {
     } else {
         Message.error("无跳转链接");
     }
+}
+
+function getCreateTime(createTime) {
+    return createTime.substring(0, createTime.indexOf("T"));
 }
 </script>
 

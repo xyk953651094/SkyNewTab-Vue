@@ -3,9 +3,18 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{width: '600px'}"
             position="br"
         >
+            <a-badge :count="checkboxOptions.length" :style="{display: display}">
+                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round"
+                          size="large"
+                          type="primary">
+                    <template #icon>
+                        <icon-check-square/>
+                    </template>
+                </a-button>
+            </a-badge>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
@@ -35,15 +44,6 @@
                     </a-col>
                 </a-row>
             </template>
-            <a-badge :count="checkboxOptions.length" :style="{display: display}">
-                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round"
-                          size="large"
-                          type="primary">
-                    <template #icon>
-                        <icon-check-square/>
-                    </template>
-                </a-button>
-            </a-badge>
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">

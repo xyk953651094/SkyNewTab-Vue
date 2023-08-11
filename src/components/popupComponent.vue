@@ -13,7 +13,7 @@
         </a-layout-header>
         <a-layout-content class="popupContent">
             <a-list :bordered=false>
-                <a-list-item :style="{borderBottomColor: fontColor}">
+                <a-list-item :style="{borderBottomColor: fontColor, textAlign: 'center'}">
                     <popup-status-component :font-color="fontColor" :image-data="imageData"/>
                 </a-list-item>
                 <a-list-item>

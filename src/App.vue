@@ -93,7 +93,6 @@ const getImageData = (value) => {
 
 const getPreferenceData = (value) => {
     preferenceData.value = value;
-    console.log(preferenceData.value.simpleMode);
 }
 
 onMounted(() => {

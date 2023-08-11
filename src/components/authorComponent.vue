@@ -3,9 +3,18 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{width: '600px'}"
             position="tr"
         >
+            <a-button id="authorBtn" :style="{display: display}" class="componentTheme zIndexHigh" shape="round"
+                      size="large"
+                      type="primary"
+                      @click="authorLinkBtnOnClick">
+                <template #icon>
+                    <icon-camera/>
+                </template>
+                {{ "by " + authorName + " on Unsplash" }}
+            </a-button>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
@@ -33,15 +42,6 @@
                     </a-col>
                 </a-row>
             </template>
-            <a-button id="authorBtn" :style="{display: display}" class="componentTheme zIndexHigh" shape="round"
-                      size="large"
-                      type="primary"
-                      @click="authorLinkBtnOnClick">
-                <template #icon>
-                    <icon-camera/>
-                </template>
-                {{ "by " + authorName + " on Unsplash" }}
-            </a-button>
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item>
@@ -59,9 +59,9 @@
                                     }}
                                 </a-button>
                                 <a-space>
-<!--                                    <template #split>-->
-<!--                                        <a-divider :style="{borderColor: fontColor}" direction="vertical"/>-->
-<!--                                    </template>-->
+                                    <template #split>
+                                        <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
+                                    </template>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
@@ -118,6 +118,9 @@
                                     }}
                                 </a-button>
                                 <a-space>
+                                    <template #split>
+                                        <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
+                                    </template>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
@@ -159,7 +162,7 @@ import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants
 import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
-const btnMaxSize = 55;
+const btnMaxSize = 60;
 
 const props = defineProps({
     themeColor: {

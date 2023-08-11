@@ -62,6 +62,7 @@ function setWallpaper(data) {
 }
 
 function getWallpaper() {
+    console.log(props.preferenceData.imageTopics);
     let tempImageTopics = "";
     for (let i = 0; i < props.preferenceData.imageTopics.length; i++) {
         tempImageTopics += props.preferenceData.imageTopics[i];
