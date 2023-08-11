@@ -96,7 +96,28 @@
                                       :style="{backgroundColor: 'transparent'}"
                                       shape="square"/>
                             <a-space direction="vertical">
-                                <a-space wrap>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor}"
+                                          shape="round"
+                                          type="text" @click="imageLocationBtnOnClick">
+                                    <template #icon>
+                                        <icon-location/>
+                                    </template>
+                                    {{
+                                        imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
+                                    }}
+                                </a-button>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          shape="round" type="text">
+                                    <template #icon>
+                                        <icon-info-circle/>
+                                    </template>
+                                    {{
+                                        imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
+                                    }}
+                                </a-button>
+                                <a-space>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               shape="round" type="text">
@@ -113,29 +134,6 @@
                                             <icon-camera/>
                                         </template>
                                         {{ imageCamera }}
-                                    </a-button>
-                                </a-space>
-                                <a-space wrap>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor}"
-                                              shape="round"
-                                              type="text" @click="imageLocationBtnOnClick">
-                                        <template #icon>
-                                            <icon-location/>
-                                        </template>
-                                        {{
-                                            imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
-                                        }}
-                                    </a-button>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <icon-info-circle/>
-                                        </template>
-                                        {{
-                                            imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
-                                        }}
                                     </a-button>
                                 </a-space>
                             </a-space>
@@ -161,7 +159,7 @@ import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants
 import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
-const btnMaxSize = 50;
+const btnMaxSize = 55;
 
 const props = defineProps({
     themeColor: {
@@ -224,7 +222,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
         authorLikes.value = props.imageData.user.total_likes;
         authorPhotos.value = props.imageData.user.total_photos;
         imageLink.value = props.imageData.links.html;
-        imagePreviewUrl.value = props.imageData.urls.thumb;
+        imagePreviewUrl.value = props.imageData.urls.regular;
         imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
         imageCreateTime.value = getCreateTime(props.imageData.created_at);

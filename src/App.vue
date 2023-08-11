@@ -18,7 +18,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="center">
-            <wallpaper-component @imageData="getImageData" preference-data="preferenceData"/>
+            <wallpaper-component @imageData="getImageData" :preference-data="preferenceData"/>
             <a-space align="center" direction="vertical">
                 <clock-component :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData"/>
@@ -72,13 +72,6 @@ let themeColor = ref({
 let imageData = ref(null);
 let preferenceData = ref(defaultPreferenceData);
 
-// let searchEngine = ref("bing");
-// let dynamicEffect = ref("all");
-// let imageQuality = ref("regular");
-// let imageTopics = ref("Fzo3zuOHN6w");
-// let simpleMode = ref(false);
-// let noImageMode = ref(false);
-
 const getImageData = (value) => {
     imageData.value = value;
 
@@ -100,6 +93,7 @@ const getImageData = (value) => {
 
 const getPreferenceData = (value) => {
     preferenceData.value = value;
+    console.log(preferenceData.value.simpleMode);
 }
 
 onMounted(() => {

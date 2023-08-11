@@ -51,6 +51,9 @@ function setWallpaper(data) {
         case "small":
             imageLink.value = imageData.value.urls.small;
             break;
+        case "small_s3":
+            imageLink.value = imageData.value.urls.small_s3;
+            break;
         default:
             imageLink.value = imageData.value.urls.regular;
             break;

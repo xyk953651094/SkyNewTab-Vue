@@ -153,9 +153,9 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-watch(() => props.preferenceData, (newValue, oldValue) => {
+watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        display.value = newValue.simpleMode ? "none" : "block";
+        display.value = newValue ? "none" : "block";
     }
 })
 

@@ -31,50 +31,13 @@
                                 :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
                                 size="small"
-                                title="偏好设置"
+                                title="背景设置"
                         >
                             <template #extra>
                                 <icon-settings/>
                             </template>
-                            <a-form :model="preferenceData" auto-label-width layout="vertical">
-                                <a-form-item field="searchEngine" label="搜索引擎">
-                                    <a-radio-group v-model="preferenceData.searchEngine"
-                                                   @change="searchEngineRadioOnChange">
-                                        <a-row>
-                                            <a-col :span="12">
-                                                <a-radio value="baidu">Baidu</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="bing">Bing</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="brave">Brave</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="duckduckgo">DuckDuckGo</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="ghostery">Ghostery</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="google">Google</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="sogou">Sogou</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="startpage">StartPage</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="wuzhuiso">Wuhuiso</a-radio>
-                                            </a-col>
-                                            <a-col :span="12">
-                                                <a-radio value="yandex">Yandex</a-radio>
-                                            </a-col>
-                                        </a-row>
-                                    </a-radio-group>
-                                </a-form-item>
-                                <a-form-item field="dynamicEffect" label="图片动效（推荐视差）">
+                            <a-form :model="preferenceData" auto-label-width>
+                                <a-form-item field="dynamicEffect" label="图片动效">
                                     <a-radio-group v-model="preferenceData.dynamicEffect"
                                                    @change="dynamicEffectRadioOnChange">
                                         <a-row>
@@ -93,15 +56,26 @@
                                         </a-row>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageQuality" label="图片质量（推荐标准）">
+                                <a-form-item field="imageQuality" label="图片质量">
                                     <a-radio-group v-model="preferenceData.imageQuality"
                                                    @change="imageQualityRadioOnChange">
-                                        <a-radio value="full">高</a-radio>
-                                        <a-radio value="regular">标准</a-radio>
-                                        <a-radio value="small">低</a-radio>
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="full">最高</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="regular">标准</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="small">较低</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="small_s3">最低</a-radio>
+                                            </a-col>
+                                        </a-row>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageTopics" label="图片主题（全不选与全选效果一致）">
+                                <a-form-item field="imageTopics" label="图片主题">
                                     <a-checkbox-group v-model="preferenceData.imageTopics"
                                                       direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
@@ -170,32 +144,59 @@
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
-                                <a-row>
-                                    <a-col :span="12">
-                                        <a-form-item field="simpleMode" label="简洁模式">
-                                            <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
-                                                <template #checked>
-                                                    已开启
-                                                </template>
-                                                <template #unchecked>
-                                                    已关闭
-                                                </template>
-                                            </a-switch>
-                                        </a-form-item>
-                                    </a-col>
-                                    <a-col :span="12">
-                                        <a-form-item field="noImageMode" label="无图模式">
-                                            <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
-                                                <template #checked>
-                                                    已开启
-                                                </template>
-                                                <template #unchecked>
-                                                    已关闭
-                                                </template>
-                                            </a-switch>
-                                        </a-form-item>
-                                    </a-col>
-                                </a-row>
+                            </a-form>
+                        </a-card>
+                    </a-col>
+                    <a-col :span="24">
+                        <a-card :body-style="{backgroundColor: backgroundColor}"
+                                :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
+                                :style="{border: '1px solid' + fontColor}"
+                                size="small"
+                                title="功能设置"
+                        >
+                            <template #extra>
+                                <icon-settings/>
+                            </template>
+                            <a-form :model="preferenceData" auto-label-width>
+                                <a-form-item field="searchEngine" label="搜索引擎">
+                                    <a-radio-group v-model="preferenceData.searchEngine"
+                                                   @change="searchEngineRadioOnChange">
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="baidu">Baidu</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="bing">Bing</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="google">Google</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="yandex">Yandex</a-radio>
+                                            </a-col>
+                                        </a-row>
+                                    </a-radio-group>
+                                </a-form-item>
+                                <a-form-item field="simpleMode" label="简洁模式">
+                                    <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
+                                        <template #checked>
+                                            已开启
+                                        </template>
+                                        <template #unchecked>
+                                            已关闭
+                                        </template>
+                                    </a-switch>
+                                </a-form-item>
+                                <a-form-item field="noImageMode" label="无图模式">
+                                    <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
+                                        <template #checked>
+                                            已开启
+                                        </template>
+                                        <template #unchecked>
+                                            已关闭
+                                        </template>
+                                    </a-switch>
+                                </a-form-item>
                                 <a-form-item field="clearStorageButton" label="危险设置">
                                     <a-button id="clearStorageBtn" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}" shape="round"
