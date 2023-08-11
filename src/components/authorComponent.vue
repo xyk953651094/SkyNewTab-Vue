@@ -49,8 +49,8 @@
                             <a-avatar :image-url="authorIconUrl" :size="64" :style="{backgroundColor: 'transparent'}"/>
                             <a-space direction="vertical">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          shape="round" type="text">
+                                          :style="{color: fontColor}"
+                                          shape="round" type="text" @click="authorLinkBtnOnClick">
                                     <template #icon>
                                         <icon-user/>
                                     </template>
@@ -108,8 +108,8 @@
                                     }}
                                 </a-button>
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          shape="round" type="text">
+                                          :style="{color: fontColor}"
+                                          shape="round" type="text" @click="imageLinkBtnOnClick">
                                     <template #icon>
                                         <icon-info-circle/>
                                     </template>
