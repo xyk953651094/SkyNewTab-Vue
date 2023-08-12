@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '600px'}"
+            :style="{width: '550px'}"
             position="br"
         >
             <a-badge :count="listItems.length" :style="{display: display}">

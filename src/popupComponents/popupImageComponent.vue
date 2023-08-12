@@ -38,9 +38,6 @@
                 }}
             </a-button>
             <a-space>
-                <template #split>
-                    <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
-                </template>
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor, cursor: 'default'}"
                           shape="round" type="text">
@@ -72,7 +69,7 @@ import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
 
-const btnMaxSize = 45;
+const btnMaxSize = 35;
 
 const props = defineProps({
     imageData: {

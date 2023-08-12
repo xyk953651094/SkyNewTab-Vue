@@ -1,8 +1,5 @@
 <template>
     <a-space>
-        <template #split>
-            <a-divider :style="{borderColor: fontColor}" direction="vertical"/>
-        </template>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
                   shape="round"
                   type="text">
