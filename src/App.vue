@@ -18,7 +18,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="center">
-            <wallpaper-component @imageData="getImageData" :preference-data="preferenceData"/>
+            <wallpaper-component @imageData="getImageData"/>
             <a-space align="center" direction="vertical">
                 <clock-component :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData"/>

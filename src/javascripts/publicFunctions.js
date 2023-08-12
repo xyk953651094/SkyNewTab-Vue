@@ -291,6 +291,18 @@ export function changeThemeColor(element, backgroundColor, fontColor, time = 300
     }, {queue: false, duration: time});
 }
 
+export function changeBackgroundColor(element, backgroundColor, time = 300) {
+    $(element).animate({
+        backgroundColor: backgroundColor,
+    }, {queue: false, duration: time});
+}
+
+export function changeFontColor(element, fontColor, time = 300) {
+    $(element).animate({
+        color: fontColor,
+    }, {queue: false, duration: time});
+}
+
 export function fadeIn(element, time = 300) {
     $(element).fadeIn(time);
 }

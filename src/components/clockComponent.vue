@@ -22,10 +22,10 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {getTimeDetails} from "../javascripts/publicFunctions";
+import {changeBackgroundColor, changeFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import "../stylesheets/clockComponent.less";
 
-const $ = require("jquery");
+// const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
@@ -64,17 +64,19 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 function btnMouseOver() {
-    this.style.backgroundColor = backgroundColor.value;
-    this.classList.add("componentTheme");
-    $(".clockText").css("color", fontColor.value);
-    $(".dateText").css("color", fontColor.value);
+    setTimeout(() => {
+        this.classList.add("componentTheme");
+    }, 300);
+    changeBackgroundColor(this, backgroundColor.value);
+    changeFontColor(".clockText, .dateText", fontColor.value);
 }
 
 function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.classList.remove("componentTheme");
-    $(".clockText").css("color", backgroundColor.value);
-    $(".dateText").css("color", backgroundColor.value);
+    setTimeout(() => {
+        this.classList.remove("componentTheme");
+    }, 300);
+    changeBackgroundColor(this, "transparent");
+    changeFontColor(".clockText, .dateText", backgroundColor.value);
 }
 
 </script>

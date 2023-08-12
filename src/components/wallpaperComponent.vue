@@ -12,27 +12,17 @@
 </template>
 
 <script setup>
-import {defineProps, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {httpRequest, imageDynamicEffect} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
-const props = defineProps({
-    preferenceData: {
-        type: Object,
-        required: true,
-        default: () => {
-            return defaultPreferenceData
-        }
-    }
-});
-
 const emit = defineEmits(["imageData"]);
 
 let imageData = ref(null);
+let preferenceData = ref(defaultPreferenceData);
 let imageLink = ref("");
-let loadImageLink = ref("");
 let display = ref("none");
 
 // 请求完成后处理步骤
@@ -41,7 +31,7 @@ function setWallpaper(data) {
     emit("imageData", imageData.value);
 
     // 图片质量
-    switch (props.preferenceData.imageQuality) {
+    switch (preferenceData.value.imageQuality) {
         case "full":
             imageLink.value = imageData.value.urls.full;
             break;
@@ -58,15 +48,13 @@ function setWallpaper(data) {
             imageLink.value = imageData.value.urls.regular;
             break;
     }
-    loadImageLink.value = imageData.value.urls.small;
 }
 
 function getWallpaper() {
-    console.log(props.preferenceData.imageTopics);
     let tempImageTopics = "";
-    for (let i = 0; i < props.preferenceData.imageTopics.length; i++) {
-        tempImageTopics += props.preferenceData.imageTopics[i];
-        if (i !== props.preferenceData.imageTopics.length - 1) {
+    for (let i = 0; i < preferenceData.value.imageTopics.length; i++) {
+        tempImageTopics += preferenceData.value.imageTopics[i];
+        if (i !== preferenceData.value.imageTopics.length - 1) {
             tempImageTopics += ",";
         }
     }
@@ -105,10 +93,11 @@ function getWallpaper() {
 }
 
 onMounted(() => {
-    let preferenceData = localStorage.getItem("preferenceData");
+    let tempPreferenceData = localStorage.getItem("preferenceData");
     let noImageMode = false;
-    if (preferenceData) {
-        noImageMode = JSON.parse(preferenceData).noImageMode;
+    if (tempPreferenceData) {
+        preferenceData.value = JSON.parse(tempPreferenceData);
+        noImageMode = preferenceData.value.noImageMode;
     }
 
     if(!noImageMode) {
@@ -145,7 +134,7 @@ onMounted(() => {
 
                     setTimeout(() => {
                         backgroundImageDiv.style.perspective = "500px";
-                        imageDynamicEffect(backgroundImage, props.preferenceData.dynamicEffect);
+                        imageDynamicEffect(backgroundImage, preferenceData.value.dynamicEffect);
                     }, 5000);
                 }, 2000);
             }

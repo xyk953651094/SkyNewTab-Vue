@@ -62,8 +62,9 @@ function onSearch(value) {
 }
 
 function onPressEnter() {
-    let value = document.getElementById("searchInput").firstElementChild.value;
-    window.location.href = searchEngineUrl.value + value;
+    let value = document.getElementById("searchInput").children[1].value;
+    console.log(value);
+    window.open(searchEngineUrl.value + value);
 }
 </script>
 
