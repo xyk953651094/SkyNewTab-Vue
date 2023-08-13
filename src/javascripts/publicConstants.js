@@ -52,3 +52,5 @@ export let defaultPreferenceData = {
 export let device = getDevice();  // 获取当前设备类型
 export let clientId = "ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM";
 export let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
+export const appId = "cicgheqakgmpjclo";
+export const appSecret = "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09";

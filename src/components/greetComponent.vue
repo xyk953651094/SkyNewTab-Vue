@@ -2,35 +2,93 @@
     <a-space>
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-                   :title="calendar"
                    position="bl"
         >
-            <a-button id="greetBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary"
-                      @click="greetBtnOnClick">
+            <a-button id="greetBtn" :style="{cursor: 'default'}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
                 {{ greetContent + "｜" + holidayContent }}
             </a-button>
+            <template #title>
+                <a-row align="center">
+                    <a-col :span="10">
+                        <a-typography-text :style="{color: fontColor}">{{ "万年历" }}</a-typography-text>
+                    </a-col>
+                    <a-col :span="14" :style="{textAlign: 'right'}">
+                        <a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
+                                      type="text" @click="historyBtnOnClick">
+                                <template #icon>
+                                    <icon-history />
+                                </template>
+                                {{ "历史上的今天" }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
+                                      type="text" @click="infoBtnOnClick">
+                                <template #icon>
+                                    <icon-info-circle/>
+                                </template>
+                                {{ "更多信息" }}
+                            </a-button>
+                        </a-space>
+                    </a-col>
+                </a-row>
+            </template>
             <template #content>
-                <a-space direction="vertical" fill size="mini">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor, cursor: 'default'}"
-                              shape="round" type="text">
-                        <template #icon>
-                            <icon-check-circle/>
-                        </template>
-                        {{ "宜：" + suit }}
-                    </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor, cursor: 'default'}"
-                              shape="round" type="text">
-                        <template #icon>
-                            <icon-close-circle/>
-                        </template>
-                        {{ "忌：" + avoid }}
-                    </a-button>
-                </a-space>
+                <a-list :bordered=false>
+                    <a-list-item>
+                        <a-space direction="vertical">
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <icon-calendar />
+                                </template>
+                                {{ calendar }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <icon-check-circle/>
+                                </template>
+                                {{ "宜：" + suit }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <icon-close-circle/>
+                                </template>
+                                {{ "忌：" + avoid }}
+                            </a-button>
+<!--                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
+<!--                                      :style="{color: fontColor, cursor: 'default'}"-->
+<!--                                      shape="round" type="text">-->
+<!--                                <template #icon>-->
+<!--                                    <icon-book />-->
+<!--                                </template>-->
+<!--                                {{ toast }}-->
+<!--                            </a-button>-->
+                        </a-space>
+                    </a-list-item>
+<!--                    <a-list-item>-->
+<!--                        <a-space direction="vertical">-->
+<!--                            <a-button v-for="item in history" :key="item.title"-->
+<!--                                      :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
+<!--                                      :style="{color: fontColor, cursor: 'default'}"-->
+<!--                                      shape="round" type="text">-->
+<!--                                <template #icon>-->
+<!--                                    <icon-history />-->
+<!--                                </template>-->
+<!--                                {{ item.year + "-" + item.month + "-" + item.day + "：" + item.title }}-->
+<!--                            </a-button>-->
+<!--                        </a-space>-->
+<!--                    </a-list-item>-->
+                </a-list>
             </template>
         </a-popover>
     </a-space>
@@ -39,7 +97,7 @@
 <script setup>
 import "../stylesheets/publicStyles.less"
 import {defineProps, onMounted, ref, watch} from "vue"
-import {IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
+import {IconInfoCircle, IconHistory, IconCalendar, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,
     getFontColor,
@@ -49,7 +107,7 @@ import {
     getTimeDetails,
     httpRequest,
 } from "../javascripts//publicFunctions";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {defaultPreferenceData, appId, appSecret} from "../javascripts/publicConstants";
 
 const props = defineProps({
     themeColor: {
@@ -83,6 +141,8 @@ let timeDetails = ref(getTimeDetails(new Date()));
 let calendar = ref(timeDetails.value.showDate4 + " " + timeDetails.value.showWeek);
 let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
+// let toast = ref("暂无信息");
+// let history = ref([]);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -109,10 +169,15 @@ function btnMouseOut() {
     this.style.color = fontColor.value;
 }
 
-function greetBtnOnClick() {
-    window.open(searchEngineUrl.value + "日历", "_blank",);
+function infoBtnOnClick() {
+    window.open(searchEngineUrl.value + "万年历", "_blank",);
 }
 
+function historyBtnOnClick() {
+    window.open(searchEngineUrl.value + "历史上的今天", "_blank",);
+}
+
+// 万年历
 function setHoliday(data) {
     let tempHolidayContent = data.solarTerms;
     if (data.typeDes !== "休息日" && data.typeDes !== "工作日") {
@@ -133,8 +198,8 @@ function getHoliday() {
     let headers = {};
     let url = "https://www.mxnzp.com/api/holiday/single/" + getTimeDetails(new Date()).showDate3;
     let data = {
-        "app_id": "cicgheqakgmpjclo",
-        "app_secret": "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09",
+        "app_id": appId,
+        "app_secret": appSecret,
     };
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
@@ -150,20 +215,97 @@ function getHoliday() {
         })
 }
 
+// 每日一句
+// function setToast(data) {
+//     toast.value = data[0].content;
+//     if(!isEmptyString(data[0].author)) {
+//         toast.value += " - " + data[0].author;
+//     }
+// }
+//
+// function getToast() {
+//     let headers = {};
+//     let url = "https://www.mxnzp.com/api/daily_word/recommend";
+//     let data = {
+//         "app_id": appId,
+//         "app_secret": appSecret,
+//         "count": 1
+//     };
+//     httpRequest(headers, url, data, "GET")
+//         .then(function (resultData) {
+//             localStorage.setItem("lastToastRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+//             if (resultData.code === 1) {
+//                 localStorage.setItem("lastToast", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+//                 setToast(resultData.data);
+//             }
+//         })
+//         .catch(function () {
+//             // 请求失败也更新请求时间，防止超时后无信息可显示
+//             localStorage.setItem("lastToastRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+//         })
+// }
+//
+// 历史上的今天
+// function setHistory(data) {
+//     if (data.length > 5) {
+//         for(let i = 0; i < 5; i++) {
+//             history.value.push(data[i]);
+//         }
+//     }
+//     else {
+//         history.value = data;
+//     }
+// }
+//
+// function getHistory() {
+//     let headers = {};
+//     let url = "https://www.mxnzp.com/api/history/today";
+//     let data = {
+//         "app_id": appId,
+//         "app_secret": appSecret,
+//     };
+//     httpRequest(headers, url, data, "GET")
+//         .then(function (resultData) {
+//             localStorage.setItem("lastHistoryRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+//             if (resultData.code === 1) {
+//                 localStorage.setItem("lastHistory", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+//                 setHistory(resultData.data);
+//             }
+//         })
+//         .catch(function () {
+//             // 请求失败也更新请求时间，防止超时后无信息可显示
+//             localStorage.setItem("lastHistoryRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+//         })
+// }
+
 onMounted(() => {
     // 防抖节流
-    let lastRequestTime = localStorage.getItem("lastHolidayRequestTime");
+    let lastRequestTime = localStorage.getItem("lastGreetRequestTime");
     let nowTimeStamp = new Date().getTime();
     if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
         getHoliday();
-    } else if (nowTimeStamp - parseInt(lastRequestTime) > 4 * 60 * 60 * 1000) {  // 必须多于四小时才能进行新的请求
+        // getToast();
+        // getHistory();
+    } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于四小时才能进行新的请求
         getHoliday();
+        // getToast();
+        // getHistory();
     } else {  // 一小时之内使用上一次请求结果
         let lastHoliday = localStorage.getItem("lastHoliday");
+        // let lastToast = localStorage.getItem("lastToast");
+        // let lastHistory = localStorage.getItem("lastHistory");
         if (lastHoliday) {
             lastHoliday = JSON.parse(lastHoliday);
             setHoliday(lastHoliday);
         }
+        // if (lastToast) {
+        //     lastToast = JSON.parse(lastToast);
+        //     setToast(lastToast);
+        // }
+        // if (lastHistory) {
+        //     lastHistory = JSON.parse(lastHistory);
+        //     setHistory(lastHistory);
+        // }
     }
 
     setInterval(() => {
