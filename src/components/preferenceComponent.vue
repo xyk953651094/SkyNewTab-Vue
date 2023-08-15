@@ -216,7 +216,7 @@
                                 :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
                                 size="small"
-                                title="网站链接"
+                                title="友情链接"
                         >
                             <template #extra>
                                 <icon-link/>

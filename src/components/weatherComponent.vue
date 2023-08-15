@@ -3,9 +3,10 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+            :style="{width: '250px'}"
             :title="address"
         >
-            <a-button id="weatherBtn" :style="{cursor: 'default'}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
+            <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="weatherIcon"></i>
                 </template>
@@ -123,6 +124,7 @@ const props = defineProps({
     }
 });
 
+let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -150,6 +152,12 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         if (newValue !== oldValue) {
             searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
         }
+    }
+});
+
+watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        display.value = newValue ? "none" : "block";
     }
 });
 
@@ -224,18 +232,20 @@ function getWeather() {
 }
 
 onMounted(() => {
-    // 防抖节流
-    let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
-    let nowTimeStamp = new Date().getTime();
-    if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
-        getWeather();
-    } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一小时才能进行新的请求
-        getWeather();
-    } else {  // 一小时之内使用上一次请求结果
-        let lastWeather = localStorage.getItem("lastWeather");
-        if (lastWeather) {
-            lastWeather = JSON.parse(lastWeather);
-            setWeather(lastWeather);
+    if(!props.preferenceData.simpleMode) {
+        // 防抖节流
+        let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
+        let nowTimeStamp = new Date().getTime();
+        if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+            getWeather();
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+            getWeather();
+        } else {  // 一小时之内使用上一次请求结果
+            let lastWeather = localStorage.getItem("lastWeather");
+            if (lastWeather) {
+                lastWeather = JSON.parse(lastWeather);
+                setWeather(lastWeather);
+            }
         }
     }
 })

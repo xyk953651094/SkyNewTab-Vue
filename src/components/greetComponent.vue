@@ -2,9 +2,10 @@
     <a-space>
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
+                   :style="{minWidth: '500px'}"
                    position="bl"
         >
-            <a-button id="greetBtn" :style="{cursor: 'default'}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
+            <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -130,6 +131,7 @@ const props = defineProps({
     }
 });
 
+let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -156,6 +158,12 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
+    }
+});
+
+watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        display.value = newValue ? "none" : "block";
     }
 });
 
@@ -203,7 +211,7 @@ function getHoliday() {
     };
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
-            localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            localStorage.setItem("lastGreetRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             if (resultData.code === 1) {
                 localStorage.setItem("lastHoliday", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
                 setHoliday(resultData.data);
@@ -211,7 +219,7 @@ function getHoliday() {
         })
         .catch(function () {
             // 请求失败也更新请求时间，防止超时后无信息可显示
-            localStorage.setItem("lastHolidayRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            localStorage.setItem("lastGreetRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
         })
 }
 
@@ -233,15 +241,10 @@ function getHoliday() {
 //     };
 //     httpRequest(headers, url, data, "GET")
 //         .then(function (resultData) {
-//             localStorage.setItem("lastToastRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
 //             if (resultData.code === 1) {
-//                 localStorage.setItem("lastToast", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+//                 localStorage.setItem("lastToast", JSON.stringify(resultData.data));      // 保存请求结果
 //                 setToast(resultData.data);
 //             }
-//         })
-//         .catch(function () {
-//             // 请求失败也更新请求时间，防止超时后无信息可显示
-//             localStorage.setItem("lastToastRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
 //         })
 // }
 //
@@ -266,52 +269,49 @@ function getHoliday() {
 //     };
 //     httpRequest(headers, url, data, "GET")
 //         .then(function (resultData) {
-//             localStorage.setItem("lastHistoryRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
 //             if (resultData.code === 1) {
-//                 localStorage.setItem("lastHistory", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
+//                 localStorage.setItem("lastHistory", JSON.stringify(resultData.data));      // 保存请求结果
 //                 setHistory(resultData.data);
 //             }
-//         })
-//         .catch(function () {
-//             // 请求失败也更新请求时间，防止超时后无信息可显示
-//             localStorage.setItem("lastHistoryRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
 //         })
 // }
 
 onMounted(() => {
-    // 防抖节流
-    let lastRequestTime = localStorage.getItem("lastGreetRequestTime");
-    let nowTimeStamp = new Date().getTime();
-    if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
-        getHoliday();
-        // getToast();
-        // getHistory();
-    } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于四小时才能进行新的请求
-        getHoliday();
-        // getToast();
-        // getHistory();
-    } else {  // 一小时之内使用上一次请求结果
-        let lastHoliday = localStorage.getItem("lastHoliday");
-        // let lastToast = localStorage.getItem("lastToast");
-        // let lastHistory = localStorage.getItem("lastHistory");
-        if (lastHoliday) {
-            lastHoliday = JSON.parse(lastHoliday);
-            setHoliday(lastHoliday);
+    if(!props.preferenceData.simpleMode) {
+        // 防抖节流
+        let lastRequestTime = localStorage.getItem("lastGreetRequestTime");
+        let nowTimeStamp = new Date().getTime();
+        if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+            getHoliday();
+            // getToast();
+            // getHistory();
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > 4 * 60 * 60 * 1000) {  // 必须多于四小时才能进行新的请求
+            getHoliday();
+            // getToast();
+            // getHistory();
+        } else {  // 四小时之内使用上一次请求结果
+            let lastHoliday = localStorage.getItem("lastHoliday");
+            // let lastToast = localStorage.getItem("lastToast");
+            // let lastHistory = localStorage.getItem("lastHistory");
+            if (lastHoliday) {
+                lastHoliday = JSON.parse(lastHoliday);
+                setHoliday(lastHoliday);
+            }
+            // if (lastToast) {
+            //     lastToast = JSON.parse(lastToast);
+            //     setToast(lastToast);
+            // }
+            // if (lastHistory) {
+            //     lastHistory = JSON.parse(lastHistory);
+            //     setHistory(lastHistory);
+            // }
         }
-        // if (lastToast) {
-        //     lastToast = JSON.parse(lastToast);
-        //     setToast(lastToast);
-        // }
-        // if (lastHistory) {
-        //     lastHistory = JSON.parse(lastHistory);
-        //     setHistory(lastHistory);
-        // }
-    }
 
-    setInterval(() => {
-        greetIcon.value = getGreetIcon();
-        greetContent.value = getGreetContent();
-    }, 60 * 60 * 1000);
+        setInterval(() => {
+            greetIcon.value = getGreetIcon();
+            greetContent.value = getGreetContent();
+        }, 60 * 60 * 1000);
+    }
 })
 </script>
 

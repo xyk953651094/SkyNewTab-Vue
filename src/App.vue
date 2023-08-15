@@ -20,7 +20,7 @@
         <a-layout-content id="content" class="center">
             <wallpaper-component @imageData="getImageData"/>
             <a-space align="center" direction="vertical">
-                <clock-component :theme-color="themeColor"/>
+                <clock-component :theme-color="themeColor" :preference-data="preferenceData"/>
                 <search-component :preference-data="preferenceData"/>
                 <a-col :lg="24" :md="24" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <collection-component :theme-color="themeColor" :preference-data="preferenceData"/>

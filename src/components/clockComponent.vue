@@ -3,11 +3,11 @@
         <a-col :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :span="24"
                :style="{padding: '5px', borderRadius: '10px'}"
                class="zIndexHigh">
-            <a-space id="clock" align="center" size="mini">
+            <a-space id="clock" align="center">
                 <a-typography-text :style="{color: backgroundColor}" class="clockText">
                     {{ currentTime }}
                 </a-typography-text>
-                <a-space align="center" direction="vertical" size="mini">
+                <a-space align="center" direction="vertical">
                     <a-typography-text :style="{color: backgroundColor}" class="dateText">
                         {{ currentWeek }}
                     </a-typography-text>
@@ -22,10 +22,13 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {changeBackgroundColor, changeFontColor, getTimeDetails} from "../javascripts/publicFunctions";
+import {
+    changeBackgroundColor,
+    changeFontColor,
+    getTimeDetails
+} from "../javascripts/publicFunctions";
 import "../stylesheets/clockComponent.less";
-
-// const $ = require("jquery");
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const props = defineProps({
     themeColor: {
@@ -38,9 +41,17 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
+        }
     }
 });
 
+let noImageMode = ref(false);
 let backgroundColor = ref("");
 let fontColor = ref("");
 let currentTime = ref(getTimeDetails(new Date()).showTime);
@@ -61,22 +72,28 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
     }
-})
+});
+
+watch(() => props.preferenceData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        noImageMode.value = newValue.noImageMode;
+    }
+});
 
 function btnMouseOver() {
-    setTimeout(() => {
+    if(!noImageMode.value) {
+        changeBackgroundColor(this, backgroundColor.value, 150);
+        changeFontColor(".clockText, .dateText", fontColor.value, 150);
         this.classList.add("componentTheme");
-    }, 300);
-    changeBackgroundColor(this, backgroundColor.value);
-    changeFontColor(".clockText, .dateText", fontColor.value);
+    }
 }
 
 function btnMouseOut() {
-    setTimeout(() => {
+    if(!noImageMode.value) {
         this.classList.remove("componentTheme");
-    }, 300);
-    changeBackgroundColor(this, "transparent");
-    changeFontColor(".clockText, .dateText", backgroundColor.value);
+        changeBackgroundColor(this, "transparent", 150);
+        changeFontColor(".clockText, .dateText", backgroundColor.value, 150);
+    }
 }
 
 </script>
