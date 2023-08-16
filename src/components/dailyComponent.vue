@@ -53,6 +53,9 @@
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
+                                    <template #icon>
+                                        <icon-calendar-clock/>
+                                    </template>
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
@@ -60,6 +63,9 @@
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
+                                    <template #icon>
+                                        <icon-clock-circle/>
+                                    </template>
                                     {{
                                         getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + "｜" + getDailyDescription(item.selectedTimeStamp)
                                     }}
@@ -86,11 +92,11 @@
              unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>{{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}</template>
         <a-form>
-            <a-form-item field="dailyInput" label="标题">
+            <a-form-item field="dailyInput" label="倒数标题">
                 <a-input id="dailyInput" allow-clear maxLength="10" placeholder="请输入标题" showWordLimit/>
             </a-form-item>
-            <a-form-item field="dailyDatePicker" label="日期">
-                <a-date-picker id="dailyDatePicker" @change="datePickerOnChange"/>
+            <a-form-item field="dailyDatePicker" label="倒数日期">
+                <a-date-picker id="dailyDatePicker" :allow-clear="false" @change="datePickerOnChange"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -98,7 +104,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCalendarClock, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock, IconDelete, IconPlus, IconClockCircle} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
@@ -234,7 +240,7 @@ function modalBeforeOk() {
             return false;
         }
     } else {
-        Message.error("倒数日内容不能为空");
+        Message.error("表单不能为空");
         return false;
     }
 }
@@ -278,7 +284,12 @@ function getDailyDescription(selectedTimeStamp) {
 }
 
 function datePickerOnChange(value, date, dateString) {
-    selectedTimeStamp.value = new Date(value).getTime();
+    if(value) {
+        selectedTimeStamp.value = new Date(value).getTime();
+    }
+    else {
+        selectedTimeStamp.value = 0;
+    }
     console.log(date, dateString);
 }
 

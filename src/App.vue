@@ -105,6 +105,14 @@ onMounted(() => {
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
+        // 通用
+        $(".arco-list-item").css("padding", "10px 0");
+        $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
+        $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
+        $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
+        $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
+        $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+
         // popover
         let popoverEle = $(".arco-popover");
         if (popoverEle.length && popoverEle.length > 0) {
@@ -113,13 +121,6 @@ onMounted(() => {
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "border": "1px solid " + themeColor.value.componentBackgroundColor
             });
-            $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
-            $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
-            $(".arco-empty").css("display", "block");
-            $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
-            $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
         }
 
         // message
@@ -137,7 +138,6 @@ onMounted(() => {
         let drawerEle = $(".arco-drawer");
         if (drawerEle.length && drawerEle.length > 0) {
             $(".arco-drawer-header").css("borderBottomColor", themeColor.value.componentFontColor);
-            // $(".arco-drawer-close-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-title").css("color", themeColor.value.componentFontColor);
             $(".arco-card-header-title").css("color", themeColor.value.componentFontColor);
             $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
@@ -158,10 +158,7 @@ onMounted(() => {
                 "borderTopColor": themeColor.value.componentFontColor,
                 "textAlign": "center"
             });
-            // $(".arco-drawer-footer > .arco-btn").css("marginLeft", 0);
-            // $(".arco-drawer-mask").css({"backgroundColor": themeColor.value.componentBackgroundColor, "opacity": 0.6});  // TODO: 等待arco design 的 dawer 支持 mask-style属性
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
-
         }
 
         // modal
@@ -170,12 +167,7 @@ onMounted(() => {
             $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
             $(".arco-modal-header").css("borderBottomColor", "transparent");
             $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
-            $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
-            $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer").css("borderTopColor", "transparent");
             $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");

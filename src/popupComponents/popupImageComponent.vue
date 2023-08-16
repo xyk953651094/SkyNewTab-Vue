@@ -1,5 +1,5 @@
 <template>
-    <a-space>
+    <a-space :style="{display: noImageMode ? 'none' : 'inline-flex'}">
         <a-image
             id="popupImage"
             :src="imagePreviewUrl"
@@ -58,6 +58,13 @@
             </a-space>
         </a-space>
     </a-space>
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" shape="round" type="text"
+              :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}">
+        <template #icon>
+            <icon-info-circle />
+        </template>
+        已开启无图模式
+    </a-button>
 </template>
 
 <script setup>
@@ -103,6 +110,7 @@ let imageCreateTime = ref("暂无信息");
 let imageCamera = ref("暂无信息");
 let blurHashCode = ref("");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
+let noImageMode = ref(false)
 
 onMounted(() => {
     let popupImage = document.getElementById("popupImage");
@@ -150,6 +158,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
 watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
+        noImageMode.value = newValue.noImageMode;
     }
 });
 

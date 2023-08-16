@@ -68,9 +68,10 @@ function getWallpaper() {
         "content_filter": "high",
     };
 
+    Message.info("正在获取图片");
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
-
+            Message.info("正在加载图片");
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
             setWallpaper(resultData);
@@ -124,6 +125,7 @@ onMounted(() => {
 
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
+                Message.success("图片加载成功");
                 display.value = "block";
 
                 // 设置动态效果

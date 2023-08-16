@@ -13,8 +13,9 @@
         </a-layout-header>
         <a-layout-content class="popupContent">
             <a-list :bordered=false>
-                <a-list-item :style="{borderBottomColor: fontColor, textAlign: 'center'}">
-                    <popup-status-component :font-color="fontColor" :image-data="imageData"/>
+                <a-list-item :style="{borderBottomColor: fontColor}">
+                    <popup-status-component :font-color="fontColor" :image-data="imageData"
+                                            :preference-data="preferenceData"/>
                 </a-list-item>
                 <a-list-item>
                     <popup-image-component :font-color="fontColor" :image-data="imageData"
@@ -55,7 +56,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {IconDashboard, IconGift, IconGithub, IconMessage} from "@arco-design/web-vue/es/icon";
+import {IconDashboard, IconGift, IconMessage} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor, getReverseColor} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
@@ -87,7 +88,7 @@ onMounted(() => {
     }
 
     let tempPreferenceData = localStorage.getItem("preferenceData");
-    preferenceData.value = tempPreferenceData === null ? defaultPreferenceData : tempPreferenceData;
+    preferenceData.value = tempPreferenceData === null ? defaultPreferenceData : JSON.parse(tempPreferenceData);
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {

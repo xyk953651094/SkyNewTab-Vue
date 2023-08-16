@@ -28,7 +28,7 @@ import {
     getTimeDetails
 } from "../javascripts/publicFunctions";
 import "../stylesheets/clockComponent.less";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     themeColor: {
@@ -82,9 +82,13 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
 
 function btnMouseOver() {
     if(!noImageMode.value) {
-        changeBackgroundColor(this, backgroundColor.value, 150);
-        changeFontColor(".clockText, .dateText", fontColor.value, 150);
-        this.classList.add("componentTheme");
+        new Promise((resolve) => {
+            changeBackgroundColor(this, backgroundColor.value, 150);
+            changeFontColor(".clockText, .dateText", fontColor.value, 150);
+            resolve("success");
+        }).then(() => {
+            this.classList.add("componentTheme");
+        })
     }
 }
 

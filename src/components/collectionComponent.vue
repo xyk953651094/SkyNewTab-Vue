@@ -85,6 +85,9 @@
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                   :style="{color: fontColor, cursor: 'default'}" shape="round"
                                   type="text">
+                            <template #icon>
+                                <icon-pushpin />
+                            </template>
                             {{ item.webName }}
                         </a-button>
                     </a-col>
@@ -92,6 +95,9 @@
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                   :style="{color: fontColor, cursor: 'default'}" shape="round"
                                   type="text">
+                            <template #icon>
+                                <icon-link />
+                            </template>
                             {{ item.webUrl.length < 30 ? item.webUrl : item.webUrl.substring(0, 30) + "..." }}
                         </a-button>
                     </a-col>
@@ -112,7 +118,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconEdit, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconEdit, IconPlus, IconPushpin, IconLink} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
