@@ -59,7 +59,7 @@
 
 <script setup>
 import {IconLink} from "@arco-design/web-vue/es/icon";
-import {getFontColor} from "@/javascripts/publicFunctions";
+import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 
 const props = defineProps({

@@ -30,7 +30,7 @@
 <script setup>
 import {IconGift, IconGithub, IconMessage} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {getFontColor} from "@/javascripts/publicFunctions";
+import {getFontColor} from "../javascripts/publicFunctions";
 
 const props = defineProps({
     hoverColor: {

@@ -256,9 +256,9 @@ import {IconDelete, IconMoreVertical, IconSettings} from "@arco-design/web-vue/e
 import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData, device} from "../javascripts/publicConstants";
-import PreferenceEmailComponent from "@/preferenceComponents/preferenceEmailComponent.vue";
-import PreferenceLinkComponent from "@/preferenceComponents/preferenceLinkComponent.vue";
-import PreferenceFooterComponent from "@/preferenceComponents/preferenceFooterComponent.vue";
+import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
+import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
+import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
