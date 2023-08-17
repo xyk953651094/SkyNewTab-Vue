@@ -224,74 +224,26 @@
                         </a-card>
                     </a-col>
                     <a-col :span="24">
-                        <a-card :body-style="{backgroundColor: backgroundColor}"
-                                :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
-                                :style="{border: '1px solid' + fontColor}"
-                                size="small"
-                                title="友情链接"
-                        >
-                            <template #extra>
-                                <icon-link/>
-                            </template>
-                            <a-space direction="vertical">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor}" href="https://unsplash.com/"
-                                          shape="round"
-                                          target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                              image-url="https://unsplash.com/favicon.ico"
-                                              shape="square"/>
-                                    &nbsp;&nbsp;Unsplash.com
-                                </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor}" href="https://www.pexels.com/"
-                                          shape="round"
-                                          target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                              image-url="https://www.pexels.com/favicon.ico"
-                                              shape="square"/>
-                                    &nbsp;&nbsp;Pexels.com
-                                </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor}" href="https://pixabay.com/"
-                                          shape="round"
-                                          target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                              image-url="https://pixabay.com/favicon.ico"
-                                              shape="square"/>
-                                    &nbsp;&nbsp;Pixabay.com
-                                </a-button>
-                            </a-space>
-                        </a-card>
+                        <preference-email-component
+                            :hover-color="hoverColor"
+                            :background-color="backgroundColor"
+                            :font-color="fontColor"
+                        />
+                    </a-col>
+                    <a-col :span="24">
+                        <preference-link-component
+                            :hover-color="hoverColor"
+                            :background-color="backgroundColor"
+                            :font-color="fontColor"
+                        />
                     </a-col>
                 </a-row>
                 <template #footer>
-                    <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                  href="https://github.com/xyk953651094"
-                                  shape="round" target="_blank" type="text">
-                            <template #icon>
-                                <icon-github/>
-                            </template>
-                            主页
-                        </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                  href="https://xyk953651094.blogspot.com"
-                                  shape="round" target="_blank" type="text">
-                            <template #icon>
-                                <icon-message/>
-                            </template>
-                            博客
-                        </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                  href="https://afdian.net/a/xyk953651094"
-                                  shape="round" target="_blank" type="text">
-                            <template #icon>
-                                <icon-gift/>
-                            </template>
-                            支持
-                        </a-button>
-                    </a-space>
+                    <preference-footer-component
+                        :hover-color="hoverColor"
+                        :background-color="backgroundColor"
+                        :font-color="fontColor"
+                    />
                 </template>
             </a-drawer>
         </a-tooltip>
@@ -300,18 +252,13 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {
-    IconDelete,
-    IconGift,
-    IconGithub,
-    IconLink,
-    IconMessage,
-    IconMoreVertical,
-    IconSettings,
-} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData, device} from "../javascripts/publicConstants";
+import PreferenceEmailComponent from "@/preferenceComponents/preferenceEmailComponent.vue";
+import PreferenceLinkComponent from "@/preferenceComponents/preferenceLinkComponent.vue";
+import PreferenceFooterComponent from "@/preferenceComponents/preferenceFooterComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
