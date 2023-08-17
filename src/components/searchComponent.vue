@@ -22,43 +22,28 @@
 <script setup>
 // import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
-import {fadeIn, fadeOut} from "../javascripts/publicFunctions";
+import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 let showMask = ref("none");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
 
 const props = defineProps({
-    searchEngine: {
-        type: String,
+    preferenceData: {
+        type: Object,
+        required: true,
         default: () => {
-            return "bing";
-        },
-        required: true
+            return defaultPreferenceData
+        }
     }
 });
 
-watch(() => props.searchEngine, (newValue, oldValue) => {
+watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        switch (props.searchEngine) {
-            case "bing":
-                searchEngineUrl.value = "https://www.bing.com/search?q=";
-                searchEngineIconUrl.value = "https://www.bing.com/favicon.ico";
-                break;
-            case "baidu":
-                searchEngineUrl.value = "https://www.baidu.com/s?wd=";
-                searchEngineIconUrl.value = "https://www.baidu.com/favicon.ico";
-                break;
-            case "google":
-                searchEngineUrl.value = "https://www.google.com/search?q=";
-                searchEngineIconUrl.value = "https://www.google.com/favicon.ico";
-                break;
-            default:
-                searchEngineUrl.value = "https://www.bing.com/search?q=";
-                searchEngineIconUrl.value = "https://www.bing.com/favicon.ico";
-                break;
-        }
+        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
+        searchEngineIconUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineIconUrl;
     }
 })
 
@@ -77,8 +62,9 @@ function onSearch(value) {
 }
 
 function onPressEnter() {
-    let value = document.getElementById("searchInput").firstElementChild.value;
-    window.location.href = searchEngineUrl.value + value;
+    let value = document.getElementById("searchInput").children[1].value;
+    console.log(value);
+    window.open(searchEngineUrl.value + value);
 }
 </script>
 

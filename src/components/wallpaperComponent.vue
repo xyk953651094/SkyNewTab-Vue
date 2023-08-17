@@ -8,114 +8,145 @@
         height="102%"
         width="102%"
     >
-        <template #loader>
-            <canvas id="blurHashCanvas" class="blurHashCanvas zIndexLow"></canvas>
-        </template>
     </a-image>
 </template>
 
 <script setup>
-import {defineProps, onMounted, ref, watch} from "vue";
-import {imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
+import {onMounted, ref} from "vue";
+import {httpRequest, imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {decode} from "blurhash"
+import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
+import {Message} from "@arco-design/web-vue";
 
-const props = defineProps({
-    display: {
-        type: String,
-        default: () => {
-            return "none";
-        },
-        required: true
-    },
-    imageData: {
-        type: Object,
-        required: true
-    },
-    dynamicEffect: {
-        type: String,
-        default: () => {
-            return "all";
-        },
-        required: true
-    },
-    imageQuality: {
-        type: String,
-        default: () => {
-            return "regular";
-        },
-        required: true
-    },
-});
+const emit = defineEmits(["imageData"]);
 
+let imageData = ref(null);
+let preferenceData = ref(defaultPreferenceData);
 let imageLink = ref("");
-let loadImageLink = ref("");
-let blurHashCode = ref("");
+let display = ref("none");
 
-watch(() => props.dynamicEffect, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        let backgroundImage = document.getElementById("backgroundImage");
-        if (backgroundImage instanceof HTMLElement) {
-            imageDynamicEffect(backgroundImage, props.dynamicEffect);
+// 请求完成后处理步骤
+function setWallpaper(data) {
+    imageData.value = data;
+    emit("imageData", imageData.value);
+
+    // 图片质量
+    switch (preferenceData.value.imageQuality) {
+        case "full":
+            imageLink.value = imageData.value.urls.full;
+            break;
+        case "regular":
+            imageLink.value = imageData.value.urls.regular;
+            break;
+        case "small":
+            imageLink.value = imageData.value.urls.small;
+            break;
+        case "small_s3":
+            imageLink.value = imageData.value.urls.small_s3;
+            break;
+        default:
+            imageLink.value = imageData.value.urls.regular;
+            break;
+    }
+}
+
+function getWallpaper() {
+    let imageTopics = "";
+    for (let i = 0; i < preferenceData.value.imageTopics.length; i++) {
+        imageTopics += preferenceData.value.imageTopics[i];
+        if (i !== preferenceData.value.imageTopics.length - 1) {
+            imageTopics += ",";
         }
     }
-})
+    let imageQuery = preferenceData.value.customTopic;
 
-watch(() => props.imageData, (newValue, oldValue) => {
-    if (newValue !== oldValue && newValue) {
-        switch (props.imageQuality) {
-            case "full":
-                imageLink.value = props.imageData.urls.full;
-                loadImageLink.value = props.imageData.urls.small;
-                break;
-            case "regular":
-                imageLink.value = props.imageData.urls.regular;
-                loadImageLink.value = props.imageData.urls.small;
-                break;
-            case "small":
-                imageLink.value = props.imageData.urls.small;
-                loadImageLink.value = props.imageData.urls.small;
-                break;
-            default:
-                imageLink.value = props.imageData.urls.regular;
-                loadImageLink.value = props.imageData.urls.small;
-                break;
-        }
+    let headers = {};
+    let url = "https://api.unsplash.com/photos/random?";
+    let data = {
+        "client_id": clientId,
+        "orientation": (device === "iPhone" || device === "Android") ? "portrait" : "landscape",
+        "topics": imageTopics,
+        "content_filter": "high",
+    };
+    if (!isEmptyString(imageQuery)) {
+        delete data.topics;
+        data.query = imageQuery;
     }
 
-    blurHashCode.value = newValue.blur_hash;
-    if (!isEmptyString(blurHashCode.value)) {
-        const blurHashCanvas = document.getElementById("blurHashCanvas");
-        if (blurHashCanvas instanceof HTMLCanvasElement) {
-            let blurHashImage = decode(blurHashCode.value, window.innerWidth, window.innerHeight);
-            let ctx = blurHashCanvas.getContext("2d");
-            if (ctx) {
-                const imageData = new ImageData(blurHashImage, window.innerWidth, window.innerHeight);
-                ctx.putImageData(imageData, 0, 0);
+    Message.info("正在获取图片");
+    httpRequest(headers, url, data, "GET")
+        .then(function (resultData) {
+            Message.info("正在加载图片");
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
+            setWallpaper(resultData);
+        })
+        .catch(function () {
+            // Message.error("获取图片失败");
+            // 请求失败也更新请求时间，防止超时后无信息可显示
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            // 获取图片失败时显示上次图片
+            let lastImage = localStorage.getItem("lastImage");
+            if (lastImage) {
+                lastImage = JSON.parse(lastImage);
+                setWallpaper(lastImage);
+            } else {
+                Message.error("获取图片失败");
             }
-
-            blurHashCanvas.className = "blurHashCanvas zIndexLow wallpaperFadeIn";
-        }
-    }
-})
+        })
+        .finally(function () {
+        });
+}
 
 onMounted(() => {
-    let backgroundImage = document.getElementById("backgroundImage");
-    let backgroundImageDiv = backgroundImage.parentElement;
+    let tempPreferenceData = localStorage.getItem("preferenceData");
+    if (tempPreferenceData === null) {
+        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+        preferenceData.value = defaultPreferenceData;
+    } else {
+        preferenceData.value = JSON.parse(tempPreferenceData);
+    }
+    let noImageMode = preferenceData.value.noImageMode;
 
-    if (backgroundImage instanceof HTMLElement) {
-        backgroundImage.onload = function () {
-            // 设置动态效果
-            backgroundImage.className = "backgroundImage zIndexLow wallpaperFadeIn";
-            // fadeIn("#backgroundImage", 3000);
-            setTimeout(() => {
-                backgroundImage.style.transform = "scale(1.05)";
-                backgroundImage.style.transition = "5s";
-            }, 2000);
-            setTimeout(() => {
-                backgroundImageDiv.style.perspective = "500px";
-                imageDynamicEffect(backgroundImage, props.dynamicEffect);
-            }, 7000);
+    if (!noImageMode) {
+        // 防抖节流
+        let lastRequestTime = localStorage.getItem("lastImageRequestTime");
+        let nowTimeStamp = new Date().getTime();
+        if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+            getWallpaper();
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一分钟才能进行新的请求
+            getWallpaper();
+        } else {  // 一分钟之内使用上一次请求结果
+            let lastImage = localStorage.getItem("lastImage");
+            if (lastImage) {
+                lastImage = JSON.parse(lastImage);
+                setWallpaper(lastImage);
+            } else {
+                Message.error("获取图片失败");
+            }
+        }
+
+        // 图片动画
+        let backgroundImage = document.getElementById("backgroundImage");
+        let backgroundImageDiv = backgroundImage.parentElement;
+
+        if (backgroundImage instanceof HTMLElement) {
+            backgroundImage.onload = function () {
+                Message.success("图片加载成功");
+                display.value = "block";
+
+                // 设置动态效果
+                backgroundImage.classList.add("wallpaperFadeIn");
+                setTimeout(() => {
+                    backgroundImage.style.transform = "scale(1.05, 1.05)";
+                    backgroundImage.style.transition = "5s";
+
+                    setTimeout(() => {
+                        backgroundImageDiv.style.perspective = "500px";
+                        imageDynamicEffect(backgroundImage, preferenceData.value.dynamicEffect);
+                    }, 5000);
+                }, 2000);
+            }
         }
     }
 })

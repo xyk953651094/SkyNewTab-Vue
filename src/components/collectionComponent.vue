@@ -1,92 +1,119 @@
 <template>
-    <a-col :span="24" class="center">
+    <a-col :span="24" :style="{display: display}" class="center">
         <a-space class="zIndexHigh">
-            <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor" :content="item.webUrl"
+            <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
+                       :content="item.webUrl"
                        :content-style="{color: fontColor}" position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
                           type="primary"
                           @click="collectionBtnOnClick(item)">
                     {{ item.webName }}
                 </a-button>
             </a-tooltip>
 
-            <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
-                      type="primary"
-                      @click="showAddModalBtnOnClick">
-                <template #icon>
-                    <icon-plus/>
-                </template>
-            </a-button>
-            <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
-                      type="primary"
-                      @click="showEditModalBtnOnClick">
-                <template #icon>
-                    <icon-edit/>
-                </template>
-            </a-button>
-            <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
-                      type="primary"
-                      @click="removeAllBtnOnClick">
-                <template #icon>
-                    <icon-delete/>
-                </template>
-            </a-button>
+            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
+                       position="bottom">
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
+                          type="primary"
+                          @click="showAddModalBtnOnClick">
+                    <template #icon>
+                        <icon-plus/>
+                    </template>
+                </a-button>
+            </a-tooltip>
+            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
+                       position="bottom">
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
+                          type="primary"
+                          @click="showEditModalBtnOnClick">
+                    <template #icon>
+                        <icon-edit/>
+                    </template>
+                </a-button>
+            </a-tooltip>
+            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
+                       position="bottom">
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
+                          type="primary"
+                          @click="removeAllBtnOnClick">
+                    <template #icon>
+                        <icon-delete/>
+                    </template>
+                </a-button>
+            </a-tooltip>
         </a-space>
     </a-col>
-    <a-modal v-model:visible="displayAddModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
-             unmount-on-close @cancel="addModalCancelBtnOnClick"
-             @ok="addModalOkBtnOnClick">
+    <a-modal v-model:visible="displayAddModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             :onBeforeOk="addModalBeforeOk" unmount-on-close
+             @cancel="addModalCancelBtnOnClick" @ok="addModalOkBtnOnClick">
         <template #title>{{ "添加链接 " + collectionSize + " / " + collectionMaxSize }}</template>
         <a-form>
-            <a-form-item field="name" label="网站名称" required validate-trigger="change">
+            <a-form-item field="name" label="网站名称">
                 <a-input id="webNameInput" allow-clear maxLength="5" placeholder="请输入网站名称" showWordLimit/>
             </a-form-item>
-            <a-form-item field="post" label="网站地址" required validate-trigger="change">
+            <a-form-item field="post" label="网站地址">
                 <a-input id="webUrlInput" allow-clear placeholder="请输入网站地址"/>
             </a-form-item>
         </a-form>
     </a-modal>
-    <a-modal v-model:visible="displayEditModal" :closable="false" :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+    <a-modal v-model:visible="displayEditModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              @cancel="editModalCancelBtnOnClick"
              @ok="editModalOkBtnOnClick">
-        <template #title>{{ "编辑链接 " + collectionSize + " / " + collectionMaxSize }}</template>
-        <a-list>
-            <template #header>
-                <a-row justify="end">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="round"
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "编辑链接 " + collectionSize + " / " + collectionMaxSize }}
+                    </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                              shape="round"
                               type="text" @click="removeAllBtnOnClick">
                         <template #icon>
                             <icon-delete/>
                         </template>
                         全部删除
                     </a-button>
-                </a-row>
-            </template>
+                </a-col>
+            </a-row>
+        </template>
+        <a-list :bordered=false>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
-                <a-list-item-meta>
-                    <template #avatar>
-                        <a-avatar :image-url="item.webUrl + '/favicon.ico'" :style="{backgroundColor: 'transparent'}"/>
-                    </template>
-                    <template #title>
-                        <a-space>
-                            <icon-compass/>
-                            <a-typography-text :style="{color: fontColor}">{{ " " + item.webName }}
-                            </a-typography-text>
-                        </a-space>
-                    </template>
-                    <template #description>
-                        <a-space>
-                            <icon-link/>
-                            <a-typography-text editable :style="{color: fontColor}" v-model:editText="editText">{{ " " + item.webUrl }}
-                            </a-typography-text>
-                        </a-space>
-                    </template>
-                </a-list-item-meta>
+                <a-row>
+                    <a-col :span="8">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                  type="text">
+                            <template #icon>
+                                <icon-pushpin/>
+                            </template>
+                            {{ item.webName }}
+                        </a-button>
+                    </a-col>
+                    <a-col :span="16">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                  type="text">
+                            <template #icon>
+                                <icon-link/>
+                            </template>
+                            {{ item.webUrl.length < 30 ? item.webUrl : item.webUrl.substring(0, 30) + "..." }}
+                        </a-button>
+                    </a-col>
+                </a-row>
                 <template #actions>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" shape="circle"
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                              shape="circle"
                               type="text" @click="removeBtnOnClick(item)">
                         <template #icon>
-                            <icon-close/>
+                            <icon-delete/>
                         </template>
                     </a-button>
                 </template>
@@ -97,9 +124,10 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconClose, IconEdit, IconPlus, IconCompass, IconLink} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconEdit, IconLink, IconPlus, IconPushpin} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -114,9 +142,17 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
+        }
     }
 });
 
+let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -125,7 +161,6 @@ let displayEditModal = ref(false);
 let collectionData = ref([]);
 let collectionSize = ref(0);
 let collectionMaxSize = ref(5);
-let editText = ref("");
 
 onMounted(() => {
     let collections = [];
@@ -143,6 +178,12 @@ watch(() => props.themeColor, (newValue, oldValue) => {
         hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
+    }
+})
+
+watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        display.value = newValue ? "none" : "block";
     }
 })
 
@@ -175,7 +216,7 @@ function showAddModalBtnOnClick() {
     }
 }
 
-function addModalOkBtnOnClick() {
+function addModalBeforeOk() {
     let webName = $("#webNameInput").children("input").val();
     let webUrl = $("#webUrlInput").children("input").val();
     if (webName && webUrl && webName.length > 0 && webUrl.length > 0) {
@@ -185,20 +226,34 @@ function addModalOkBtnOnClick() {
             collections = JSON.parse(tempCollections);
         }
         if (collections.length < collectionMaxSize.value) {
-            collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
-            localStorage.setItem("collections", JSON.stringify(collections));
-
-            displayAddModal.value = false;
-            Message.success("添加成功");
-
-            collectionData.value = collections;
-            collectionSize.value = collections.length;
+            return true;
         } else {
             Message.error("链接数量最多为" + collectionMaxSize.value + "个");
+            return false;
         }
     } else {
-        Message.error("网页名称或网页地址不能为空");
+        Message.error("网页内容不能为空");
+        return false;
     }
+}
+
+function addModalOkBtnOnClick() {
+    let webName = $("#webNameInput").children("input").val();
+    let webUrl = $("#webUrlInput").children("input").val();
+    let collections = [];
+    let tempCollections = localStorage.getItem("collections");
+    if (tempCollections) {
+        collections = JSON.parse(tempCollections);
+    }
+
+    collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
+    localStorage.setItem("collections", JSON.stringify(collections));
+
+    displayAddModal.value = false;
+    Message.success("添加成功");
+
+    collectionData.value = collections;
+    collectionSize.value = collections.length;
 }
 
 function addModalCancelBtnOnClick() {

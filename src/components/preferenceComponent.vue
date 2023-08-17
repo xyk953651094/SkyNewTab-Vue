@@ -27,42 +27,56 @@
                 </template>
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <a-card :body-style="{backgroundColor: backgroundColor}" :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
+                        <a-card :body-style="{backgroundColor: backgroundColor}"
+                                :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
                                 :style="{border: '1px solid' + fontColor}"
                                 size="small"
-                                title="偏好设置"
+                                title="背景设置"
                         >
                             <template #extra>
                                 <icon-settings/>
                             </template>
-                            <a-form :model="formInitialValues" auto-label-width layout="vertical">
-                                <a-form-item field="searchEngineRadio" label="搜索引擎">
-                                    <a-radio-group v-model="formInitialValues.searchEngineRadio"
-                                                   @change="searchEngineRadioOnChange">
-                                        <a-radio value="bing">必应</a-radio>
-                                        <a-radio value="baidu">百度</a-radio>
-                                        <a-radio value="google">谷歌</a-radio>
-                                    </a-radio-group>
-                                </a-form-item>
-                                <a-form-item field="dynamicEffectRadio" label="图片动效（推荐视差）">
-                                    <a-radio-group v-model="formInitialValues.dynamicEffectRadio"
+                            <a-form :model="preferenceData" auto-label-width>
+                                <a-form-item field="dynamicEffect" label="图片动效">
+                                    <a-radio-group v-model="preferenceData.dynamicEffect"
                                                    @change="dynamicEffectRadioOnChange">
-                                        <a-radio value="all">视差</a-radio>
-                                        <a-radio value="translate">平移</a-radio>
-                                        <a-radio value="rotate">旋转</a-radio>
-                                        <a-radio value="close">关闭</a-radio>
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="all">视差</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="translate">平移</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="rotate">旋转</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="close">关闭</a-radio>
+                                            </a-col>
+                                        </a-row>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageQualityRadio" label="图片质量（推荐标准）">
-                                    <a-radio-group v-model="formInitialValues.imageQualityRadio"
+                                <a-form-item field="imageQuality" label="图片质量">
+                                    <a-radio-group v-model="preferenceData.imageQuality"
                                                    @change="imageQualityRadioOnChange">
-                                        <a-radio value="full">高</a-radio>
-                                        <a-radio value="regular">标准</a-radio>
-                                        <a-radio value="small">低</a-radio>
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="full">最高</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="regular">标准</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="small">较低</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="small_s3">最低</a-radio>
+                                            </a-col>
+                                        </a-row>
                                     </a-radio-group>
                                 </a-form-item>
-                                <a-form-item field="imageTopicsCheckbox" label="图片主题（全不选与全选效果一致）">
-                                    <a-checkbox-group v-model="formInitialValues.imageTopicsCheckbox"
+                                <a-form-item field="imageTopics" label="图片主题">
+                                    <a-checkbox-group v-model="preferenceData.imageTopics" :disabled="disableImageTopic"
                                                       direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
                                             <a-col :span="12">
@@ -130,7 +144,75 @@
                                         </a-row>
                                     </a-checkbox-group>
                                 </a-form-item>
-                                <a-form-item field="clearStorageButton" label="其他设置">
+                                <a-form-item field="customTopic" label="其它主题">
+                                    <a-input v-model="preferenceData.customTopic"
+                                             :default-value="preferenceData.customTopic"
+                                             allow-clear
+                                             placeholder="输入后按下 Enter 键生效" @change="customTopicsInputOnChange"/>
+                                    <template #extra>
+                                        <a-space direction="vertical">
+                                            <a-typography-text :style="{color: fontColor}">按下回车生效，英文结果最准确
+                                            </a-typography-text>
+                                            <a-typography-text :style="{color: fontColor}">
+                                                其它主题不为空时将禁用图片主题
+                                            </a-typography-text>
+                                        </a-space>
+                                    </template>
+                                </a-form-item>
+                            </a-form>
+                        </a-card>
+                    </a-col>
+                    <a-col :span="24">
+                        <a-card :body-style="{backgroundColor: backgroundColor}"
+                                :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
+                                :style="{border: '1px solid' + fontColor}"
+                                size="small"
+                                title="功能设置"
+                        >
+                            <template #extra>
+                                <icon-settings/>
+                            </template>
+                            <a-form :model="preferenceData" auto-label-width>
+                                <a-form-item field="searchEngine" label="搜索引擎">
+                                    <a-radio-group v-model="preferenceData.searchEngine"
+                                                   @change="searchEngineRadioOnChange">
+                                        <a-row>
+                                            <a-col :span="12">
+                                                <a-radio value="baidu">Baidu</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="bing">Bing</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="google">Google</a-radio>
+                                            </a-col>
+                                            <a-col :span="12">
+                                                <a-radio value="yandex">Yandex</a-radio>
+                                            </a-col>
+                                        </a-row>
+                                    </a-radio-group>
+                                </a-form-item>
+                                <a-form-item field="simpleMode" label="简洁模式">
+                                    <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
+                                        <template #checked>
+                                            已开启
+                                        </template>
+                                        <template #unchecked>
+                                            已关闭
+                                        </template>
+                                    </a-switch>
+                                </a-form-item>
+                                <a-form-item field="noImageMode" label="无图模式">
+                                    <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
+                                        <template #checked>
+                                            已开启
+                                        </template>
+                                        <template #unchecked>
+                                            已关闭
+                                        </template>
+                                    </a-switch>
+                                </a-form-item>
+                                <a-form-item field="clearStorageButton" label="危险设置">
                                     <a-button id="clearStorageBtn" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}" shape="round"
                                               type="text" @click="clearStorageBtnOnClick"
@@ -138,71 +220,33 @@
                                         <template #icon>
                                             <icon-delete/>
                                         </template>
-                                        清空缓存
+                                        清空并重置所有内容
                                     </a-button>
                                 </a-form-item>
                             </a-form>
                         </a-card>
                     </a-col>
                     <a-col :span="24">
-                        <a-card :body-style="{backgroundColor: backgroundColor}" :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
-                                :style="{border: '1px solid' + fontColor}"
-                                size="small"
-                                title="网站链接"
-                        >
-                            <template #extra>
-                                <icon-link/>
-                            </template>
-                            <a-space direction="vertical">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://unsplash.com/"
-                                          shape="round"
-                                          target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://unsplash.com/favicon.ico"
-                                              shape="square"/>
-                                    &nbsp;&nbsp;Unsplash.com
-                                </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://www.pexels.com/"
-                                          shape="round"
-                                          target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://www.pexels.com/favicon.ico"
-                                              shape="square"/>
-                                    &nbsp;&nbsp;Pexels.com
-                                </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://pixabay.com/"
-                                          shape="round"
-                                          target="_blank" type="text">
-                                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}" image-url="https://pixabay.com/favicon.ico"
-                                              shape="square"/>
-                                    &nbsp;&nbsp;Pixabay.com
-                                </a-button>
-                            </a-space>
-                        </a-card>
+                        <preference-email-component
+                            :background-color="backgroundColor"
+                            :font-color="fontColor"
+                            :hover-color="hoverColor"
+                        />
+                    </a-col>
+                    <a-col :span="24">
+                        <preference-link-component
+                            :background-color="backgroundColor"
+                            :font-color="fontColor"
+                            :hover-color="hoverColor"
+                        />
                     </a-col>
                 </a-row>
                 <template #footer>
-                    <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://github.com/xyk953651094"
-                                  shape="round" target="_blank" type="text">
-                            <template #icon>
-                                <icon-github/>
-                            </template>
-                            主页
-                        </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://xyk953651094.blogspot.com"
-                                  shape="round" target="_blank" type="text">
-                            <template #icon>
-                                <icon-message/>
-                            </template>
-                            博客
-                        </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
-                                  shape="round" target="_blank" type="text">
-                            <template #icon>
-                                <icon-gift/>
-                            </template>
-                            捐赠
-                        </a-button>
-                    </a-space>
+                    <preference-footer-component
+                        :background-color="backgroundColor"
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                    />
                 </template>
             </a-drawer>
         </a-tooltip>
@@ -211,30 +255,21 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {
-    IconDelete,
-    IconGift,
-    IconGithub,
-    IconLink,
-    IconMessage,
-    IconMoreVertical,
-    IconSettings,
-} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
+import {IconDelete, IconMoreVertical, IconSettings} from "@arco-design/web-vue/es/icon";
+import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
-import {device} from "../javascripts/publicConstants";
+import {defaultPreferenceData, device} from "../javascripts/publicConstants";
+import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
+import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
+import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let formInitialValues = ref({
-    searchEngineRadio: "bing",
-    dynamicEffectRadio: "all",
-    imageQualityRadio: "regular",
-    imageTopicsCheckbox: ["Fzo3zuOHN6w"],
-})
+let preferenceData = ref(defaultPreferenceData);
+let disableImageTopic = ref(false);
 
 const props = defineProps({
     themeColor: {
@@ -250,6 +285,8 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(["preferenceData"]);
+
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         hoverColor.value = props.themeColor.themeColor;
@@ -261,20 +298,14 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 
 onMounted(() => {
     // 初始化偏好设置
-    let tempSearchEngineRadio = localStorage.getItem("searchEngine");
-    let tempDynamicEffectRadio = localStorage.getItem("dynamicEffect");
-    let tempImageQualityRadio = localStorage.getItem("imageQuality");
-    let tempImageTopicsCheckbox = localStorage.getItem("imageTopics");
-    if (tempImageTopicsCheckbox !== null) {
-        tempImageTopicsCheckbox = tempImageTopicsCheckbox.split(",");
+    let tempPreferenceData = localStorage.getItem("preferenceData");
+    if (tempPreferenceData === null) {
+        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+        preferenceData.value = defaultPreferenceData;
+    } else {
+        preferenceData.value = JSON.parse(tempPreferenceData);
     }
-
-    formInitialValues.value = {
-        searchEngineRadio: tempSearchEngineRadio === null ? "bing" : tempSearchEngineRadio,
-        dynamicEffectRadio: tempDynamicEffectRadio === null ? "all" : tempDynamicEffectRadio,
-        imageQualityRadio: tempImageQualityRadio === null ? "regular" : tempImageQualityRadio,
-        imageTopicsCheckbox: tempImageTopicsCheckbox === null ? ["Fzo3zuOHN6w"] : tempImageTopicsCheckbox,
-    }
+    disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 
     // 屏幕适配
     if (device === "iPhone" || device === "Android") {
@@ -294,8 +325,6 @@ function handleCancel() {
     visible.value = false;
 }
 
-const emit = defineEmits(["searchEngine", "dynamicEffect", "imageQuality", "imageTopics"]);
-
 function btnMouseOver() {
     this.style.backgroundColor = hoverColor.value;
     this.style.color = getFontColor(hoverColor.value);
@@ -308,48 +337,84 @@ function btnMouseOut() {
 
 // 搜索引擎
 function searchEngineRadioOnChange(value) {
-    emit("searchEngine", value);
-    localStorage.setItem("searchEngine", value);
+    preferenceData.value.searchEngine = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
 }
 
 // 动效样式
 function dynamicEffectRadioOnChange(value) {
-    emit("dynamicEffect", value);
-    localStorage.setItem("dynamicEffect", value);
-    Message.success("已更换显示效果");
+    preferenceData.value.dynamicEffect = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换显示效果，一秒后刷新页面");
+    refreshWindow();
 }
 
 // 图片质量
 function imageQualityRadioOnChange(value) {
-    emit("imageQuality", value);
-    localStorage.setItem("imageQuality", value);
-    Message.success("已更新图片质量");
-    window.location.reload();
+    preferenceData.value.imageQuality = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更新图片质量，一秒后刷新页面");
+    refreshWindow();
 }
 
 // 图片主题
 function imageTopicsCheckboxOnChange(values) {
-    let value = "";
-    for (let i = 0; i < values.length; i++) {
-        value += values[i];
-        if (i !== values.length - 1) {
-            value += ",";
-        }
-    }
-    emit("imageTopics", value);
-    localStorage.setItem("imageTopics", value);
-    Message.success("调整成功，新的主题将在下次加载时生效");
+    preferenceData.value.imageTopics = values;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换图片主题，下次加载时生效");
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
     }
 }
 
+// 自定义主题
+function customTopicsInputOnChange(value) {
+    preferenceData.value.customTopic = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换自定义主题，下次加载时生效");
+    disableImageTopic.value = !isEmptyString(value);
+}
+
+function simpleModeSwitchOnChange(checked) {
+    preferenceData.value.simpleMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已开启简洁模式");
+    } else {
+        Message.success("已关闭简洁模式");
+    }
+}
+
+function noImageModeSwitchOnChange(checked) {
+    preferenceData.value.noImageMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已开启无图模式，1秒后刷新页面");
+    } else {
+        Message.success("已关闭无图模式，1秒后刷新页面");
+    }
+    refreshWindow();
+}
+
 // 重置设置
 function clearStorageBtnOnClick() {
     localStorage.clear();
-    Message.success("已重置所有内容");
-    window.location.reload();
+    Message.success("已重置所有内容，1秒后刷新页面");
+    refreshWindow();
+}
+
+function refreshWindow() {
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
 }
 
 </script>

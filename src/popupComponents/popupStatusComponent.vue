@@ -1,27 +1,31 @@
 <template>
-    <a-space>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
-                  type="text">
+    <a-space :style="{display: simpleMode ? 'none' : 'inline-flex'}">
+        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                  shape="round"
+                  type="text" @click="greetBtnOnClick">
             <template #icon>
                 <i :class="greetIcon"></i>
             </template>
             {{ greetContent }}
         </a-button>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
-                  type="text">
+        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                  shape="round"
+                  type="text" @click="weatherBtnOnClick">
             <template #icon>
                 <i :class="weatherIcon"></i>
             </template>
             {{ weatherContent }}
         </a-button>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+                  shape="round"
                   type="text">
             <template #icon>
                 <icon-calendar-clock/>
             </template>
             {{ "倒数日：" + dailyAmount + " 个" }}
         </a-button>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}" shape="round"
+        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+                  shape="round"
                   type="text">
             <template #icon>
                 <icon-check-square/>
@@ -29,12 +33,26 @@
             {{ "待办事项：" + todoAmount + " 个" }}
         </a-button>
     </a-space>
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}" shape="round"
+              type="text">
+        <template #icon>
+            <icon-info-circle/>
+        </template>
+        已开启简洁模式
+    </a-button>
 </template>
 
 <script setup>
-import {defineProps, onMounted, ref} from "vue";
-import {IconCalendarClock, IconCheckSquare} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getGreetContent, getGreetIcon, getWeatherIcon} from "../javascripts/publicFunctions";
+import {defineProps, onMounted, ref, watch} from "vue";
+import {IconCalendarClock, IconCheckSquare, IconInfoCircle} from "@arco-design/web-vue/es/icon";
+import {
+    getFontColor,
+    getGreetContent,
+    getGreetIcon,
+    getSearchEngineDetail,
+    getWeatherIcon
+} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     imageData: {
@@ -48,6 +66,13 @@ const props = defineProps({
         },
         required: true
     },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
+        }
+    }
 });
 
 let greetIcon = ref(getGreetIcon());
@@ -56,6 +81,8 @@ let weatherIcon = ref("");
 let weatherContent = ref("");
 let dailyAmount = ref("");
 let todoAmount = ref("");
+let searchEngineUrl = ref("https://www.bing.com/search?q=");
+let simpleMode = ref(false);
 
 function setHoliday(data) {
     let holidayContent = data.solarTerms;
@@ -80,6 +107,13 @@ onMounted(() => {
     todoAmount.value = tempTodos ? JSON.parse(tempTodos).length : 0;
 })
 
+watch(() => props.preferenceData, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
+        simpleMode.value = newValue.simpleMode;
+    }
+});
+
 function btnMouseOver() {
     this.style.backgroundColor = props.imageData.color;
     this.style.color = getFontColor(props.imageData.color);
@@ -90,6 +124,13 @@ function btnMouseOut() {
     this.style.color = props.fontColor;
 }
 
+function greetBtnOnClick() {
+    window.open(searchEngineUrl.value + "万年历", "_blank",);
+}
+
+function weatherBtnOnClick() {
+    window.open(searchEngineUrl.value + "天气", "_blank",);
+}
 
 </script>
 

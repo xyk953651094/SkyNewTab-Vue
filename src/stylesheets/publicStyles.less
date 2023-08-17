@@ -1,3 +1,6 @@
+@heightRegular: 100px;
+@heightLarge: 300px;
+
 * {
     margin: 0;
     padding: 0;
@@ -19,11 +22,28 @@ html, body {
 }
 
 #header {
-    padding-top: 30px;
+    height: @heightRegular;
+    line-height: @heightRegular;
+    background-color: transparent;
+    padding: 0;
+}
+
+#content {
+    position: fixed;
+    top: @heightRegular;
+    bottom: @heightRegular;
+    left: 0;
+    right: 0;
 }
 
 #footer {
-    padding-bottom: 30px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: transparent;
+    height: @heightRegular;
+    line-height: @heightRegular;
+    padding: 0;
 }
 
 /* z轴显示层数 */
@@ -49,21 +69,13 @@ html, body {
 /*毛玻璃效果*/
 .componentTheme {
     border-width: 0;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px 1px rgba(0, 0, 0, 0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 2px 1px rgba(0, 0, 0, 0.1);
+    //backdrop-filter: blur(10px);
+    //-webkit-backdrop-filter: blur(10px);
     overflow: hidden;
 }
 
 /* 淡入效果 */
-.maskFadeIn {
-    animation-name: fadeIn; /* 动画名称 */
-    animation-duration: 0.5s; /* 动画持续时间 */
-    animation-iteration-count: 1; /* 动画次数 */
-    animation-delay: 0s; /* 延迟时间 */
-    animation-fill-mode: forwards;
-}
-
 .wallpaperFadeIn {
     animation-name: fadeIn; /* 动画名称 */
     animation-duration: 2s; /* 持续时间 */
@@ -103,14 +115,6 @@ html, body {
 }
 
 /* 淡出效果 */
-.maskFadeOut {
-    animation-name: fadeOut; /* 动画名称 */
-    animation-duration: 0.5s; /* 动画持续时间 */
-    animation-iteration-count: 1; /* 动画次数 */
-    animation-delay: 0s; /* 延迟时间 */
-    animation-fill-mode: forwards;
-}
-
 @keyframes fadeOut {
     0% {
         opacity: 1;
@@ -139,4 +143,31 @@ html, body {
         opacity: 0;
     }
     /* 结尾状态 */
+}
+
+/*桌面端大屏样式*/
+@media screen and (min-width: 2000px) and (orientation: landscape) {
+    #header {
+        height: @heightLarge;
+        line-height: @heightLarge;
+        background-color: transparent;
+        padding: 0;
+    }
+
+    #content {
+        position: fixed;
+        top: @heightLarge;
+        bottom: @heightLarge;
+        left: 0;
+        right: 0;
+    }
+
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: transparent;
+        height: @heightLarge;
+        line-height: @heightLarge;
+    }
 }

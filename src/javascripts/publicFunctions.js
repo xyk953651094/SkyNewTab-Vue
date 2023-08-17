@@ -1,4 +1,4 @@
-import {darkThemeArray, lightThemeArray} from "../javascripts/publicConstants";
+import {themeArray} from "../javascripts/publicConstants";
 import "jquery-color"
 
 const $ = require("jquery");
@@ -153,11 +153,7 @@ export function getWeatherIcon(weatherInfo) {
 
 // 请求unsplash图片前随机显示多彩颜色主题
 export function setColorTheme() {
-    let hour = new Date().getHours();
-    let theme = lightThemeArray;
-    if (18 < hour || hour < 6) {
-        theme = darkThemeArray;
-    }
+    let theme = themeArray;
     let randomNum = Math.floor(Math.random() * theme.length);
     let body = document.getElementsByTagName("body")[0];
     body.style.backgroundColor = theme[randomNum].bodyBackgroundColor;  // 设置body背景颜色
@@ -259,10 +255,50 @@ export function getDevice() {
     }
 }
 
+export function getSearchEngineDetail(searchEngine) {
+    let searchEngineUrl;
+    let searchEngineIconUrl;
+    switch (searchEngine) {
+        case "baidu":
+            searchEngineUrl = "https://www.baidu.com/s?wd=";
+            searchEngineIconUrl = "https://www.baidu.com/favicon.ico";
+            break;
+        case "bing":
+            searchEngineUrl = "https://www.bing.com/search?q=";
+            searchEngineIconUrl = "https://www.bing.com/favicon.ico";
+            break;
+        case "google":
+            searchEngineUrl = "https://www.google.com/search?q=";
+            searchEngineIconUrl = "https://www.google.com/favicon.ico";
+            break;
+        case "yandex":
+            searchEngineUrl = "https://yandex.com/search/?text=";
+            searchEngineIconUrl = "https://yastatic.net/s3/home-static/_/92/929b10d17990e806734f68758ec917ec.png";
+            break;
+        default:
+            searchEngineUrl = "https://www.bing.com/search?q=";
+            searchEngineIconUrl = "https://www.bing.com/favicon.ico";
+            break;
+    }
+    return {"searchEngineUrl": searchEngineUrl, "searchEngineIconUrl": searchEngineIconUrl};
+}
+
 // 过渡动画
-export function changeThemeColor(element, backgroundColor, fontColor, time = 500) {
+export function changeThemeColor(element, backgroundColor, fontColor, time = 300) {
     $(element).animate({
         backgroundColor: backgroundColor,
+        color: fontColor,
+    }, {queue: false, duration: time});
+}
+
+export function changeBackgroundColor(element, backgroundColor, time = 300) {
+    $(element).animate({
+        backgroundColor: backgroundColor,
+    }, {queue: false, duration: time});
+}
+
+export function changeFontColor(element, fontColor, time = 300) {
+    $(element).animate({
         color: fontColor,
     }, {queue: false, duration: time});
 }
