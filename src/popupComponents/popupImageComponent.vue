@@ -29,7 +29,8 @@
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
-                      type="text" @click="imageLinkBtnOnClick">
+                      type="text" @click="imageLinkBtnOnClick"
+            >
                 <template #icon>
                     <icon-info-circle/>
                 </template>

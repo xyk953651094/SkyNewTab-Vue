@@ -76,7 +76,7 @@
                                     </a-radio-group>
                                 </a-form-item>
                                 <a-form-item field="imageTopics" label="图片主题">
-                                    <a-checkbox-group v-model="preferenceData.imageTopics"
+                                    <a-checkbox-group v-model="preferenceData.imageTopics" :disabled="disableImageTopics"
                                                       direction="horizontal" @change="imageTopicsCheckboxOnChange">
                                         <a-row>
                                             <a-col :span="12">
@@ -143,6 +143,18 @@
                                             </a-col>
                                         </a-row>
                                     </a-checkbox-group>
+                                </a-form-item>
+                                <a-form-item field="customTopics" label="其它主题">
+                                    <a-input v-model="preferenceData.customTopics"
+                                             :default-value="preferenceData.customTopics"
+                                             @change="customTopicsInputOnChange"
+                                             placeholder="输入后按下 Enter 键生效" allow-clear />
+                                    <template #extra>
+                                        <a-space direction="vertical">
+                                            <a-typography-text :style="{color: fontColor}">按下回车生效，英文结果最准确</a-typography-text>
+                                            <a-typography-text :style="{color: fontColor}">其它主题不为空时将禁用图片主题</a-typography-text>
+                                        </a-space>
+                                    </template>
                                 </a-form-item>
                             </a-form>
                         </a-card>
@@ -297,7 +309,7 @@ import {
     IconMoreVertical,
     IconSettings,
 } from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData, device} from "../javascripts/publicConstants";
 
@@ -307,6 +319,7 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let preferenceData = ref(defaultPreferenceData);
+let disableImageTopics = ref(false);
 
 const props = defineProps({
     themeColor: {
@@ -343,6 +356,7 @@ onMounted(() => {
     else {
         preferenceData.value = JSON.parse(tempPreferenceData);
     }
+    disableImageTopics.value = !isEmptyString(preferenceData.value.customTopics);
 
     // 屏幕适配
     if (device === "iPhone" || device === "Android") {
@@ -407,6 +421,15 @@ function imageTopicsCheckboxOnChange(values) {
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
     }
+}
+
+// 自定义主题
+function customTopicsInputOnChange(value) {
+    preferenceData.value.customTopics = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换自定义主题，下次加载时生效");
+    disableImageTopics.value = !isEmptyString(value);
 }
 
 function simpleModeSwitchOnChange(checked) {

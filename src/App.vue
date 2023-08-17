@@ -31,7 +31,7 @@
             <a-row justify="center">
                 <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
-                        <author-component :image-data="imageData" :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <author-component :image-data="imageData" :preference-data="preferenceData" :theme-color="themeColor" :display="componentDisplay"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -71,9 +71,11 @@ let themeColor = ref({
 
 let imageData = ref(null);
 let preferenceData = ref(defaultPreferenceData);
+let componentDisplay = ref("none");  // 图片接口请求成功后再显示相关组件
 
 const getImageData = (value) => {
     imageData.value = value;
+    componentDisplay.value = "block";
 
     // 修改主题颜色
     if (value.color !== null) {

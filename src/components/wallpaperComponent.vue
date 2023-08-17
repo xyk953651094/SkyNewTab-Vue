@@ -13,7 +13,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {httpRequest, imageDynamicEffect} from "../javascripts/publicFunctions";
+import {httpRequest, imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
@@ -51,22 +51,28 @@ function setWallpaper(data) {
 }
 
 function getWallpaper() {
-    let tempImageTopics = "";
+    let imageTopics = "";
     for (let i = 0; i < preferenceData.value.imageTopics.length; i++) {
-        tempImageTopics += preferenceData.value.imageTopics[i];
+        imageTopics += preferenceData.value.imageTopics[i];
         if (i !== preferenceData.value.imageTopics.length - 1) {
-            tempImageTopics += ",";
+            imageTopics += ",";
         }
     }
+    let imageQuery = preferenceData.value.customTopics;
 
     let headers = {};
     let url = "https://api.unsplash.com/photos/random?";
     let data = {
         "client_id": clientId,
         "orientation": (device === "iPhone" || device === "Android") ? "portrait" : "landscape",
-        "topics": tempImageTopics,
+        "topics": imageTopics,
         "content_filter": "high",
     };
+    if(!isEmptyString(imageQuery)) {
+        delete data.topics;
+        data.query = imageQuery;
+        console.log(data);
+    }
 
     Message.info("正在获取图片");
     httpRequest(headers, url, data, "GET")
@@ -107,7 +113,7 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
-        } else if (nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一分钟才能进行新的请求
             getWallpaper();
         } else {  // 一分钟之内使用上一次请求结果
             let lastImage = localStorage.getItem("lastImage");

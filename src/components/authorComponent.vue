@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{ "by " + authorName + " on Unsplash" }}
+                {{ "由 Unsplash 的 " + authorName + " 拍摄" }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -159,6 +159,13 @@ import {Message} from "@arco-design/web-vue";
 const btnMaxSize = 50;
 
 const props = defineProps({
+    display: {
+        type: String,
+        default: () => {
+            return "none"
+        },
+        required: true
+    },
     themeColor: {
         type: Object,
         default: () => {
@@ -183,7 +190,6 @@ const props = defineProps({
     }
 });
 
-let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
@@ -229,7 +235,6 @@ watch(() => props.imageData, (newValue, oldValue) => {
 
 watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        display.value = newValue.noImageMode ? "none" : "block";
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
     }
 });

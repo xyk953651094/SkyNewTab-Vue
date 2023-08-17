@@ -176,7 +176,6 @@ function infoBtnOnClick() {
 }
 
 function setWeather(data) {
-    console.log(data)
     weatherIcon.value = getWeatherIcon(data.weatherData.weather);
     weatherInfo.value = data.weatherData.weather + "｜"
         + data.weatherData.temperature + "°C";
