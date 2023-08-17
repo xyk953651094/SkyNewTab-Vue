@@ -6,7 +6,8 @@
             :style="{width: '250px'}"
             :title="address"
         >
-            <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
+            <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                      shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="weatherIcon"></i>
                 </template>
@@ -231,7 +232,7 @@ function getWeather() {
 }
 
 onMounted(() => {
-    if(!props.preferenceData.simpleMode) {
+    if (!props.preferenceData.simpleMode) {
         // 防抖节流
         let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
         let nowTimeStamp = new Date().getTime();

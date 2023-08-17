@@ -22,11 +22,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {
-    changeBackgroundColor,
-    changeFontColor,
-    getTimeDetails
-} from "../javascripts/publicFunctions";
+import {changeBackgroundColor, changeFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import "../stylesheets/clockComponent.less";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
@@ -81,7 +77,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
 });
 
 function btnMouseOver() {
-    if(!noImageMode.value) {
+    if (!noImageMode.value) {
         new Promise((resolve) => {
             changeBackgroundColor(this, backgroundColor.value, 150);
             changeFontColor(".clockText, .dateText", fontColor.value, 150);
@@ -93,7 +89,7 @@ function btnMouseOver() {
 }
 
 function btnMouseOut() {
-    if(!noImageMode.value) {
+    if (!noImageMode.value) {
         this.classList.remove("componentTheme");
         changeBackgroundColor(this, "transparent", 150);
         changeFontColor(".clockText, .dateText", backgroundColor.value, 150);

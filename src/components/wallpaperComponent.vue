@@ -68,7 +68,7 @@ function getWallpaper() {
         "topics": imageTopics,
         "content_filter": "high",
     };
-    if(!isEmptyString(imageQuery)) {
+    if (!isEmptyString(imageQuery)) {
         delete data.topics;
         data.query = imageQuery;
     }
@@ -100,16 +100,15 @@ function getWallpaper() {
 
 onMounted(() => {
     let tempPreferenceData = localStorage.getItem("preferenceData");
-    if(tempPreferenceData === null) {
+    if (tempPreferenceData === null) {
         localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
         preferenceData.value = defaultPreferenceData;
-    }
-    else {
+    } else {
         preferenceData.value = JSON.parse(tempPreferenceData);
     }
     let noImageMode = preferenceData.value.noImageMode;
 
-    if(!noImageMode) {
+    if (!noImageMode) {
         // 防抖节流
         let lastRequestTime = localStorage.getItem("lastImageRequestTime");
         let nowTimeStamp = new Date().getTime();

@@ -5,7 +5,8 @@
                    :style="{minWidth: '500px'}"
                    position="bl"
         >
-            <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round" size="large" type="primary">
+            <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                      shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -22,7 +23,7 @@
                                       shape="round"
                                       type="text" @click="historyBtnOnClick">
                                 <template #icon>
-                                    <icon-history />
+                                    <icon-history/>
                                 </template>
                                 {{ "历史上的今天" }}
                             </a-button>
@@ -46,7 +47,7 @@
                                       :style="{color: fontColor, cursor: 'default'}"
                                       shape="round" type="text">
                                 <template #icon>
-                                    <icon-calendar />
+                                    <icon-calendar/>
                                 </template>
                                 {{ calendar }}
                             </a-button>
@@ -66,29 +67,29 @@
                                 </template>
                                 {{ "忌：" + avoid }}
                             </a-button>
-<!--                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
-<!--                                      :style="{color: fontColor, cursor: 'default'}"-->
-<!--                                      shape="round" type="text">-->
-<!--                                <template #icon>-->
-<!--                                    <icon-book />-->
-<!--                                </template>-->
-<!--                                {{ toast }}-->
-<!--                            </a-button>-->
+                            <!--                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
+                            <!--                                      :style="{color: fontColor, cursor: 'default'}"-->
+                            <!--                                      shape="round" type="text">-->
+                            <!--                                <template #icon>-->
+                            <!--                                    <icon-book />-->
+                            <!--                                </template>-->
+                            <!--                                {{ toast }}-->
+                            <!--                            </a-button>-->
                         </a-space>
                     </a-list-item>
-<!--                    <a-list-item>-->
-<!--                        <a-space direction="vertical">-->
-<!--                            <a-button v-for="item in history" :key="item.title"-->
-<!--                                      :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
-<!--                                      :style="{color: fontColor, cursor: 'default'}"-->
-<!--                                      shape="round" type="text">-->
-<!--                                <template #icon>-->
-<!--                                    <icon-history />-->
-<!--                                </template>-->
-<!--                                {{ item.year + "-" + item.month + "-" + item.day + "：" + item.title }}-->
-<!--                            </a-button>-->
-<!--                        </a-space>-->
-<!--                    </a-list-item>-->
+                    <!--                    <a-list-item>-->
+                    <!--                        <a-space direction="vertical">-->
+                    <!--                            <a-button v-for="item in history" :key="item.title"-->
+                    <!--                                      :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
+                    <!--                                      :style="{color: fontColor, cursor: 'default'}"-->
+                    <!--                                      shape="round" type="text">-->
+                    <!--                                <template #icon>-->
+                    <!--                                    <icon-history />-->
+                    <!--                                </template>-->
+                    <!--                                {{ item.year + "-" + item.month + "-" + item.day + "：" + item.title }}-->
+                    <!--                            </a-button>-->
+                    <!--                        </a-space>-->
+                    <!--                    </a-list-item>-->
                 </a-list>
             </template>
         </a-popover>
@@ -98,7 +99,13 @@
 <script setup>
 import "../stylesheets/publicStyles.less"
 import {defineProps, onMounted, ref, watch} from "vue"
-import {IconInfoCircle, IconHistory, IconCalendar, IconCheckCircle, IconCloseCircle} from "@arco-design/web-vue/es/icon";
+import {
+    IconCalendar,
+    IconCheckCircle,
+    IconCloseCircle,
+    IconHistory,
+    IconInfoCircle
+} from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,
     getFontColor,
@@ -108,7 +115,7 @@ import {
     getTimeDetails,
     httpRequest,
 } from "../javascripts//publicFunctions";
-import {defaultPreferenceData, appId, appSecret} from "../javascripts/publicConstants";
+import {appId, appSecret, defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     themeColor: {
@@ -277,7 +284,7 @@ function getHoliday() {
 // }
 
 onMounted(() => {
-    if(!props.preferenceData.simpleMode) {
+    if (!props.preferenceData.simpleMode) {
         // 防抖节流
         let lastRequestTime = localStorage.getItem("lastGreetRequestTime");
         let nowTimeStamp = new Date().getTime();

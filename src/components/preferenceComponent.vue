@@ -147,12 +147,15 @@
                                 <a-form-item field="customTopic" label="其它主题">
                                     <a-input v-model="preferenceData.customTopic"
                                              :default-value="preferenceData.customTopic"
-                                             @change="customTopicsInputOnChange"
-                                             placeholder="输入后按下 Enter 键生效" allow-clear />
+                                             allow-clear
+                                             placeholder="输入后按下 Enter 键生效" @change="customTopicsInputOnChange"/>
                                     <template #extra>
                                         <a-space direction="vertical">
-                                            <a-typography-text :style="{color: fontColor}">按下回车生效，英文结果最准确</a-typography-text>
-                                            <a-typography-text :style="{color: fontColor}">其它主题不为空时将禁用图片主题</a-typography-text>
+                                            <a-typography-text :style="{color: fontColor}">按下回车生效，英文结果最准确
+                                            </a-typography-text>
+                                            <a-typography-text :style="{color: fontColor}">
+                                                其它主题不为空时将禁用图片主题
+                                            </a-typography-text>
                                         </a-space>
                                     </template>
                                 </a-form-item>
@@ -225,24 +228,24 @@
                     </a-col>
                     <a-col :span="24">
                         <preference-email-component
-                            :hover-color="hoverColor"
                             :background-color="backgroundColor"
                             :font-color="fontColor"
+                            :hover-color="hoverColor"
                         />
                     </a-col>
                     <a-col :span="24">
                         <preference-link-component
-                            :hover-color="hoverColor"
                             :background-color="backgroundColor"
                             :font-color="fontColor"
+                            :hover-color="hoverColor"
                         />
                     </a-col>
                 </a-row>
                 <template #footer>
                     <preference-footer-component
-                        :hover-color="hoverColor"
                         :background-color="backgroundColor"
                         :font-color="fontColor"
+                        :hover-color="hoverColor"
                     />
                 </template>
             </a-drawer>
@@ -296,11 +299,10 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 onMounted(() => {
     // 初始化偏好设置
     let tempPreferenceData = localStorage.getItem("preferenceData");
-    if(tempPreferenceData === null) {
+    if (tempPreferenceData === null) {
         localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
         preferenceData.value = defaultPreferenceData;
-    }
-    else {
+    } else {
         preferenceData.value = JSON.parse(tempPreferenceData);
     }
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
@@ -383,10 +385,9 @@ function simpleModeSwitchOnChange(checked) {
     preferenceData.value.simpleMode = checked;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    if(checked) {
+    if (checked) {
         Message.success("已开启简洁模式");
-    }
-    else {
+    } else {
         Message.success("已关闭简洁模式");
     }
 }
@@ -395,10 +396,9 @@ function noImageModeSwitchOnChange(checked) {
     preferenceData.value.noImageMode = checked;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    if(checked) {
+    if (checked) {
         Message.success("已开启无图模式，1秒后刷新页面");
-    }
-    else {
+    } else {
         Message.success("已关闭无图模式，1秒后刷新页面");
     }
     refreshWindow();

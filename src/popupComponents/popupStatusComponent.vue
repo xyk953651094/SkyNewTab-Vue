@@ -33,10 +33,10 @@
             {{ "待办事项：" + todoAmount + " 个" }}
         </a-button>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" shape="round" type="text"
-              :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}">
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}" shape="round"
+              type="text">
         <template #icon>
-            <icon-info-circle />
+            <icon-info-circle/>
         </template>
         已开启简洁模式
     </a-button>
@@ -48,7 +48,8 @@ import {IconCalendarClock, IconCheckSquare, IconInfoCircle} from "@arco-design/w
 import {
     getFontColor,
     getGreetContent,
-    getGreetIcon, getSearchEngineDetail,
+    getGreetIcon,
+    getSearchEngineDetail,
     getWeatherIcon
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";

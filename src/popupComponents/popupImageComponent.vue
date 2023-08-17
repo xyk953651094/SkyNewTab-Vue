@@ -59,10 +59,10 @@
             </a-space>
         </a-space>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" shape="round" type="text"
-              :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}">
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}" shape="round"
+              type="text">
         <template #icon>
-            <icon-info-circle />
+            <icon-info-circle/>
         </template>
         已开启无图模式
     </a-button>

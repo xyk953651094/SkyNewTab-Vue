@@ -6,7 +6,7 @@
             title="联系作者"
     >
         <template #extra>
-            <icon-send />
+            <icon-send/>
         </template>
         <a-row :gutter="[0, 8]">
             <a-col :span="12">
@@ -15,7 +15,7 @@
                           shape="round"
                           target="_blank" type="text">
                     <template #icon>
-                        <icon-info-circle />
+                        <icon-info-circle/>
                     </template>
                     功能建议
                 </a-button>
@@ -26,17 +26,17 @@
                           shape="round"
                           target="_blank" type="text">
                     <template #icon>
-                        <icon-exclamation-circle />
+                        <icon-exclamation-circle/>
                     </template>
                     问题反馈
-            </a-button>
+                </a-button>
             </a-col>
         </a-row>
     </a-card>
 </template>
 
 <script setup>
-import {IconSend, IconInfoCircle, IconExclamationCircle} from "@arco-design/web-vue/es/icon";
+import {IconExclamationCircle, IconInfoCircle, IconSend} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 

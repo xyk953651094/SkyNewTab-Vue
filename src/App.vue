@@ -10,8 +10,8 @@
                 </a-col>
                 <a-col :lg="10" :md="10" :sm="22" :xl="10" :xs="22" :xxl="10" style="text-align: right">
                     <a-space>
-                        <daily-component :theme-color="themeColor" :preference-data="preferenceData"/>
-                        <todo-component :theme-color="themeColor" :preference-data="preferenceData"/>
+                        <daily-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <todo-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
                     </a-space>
                 </a-col>
@@ -20,10 +20,10 @@
         <a-layout-content id="content" class="center">
             <wallpaper-component @imageData="getImageData"/>
             <a-space align="center" direction="vertical">
-                <clock-component :theme-color="themeColor" :preference-data="preferenceData"/>
+                <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData"/>
                 <a-col :lg="24" :md="24" :sm="0" :xl="24" :xs="0" :xxl="24">
-                    <collection-component :theme-color="themeColor" :preference-data="preferenceData"/>
+                    <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 </a-col>
             </a-space>
         </a-layout-content>
@@ -31,7 +31,8 @@
             <a-row justify="center">
                 <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
-                        <author-component :image-data="imageData" :preference-data="preferenceData" :theme-color="themeColor" :display="componentDisplay"/>
+                        <author-component :display="componentDisplay" :image-data="imageData"
+                                          :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -41,12 +42,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {
-    changeThemeColor,
-    getFontColor,
-    getReverseColor,
-    setColorTheme,
-} from "./javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, getReverseColor, setColorTheme,} from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
 
 import GreetComponent from "./components/greetComponent.vue";
@@ -100,11 +96,10 @@ const getPreferenceData = (value) => {
 onMounted(() => {
     // 加载偏好设置
     let tempPreferenceData = localStorage.getItem("preferenceData");
-    if(tempPreferenceData === null) {
+    if (tempPreferenceData === null) {
         localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
         preferenceData.value = defaultPreferenceData;
-    }
-    else {
+    } else {
         preferenceData.value = JSON.parse(tempPreferenceData);
     }
 

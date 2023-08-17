@@ -7,7 +7,8 @@
             position="br"
         >
             <a-badge :count="listItems.length" :style="{display: display}">
-                <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round"
+                <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                          shape="round"
                           size="large"
                           type="primary">
                     <template #icon>
@@ -104,7 +105,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCalendarClock, IconDelete, IconPlus, IconClockCircle} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor, getFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
@@ -284,10 +285,9 @@ function getDailyDescription(selectedTimeStamp) {
 }
 
 function datePickerOnChange(value, date, dateString) {
-    if(value) {
+    if (value) {
         selectedTimeStamp.value = new Date(value).getTime();
-    }
-    else {
+    } else {
         selectedTimeStamp.value = 0;
     }
     console.log(date, dateString);

@@ -1,5 +1,5 @@
 <template>
-    <a-col :span="24" class="center" :style="{display: display}">
+    <a-col :span="24" :style="{display: display}" class="center">
         <a-space class="zIndexHigh">
             <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
                        :content="item.webUrl"
@@ -12,8 +12,10 @@
                 </a-button>
             </a-tooltip>
 
-            <a-tooltip :background-color="backgroundColor" content="添加链接" :content-style="{color: fontColor}" position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
+            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
+                       position="bottom">
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
                           type="primary"
                           @click="showAddModalBtnOnClick">
                     <template #icon>
@@ -21,8 +23,10 @@
                     </template>
                 </a-button>
             </a-tooltip>
-            <a-tooltip :background-color="backgroundColor" content="编辑链接" :content-style="{color: fontColor}" position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
+            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
+                       position="bottom">
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
                           type="primary"
                           @click="showEditModalBtnOnClick">
                     <template #icon>
@@ -30,8 +34,10 @@
                     </template>
                 </a-button>
             </a-tooltip>
-            <a-tooltip :background-color="backgroundColor" content="全部删除" :content-style="{color: fontColor}" position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme" shape="round"
+            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
+                       position="bottom">
+                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                          shape="round"
                           type="primary"
                           @click="removeAllBtnOnClick">
                     <template #icon>
@@ -86,7 +92,7 @@
                                   :style="{color: fontColor, cursor: 'default'}" shape="round"
                                   type="text">
                             <template #icon>
-                                <icon-pushpin />
+                                <icon-pushpin/>
                             </template>
                             {{ item.webName }}
                         </a-button>
@@ -96,7 +102,7 @@
                                   :style="{color: fontColor, cursor: 'default'}" shape="round"
                                   type="text">
                             <template #icon>
-                                <icon-link />
+                                <icon-link/>
                             </template>
                             {{ item.webUrl.length < 30 ? item.webUrl : item.webUrl.substring(0, 30) + "..." }}
                         </a-button>
@@ -118,7 +124,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconEdit, IconPlus, IconPushpin, IconLink} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconEdit, IconLink, IconPlus, IconPushpin} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";

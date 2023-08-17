@@ -7,7 +7,8 @@
             position="br"
         >
             <a-badge :count="checkboxOptions.length" :style="{display: display}">
-                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh" shape="round"
+                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                          shape="round"
                           size="large"
                           type="primary">
                     <template #icon>
@@ -63,9 +64,9 @@
                                           :style="{color: fontColor, cursor: 'default'}" shape="round"
                                           type="text">
                                     <template #icon>
-                                        <icon-tag />
+                                        <icon-tag/>
                                     </template>
-                                    {{item.tag + "｜" + item.priority }}
+                                    {{ item.tag + "｜" + item.priority }}
                                 </a-button>
                             </a-col>
                         </a-row>
