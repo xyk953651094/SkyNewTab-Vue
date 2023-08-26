@@ -24,32 +24,11 @@
             </a-list>
         </a-layout-content>
         <a-layout-footer class="popupFooter">
-            <a-space>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                          href="https://github.com/xyk953651094"
-                          shape="round" target="_blank" type="text">
-                    <template #icon>
-                        <icon-github/>
-                    </template>
-                    主页
-                </a-button>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                          href="https://xyk953651094.blogspot.com"
-                          shape="round" target="_blank" type="text">
-                    <template #icon>
-                        <icon-message/>
-                    </template>
-                    博客
-                </a-button>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                          href="https://afdian.net/a/xyk953651094"
-                          shape="round" target="_blank" type="text">
-                    <template #icon>
-                        <icon-gift/>
-                    </template>
-                    支持
-                </a-button>
-            </a-space>
+            <popup-footer-component
+                :background-color="backgroundColor"
+                :font-color="fontColor"
+                :hover-color="hoverColor"
+            />
         </a-layout-footer>
     </a-layout>
 </template>
@@ -62,6 +41,7 @@ import {getFontColor, getReverseColor} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
+import PopupFooterComponent from "../popupComponents/popupFooterComponent.vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
@@ -92,6 +72,8 @@ onMounted(() => {
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
+        $(".arco-list-item").css("padding", "10px 0");
+
         // message
         let messageEle = $(".arco-message");
         if (messageEle.length && messageEle.length > 0) {
