@@ -17,7 +17,7 @@
                 </a-col>
             </a-row>
         </a-layout-header>
-        <a-layout-content id="content" class="center">
+        <a-layout-content id="content" class="alignCenter">
             <wallpaper-component @imageData="getImageData"/>
             <a-space align="center" direction="vertical">
                 <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>

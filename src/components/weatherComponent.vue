@@ -4,7 +4,7 @@
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '250px'}"
-            :title="address"
+            position="bl"
         >
             <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
                       shape="round" size="large" type="primary">
@@ -42,7 +42,7 @@
                                 <template #icon>
                                     <i class="bi bi-geo-alt"></i>
                                 </template>
-                                {{ " 地理位置：" + address }}
+                                {{ " 地理位置：" + location }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
@@ -132,7 +132,7 @@ let fontColor = ref("");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无信息");
 let searchEngineUrl = ref("https://www.bing.com/search?q=")
-let address = ref("暂无信息");
+let location = ref("暂无信息");
 let humidity = ref("暂无信息");
 let pm25 = ref("暂无信息");
 let rainfall = ref("暂无信息");
@@ -180,7 +180,7 @@ function setWeather(data) {
     weatherIcon.value = getWeatherIcon(data.weatherData.weather);
     weatherInfo.value = data.weatherData.weather + "｜"
         + data.weatherData.temperature + "°C";
-    address.value = data.region.replace("|", " · ");
+    location.value = data.region.replace("|", " · ");
     humidity.value = data.weatherData.humidity;
     pm25.value = data.weatherData.pm25;
     rainfall.value = data.weatherData.rainfall + "%";
@@ -189,7 +189,7 @@ function setWeather(data) {
 
     // weatherIcon.value = getWeatherIcon(data.weather);
     // weatherInfo.value = data.weather + "｜" + data.temp;
-    // address.value = data.address.replace(" ", " · ");
+    // location.value = data.location.replace(" ", " · ");
     // windInfo.value = data.windDirection + "风 " + data.windPower;
     // humidity.value = data.humidity;
 }

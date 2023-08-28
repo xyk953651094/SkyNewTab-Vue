@@ -1,5 +1,5 @@
 <template>
-    <a-col :span="24" class="center">
+    <a-col :span="24" class="alignCenter">
         <div id="mask" :style="{display: showMask}" class="mask zIndexMiddle"/>
         <a-input-search
             id="searchInput"

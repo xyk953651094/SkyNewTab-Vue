@@ -1,5 +1,5 @@
 <template>
-    <a-col :span="24" :style="{display: display}" class="center">
+    <a-col :span="24" :style="{display: display}" class="alignCenter">
         <a-space class="zIndexHigh">
             <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
                        :content="item.webUrl"

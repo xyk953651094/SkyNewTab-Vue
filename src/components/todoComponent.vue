@@ -6,16 +6,15 @@
             :style="{width: '550px'}"
             position="br"
         >
-            <a-badge :count="checkboxOptions.length" :style="{display: display}">
-                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                          shape="round"
-                          size="large"
-                          type="primary">
-                    <template #icon>
-                        <icon-check-square/>
-                    </template>
-                </a-button>
-            </a-badge>
+            <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                      shape="round"
+                      size="large"
+                      type="primary">
+                <template #icon>
+                    <icon-check-square/>
+                </template>
+                {{"待办事项（" + listItems.length + "）"}}
+            </a-button>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
@@ -47,7 +46,7 @@
             </template>
             <template #content>
                 <a-list :bordered=false>
-                    <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">
+                    <a-list-item v-for="item in listItems" :key="item.timestamp">
                         <a-row>
                             <a-col :span="12">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
@@ -141,7 +140,7 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
-let checkboxOptions = ref([]);
+let listItems = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
 let tag = ref("工作");
@@ -154,7 +153,7 @@ onMounted(() => {
         todos = JSON.parse(tempTodos);
     }
 
-    checkboxOptions.value = todos;
+    listItems.value = todos;
     todoSize.value = todos.length;
 })
 
@@ -188,7 +187,7 @@ function finishAllBtnOnClick() {
     if (tempTodos) {
         localStorage.removeItem("todos");
 
-        checkboxOptions.value = [];
+        listItems.value = [];
         todoSize.value = 0;
     }
 }
@@ -210,7 +209,7 @@ function finishBtnOnClick(item) {
         }
         localStorage.setItem("todos", JSON.stringify(todos));
 
-        checkboxOptions.value = todos;
+        listItems.value = todos;
         todoSize.value = todos.length;
     }
 }
@@ -267,7 +266,7 @@ function modalOkBtnOnClick() {
     localStorage.setItem("todos", JSON.stringify(todos));
 
     displayModal.value = false;
-    checkboxOptions.value = todos;
+    listItems.value = todos;
     todoSize.value = todos.length;
     Message.success("添加成功");
 }
