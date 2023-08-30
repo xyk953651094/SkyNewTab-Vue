@@ -386,10 +386,11 @@ function simpleModeSwitchOnChange(checked) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     if (checked) {
-        Message.success("已开启简洁模式");
+        Message.success("已开启简洁模式，一秒后刷新页面");
     } else {
-        Message.success("已关闭简洁模式");
+        Message.success("已关闭简洁模式，一秒后刷新页面");
     }
+    refreshWindow();
 }
 
 function noImageModeSwitchOnChange(checked) {
@@ -397,9 +398,9 @@ function noImageModeSwitchOnChange(checked) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     if (checked) {
-        Message.success("已开启无图模式，1秒后刷新页面");
+        Message.success("已开启无图模式，一秒后刷新页面");
     } else {
-        Message.success("已关闭无图模式，1秒后刷新页面");
+        Message.success("已关闭无图模式，一秒后刷新页面");
     }
     refreshWindow();
 }
@@ -407,7 +408,7 @@ function noImageModeSwitchOnChange(checked) {
 // 重置设置
 function clearStorageBtnOnClick() {
     localStorage.clear();
-    Message.success("已重置所有内容，1秒后刷新页面");
+    Message.success("已重置所有内容，一秒后刷新页面");
     refreshWindow();
 }
 

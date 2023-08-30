@@ -9,8 +9,8 @@
             width="250px"
         >
         </a-image>
-        <canvas id="popupCanvas" :style="{display: displayCanvas, borderRadius: '10px'}" class="popupCanvas"></canvas>
-        <a-space direction="vertical">
+        <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
+        <a-space direction="vertical" align="start">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
                       type="text" @click="authorLinkBtnOnClick">
