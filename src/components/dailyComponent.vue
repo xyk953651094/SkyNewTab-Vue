@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-calendar-clock/>
                 </template>
-                {{"倒数日（" + listItems.length + "）"}}
+                {{dailySize + " 个倒数日"}}
             </a-button>
             <template #title>
                 <a-row align="center">

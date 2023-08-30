@@ -22,7 +22,7 @@
             <template #icon>
                 <icon-calendar-clock/>
             </template>
-            {{ "倒数日：" + dailyAmount + " 个" }}
+            {{ dailySize + " 个倒数日" }}
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
                   shape="round"
@@ -30,7 +30,7 @@
             <template #icon>
                 <icon-check-square/>
             </template>
-            {{ "待办事项：" + todoAmount + " 个" }}
+            {{ todoSize + " 个待办事项" }}
         </a-button>
     </a-space>
     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}" shape="round"
@@ -79,8 +79,8 @@ let greetIcon = ref(getGreetIcon());
 let greetContent = ref(getGreetContent());
 let weatherIcon = ref("");
 let weatherContent = ref("");
-let dailyAmount = ref("");
-let todoAmount = ref("");
+let dailySize = ref("");
+let todoSize = ref("");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let simpleMode = ref(false);
 
@@ -103,8 +103,8 @@ onMounted(() => {
     greetContent.value = tempGreet ? getGreetContent() + "｜" + setHoliday(JSON.parse(tempGreet)) : "暂无信息";
     weatherIcon.value = tempWeather ? getWeatherIcon(JSON.parse(tempWeather).weatherData.weather) : "";
     weatherContent.value = tempWeather ? JSON.parse(tempWeather).weatherData.weather + "｜" + JSON.parse(tempWeather).weatherData.temperature + "°C" : "暂无信息";
-    dailyAmount.value = tempDaily ? JSON.parse(tempDaily).length : 0;
-    todoAmount.value = tempTodos ? JSON.parse(tempTodos).length : 0;
+    dailySize.value = tempDaily ? JSON.parse(tempDaily).length : 0;
+    todoSize.value = tempTodos ? JSON.parse(tempTodos).length : 0;
 })
 
 watch(() => props.preferenceData, (newValue, oldValue) => {
