@@ -40,13 +40,6 @@ const props = defineProps({
             return ""
         }
     },
-    backgroundColor: {
-        type: String,
-        required: true,
-        default: () => {
-            return ""
-        }
-    },
     fontColor: {
         type: String,
         required: true,

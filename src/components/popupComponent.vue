@@ -1,31 +1,31 @@
 <template>
     <a-layout class="popupLayout">
         <a-layout-header class="popupHeader">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                      :style="{color: fontColor, cursor: 'default'}" href="https://github.com/xyk953651094"
-                      shape="round" target="_blank"
-                      type="text">
-                <template #icon>
-                    <icon-dashboard/>
-                </template>
-                云开新标签页的仪表盘
-            </a-button>
+            <popup-header-component
+                :font-color="fontColor"
+                :hover-color="hoverColor"
+            />
         </a-layout-header>
         <a-layout-content class="popupContent">
             <a-list :bordered=false>
                 <a-list-item class="alignCenter" :style="{borderBottomColor: fontColor}">
-                    <popup-status-component :font-color="fontColor" :image-data="imageData"
-                                            :preference-data="preferenceData"/>
+                    <popup-status-component
+                        :font-color="fontColor"
+                        :image-data="imageData"
+                        :preference-data="preferenceData"
+                    />
                 </a-list-item>
                 <a-list-item class="alignCenter">
-                    <popup-image-component :font-color="fontColor" :image-data="imageData"
-                                           :preference-data="preferenceData"/>
+                    <popup-image-component
+                        :font-color="fontColor"
+                        :image-data="imageData"
+                        :preference-data="preferenceData"
+                    />
                 </a-list-item>
             </a-list>
         </a-layout-content>
         <a-layout-footer class="popupFooter">
             <popup-footer-component
-                :background-color="backgroundColor"
                 :font-color="fontColor"
                 :hover-color="hoverColor"
             />
@@ -35,7 +35,6 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {IconDashboard, IconGift, IconMessage} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {getFontColor, getReverseColor} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
@@ -43,6 +42,7 @@ import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
 import PopupFooterComponent from "../popupComponents/popupFooterComponent.vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
+import PopupHeaderComponent from "../popupComponents/popupHeaderComponent.vue";
 
 const $ = require("jquery");
 
