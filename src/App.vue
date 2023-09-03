@@ -8,12 +8,15 @@
                         <weather-component :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
-                <a-col :lg="10" :md="10" :sm="22" :xl="10" :xs="22" :xxl="10" style="text-align: right">
+                <a-col :lg="10" :md="10" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: right">
                     <a-space>
                         <daily-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <todo-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
                     </a-space>
+                </a-col>
+                <a-col :lg="0" :md="0" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
+                    <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
                 </a-col>
             </a-row>
         </a-layout-header>

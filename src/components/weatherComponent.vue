@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '250px'}"
+            :style="{minWidth: '250px'}"
             position="bl"
         >
             <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
@@ -15,11 +15,19 @@
             </a-button>
             <template #title>
                 <a-row align="center">
-                    <a-col :span="10">
+                    <a-col :span="6">
                         <a-typography-text :style="{color: fontColor}">{{ "天气信息" }}</a-typography-text>
                     </a-col>
-                    <a-col :span="14" :style="{textAlign: 'right'}">
+                    <a-col :span="18" :style="{textAlign: 'right'}">
                         <a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      shape="round"
+                                      type="text" @click="locationBtnOnClick">
+                                <template #icon>
+                                    <icon-location />
+                                </template>
+                                {{ location }}
+                            </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                                       shape="round"
                                       type="text" @click="infoBtnOnClick">
@@ -35,15 +43,17 @@
             <template #content>
                 <a-list :bordered=false>
                     <a-list-item>
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  shape="round" type="text">
+                            <template #icon>
+                                <icon-bulb />
+                            </template>
+                            {{ temperatureSuggest + airSuggest }}
+                        </a-button>
+                    </a-list-item>
+                    <a-list-item>
                         <a-space direction="vertical">
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-geo-alt"></i>
-                                </template>
-                                {{ " 地理位置：" + location }}
-                            </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
                                       shape="round" type="text">
@@ -102,7 +112,8 @@ import {
     httpRequest
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
-import {IconInfoCircle} from "@arco-design/web-vue/es/icon";
+import {IconLocation, IconInfoCircle, IconBulb} from "@arco-design/web-vue/es/icon";
+import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -138,6 +149,8 @@ let pm25 = ref("暂无信息");
 let rainfall = ref("暂无信息");
 let visibility = ref("暂无信息");
 let windInfo = ref("暂无信息");
+let temperatureSuggest = ref("暂无信息");
+let airSuggest = ref("暂无信息")
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -173,7 +186,40 @@ function btnMouseOut() {
 }
 
 function infoBtnOnClick() {
-    window.open(searchEngineUrl.value + "天气", "_blank",);
+    window.open(searchEngineUrl.value + "天气", "_blank");
+}
+
+function locationBtnOnClick() {
+    if(location.value !== "暂无信息") {
+        window.open(searchEngineUrl.value + location.value, "_blank");
+    }
+    else {
+        Message.error("无跳转链接");
+    }
+}
+
+function getTemperatureSuggest(temperature) {
+    if (temperature > 30) {
+        return "温度炎热，注意避暑"
+    }
+    else if(temperature < 10) {
+        return "温度寒冷，注意防寒"
+    }
+    else {
+        return "温度宜人，适合外出"
+    }
+}
+
+function getAirSuggest(pm25) {
+    if (pm25 > 200) {
+        return " · 空气较差，不宜外出"
+    }
+    else if(pm25 < 100) {
+        return " · 空气良好，适合外出"
+    }
+    else {
+        return ""
+    }
 }
 
 function setWeather(data) {
@@ -186,6 +232,8 @@ function setWeather(data) {
     rainfall.value = data.weatherData.rainfall + "%";
     visibility.value = data.weatherData.visibility;
     windInfo.value = data.weatherData.windDirection + data.weatherData.windPower + "级";
+    temperatureSuggest.value = getTemperatureSuggest(parseInt(data.weatherData.temperature));
+    airSuggest.value = getAirSuggest(parseInt(data.weatherData.pm25));
 
     // weatherIcon.value = getWeatherIcon(data.weather);
     // weatherInfo.value = data.weather + "｜" + data.temp;

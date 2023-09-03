@@ -95,6 +95,7 @@
             <a-form-item field="todoSelect" label="标签分类">
                 <a-select id="todoSelect" default-value="work" @change="selectOnChange">
                     <a-option value="work">工作</a-option>
+                    <a-option value="study">学习</a-option>
                     <a-option value="life">生活</a-option>
                 </a-select>
             </a-form-item>
@@ -279,6 +280,9 @@ function selectOnChange(value) {
     switch (value) {
         case "work":
             tag.value = "工作";
+            break;
+        case "study":
+            tag.value = "学习";
             break;
         case "life":
             tag.value = "生活";
