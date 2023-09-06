@@ -42,14 +42,14 @@
             </template>
             <template #content>
                 <a-list :bordered=false>
-                    <a-list-item>
+                    <a-list-item :style="{display: suggest.length === 0 ? 'none' : 'block'}">
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                   :style="{color: fontColor, cursor: 'default'}"
                                   shape="round" type="text">
                             <template #icon>
                                 <icon-bulb />
                             </template>
-                            {{ temperatureSuggest + airSuggest }}
+                            {{ suggest }}
                         </a-button>
                     </a-list-item>
                     <a-list-item>
@@ -149,8 +149,7 @@ let pm25 = ref("暂无信息");
 let rainfall = ref("暂无信息");
 let visibility = ref("暂无信息");
 let windInfo = ref("暂无信息");
-let temperatureSuggest = ref("暂无信息");
-let airSuggest = ref("暂无信息")
+let suggest = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -198,27 +197,38 @@ function locationBtnOnClick() {
     }
 }
 
-function getTemperatureSuggest(temperature) {
+function getSuggest(temperature, pm25) {
+    let tempTemperature = "";
+    let tempPm25 = "";
+
     if (temperature > 30) {
-        return "温度炎热，注意避暑"
+        tempTemperature = "温度炎热，注意避暑"
     }
     else if(temperature < 10) {
-        return "温度寒冷，注意防寒"
+        tempTemperature = "温度寒冷，注意防寒"
     }
-    else {
-        return "温度宜人，适合外出"
-    }
-}
 
-function getAirSuggest(pm25) {
     if (pm25 > 200) {
-        return " · 空气较差，不宜外出"
+        tempPm25 = "空气较差，不宜外出"
     }
     else if(pm25 < 100) {
-        return " · 空气良好，适合外出"
+        tempPm25 = "空气良好，适合外出"
+    }
+
+    if(tempTemperature.length === 0 && tempPm25.length === 0) {
+        return "";
+    }
+    else if (tempTemperature.length !== 0 && tempPm25.length === 0) {
+        return tempTemperature;
+    }
+    else if (tempTemperature.length !== 0 && tempPm25.length !== 0) {
+        return tempTemperature + " · " + tempPm25;
+    }
+    else if (tempTemperature.length === 0 && tempPm25.length !== 0) {
+        return tempPm25;
     }
     else {
-        return ""
+        return "";
     }
 }
 
@@ -232,8 +242,7 @@ function setWeather(data) {
     rainfall.value = data.weatherData.rainfall + "%";
     visibility.value = data.weatherData.visibility;
     windInfo.value = data.weatherData.windDirection + data.weatherData.windPower + "级";
-    temperatureSuggest.value = getTemperatureSuggest(parseInt(data.weatherData.temperature));
-    airSuggest.value = getAirSuggest(parseInt(data.weatherData.pm25));
+    suggest.value = getSuggest(parseInt(data.weatherData.temperature), parseInt(data.weatherData.pm25));
 
     // weatherIcon.value = getWeatherIcon(data.weather);
     // weatherInfo.value = data.weather + "｜" + data.temp;
