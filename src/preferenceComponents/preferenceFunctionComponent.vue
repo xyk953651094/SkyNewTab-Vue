@@ -49,7 +49,7 @@
                 </a-switch>
             </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
-                <a-button id="clearStorageBtn" :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" shape="round"
                           type="text" @click="clearStorageBtnOnClick"
                 >

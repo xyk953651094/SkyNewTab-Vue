@@ -14,10 +14,10 @@
                     backgroundColor: backgroundColor,
                     color: fontColor
                 }"
+                :width="360"
                 :height="500"
                 :placement="drawerPosition"
                 :visible="visible"
-                :width="340"
                 unmountOnClose
                 @cancel="handleCancel"
                 @ok="handleOk"

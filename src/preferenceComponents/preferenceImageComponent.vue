@@ -9,7 +9,7 @@
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width>
-            <a-form-item field="dynamicEffect" label="图片动效">
+            <a-form-item field="dynamicEffect" label="鼠标互动">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
                     <a-row>
@@ -116,27 +116,55 @@
                     </a-row>
                 </a-checkbox-group>
             </a-form-item>
-            <a-form-item field="customTopic" label="其它主题">
-                <a-input v-model="preferenceData.customTopic"
-                         :default-value="preferenceData.customTopic"
-                         allow-clear
-                         placeholder="输入后按下 Enter 键生效" @change="customTopicsInputOnChange"/>
-                <template #extra>
-                    <a-space direction="vertical">
-                        <a-typography-text :style="{color: fontColor}">按下回车生效，英文结果最准确
-                        </a-typography-text>
-                        <a-typography-text :style="{color: fontColor}">
-                            其它主题不为空时将禁用图片主题
-                        </a-typography-text>
+            <a-form-item label="自选主题">
+                <a-space direction="vertical">
+                    <a-form-item field="customTopic" no-style>
+                        <a-input v-model="preferenceData.customTopic"
+                                 :default-value="preferenceData.customTopic"
+                                 id="customTopicInput"
+                                 allow-clear
+                                 placeholder="输入后按确认生效"/>
+                    </a-form-item>
+                    <a-space>
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor}" shape="round"
+                                  type="text" @click="submitCustomTopicBtnOnClick"
+                        >
+                            <template #icon>
+                                <icon-check/>
+                            </template>
+                            确认
+                        </a-button>
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor}" shape="round"
+                                  type="text" @click="clearCustomTopicBtnOnClick"
+                        >
+                            <template #icon>
+                                <icon-delete/>
+                            </template>
+                            清空
+                        </a-button>
                     </a-space>
-                </template>
+                    <a-typography-text :style="{color: fontColor}">英文结果最准确</a-typography-text>
+                    <a-typography-text :style="{color: fontColor}">其它主题不为空时将禁用图片主题</a-typography-text>
+                </a-space>
+<!--                <template #extra>-->
+<!--                    <a-space direction="vertical">-->
+<!--                        <a-typography-text :style="{color: fontColor}">按下回车生效，英文结果最准确-->
+<!--                        </a-typography-text>-->
+<!--                        <a-typography-text :style="{color: fontColor}">-->
+<!--                            其它主题不为空时将禁用图片主题-->
+<!--                        </a-typography-text>-->
+<!--                    </a-space>-->
+<!--                </template>-->
             </a-form-item>
         </a-form>
     </a-card>
 </template>
 
 <script setup>
-import {isEmptyString} from "../javascripts/publicFunctions";
+import {IconCheck, IconDelete} from "@arco-design/web-vue/es/icon";
+import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
@@ -144,7 +172,7 @@ import {Message} from "@arco-design/web-vue";
 let preferenceData = ref(defaultPreferenceData);
 let disableImageTopic = ref(false);
 
-defineProps({
+const props = defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -182,6 +210,16 @@ onMounted(() => {
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 })
 
+function btnMouseOver() {
+    this.style.backgroundColor = props.hoverColor;
+    this.style.color = getFontColor(props.hoverColor);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = props.fontColor;
+}
+
 // 动效样式
 function dynamicEffectRadioOnChange(value) {
     preferenceData.value.dynamicEffect = value;
@@ -212,12 +250,23 @@ function imageTopicsCheckboxOnChange(values) {
 }
 
 // 自定义主题
-function customTopicsInputOnChange(value) {
-    preferenceData.value.customTopic = value;
+function submitCustomTopicBtnOnClick() {
+    let inputValue = document.getElementById("customTopicInput").children[0].value;
+    preferenceData.value.customTopic = inputValue;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换自定义主题，下次加载时生效");
-    disableImageTopic.value = !isEmptyString(value);
+    Message.success("已修改自选主题，一秒后刷新页面");
+    disableImageTopic.value = !isEmptyString(inputValue);
+    refreshWindow();
+}
+
+function clearCustomTopicBtnOnClick() {
+    preferenceData.value.customTopic = "";
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已清空自选主题，一秒后刷新页面");
+    disableImageTopic.value = false;
+    refreshWindow();
 }
 
 function refreshWindow() {

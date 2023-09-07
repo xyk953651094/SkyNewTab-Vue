@@ -16,7 +16,15 @@
                     </a-space>
                 </a-col>
                 <a-col :lg="0" :md="0" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
-                    <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
+                    <a-space>
+                        <author-lite-component
+                            :display="componentDisplay"
+                            :image-data="imageData"
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
+                        <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
+                    </a-space>
                 </a-col>
             </a-row>
         </a-layout-header>
@@ -59,6 +67,7 @@ import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import {defaultPreferenceData} from "./javascripts/publicConstants";
+import AuthorLiteComponent from "@/components/authorLiteComponent.vue";
 
 const $ = require("jquery");
 

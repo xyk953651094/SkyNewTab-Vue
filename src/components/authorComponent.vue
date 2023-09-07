@@ -257,7 +257,7 @@ function authorLinkBtnOnClick() {
 }
 
 function imageLinkBtnOnClick() {
-    if (authorLink.value.length !== 0) {
+    if (imageLink.value.length !== 0) {
         window.open(imageLink.value + unsplashUrl);
     } else {
         Message.error("无跳转链接");

@@ -122,7 +122,7 @@ onMounted(() => {
         popupImage.onload = function () {
             document.getElementById("popupCanvas").remove();
             popupImageDiv.style.display = "block";
-            popupImageDiv.classList.add("wallpaperFadeIn");
+            popupImageDiv.classList.add("imageFadeIn");
         }
     }
 })
@@ -150,7 +150,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
                 }
 
                 displayCanvas.value = "block";
-                popupCanvas.className = "popupCanvas wallpaperFadeIn";
+                popupCanvas.className = "popupCanvas imageFadeIn";
             }
         }
     }
