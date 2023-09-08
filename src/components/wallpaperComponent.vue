@@ -95,7 +95,10 @@ function getWallpaper() {
     Message.info("正在获取图片");
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
-            Message.info("正在加载图片");
+            Message.loading({
+                content: "正在加载图片",
+                duration: 0
+            });
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
             setWallpaper(resultData);
@@ -107,7 +110,10 @@ function getWallpaper() {
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
                 lastImage = JSON.parse(lastImage);
-                Message.error("获取图片失败，加载历史图片");
+                Message.error({
+                    content: "获取图片失败，加载历史图片",
+                    duration: 0
+                });
                 setWallpaper(lastImage);
             } else {
                 Message.error("获取图片失败");
@@ -151,6 +157,7 @@ onMounted(() => {
 
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
+                Message.clear();
                 Message.success("图片加载成功");
                 // document.getElementById("backgroundCanvas").remove();
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";

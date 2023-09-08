@@ -14,7 +14,7 @@
                     backgroundColor: backgroundColor,
                     color: fontColor
                 }"
-                :width="360"
+                :width="380"
                 :height="500"
                 :placement="drawerPosition"
                 :visible="visible"

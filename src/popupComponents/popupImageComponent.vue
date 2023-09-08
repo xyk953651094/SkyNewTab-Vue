@@ -120,7 +120,9 @@ onMounted(() => {
     popupImageDiv.style.display = "none";
     if (popupImage instanceof HTMLElement) {
         popupImage.onload = function () {
-            document.getElementById("popupCanvas").remove();
+            // document.getElementById("popupCanvas").remove();
+            document.getElementById("popupCanvas").classList.remove("imageFadeIn");
+            document.getElementById("popupCanvas").classList.add("imageFadeOut");
             popupImageDiv.style.display = "block";
             popupImageDiv.classList.add("imageFadeIn");
         }

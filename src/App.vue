@@ -2,20 +2,20 @@
     <a-layout style="height: 100%">
         <a-layout-header id="header">
             <a-row justify="center">
-                <a-col :lg="10" :md="10" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: left">
+                <a-col :lg="10" :md="0" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: left">
                     <a-space>
                         <greet-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <weather-component :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
-                <a-col :lg="10" :md="10" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: right">
+                <a-col :lg="10" :md="0" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: right">
                     <a-space>
                         <daily-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <todo-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
                     </a-space>
                 </a-col>
-                <a-col :lg="0" :md="0" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
+                <a-col :lg="0" :md="22" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
                     <a-space>
                         <author-lite-component
                             :display="componentDisplay"
@@ -33,14 +33,14 @@
             <a-space align="center" direction="vertical">
                 <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData"/>
-                <a-col :lg="24" :md="24" :sm="0" :xl="24" :xs="0" :xxl="24">
+                <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 </a-col>
             </a-space>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="center">
-                <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
+                <a-col :lg="20" :md="0" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>

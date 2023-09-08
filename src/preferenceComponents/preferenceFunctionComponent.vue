@@ -59,6 +59,15 @@
                     清空并重置所有内容
                 </a-button>
             </a-form-item>
+            <a-form-item label="提示信息">
+                <a-typography-paragraph>
+                    <ol>
+                        <a-space direction="vertical">
+                            <li>清空并重置所有内容将删除所有缓存，插件出现问题时可尝试此按钮</li>
+                        </a-space>
+                    </ol>
+                </a-typography-paragraph>
+            </a-form-item>
         </a-form>
     </a-card>
 </template>
