@@ -15,12 +15,6 @@
 * 天气来源：https://www.jinrishici.com  
 * 图片来源：https://unsplash.com
 
-## 最近更新
-* 新增产品信息
-* 优化代码质量
-* 修复已知问题
-* 优化视觉效果
-
 ## 安装
 * [Chrome 网上应用商店](https://chrome.google.com/webstore/detail/odoenlibdoinhncgedhpbiehcadmakom)
 * [Edge 外接程序商店](https://microsoftedge.microsoft.com/addons/detail/dilcoahhajibnbanbabkcljjobgpomdc)
