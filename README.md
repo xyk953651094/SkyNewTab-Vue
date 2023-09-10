@@ -8,7 +8,7 @@
 * [JetBrains Open Source Support](https://jb.gg/OpenSourceSupport "跳转至 JetBrains Open Source Support")
 
 ## 简介
-* 适用于Chrome、Edge、Firefox、Safari 的新标签页。  
+* 适用于 Chrome、Edge、Firefox、Safari 的新标签页。  
 * 基于 Html + JavaScript + Less + Vue + Webpack + Arco Design + Bootstrap Icon。   
 * 支持语言：中文。  
 * 节气来源：https://www.mxnzp.com  
@@ -26,7 +26,7 @@
 * [Edge 外接程序商店](https://microsoftedge.microsoft.com/addons/detail/dilcoahhajibnbanbabkcljjobgpomdc)
 * Firefox 附加组件商店（与 [SkyNewTab-React](https://github.com/xyk953651094/SkyNewTab-React) 重复，本插件不上架 Firefox 附加组件商店）
 * App Store & Mac App Store：由于成本原因，暂不上架苹果应用商店
-* 下载本页面提供的文件进行安装
+* 下载 Releases 页面提供的文件进行安装
 
 ## 效果展示
 ### Chromium & Firefox
