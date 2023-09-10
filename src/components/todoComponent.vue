@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-check-square/>
                 </template>
-                {{todoSize + " 个待办事项"}}
+                {{ todoSize + " 个待办事项" }}
             </a-button>
             <template #title>
                 <a-row align="center">

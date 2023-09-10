@@ -92,9 +92,13 @@ function getWallpaper() {
         data.query = imageQuery;
     }
 
-    Message.info("正在获取图片");
+    Message.loading({
+        content: "正在获取图片",
+        duration: 0
+    });
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
+            Message.clear();
             Message.loading({
                 content: "正在加载图片",
                 duration: 0
@@ -104,6 +108,7 @@ function getWallpaper() {
             setWallpaper(resultData);
         })
         .catch(function () {
+            Message.clear();
             // 请求失败也更新请求时间，防止超时后无信息可显示
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             // 获取图片失败时显示上次图片

@@ -8,7 +8,7 @@
         </a-layout-header>
         <a-layout-content class="popupContent">
             <a-list :bordered=false>
-                <a-list-item class="alignCenter" :style="{borderBottomColor: fontColor}">
+                <a-list-item :style="{borderBottomColor: fontColor}" class="alignCenter">
                     <popup-status-component
                         :font-color="fontColor"
                         :image-data="imageData"
@@ -86,17 +86,6 @@ onMounted(() => {
         }
     })
 })
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
-
 </script>
 
 <style scoped>

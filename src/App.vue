@@ -116,7 +116,9 @@ onMounted(() => {
     }
 
     // 未加载图片前随机显示颜色主题
-    themeColor.value = setColorTheme();
+    if (themeColor.value.themeColor === "") {
+        themeColor.value = setColorTheme();
+    }
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
@@ -127,6 +129,8 @@ onMounted(() => {
         $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
         $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
         $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+        $(".arco-alert").css("padding", "10px");
+        $("div.arco-typography").css("margin-bottom", "0");
 
         // popover
         let popoverEle = $(".arco-popover");
@@ -167,8 +171,6 @@ onMounted(() => {
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor
             });
-            $(".arco-list-item:not(:last-child)").css("borderBottom", "1px solid" + themeColor.value.componentFontColor);
-            $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-footer").css({
                 "borderTopColor": themeColor.value.componentFontColor,
                 "textAlign": "center"

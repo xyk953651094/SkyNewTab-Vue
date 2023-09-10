@@ -188,7 +188,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 })
 
 function btnMouseOver() {
-    console.log(hoverColor.value)
     this.style.backgroundColor = hoverColor.value;
     this.style.color = getFontColor(hoverColor.value);
 }

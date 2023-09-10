@@ -10,7 +10,7 @@
         >
         </a-image>
         <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
-        <a-space direction="vertical" align="start">
+        <a-space align="start" direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
                       type="text" @click="authorLinkBtnOnClick">
@@ -59,7 +59,9 @@
             </a-space>
         </a-space>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}" shape="round"
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+              :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
+              shape="round"
               type="text">
         <template #icon>
             <icon-info-circle/>

@@ -58,7 +58,7 @@
                             <a-checkbox name="wallpapers" value="bo8jQKTaE0Y">壁纸</a-checkbox>
                         </a-col>
                         <a-col :span="12">
-                            <a-checkbox name="3d-renders" value="CDwuwXJAbEw">3D渲染</a-checkbox>
+                            <a-checkbox name="3d-renders" value="CDwuwXJAbEw">三维</a-checkbox>
                         </a-col>
                         <a-col :span="12">
                             <a-checkbox name="textures-patterns" value="iUIsnVtjB0Y">纹理
@@ -117,53 +117,53 @@
                 </a-checkbox-group>
             </a-form-item>
             <a-form-item label="自定主题">
-                <a-space direction="vertical">
+                <a-space>
                     <a-form-item field="customTopic" no-style>
-                        <a-input v-model="preferenceData.customTopic"
+                        <a-input id="customTopicInput"
+                                 v-model="preferenceData.customTopic"
                                  :default-value="preferenceData.customTopic"
-                                 id="customTopicInput"
                                  allow-clear
-                                 placeholder="英文结果最准确"/>
+                                 placeholder="使用英文搜索最准确"/>
                     </a-form-item>
-                    <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                  :style="{color: fontColor}" shape="round"
-                                  type="text" @click="submitCustomTopicBtnOnClick"
-                        >
-                            <template #icon>
-                                <icon-check/>
-                            </template>
-                            确定
-                        </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                  :style="{color: fontColor}" shape="round"
-                                  type="text" @click="clearCustomTopicBtnOnClick"
-                        >
-                            <template #icon>
-                                <icon-delete/>
-                            </template>
-                            清空
-                        </a-button>
-                    </a-space>
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor}" shape="round"
+                              type="text" @click="submitCustomTopicBtnOnClick"
+                    >
+                        <template #icon>
+                            <icon-check/>
+                        </template>
+                        确定
+                    </a-button>
                 </a-space>
             </a-form-item>
-            <a-form-item label="提示信息">
+            <!--            <a-form-item label="提示信息">-->
+            <!--                <a-typography-paragraph>-->
+            <!--                    <ol :style="{color: fontColor}">-->
+            <!--                        <a-space direction="vertical">-->
+            <!--                            <li>刷新后的新主题可能不会立即生效</li>-->
+            <!--                            <li>图片主题全不选与全选的效果一致</li>-->
+            <!--                            <li>自定主题不为空时将禁用图片主题</li>-->
+            <!--                        </a-space>-->
+            <!--                    </ol>-->
+            <!--                </a-typography-paragraph>-->
+            <!--            </a-form-item>-->
+            <a-alert :show-icon="false" title="提示信息" type="info">
                 <a-typography-paragraph>
                     <ol>
                         <a-space direction="vertical">
-                            <li>刷新后的新主题可能不会立即生效</li>
+                            <li>新的主题刷新后可能不会立即生效</li>
                             <li>图片主题全不选与全选的效果一致</li>
                             <li>自定主题不为空时将禁用图片主题</li>
                         </a-space>
                     </ol>
                 </a-typography-paragraph>
-            </a-form-item>
+            </a-alert>
         </a-form>
     </a-card>
 </template>
 
 <script setup>
-import {IconCheck, IconDelete} from "@arco-design/web-vue/es/icon";
+import {IconCheck} from "@arco-design/web-vue/es/icon";
 import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
@@ -252,32 +252,12 @@ function imageTopicsCheckboxOnChange(values) {
 // 自定义主题
 function submitCustomTopicBtnOnClick() {
     let inputValue = document.getElementById("customTopicInput").children[0].value;
-    if(!isEmptyString(inputValue)) {
-        preferenceData.value.customTopic = inputValue;
-        emit("preferenceData", preferenceData.value);
-        localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-        Message.success("已修改自定主题，一秒后刷新页面");
-        disableImageTopic.value = !isEmptyString(inputValue);
-        refreshWindow();
-    }
-    else {
-        Message.error("请输入自定主题");
-    }
-}
-
-function clearCustomTopicBtnOnClick() {
-    let inputValue = document.getElementById("customTopicInput").children[0].value;
-    if(!isEmptyString(inputValue)) {
-        preferenceData.value.customTopic = "";
-        emit("preferenceData", preferenceData.value);
-        localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-        Message.success("已清空自定主题，一秒后刷新页面");
-        disableImageTopic.value = false;
-        refreshWindow();
-    }
-    else {
-        Message.error("自定主题已经为空");
-    }
+    preferenceData.value.customTopic = inputValue;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已修改自定主题，一秒后刷新页面");
+    disableImageTopic.value = !isEmptyString(inputValue);
+    refreshWindow();
 }
 
 function refreshWindow() {

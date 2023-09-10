@@ -6,7 +6,7 @@
             title="产品信息"
     >
         <template #extra>
-            <icon-apps />
+            <icon-apps/>
         </template>
         <a-space direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
@@ -14,28 +14,31 @@
                       shape="round"
                       target="_blank" type="text">
                 <template #icon>
-                    <icon-calendar />
+                    <icon-calendar/>
                 </template>
-                {{"节气来源：https://www.mxnzp.com"}}
+                {{ "节气来源：https://www.mxnzp.com" }}
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                       :style="{color: fontColor}" href="https://www.jinrishici.com/"
                       shape="round"
                       target="_blank" type="text">
                 <template #icon>
-                    <icon-cloud />
+                    <icon-cloud/>
                 </template>
-                {{"天气来源：https://www.jinrishici.com"}}
+                {{ "天气来源：https://www.jinrishici.com" }}
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                       :style="{color: fontColor}" href="https://unsplash.com/"
                       shape="round"
                       target="_blank" type="text">
                 <template #icon>
-                    <icon-file-image />
+                    <icon-file-image/>
                 </template>
-                {{"图片来源：https://unsplash.com"}}
+                {{ "图片来源：https://unsplash.com" }}
             </a-button>
+            <!--            <a-alert title="免责声明" type="info" :show-icon="false">-->
+            <!--                本产品的所有数据源自第三方接口，内容不受作者本人控制，不代表作者本人的观点与立场-->
+            <!--            </a-alert>-->
         </a-space>
     </a-card>
 </template>

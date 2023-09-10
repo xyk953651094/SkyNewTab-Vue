@@ -6,7 +6,8 @@
             :style="{width: '550px'}"
             position="tr"
         >
-            <a-button id="authorBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh" shape="round"
+            <a-button id="authorBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
+                      shape="round"
                       size="large"
                       type="primary">
                 <template #icon>

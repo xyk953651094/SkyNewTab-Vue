@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-calendar-clock/>
                 </template>
-                {{dailySize + " 个倒数日"}}
+                {{ dailySize + " 个倒数日" }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -217,7 +217,6 @@ function showAddModalBtnOnClick() {
         daily = JSON.parse(tempDaily);
     }
     if (daily.length < dailyMaxSize.value) {
-        // $("#dailyInput").children("input").val("");
         displayModal.value = true;
         selectedTimeStamp.value = 0;
     } else {

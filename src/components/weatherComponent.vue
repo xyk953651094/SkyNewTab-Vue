@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{minWidth: '250px'}"
+            :style="{minWidth: '350px'}"
             position="bl"
         >
             <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
@@ -24,7 +24,7 @@
                                       shape="round"
                                       type="text" @click="locationBtnOnClick">
                                 <template #icon>
-                                    <icon-location />
+                                    <icon-location/>
                                 </template>
                                 {{ location }}
                             </a-button>
@@ -42,58 +42,64 @@
             </template>
             <template #content>
                 <a-list :bordered=false>
-                    <a-list-item :style="{display: suggest.length === 0 ? 'none' : 'block'}">
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                  :style="{color: fontColor, cursor: 'default'}"
-                                  shape="round" type="text">
-                            <template #icon>
-                                <icon-bulb />
-                            </template>
-                            {{ suggest }}
-                        </a-button>
-                    </a-list-item>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-moisture"></i>
-                                </template>
-                                {{ " 空气湿度：" + humidity }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-water"></i>
-                                </template>
-                                {{ " 空气质量：" + pm25 }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-cloud-rain"></i>
-                                </template>
-                                {{ " 降雨概率：" + rainfall }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-eye"></i>
-                                </template>
-                                {{ " 视线距离：" + visibility }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-wind"></i>
-                                </template>
-                                {{ " 风速情况：" + windInfo }}
-                            </a-button>
+                            <a-row>
+                                <a-col span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-moisture"></i>
+                                        </template>
+                                        {{ " 空气湿度：" + humidity }}
+                                    </a-button>
+                                </a-col>
+                                <a-col span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-water"></i>
+                                        </template>
+                                        {{ " 空气质量：" + pm25 }}
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                            <a-row>
+                                <a-col span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-cloud-rain"></i>
+                                        </template>
+                                        {{ " 降雨概率：" + rainfall }}
+                                    </a-button>
+                                </a-col>
+                                <a-col span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-eye"></i>
+                                        </template>
+                                        {{ " 视线距离：" + visibility }}
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                            <a-row>
+                                <a-col span="24">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-wind"></i>
+                                        </template>
+                                        {{ " 风速情况：" + windInfo }}
+                                    </a-button>
+                                </a-col>
+                            </a-row>
                         </a-space>
                     </a-list-item>
                 </a-list>
@@ -112,7 +118,7 @@ import {
     httpRequest
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
-import {IconLocation, IconInfoCircle, IconBulb} from "@arco-design/web-vue/es/icon";
+import {IconInfoCircle, IconLocation} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -149,7 +155,6 @@ let pm25 = ref("暂无信息");
 let rainfall = ref("暂无信息");
 let visibility = ref("暂无信息");
 let windInfo = ref("暂无信息");
-let suggest = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -189,46 +194,10 @@ function infoBtnOnClick() {
 }
 
 function locationBtnOnClick() {
-    if(location.value !== "暂无信息") {
+    if (location.value !== "暂无信息") {
         window.open(searchEngineUrl.value + location.value, "_blank");
-    }
-    else {
+    } else {
         Message.error("无跳转链接");
-    }
-}
-
-function getSuggest(temperature, pm25) {
-    let tempTemperature = "";
-    let tempPm25 = "";
-
-    if (temperature > 30) {
-        tempTemperature = "温度炎热，注意避暑"
-    }
-    else if(temperature < 10) {
-        tempTemperature = "温度寒冷，注意防寒"
-    }
-
-    if (pm25 > 200) {
-        tempPm25 = "空气较差，不宜外出"
-    }
-    else if(pm25 < 100) {
-        tempPm25 = "空气良好，适合外出"
-    }
-
-    if(tempTemperature.length === 0 && tempPm25.length === 0) {
-        return "";
-    }
-    else if (tempTemperature.length !== 0 && tempPm25.length === 0) {
-        return tempTemperature;
-    }
-    else if (tempTemperature.length !== 0 && tempPm25.length !== 0) {
-        return tempTemperature + " · " + tempPm25;
-    }
-    else if (tempTemperature.length === 0 && tempPm25.length !== 0) {
-        return tempPm25;
-    }
-    else {
-        return "";
     }
 }
 
@@ -241,14 +210,7 @@ function setWeather(data) {
     pm25.value = data.weatherData.pm25;
     rainfall.value = data.weatherData.rainfall + "%";
     visibility.value = data.weatherData.visibility;
-    windInfo.value = data.weatherData.windDirection + data.weatherData.windPower + "级";
-    suggest.value = getSuggest(parseInt(data.weatherData.temperature), parseInt(data.weatherData.pm25));
-
-    // weatherIcon.value = getWeatherIcon(data.weather);
-    // weatherInfo.value = data.weather + "｜" + data.temp;
-    // location.value = data.location.replace(" ", " · ");
-    // windInfo.value = data.windDirection + "风 " + data.windPower;
-    // humidity.value = data.humidity;
+    windInfo.value = data.weatherData.windDirection + " " + data.weatherData.windPower + " 级";
 }
 
 function getWeather() {
@@ -267,25 +229,6 @@ function getWeather() {
             // 请求失败也更新请求时间，防止超时后无信息可显示
             localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
         })
-
-    // let headers = {};
-    // let url = "https://www.mxnzp.com/api/weather/current/武汉";
-    // let data = {
-    //     "app_id": appId,
-    //     "app_secret": appSecret,
-    // };
-    // httpRequest(headers, url, data, "GET")
-    //     .then(function (resultData) {
-    //         localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-    //         if (resultData.code === 1) {
-    //             localStorage.setItem("lastWeather", JSON.stringify(resultData.data));      // 保存请求结果，防抖节流
-    //             setWeather(resultData.data);
-    //         }
-    //     })
-    //     .catch(function () {
-    //         // 请求失败也更新请求时间，防止超时后无信息可显示
-    //         localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-    //     })
 }
 
 onMounted(() => {

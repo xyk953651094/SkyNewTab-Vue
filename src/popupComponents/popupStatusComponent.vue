@@ -33,7 +33,9 @@
             {{ todoSize + " 个待办事项" }}
         </a-button>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}" shape="round"
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+              :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}"
+              shape="round"
               type="text">
         <template #icon>
             <icon-info-circle/>
