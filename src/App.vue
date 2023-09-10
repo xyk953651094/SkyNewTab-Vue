@@ -67,7 +67,7 @@ import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import {defaultPreferenceData} from "./javascripts/publicConstants";
-import AuthorLiteComponent from "@/components/authorLiteComponent.vue";
+import AuthorLiteComponent from "./components/authorLiteComponent.vue";
 
 const $ = require("jquery");
 

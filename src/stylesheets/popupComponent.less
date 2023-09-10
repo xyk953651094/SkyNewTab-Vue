@@ -27,7 +27,16 @@ body {
     text-align: center;
 }
 
+.popupImageDiv {
+    position: relative;
+    width: 250px;
+    height: 150px;
+}
+
 .popupCanvas {
+    position: absolute !important;
+    top: 0;
+    left: 0;
     width: 250px;
     height: 150px;
     object-fit: cover;
@@ -36,7 +45,6 @@ body {
 
 /*水平垂直居中*/
 .alignCenter {
-    display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     text-align: center !important;

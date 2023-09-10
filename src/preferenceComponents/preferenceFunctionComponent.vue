@@ -9,26 +9,26 @@
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width>
-            <a-form-item label="天气位置">
-                <a-space>
-                    <a-form-item field="location" no-style>
-                        <a-input id="locationInput"
-                                 v-model="preferenceData.customTopic"
-                                 :default-value="preferenceData.customTopic"
-                                 allow-clear
-                                 placeholder="请输入您的地理位置"/>
-                    </a-form-item>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor}" shape="round"
-                              type="text" @click="submitLocationBtnOnClick"
-                    >
-                        <template #icon>
-                            <icon-check/>
-                        </template>
-                        确定
-                    </a-button>
-                </a-space>
-            </a-form-item>
+<!--            <a-form-item label="天气位置">-->
+<!--                <a-space>-->
+<!--                    <a-form-item field="location" no-style>-->
+<!--                        <a-input id="locationInput"-->
+<!--                                 v-model="preferenceData.customTopic"-->
+<!--                                 :default-value="preferenceData.customTopic"-->
+<!--                                 allow-clear-->
+<!--                                 placeholder="请输入您的地理位置"/>-->
+<!--                    </a-form-item>-->
+<!--                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
+<!--                              :style="{color: fontColor}" shape="round"-->
+<!--                              type="text" @click="submitLocationBtnOnClick"-->
+<!--                    >-->
+<!--                        <template #icon>-->
+<!--                            <icon-check/>-->
+<!--                        </template>-->
+<!--                        确定-->
+<!--                    </a-button>-->
+<!--                </a-space>-->
+<!--            </a-form-item>-->
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                @change="searchEngineRadioOnChange">
@@ -154,18 +154,18 @@ function btnMouseOut() {
 }
 
 // 地理位置
-function submitLocationBtnOnClick() {
-    let inputValue = document.getElementById("locationInput").children[0].value;
-    if (!isEmptyString(inputValue)) {
-        preferenceData.value.location = inputValue;
-        emit("preferenceData", preferenceData.value);
-        localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-        Message.success("已修改地理位置，一秒后刷新页面");
-        refreshWindow();
-    } else {
-        Message.error("请输入地理位置");
-    }
-}
+// function submitLocationBtnOnClick() {
+//     let inputValue = document.getElementById("locationInput").children[0].value;
+//     if (!isEmptyString(inputValue)) {
+//         preferenceData.value.location = inputValue;
+//         emit("preferenceData", preferenceData.value);
+//         localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+//         Message.success("已修改地理位置，一秒后刷新页面");
+//         refreshWindow();
+//     } else {
+//         Message.error("请输入地理位置");
+//     }
+// }
 
 // 搜索引擎
 function searchEngineRadioOnChange(value) {

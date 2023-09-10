@@ -1,15 +1,17 @@
 <template>
     <a-space :style="{display: noImageMode ? 'none' : 'inline-flex'}">
-        <a-image
-            id="popupImage"
-            :src="imagePreviewUrl"
-            :style="{borderRadius: '10px'}"
-            alt="图片加载失败"
-            height="150px"
-            width="250px"
-        >
-        </a-image>
-        <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
+        <div class="popupImageDiv">
+            <a-image
+                id="popupImage"
+                :src="imagePreviewUrl"
+                :style="{borderRadius: '10px'}"
+                alt="图片加载失败"
+                height="150px"
+                width="250px"
+            >
+            </a-image>
+            <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
+        </div>
         <a-space align="start" direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
