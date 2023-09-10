@@ -2,7 +2,7 @@
     <a-space>
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-                   :style="{minWidth: '500px'}"
+                   :style="{minWidth: '550px'}"
                    position="bl"
         >
             <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
