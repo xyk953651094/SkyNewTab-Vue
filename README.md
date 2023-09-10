@@ -23,18 +23,24 @@
 * 下载 Releases 页面提供的文件进行安装
 
 ## 效果展示
-### Chromium & Firefox
-<img width="1440" alt="截屏2023-07-11 15 33 09" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/24da3d03-c91b-4fb4-9fee-727e9988f23c">
+### Chromium & Firefox & Safari for Mac
+<img width="1440" alt="截屏2023-09-10 21 06 46" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/19cc34c5-807e-409b-b239-1fa420e3fb8d">
 
-<img width="1440" alt="截屏2023-07-11 15 33 33" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/932e31fd-10d0-4a74-ae5b-c95393a87414">
+<img width="1440" alt="截屏2023-09-10 21 07 05" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/bfd0d28a-0ef0-4b5f-b1e6-725ec466cef8">
 
-<img width="1440" alt="截屏2023-07-11 15 33 52" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/822bbac4-d3f3-445a-a039-2d14c522272f">
+<img width="1440" alt="截屏2023-09-10 21 07 20" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/b12efe3e-85a5-493a-bf73-e7a29f6785c0">
 
-<img width="1440" alt="截屏2023-07-11 15 34 09" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/d423ac93-e308-4b5b-8551-8fa358a69f87">
+<img width="1440" alt="截屏2023-09-10 21 07 36" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/e61e75a7-5828-429d-b6e7-ca79d3fd3e06">
 
-<img width="1440" alt="截屏2023-07-11 15 34 25" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/475241b3-6702-4893-ad2e-0d856dd7b3a2">
+<img width="1440" alt="截屏2023-09-10 21 07 53" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/f053ae73-28cb-4b66-981c-280de87fa691">
 
-<img width="1440" alt="截屏2023-07-11 15 34 45" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/83ead43b-52f4-4f3a-b289-21b418849ace">
+<img width="1440" alt="截屏2023-09-10 21 09 30" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/b14ae71f-b65b-4265-905e-5e387cfbbde9">
+
+<img width="1440" alt="截屏2023-09-10 21 09 52" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/6cbc35b6-1ab0-4b7f-b431-c97e939c2147">
+
+<img width="1440" alt="截屏2023-09-10 21 13 39" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/7b8faddc-4efb-4d01-8795-f9bbcded7905">
+
+<img width="1440" alt="截屏2023-09-10 21 14 54" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/52c85fef-322a-42bd-85fd-f77cbfadc56c">
 
 ### Safari for iPhone
 <img width="400" alt="截屏2023-07-15 13 08 07" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/72215256-045c-45f8-a88d-f7e1907f9e67">
@@ -45,11 +51,6 @@
 <img alt="截屏2023-07-15 13 05 23" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/dbaf85f2-6a39-4198-9fec-a739c6d36734">
 
 <img alt="截屏2023-07-15 13 05 23" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/f39991bf-0458-4337-a0f2-ae21b4f5d75a">
-
-### Safari for Mac
-<img width="1440" alt="截屏2023-07-16 18 54 42" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/d49f604c-f272-46dd-9f6b-b1b035bd9cdf">
-
-<img width="1440" alt="截屏2023-07-16 18 54 53" src="https://github.com/xyk953651094/SkyNewTab-Vue/assets/28004442/14db4aaa-72ae-4f1e-96a0-f3369137cdae">
 
 
 
