@@ -44,62 +44,46 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-row>
-                                <a-col span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <i class="bi bi-moisture"></i>
-                                        </template>
-                                        {{ " 空气湿度：" + humidity }}
-                                    </a-button>
-                                </a-col>
-                                <a-col span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <i class="bi bi-water"></i>
-                                        </template>
-                                        {{ " 空气质量：" + pm25 }}
-                                    </a-button>
-                                </a-col>
-                            </a-row>
-                            <a-row>
-                                <a-col span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <i class="bi bi-cloud-rain"></i>
-                                        </template>
-                                        {{ " 降雨概率：" + rainfall }}
-                                    </a-button>
-                                </a-col>
-                                <a-col span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <i class="bi bi-eye"></i>
-                                        </template>
-                                        {{ " 视线距离：" + visibility }}
-                                    </a-button>
-                                </a-col>
-                            </a-row>
-                            <a-row>
-                                <a-col span="24">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
-                                        <template #icon>
-                                            <i class="bi bi-wind"></i>
-                                        </template>
-                                        {{ " 风速情况：" + windInfo }}
-                                    </a-button>
-                                </a-col>
-                            </a-row>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <i class="bi bi-moisture"></i>
+                                </template>
+                                {{ " 空气湿度：" + humidity }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <i class="bi bi-water"></i>
+                                </template>
+                                {{ " 空气质量：" + pm25 }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <i class="bi bi-cloud-rain"></i>
+                                </template>
+                                {{ " 降雨概率：" + rainfall }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <i class="bi bi-eye"></i>
+                                </template>
+                                {{ " 视线距离：" + visibility }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      shape="round" type="text">
+                                <template #icon>
+                                    <i class="bi bi-wind"></i>
+                                </template>
+                                {{ " 风速情况：" + windInfo }}
+                            </a-button>
                         </a-space>
                     </a-list-item>
                 </a-list>
