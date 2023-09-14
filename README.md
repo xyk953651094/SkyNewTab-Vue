@@ -20,8 +20,8 @@
 * [Edge 外接程序商店](https://microsoftedge.microsoft.com/addons/detail/dilcoahhajibnbanbabkcljjobgpomdc)
 * Firefox 附加组件商店（与 [SkyNewTab-React](https://github.com/xyk953651094/SkyNewTab-React) 重复，本插件不上架 Firefox 附加组件商店）
 * App Store & Mac App Store：由于成本原因，暂不上架苹果应用商店
-* 由于 Edge 的插件审核周期过长（一般超过7天），因此 Edge 更新时间一般晚于 Chrome 和 Firefox
 * 下载 Releases 页面提供的文件进行安装
+* 注意：由于 Edge 的插件审核周期过长（一般超过7天），因此 Edge 更新时间一般晚于 Chrome 和 Firefox
 
 ## 效果展示
 ### Chromium & Firefox & Safari for Mac
