@@ -6,7 +6,7 @@
                    position="bl"
         >
             <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                       shape="square" size="large" type="primary">
+                       shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -20,7 +20,7 @@
                     <a-col :span="18" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                       shape="square"
+                                       shape="round"
                                       type="text" @click="constellationBtnOnClick">
                                 <template #icon>
                                     <icon-star/>
@@ -28,7 +28,7 @@
                                 {{ "星座运势" }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                       shape="square"
+                                       shape="round"
                                       type="text" @click="historyBtnOnClick">
                                 <template #icon>
                                     <icon-history/>
@@ -36,7 +36,7 @@
                                 {{ "历史上的今天" }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                       shape="square"
+                                       shape="round"
                                       type="text" @click="infoBtnOnClick">
                                 <template #icon>
                                     <icon-info-circle/>
@@ -53,7 +53,7 @@
                         <a-space direction="vertical">
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="square" type="text">
+                                       shape="round" type="text">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>
@@ -61,7 +61,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="square" type="text">
+                                       shape="round" type="text">
                                 <template #icon>
                                     <icon-check-circle/>
                                 </template>
@@ -69,7 +69,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="square" type="text">
+                                       shape="round" type="text">
                                 <template #icon>
                                     <icon-close-circle/>
                                 </template>

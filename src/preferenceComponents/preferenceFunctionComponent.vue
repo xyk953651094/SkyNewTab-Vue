@@ -48,19 +48,6 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-form-item field="buttonShape" label="按钮形状">
-                <a-radio-group v-model="preferenceData.buttonShape"
-                               @change="buttonShapeRadioOnChange" :style="{width: '100%'}">
-                    <a-row>
-                        <a-col :span="12">
-                            <a-radio value="square">方形</a-radio>
-                        </a-col>
-                        <a-col :span="12">
-                            <a-radio value="round">圆形</a-radio>
-                        </a-col>
-                    </a-row>
-                </a-radio-group>
-            </a-form-item>
             <a-form-item field="simpleMode" label="简洁模式">
                 <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
                     <template #checked>
@@ -188,13 +175,6 @@ function searchEngineRadioOnChange(value) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
-}
-
-function buttonShapeRadioOnChange(value) {
-    preferenceData.value.buttonShape = value;
-    emit("preferenceData", preferenceData.value);
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换按钮形状");
 }
 
 function simpleModeSwitchOnChange(checked) {
