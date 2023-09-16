@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{minWidth: '350px'}"
+            :style="{minWidth: '360px'}"
             position="bl"
         >
             <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
@@ -44,46 +44,60 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-moisture"></i>
-                                </template>
-                                {{ " 空气湿度：" + humidity }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-water"></i>
-                                </template>
-                                {{ " 空气质量：" + pm25 }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-cloud-rain"></i>
-                                </template>
-                                {{ " 降雨概率：" + rainfall }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-eye"></i>
-                                </template>
-                                {{ " 视线距离：" + visibility }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
-                                <template #icon>
-                                    <i class="bi bi-wind"></i>
-                                </template>
-                                {{ " 风速情况：" + windInfo }}
-                            </a-button>
+                            <a-row gutter="8">
+                                <a-col :span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-moisture"></i>
+                                        </template>
+                                        {{ " 空气湿度：" + humidity + "%" }}
+                                    </a-button>
+                                </a-col>
+                                <a-col :span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-water"></i>
+                                        </template>
+                                        {{ " 空气质量：" + pm25 }}
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                            <a-row gutter="8">
+                                <a-col :span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-cloud-rain"></i>
+                                        </template>
+                                        {{ " 降雨概率：" + rainfall }}
+                                    </a-button>
+                                </a-col>
+                                <a-col :span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-eye"></i>
+                                        </template>
+                                        {{ " 视线距离：" + visibility }}
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                            <a-row>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          shape="round" type="text">
+                                    <template #icon>
+                                        <i class="bi bi-wind"></i>
+                                    </template>
+                                    {{ " 风速情况：" + windInfo }}
+                                </a-button>
+                            </a-row>
                         </a-space>
                     </a-list-item>
                 </a-list>

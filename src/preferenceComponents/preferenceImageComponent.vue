@@ -123,37 +123,35 @@
                                  v-model="preferenceData.customTopic"
                                  :default-value="preferenceData.customTopic"
                                  allow-clear
-                                 placeholder="使用英文搜索最准确"/>
+                                 placeholder="英文搜索最准确"/>
                     </a-form-item>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor}" shape="round"
+                              :style="{color: fontColor}" shape="circle"
                               type="text" @click="submitCustomTopicBtnOnClick"
                     >
                         <template #icon>
                             <icon-check/>
                         </template>
-                        确定
+                    </a-button>
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor}" shape="circle"
+                              type="text" @click="clearCustomTopicBtnOnClick"
+                    >
+                        <template #icon>
+                            <icon-stop />
+                        </template>
                     </a-button>
                 </a-space>
             </a-form-item>
-            <!--            <a-form-item label="提示信息">-->
-            <!--                <a-typography-paragraph>-->
-            <!--                    <ol :style="{color: fontColor}">-->
-            <!--                        <a-space direction="vertical">-->
-            <!--                            <li>刷新后的新主题可能不会立即生效</li>-->
-            <!--                            <li>图片主题全不选与全选的效果一致</li>-->
-            <!--                            <li>自定主题不为空时将禁用图片主题</li>-->
-            <!--                        </a-space>-->
-            <!--                    </ol>-->
-            <!--                </a-typography-paragraph>-->
-            <!--            </a-form-item>-->
-            <a-alert :show-icon="false" title="提示信息" type="info">
+            <a-alert :show-icon="false" title="提示信息" type="info"
+                     :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
                 <a-typography-paragraph>
                     <ol>
                         <a-space direction="vertical">
                             <li>新的主题刷新后可能不会立即生效</li>
                             <li>图片主题全不选与全选的效果一致</li>
                             <li>自定主题不为空时将禁用图片主题</li>
+                            <li>只有禁用自定主题图片主题才生效</li>
                         </a-space>
                     </ol>
                 </a-typography-paragraph>
@@ -163,7 +161,7 @@
 </template>
 
 <script setup>
-import {IconCheck} from "@arco-design/web-vue/es/icon";
+import {IconCheck, IconStop} from "@arco-design/web-vue/es/icon";
 import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
@@ -255,8 +253,17 @@ function submitCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = inputValue;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已修改自定主题，一秒后刷新页面");
+    Message.success("已禁用自定主题，一秒后刷新页面");
     disableImageTopic.value = !isEmptyString(inputValue);
+    refreshWindow();
+}
+
+function clearCustomTopicBtnOnClick() {
+    preferenceData.value.customTopic = "";
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已修改自定主题，一秒后刷新页面");
+    disableImageTopic.value = false;
     refreshWindow();
 }
 

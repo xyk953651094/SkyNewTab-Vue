@@ -149,10 +149,11 @@ onMounted(() => {
         } else {  // 一分钟之内使用上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
+                Message.info("正在加载历史图片");
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
-                Message.error("获取图片失败");
+                Message.error("加载历史图片失败");
             }
         }
 

@@ -5,7 +5,7 @@
             <a-button id="preferenceBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary"
                       @click="showDrawerBtnOnClick">
                 <template #icon>
-                    <icon-more-vertical/>
+                    <icon-menu />
                 </template>
             </a-button>
             <a-drawer
@@ -67,7 +67,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconMoreVertical} from "@arco-design/web-vue/es/icon";
+import {IconMenu} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {device} from "../javascripts/publicConstants";
 import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";

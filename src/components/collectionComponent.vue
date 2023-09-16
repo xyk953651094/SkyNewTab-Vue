@@ -12,39 +12,41 @@
                 </a-button>
             </a-tooltip>
 
-            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
-                       position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                          shape="round"
-                          type="primary"
-                          @click="showAddModalBtnOnClick">
-                    <template #icon>
-                        <icon-plus/>
-                    </template>
-                </a-button>
-            </a-tooltip>
-            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
-                       position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                          shape="round"
-                          type="primary"
-                          @click="showEditModalBtnOnClick">
-                    <template #icon>
-                        <icon-edit/>
-                    </template>
-                </a-button>
-            </a-tooltip>
-            <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
-                       position="bottom">
-                <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                          shape="round"
-                          type="primary"
-                          @click="removeAllBtnOnClick">
-                    <template #icon>
-                        <icon-delete/>
-                    </template>
-                </a-button>
-            </a-tooltip>
+            <a-space>
+                <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
+                           position="bottom">
+                    <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                              shape="round"
+                              type="primary"
+                              @click="showAddModalBtnOnClick">
+                        <template #icon>
+                            <icon-plus/>
+                        </template>
+                    </a-button>
+                </a-tooltip>
+                <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
+                           position="bottom">
+                    <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                              shape="round"
+                              type="primary"
+                              @click="showEditModalBtnOnClick">
+                        <template #icon>
+                            <icon-edit/>
+                        </template>
+                    </a-button>
+                </a-tooltip>
+                <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
+                           position="bottom">
+                    <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                              shape="round"
+                              type="primary"
+                              @click="removeAllBtnOnClick">
+                        <template #icon>
+                            <icon-delete/>
+                        </template>
+                    </a-button>
+                </a-tooltip>
+            </a-space>
         </a-space>
     </a-col>
     <a-modal v-model:visible="displayAddModal" :closable="false"

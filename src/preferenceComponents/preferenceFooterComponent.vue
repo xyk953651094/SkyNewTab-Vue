@@ -12,7 +12,7 @@
                   href="https://xyk953651094.blogspot.com"
                   shape="round" target="_blank" type="text">
             <template #icon>
-                <icon-message/>
+                <icon-notification />
             </template>
             博客
         </a-button>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import {IconGift, IconGithub, IconMessage} from "@arco-design/web-vue/es/icon";
+import {IconGift, IconGithub, IconNotification} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 

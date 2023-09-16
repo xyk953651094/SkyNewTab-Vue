@@ -48,6 +48,19 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
+            <a-form-item field="buttonShape" label="按钮形状">
+                <a-radio-group v-model="preferenceData.buttonShape"
+                               @change="buttonShapeRadioOnChange" :style="{width: '100%'}">
+                    <a-row>
+                        <a-col :span="12">
+                            <a-radio value="square">方形</a-radio>
+                        </a-col>
+                        <a-col :span="12">
+                            <a-radio value="round">圆形</a-radio>
+                        </a-col>
+                    </a-row>
+                </a-radio-group>
+            </a-form-item>
             <a-form-item field="simpleMode" label="简洁模式">
                 <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
                     <template #checked>
@@ -68,6 +81,16 @@
                     </template>
                 </a-switch>
             </a-form-item>
+            <a-form-item field="displayAlert" label="提示信息">
+                <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
+                    <template #checked>
+                        已显示
+                    </template>
+                    <template #unchecked>
+                        已隐藏
+                    </template>
+                </a-switch>
+            </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" shape="round"
@@ -79,18 +102,10 @@
                     清空并重置所有内容
                 </a-button>
             </a-form-item>
-            <!--            <a-form-item label="提示信息">-->
-            <!--                <a-typography-paragraph>-->
-            <!--                    <ol :style="{color: fontColor}">-->
-            <!--                        <a-space direction="vertical">-->
-            <!--                            <li>清空并重置所有内容将删除所有缓存，插件出现问题时可尝试此按钮</li>-->
-            <!--                        </a-space>-->
-            <!--                    </ol>-->
-            <!--                </a-typography-paragraph>-->
-            <!--            </a-form-item>-->
         </a-form>
-        <a-alert :show-icon="false" title="警告信息" type="warning">
-            清空并重置所有内容将删除所有缓存，插件出现问题时可尝试此按钮
+        <a-alert :show-icon="false" title="警告信息" type="warning"
+                 :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
+            清空并重置所有内容将删除所有缓存并恢复初始状态，插件出现问题时可尝试此按钮
         </a-alert>
     </a-card>
 </template>
@@ -175,6 +190,13 @@ function searchEngineRadioOnChange(value) {
     Message.success("已更换搜索引擎");
 }
 
+function buttonShapeRadioOnChange(value) {
+    preferenceData.value.buttonShape = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换按钮形状");
+}
+
 function simpleModeSwitchOnChange(checked) {
     preferenceData.value.simpleMode = checked;
     emit("preferenceData", preferenceData.value);
@@ -195,6 +217,18 @@ function noImageModeSwitchOnChange(checked) {
         Message.success("已开启无图模式，一秒后刷新页面");
     } else {
         Message.success("已关闭无图模式，一秒后刷新页面");
+    }
+    refreshWindow();
+}
+
+function displayAlertSwitchOnChange(checked) {
+    preferenceData.value.displayAlert = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已显示提示信息，一秒后刷新页面");
+    } else {
+        Message.success("已隐藏提示信息，一秒后刷新页面");
     }
     refreshWindow();
 }
