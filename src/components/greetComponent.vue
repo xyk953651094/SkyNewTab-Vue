@@ -2,11 +2,11 @@
     <a-space>
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-                   :style="{minWidth: '500px'}"
+                   :style="{minWidth: '550px'}"
                    position="bl"
         >
             <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                      shape="round" size="large" type="primary">
+                       shape="round" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -14,13 +14,21 @@
             </a-button>
             <template #title>
                 <a-row align="center">
-                    <a-col :span="10">
+                    <a-col :span="6">
                         <a-typography-text :style="{color: fontColor}">{{ "万年历" }}</a-typography-text>
                     </a-col>
-                    <a-col :span="14" :style="{textAlign: 'right'}">
+                    <a-col :span="18" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                       shape="round"
+                                      type="text" @click="constellationBtnOnClick">
+                                <template #icon>
+                                    <icon-star/>
+                                </template>
+                                {{ "星座运势" }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                       shape="round"
                                       type="text" @click="historyBtnOnClick">
                                 <template #icon>
                                     <icon-history/>
@@ -28,7 +36,7 @@
                                 {{ "历史上的今天" }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                       shape="round"
                                       type="text" @click="infoBtnOnClick">
                                 <template #icon>
                                     <icon-info-circle/>
@@ -45,7 +53,7 @@
                         <a-space direction="vertical">
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
+                                       shape="round" type="text">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>
@@ -53,43 +61,24 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
+                                       shape="round" type="text">
                                 <template #icon>
                                     <icon-check-circle/>
                                 </template>
-                                {{ "宜：" + suit }}
+                                {{ "宜：" + (suit.length < btnMaxSize ? suit : suit.substring(0, btnMaxSize) + "...") }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                      shape="round" type="text">
+                                       shape="round" type="text">
                                 <template #icon>
                                     <icon-close-circle/>
                                 </template>
-                                {{ "忌：" + avoid }}
+                                {{
+                                    "忌：" + (avoid.length < btnMaxSize ? avoid : avoid.substring(0, btnMaxSize) + "...")
+                                }}
                             </a-button>
-                            <!--                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
-                            <!--                                      :style="{color: fontColor, cursor: 'default'}"-->
-                            <!--                                      shape="round" type="text">-->
-                            <!--                                <template #icon>-->
-                            <!--                                    <icon-book />-->
-                            <!--                                </template>-->
-                            <!--                                {{ toast }}-->
-                            <!--                            </a-button>-->
                         </a-space>
                     </a-list-item>
-                    <!--                    <a-list-item>-->
-                    <!--                        <a-space direction="vertical">-->
-                    <!--                            <a-button v-for="item in history" :key="item.title"-->
-                    <!--                                      :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
-                    <!--                                      :style="{color: fontColor, cursor: 'default'}"-->
-                    <!--                                      shape="round" type="text">-->
-                    <!--                                <template #icon>-->
-                    <!--                                    <icon-history />-->
-                    <!--                                </template>-->
-                    <!--                                {{ item.year + "-" + item.month + "-" + item.day + "：" + item.title }}-->
-                    <!--                            </a-button>-->
-                    <!--                        </a-space>-->
-                    <!--                    </a-list-item>-->
                 </a-list>
             </template>
         </a-popover>
@@ -104,7 +93,8 @@ import {
     IconCheckCircle,
     IconCloseCircle,
     IconHistory,
-    IconInfoCircle
+    IconInfoCircle,
+    IconStar
 } from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,
@@ -116,6 +106,8 @@ import {
     httpRequest,
 } from "../javascripts//publicFunctions";
 import {appId, appSecret, defaultPreferenceData} from "../javascripts/publicConstants";
+
+const btnMaxSize = 80;
 
 const props = defineProps({
     themeColor: {
@@ -184,12 +176,16 @@ function btnMouseOut() {
     this.style.color = fontColor.value;
 }
 
-function infoBtnOnClick() {
-    window.open(searchEngineUrl.value + "万年历", "_blank",);
+function constellationBtnOnClick() {
+    window.open(searchEngineUrl.value + "星座运势", "_blank");
 }
 
 function historyBtnOnClick() {
-    window.open(searchEngineUrl.value + "历史上的今天", "_blank",);
+    window.open(searchEngineUrl.value + "历史上的今天", "_blank");
+}
+
+function infoBtnOnClick() {
+    window.open(searchEngineUrl.value + "万年历", "_blank");
 }
 
 // 万年历
@@ -230,59 +226,6 @@ function getHoliday() {
         })
 }
 
-// 每日一句
-// function setToast(data) {
-//     toast.value = data[0].content;
-//     if(!isEmptyString(data[0].author)) {
-//         toast.value += " - " + data[0].author;
-//     }
-// }
-//
-// function getToast() {
-//     let headers = {};
-//     let url = "https://www.mxnzp.com/api/daily_word/recommend";
-//     let data = {
-//         "app_id": appId,
-//         "app_secret": appSecret,
-//         "count": 1
-//     };
-//     httpRequest(headers, url, data, "GET")
-//         .then(function (resultData) {
-//             if (resultData.code === 1) {
-//                 localStorage.setItem("lastToast", JSON.stringify(resultData.data));      // 保存请求结果
-//                 setToast(resultData.data);
-//             }
-//         })
-// }
-//
-// 历史上的今天
-// function setHistory(data) {
-//     if (data.length > 5) {
-//         for(let i = 0; i < 5; i++) {
-//             history.value.push(data[i]);
-//         }
-//     }
-//     else {
-//         history.value = data;
-//     }
-// }
-//
-// function getHistory() {
-//     let headers = {};
-//     let url = "https://www.mxnzp.com/api/history/today";
-//     let data = {
-//         "app_id": appId,
-//         "app_secret": appSecret,
-//     };
-//     httpRequest(headers, url, data, "GET")
-//         .then(function (resultData) {
-//             if (resultData.code === 1) {
-//                 localStorage.setItem("lastHistory", JSON.stringify(resultData.data));      // 保存请求结果
-//                 setHistory(resultData.data);
-//             }
-//         })
-// }
-
 onMounted(() => {
     if (!props.preferenceData.simpleMode) {
         // 防抖节流
@@ -290,28 +233,14 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getHoliday();
-            // getToast();
-            // getHistory();
         } else if (nowTimeStamp - parseInt(lastRequestTime) > 4 * 60 * 60 * 1000) {  // 必须多于四小时才能进行新的请求
             getHoliday();
-            // getToast();
-            // getHistory();
         } else {  // 四小时之内使用上一次请求结果
             let lastHoliday = localStorage.getItem("lastHoliday");
-            // let lastToast = localStorage.getItem("lastToast");
-            // let lastHistory = localStorage.getItem("lastHistory");
             if (lastHoliday) {
                 lastHoliday = JSON.parse(lastHoliday);
                 setHoliday(lastHoliday);
             }
-            // if (lastToast) {
-            //     lastToast = JSON.parse(lastToast);
-            //     setToast(lastToast);
-            // }
-            // if (lastHistory) {
-            //     lastHistory = JSON.parse(lastHistory);
-            //     setHistory(lastHistory);
-            // }
         }
 
         setInterval(() => {

@@ -6,16 +6,15 @@
             :style="{width: '550px'}"
             position="br"
         >
-            <a-badge :count="checkboxOptions.length" :style="{display: display}">
-                <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                          shape="round"
-                          size="large"
-                          type="primary">
-                    <template #icon>
-                        <icon-check-square/>
-                    </template>
-                </a-button>
-            </a-badge>
+            <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                      shape="round"
+                      size="large"
+                      type="primary">
+                <template #icon>
+                    <icon-check-square/>
+                </template>
+                {{ todoSize + " 个待办事项" }}
+            </a-button>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
@@ -47,7 +46,7 @@
             </template>
             <template #content>
                 <a-list :bordered=false>
-                    <a-list-item v-for="item in checkboxOptions" :key="item.timestamp">
+                    <a-list-item v-for="item in listItems" :key="item.timestamp">
                         <a-row>
                             <a-col :span="12">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
@@ -96,6 +95,7 @@
             <a-form-item field="todoSelect" label="标签分类">
                 <a-select id="todoSelect" default-value="work" @change="selectOnChange">
                     <a-option value="work">工作</a-option>
+                    <a-option value="study">学习</a-option>
                     <a-option value="life">生活</a-option>
                 </a-select>
             </a-form-item>
@@ -141,7 +141,7 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
-let checkboxOptions = ref([]);
+let listItems = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
 let tag = ref("工作");
@@ -154,7 +154,7 @@ onMounted(() => {
         todos = JSON.parse(tempTodos);
     }
 
-    checkboxOptions.value = todos;
+    listItems.value = todos;
     todoSize.value = todos.length;
 })
 
@@ -188,7 +188,7 @@ function finishAllBtnOnClick() {
     if (tempTodos) {
         localStorage.removeItem("todos");
 
-        checkboxOptions.value = [];
+        listItems.value = [];
         todoSize.value = 0;
     }
 }
@@ -210,7 +210,7 @@ function finishBtnOnClick(item) {
         }
         localStorage.setItem("todos", JSON.stringify(todos));
 
-        checkboxOptions.value = todos;
+        listItems.value = todos;
         todoSize.value = todos.length;
     }
 }
@@ -267,7 +267,7 @@ function modalOkBtnOnClick() {
     localStorage.setItem("todos", JSON.stringify(todos));
 
     displayModal.value = false;
-    checkboxOptions.value = todos;
+    listItems.value = todos;
     todoSize.value = todos.length;
     Message.success("添加成功");
 }
@@ -280,6 +280,9 @@ function selectOnChange(value) {
     switch (value) {
         case "work":
             tag.value = "工作";
+            break;
+        case "study":
+            tag.value = "学习";
             break;
         case "life":
             tag.value = "生活";

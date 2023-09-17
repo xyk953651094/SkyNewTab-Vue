@@ -6,10 +6,10 @@
             :style="{width: '550px'}"
             position="tr"
         >
-            <a-button id="authorBtn" :style="{display: display}" class="componentTheme zIndexHigh" shape="round"
+            <a-button id="authorBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
+                      shape="round"
                       size="large"
-                      type="primary"
-                      @click="authorLinkBtnOnClick">
+                      type="primary">
                 <template #icon>
                     <icon-camera/>
                 </template>
@@ -258,7 +258,7 @@ function authorLinkBtnOnClick() {
 }
 
 function imageLinkBtnOnClick() {
-    if (authorLink.value.length !== 0) {
+    if (imageLink.value.length !== 0) {
         window.open(imageLink.value + unsplashUrl);
     } else {
         Message.error("无跳转链接");

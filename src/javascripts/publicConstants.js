@@ -44,9 +44,11 @@ export let defaultPreferenceData = {
     dynamicEffect: "all",
     imageQuality: "regular",
     imageTopics: ["bo8jQKTaE0Y"],
-    customTopic: "中国",
+    customTopic: "China",
     simpleMode: false,
     noImageMode: false,
+    buttonShape: "round",
+    displayAlert: true,
 }
 
 // 常用变量

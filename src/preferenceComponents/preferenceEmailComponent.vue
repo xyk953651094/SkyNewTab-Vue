@@ -6,7 +6,7 @@
             title="联系作者"
     >
         <template #extra>
-            <icon-send/>
+            <icon-email />
         </template>
         <a-row :gutter="[0, 8]">
             <a-col :span="12">
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import {IconExclamationCircle, IconInfoCircle, IconSend} from "@arco-design/web-vue/es/icon";
+import {IconExclamationCircle, IconInfoCircle, IconEmail} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 
