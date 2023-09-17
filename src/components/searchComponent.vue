@@ -1,5 +1,5 @@
 <template>
-    <a-col :span="24" class="center">
+    <a-col :span="24" class="alignCenter">
         <div id="mask" :style="{display: showMask}" class="mask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
@@ -63,7 +63,6 @@ function onSearch(value) {
 
 function onPressEnter() {
     let value = document.getElementById("searchInput").children[1].value;
-    console.log(value);
     window.open(searchEngineUrl.value + value);
 }
 </script>

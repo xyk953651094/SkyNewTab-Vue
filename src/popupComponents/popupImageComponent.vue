@@ -1,16 +1,18 @@
 <template>
     <a-space :style="{display: noImageMode ? 'none' : 'inline-flex'}">
-        <a-image
-            id="popupImage"
-            :src="imagePreviewUrl"
-            :style="{borderRadius: '10px'}"
-            alt="图片加载失败"
-            height="150px"
-            width="250px"
-        >
-        </a-image>
-        <canvas id="popupCanvas" :style="{display: displayCanvas, borderRadius: '10px'}" class="popupCanvas"></canvas>
-        <a-space direction="vertical">
+        <div class="popupImageDiv">
+            <a-image
+                id="popupImage"
+                :src="imagePreviewUrl"
+                :style="{borderRadius: '10px'}"
+                alt="图片加载失败"
+                height="150px"
+                width="250px"
+            >
+            </a-image>
+            <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
+        </div>
+        <a-space align="start" direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       shape="round" target="_blank"
                       type="text" @click="authorLinkBtnOnClick">
@@ -59,7 +61,9 @@
             </a-space>
         </a-space>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}" shape="round"
+    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+              :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
+              shape="round"
               type="text">
         <template #icon>
             <icon-info-circle/>
@@ -120,9 +124,11 @@ onMounted(() => {
     popupImageDiv.style.display = "none";
     if (popupImage instanceof HTMLElement) {
         popupImage.onload = function () {
-            document.getElementById("popupCanvas").remove();
+            // document.getElementById("popupCanvas").remove();
+            document.getElementById("popupCanvas").classList.remove("imageFadeIn");
+            document.getElementById("popupCanvas").classList.add("imageFadeOut");
             popupImageDiv.style.display = "block";
-            popupImageDiv.classList.add("wallpaperFadeIn");
+            popupImageDiv.classList.add("imageFadeIn");
         }
     }
 })
@@ -150,7 +156,7 @@ watch(() => props.imageData, (newValue, oldValue) => {
                 }
 
                 displayCanvas.value = "block";
-                popupCanvas.className = "popupCanvas wallpaperFadeIn";
+                popupCanvas.className = "popupCanvas imageFadeIn";
             }
         }
     }

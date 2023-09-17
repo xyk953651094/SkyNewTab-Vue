@@ -9,6 +9,7 @@
         width="102%"
     >
     </a-image>
+    <canvas id="backgroundCanvas" :style="{display: displayCanvas}" class="backgroundCanvas"/>
 </template>
 
 <script setup>
@@ -16,6 +17,7 @@ import {onMounted, ref} from "vue";
 import {httpRequest, imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
+import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 
 const emit = defineEmits(["imageData"]);
@@ -24,6 +26,7 @@ let imageData = ref(null);
 let preferenceData = ref(defaultPreferenceData);
 let imageLink = ref("");
 let display = ref("none");
+let displayCanvas = ref("none");
 
 // 请求完成后处理步骤
 function setWallpaper(data) {
@@ -47,6 +50,22 @@ function setWallpaper(data) {
         default:
             imageLink.value = imageData.value.urls.regular;
             break;
+    }
+
+    // blurHash
+    if (!isEmptyString(data.blur_hash)) {
+        const backgroundCanvas = document.getElementById("backgroundCanvas");
+        if (backgroundCanvas instanceof HTMLCanvasElement) {
+            let blurHashImage = decode(data.blur_hash, backgroundCanvas.width, backgroundCanvas.height);
+            let ctx = backgroundCanvas.getContext("2d");
+            if (ctx) {
+                const imageData = new ImageData(blurHashImage, backgroundCanvas.width, backgroundCanvas.height);
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            displayCanvas.value = "block";
+            backgroundCanvas.className = "backgroundCanvas wallpaperFadeIn";
+        }
     }
 }
 
@@ -73,22 +92,33 @@ function getWallpaper() {
         data.query = imageQuery;
     }
 
-    Message.info("正在获取图片");
+    Message.loading({
+        content: "正在获取图片",
+        duration: 0
+    });
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
-            Message.info("正在加载图片");
+            Message.clear();
+            Message.loading({
+                content: "正在加载图片",
+                duration: 0
+            });
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
             setWallpaper(resultData);
         })
         .catch(function () {
-            // Message.error("获取图片失败");
+            Message.clear();
             // 请求失败也更新请求时间，防止超时后无信息可显示
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             // 获取图片失败时显示上次图片
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
                 lastImage = JSON.parse(lastImage);
+                Message.error({
+                    content: "获取图片失败，加载历史图片",
+                    duration: 0
+                });
                 setWallpaper(lastImage);
             } else {
                 Message.error("获取图片失败");
@@ -114,15 +144,16 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
-        } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {  // 必须多于一分钟才能进行新的请求
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
             getWallpaper();
         } else {  // 一分钟之内使用上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
+                Message.info("正在加载历史图片");
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
-                Message.error("获取图片失败");
+                Message.error("加载历史图片失败");
             }
         }
 
@@ -132,7 +163,10 @@ onMounted(() => {
 
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
+                Message.clear();
                 Message.success("图片加载成功");
+                // document.getElementById("backgroundCanvas").remove();
+                document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
 
                 // 设置动态效果

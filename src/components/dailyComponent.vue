@@ -6,16 +6,15 @@
             :style="{width: '550px'}"
             position="br"
         >
-            <a-badge :count="listItems.length" :style="{display: display}">
-                <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                          shape="round"
-                          size="large"
-                          type="primary">
-                    <template #icon>
-                        <icon-calendar-clock/>
-                    </template>
-                </a-button>
-            </a-badge>
+            <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
+                      shape="round"
+                      size="large"
+                      type="primary">
+                <template #icon>
+                    <icon-calendar-clock/>
+                </template>
+                {{ dailySize + " 个倒数日" }}
+            </a-button>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
@@ -218,7 +217,6 @@ function showAddModalBtnOnClick() {
         daily = JSON.parse(tempDaily);
     }
     if (daily.length < dailyMaxSize.value) {
-        // $("#dailyInput").children("input").val("");
         displayModal.value = true;
         selectedTimeStamp.value = 0;
     } else {

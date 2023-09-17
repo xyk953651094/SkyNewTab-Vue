@@ -2,34 +2,45 @@
     <a-layout style="height: 100%">
         <a-layout-header id="header">
             <a-row justify="center">
-                <a-col :lg="10" :md="10" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: left">
+                <a-col :lg="10" :md="0" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: left">
                     <a-space>
                         <greet-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <weather-component :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
-                <a-col :lg="10" :md="10" :sm="22" :xl="10" :xs="22" :xxl="10" style="text-align: right">
+                <a-col :lg="10" :md="0" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: right">
                     <a-space>
                         <daily-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <todo-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
                     </a-space>
                 </a-col>
+                <a-col :lg="0" :md="22" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
+                    <a-space>
+                        <author-lite-component
+                            :display="componentDisplay"
+                            :image-data="imageData"
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
+                        <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
+                    </a-space>
+                </a-col>
             </a-row>
         </a-layout-header>
-        <a-layout-content id="content" class="center">
+        <a-layout-content id="content" class="alignCenter">
             <wallpaper-component @imageData="getImageData"/>
             <a-space align="center" direction="vertical">
                 <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData"/>
-                <a-col :lg="24" :md="24" :sm="0" :xl="24" :xs="0" :xxl="24">
+                <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 </a-col>
             </a-space>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="center">
-                <a-col :lg="20" :md="20" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
+                <a-col :lg="20" :md="0" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
@@ -56,6 +67,7 @@ import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import {defaultPreferenceData} from "./javascripts/publicConstants";
+import AuthorLiteComponent from "./components/authorLiteComponent.vue";
 
 const $ = require("jquery");
 
@@ -104,7 +116,9 @@ onMounted(() => {
     }
 
     // 未加载图片前随机显示颜色主题
-    themeColor.value = setColorTheme();
+    if (themeColor.value.themeColor === "") {
+        themeColor.value = setColorTheme();
+    }
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
@@ -115,6 +129,8 @@ onMounted(() => {
         $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
         $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
         $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+        $(".arco-alert").css("padding", "10px");
+        $("div.arco-typography").css("margin-bottom", "0");
 
         // popover
         let popoverEle = $(".arco-popover");
@@ -155,8 +171,6 @@ onMounted(() => {
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor
             });
-            $(".arco-list-item:not(:last-child)").css("borderBottom", "1px solid" + themeColor.value.componentFontColor);
-            $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
             $(".arco-drawer-footer").css({
                 "borderTopColor": themeColor.value.componentFontColor,
                 "textAlign": "center"
