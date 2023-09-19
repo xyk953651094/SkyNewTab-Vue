@@ -23,7 +23,10 @@
                 @ok="handleOk"
             >
                 <template #title>
-                    {{ "菜单栏" }}
+                    <preference-header-component
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                    />
                 </template>
                 <a-space direction="vertical" size="large">
                     <preference-image-component
@@ -76,6 +79,7 @@ import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterC
 import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";
 import PreferenceImageComponent from "../preferenceComponents/preferenceImageComponent.vue";
 import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunctionComponent.vue";
+import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
