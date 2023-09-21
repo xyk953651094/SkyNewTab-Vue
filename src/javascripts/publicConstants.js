@@ -44,7 +44,7 @@ export let defaultPreferenceData = {
     dynamicEffect: "all",
     imageQuality: "regular",
     imageTopics: ["bo8jQKTaE0Y"],
-    customTopic: "China",
+    customTopic: "",
     simpleMode: false,
     noImageMode: false,
     buttonShape: "round",
