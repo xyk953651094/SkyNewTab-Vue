@@ -11,7 +11,7 @@
         <a-space direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                       :style="{color: fontColor}" href="https://www.mxnzp.com/"
-                      shape="round"
+                      :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-calendar/>
@@ -20,7 +20,7 @@
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                       :style="{color: fontColor}" href="https://www.jinrishici.com/"
-                      shape="round"
+                      :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-cloud/>
@@ -29,7 +29,7 @@
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                       :style="{color: fontColor}" href="https://unsplash.com/"
-                      shape="round"
+                      :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
                 <template #icon>
                     <icon-file-image/>
@@ -47,6 +47,7 @@
 import {IconApps, IconCalendar, IconCloud, IconFileImage} from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     hoverColor: {
@@ -68,6 +69,13 @@ const props = defineProps({
         required: true,
         default: () => {
             return ""
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

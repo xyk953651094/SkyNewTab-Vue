@@ -12,7 +12,7 @@
             <a-col :span="12">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" href="https://unsplash.com/"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
                               image-url="https://unsplash.com/favicon.ico"
@@ -23,7 +23,7 @@
             <a-col :span="12">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" href="https://www.pexels.com/"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
                               image-url="https://www.pexels.com/favicon.ico"
@@ -34,7 +34,7 @@
             <a-col :span="12">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" href="https://pixabay.com/"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
                               image-url="https://pixabay.com/favicon.ico"
@@ -45,7 +45,7 @@
             <a-col :span="12">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" href="https://www.jetbrains.com/"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
                               image-url="https://www.jetbrains.com/favicon.ico"
@@ -61,6 +61,7 @@
 import {IconLink} from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     hoverColor: {
@@ -82,6 +83,13 @@ const props = defineProps({
         required: true,
         default: () => {
             return ""
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

@@ -7,7 +7,7 @@
             position="br"
         >
             <a-button id="todoBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                      shape="round"
+                      :shape="preferenceData.buttonShape"
                       size="large"
                       type="primary">
                 <template #icon>
@@ -25,7 +25,7 @@
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
                                     <icon-plus/>
@@ -33,7 +33,7 @@
                                 {{ "添加待办事项" }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="finishAllBtnOnClick">
                                 <template #icon>
                                     <icon-check/>
@@ -50,7 +50,7 @@
                         <a-row>
                             <a-col :span="12">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                           type="text">
                                     <template #icon>
                                         <icon-check-square/>
@@ -60,7 +60,7 @@
                             </a-col>
                             <a-col :span="12">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                           type="text">
                                     <template #icon>
                                         <icon-tag/>
@@ -71,7 +71,7 @@
                         </a-row>
                         <template #actions>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="circle"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="finishBtnOnClick(item)">
                                 <template #icon>
                                     <icon-check/>

@@ -6,7 +6,7 @@
                    position="bl"
         >
             <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                       shape="round" size="large" type="primary">
+                       :shape="preferenceData.buttonShape" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -19,7 +19,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                   shape="round"
+                                   :shape="preferenceData.buttonShape"
                                   type="text" @click="infoBtnOnClick">
                             <template #icon>
                                 <icon-info-circle/>
@@ -35,7 +35,7 @@
                         <a-space direction="vertical">
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="round" type="text">
+                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>
@@ -43,7 +43,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="round" type="text">
+                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-check-circle/>
                                 </template>
@@ -51,7 +51,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="round" type="text">
+                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-close-circle/>
                                 </template>

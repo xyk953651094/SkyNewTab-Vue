@@ -126,7 +126,7 @@
                                  placeholder="英文搜索最准确"/>
                     </a-form-item>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor}" shape="circle"
+                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                               type="text" @click="submitCustomTopicBtnOnClick"
                     >
                         <template #icon>
@@ -134,7 +134,7 @@
                         </template>
                     </a-button>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor}" shape="circle"
+                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                               type="text" @click="clearCustomTopicBtnOnClick"
                     >
                         <template #icon>

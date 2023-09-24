@@ -1,7 +1,7 @@
 <template>
     <a-space :style="{display: simpleMode ? 'none' : 'inline-flex'}">
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                  shape="round"
+                  :shape="preferenceData.buttonShape"
                   type="text" @click="greetBtnOnClick">
             <template #icon>
                 <i :class="greetIcon"></i>
@@ -9,7 +9,7 @@
             {{ greetContent }}
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                  shape="round"
+                  :shape="preferenceData.buttonShape"
                   type="text" @click="weatherBtnOnClick">
             <template #icon>
                 <i :class="weatherIcon"></i>
@@ -17,7 +17,7 @@
             {{ weatherContent }}
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
-                  shape="round"
+                  :shape="preferenceData.buttonShape"
                   type="text">
             <template #icon>
                 <icon-calendar-clock/>
@@ -25,7 +25,7 @@
             {{ dailySize + " 个倒数日" }}
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
-                  shape="round"
+                  :shape="preferenceData.buttonShape"
                   type="text">
             <template #icon>
                 <icon-check-square/>
@@ -35,7 +35,7 @@
     </a-space>
     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
               :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}"
-              shape="round"
+              :shape="preferenceData.buttonShape"
               type="text">
         <template #icon>
             <icon-info-circle/>

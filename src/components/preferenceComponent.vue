@@ -2,7 +2,7 @@
     <a-space>
         <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="菜单栏"
                    position="br">
-            <a-button id="preferenceBtn" class="componentTheme zIndexHigh" shape="round" size="large" type="primary"
+            <a-button id="preferenceBtn" class="componentTheme zIndexHigh" :shape="preferenceData.buttonShape" size="large" type="primary"
                       @click="showDrawerBtnOnClick">
                 <template #icon>
                     <icon-menu />
@@ -26,6 +26,7 @@
                     <preference-header-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-data="preferenceData"
                     />
                 </template>
                 <a-space direction="vertical" size="large">
@@ -45,22 +46,26 @@
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-data="preferenceData"
                     />
                     <preference-info-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-data="preferenceData"
                     />
                     <preference-email-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-data="preferenceData"
                     />
                 </a-space>
                 <template #footer>
                     <preference-footer-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-data="preferenceData"
                     />
                 </template>
             </a-drawer>
@@ -72,7 +77,7 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMenu} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
-import {device} from "../javascripts/publicConstants";
+import {defaultPreferenceData, device} from "../javascripts/publicConstants";
 import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
 import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
 import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
@@ -97,6 +102,13 @@ const props = defineProps({
                 "componentBackgroundColor": "",
                 "componentFontColor": ""
             }
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

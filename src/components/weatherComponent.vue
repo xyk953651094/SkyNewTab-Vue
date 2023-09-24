@@ -7,7 +7,7 @@
             position="bl"
         >
             <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                      shape="round" size="large" type="primary">
+                      :shape="preferenceData.buttonShape" size="large" type="primary">
                 <template #icon>
                     <i :class="weatherIcon"></i>
                 </template>
@@ -20,7 +20,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                  shape="round"
+                                  :shape="preferenceData.buttonShape"
                                   type="text" @click="infoBtnOnClick">
                             <template #icon>
                                 <icon-info-circle/>
@@ -37,7 +37,7 @@
                             <a-row gutter="8">
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                              shape="round"
+                                              :shape="preferenceData.buttonShape"
                                               type="text" @click="locationBtnOnClick">
                                         <template #icon>
                                             <icon-location/>
@@ -48,7 +48,7 @@
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-wind"></i>
                                         </template>
@@ -60,7 +60,7 @@
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-moisture"></i>
                                         </template>
@@ -70,7 +70,7 @@
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-water"></i>
                                         </template>
@@ -82,7 +82,7 @@
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-cloud-rain"></i>
                                         </template>
@@ -92,7 +92,7 @@
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-eye"></i>
                                         </template>

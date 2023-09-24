@@ -5,7 +5,7 @@
                        :content="item.webUrl"
                        :content-style="{color: fontColor}" position="bottom">
                 <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           type="primary"
                           @click="collectionBtnOnClick(item)">
                     {{ item.webName }}
@@ -16,7 +16,7 @@
                 <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
                            position="bottom">
                     <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                              shape="round"
+                              :shape="preferenceData.buttonShape"
                               type="primary"
                               @click="showAddModalBtnOnClick">
                         <template #icon>
@@ -27,7 +27,7 @@
                 <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
                            position="bottom">
                     <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                              shape="round"
+                              :shape="preferenceData.buttonShape"
                               type="primary"
                               @click="showEditModalBtnOnClick">
                         <template #icon>
@@ -38,7 +38,7 @@
                 <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
                            position="bottom">
                     <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
-                              shape="round"
+                              :shape="preferenceData.buttonShape"
                               type="primary"
                               @click="removeAllBtnOnClick">
                         <template #icon>
@@ -76,7 +76,7 @@
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                              shape="round"
+                              :shape="preferenceData.buttonShape"
                               type="text" @click="removeAllBtnOnClick">
                         <template #icon>
                             <icon-delete/>
@@ -91,7 +91,7 @@
                 <a-row>
                     <a-col :span="8">
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                  :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                  :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                   type="text">
                             <template #icon>
                                 <icon-pushpin/>
@@ -101,7 +101,7 @@
                     </a-col>
                     <a-col :span="16">
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                  :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                  :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                   type="text">
                             <template #icon>
                                 <icon-link/>
@@ -112,7 +112,7 @@
                 </a-row>
                 <template #actions>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                              shape="circle"
+                              :shape="preferenceData.buttonShape"
                               type="text" @click="removeBtnOnClick(item)">
                         <template #icon>
                             <icon-delete/>

@@ -4,15 +4,31 @@
             <a-row justify="center">
                 <a-col :lg="10" :md="0" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: left">
                     <a-space>
-                        <greet-component :preference-data="preferenceData" :theme-color="themeColor"/>
-                        <weather-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <greet-component
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
+                        <weather-component
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
                     </a-space>
                 </a-col>
                 <a-col :lg="10" :md="0" :sm="0" :xl="10" :xs="0" :xxl="10" style="text-align: right">
                     <a-space>
-                        <daily-component :preference-data="preferenceData" :theme-color="themeColor"/>
-                        <todo-component :preference-data="preferenceData" :theme-color="themeColor"/>
-                        <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
+                        <daily-component
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
+                        <todo-component
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
+                        <preference-component
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                            @preference-data="getPreferenceData"
+                        />
                     </a-space>
                 </a-col>
                 <a-col :lg="0" :md="22" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
@@ -23,7 +39,11 @@
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                         />
-                        <preference-component :theme-color="themeColor" @preference-data="getPreferenceData"/>
+                        <preference-component
+                            :theme-color="themeColor"
+                            :preference-data="preferenceData"
+                            @preference-data="getPreferenceData"
+                        />
                     </a-space>
                 </a-col>
             </a-row>
@@ -187,7 +207,12 @@ onMounted(() => {
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer").css("borderTopColor", "transparent");
             $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
-            $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
+            if(preferenceData.value.buttonShape === "round") {
+                $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
+            }
+            else {
+                $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-square arco-btn-text").removeClass("arco-btn-shape-round");
+            }
             $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {
                 e.currentTarget.style.backgroundColor = themeColor.value.themeColor;
                 e.currentTarget.style.color = getFontColor(themeColor.value.themeColor);

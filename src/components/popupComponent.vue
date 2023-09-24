@@ -4,6 +4,7 @@
             <popup-header-component
                 :font-color="fontColor"
                 :hover-color="hoverColor"
+                :preference-data="preferenceData"
             />
         </a-layout-header>
         <a-layout-content class="popupContent">
@@ -28,6 +29,7 @@
             <popup-footer-component
                 :font-color="fontColor"
                 :hover-color="hoverColor"
+                :preference-data="preferenceData"
             />
         </a-layout-footer>
     </a-layout>

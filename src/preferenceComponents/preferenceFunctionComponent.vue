@@ -19,7 +19,7 @@
 <!--                                 placeholder="请输入您的地理位置"/>-->
 <!--                    </a-form-item>-->
 <!--                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
-<!--                              :style="{color: fontColor}" shape="round"-->
+<!--                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"-->
 <!--                              type="text" @click="submitLocationBtnOnClick"-->
 <!--                    >-->
 <!--                        <template #icon>-->
@@ -48,6 +48,19 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
+            <a-form-item field="buttonShape" label="按钮形状">
+                <a-radio-group v-model="preferenceData.buttonShape"
+                               @change="buttonShapeRadioOnChange" :style="{width: '100%'}">
+                    <a-row>
+                        <a-col :span="12">
+                            <a-radio value="round">圆形</a-radio>
+                        </a-col>
+                        <a-col :span="12">
+                            <a-radio value="default">方形</a-radio>
+                        </a-col>
+                    </a-row>
+                </a-radio-group>
+            </a-form-item>
             <a-form-item field="simpleMode" label="简洁模式">
                 <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
                     <template #checked>
@@ -70,7 +83,7 @@
             </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                          :style="{color: fontColor}" shape="round"
+                          :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                           type="text" @click="clearStorageBtnOnClick"
                 >
                     <template #icon>
@@ -165,6 +178,14 @@ function searchEngineRadioOnChange(value) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
+}
+
+function buttonShapeRadioOnChange(value) {
+    preferenceData.value.buttonShape = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换按钮形状，一秒后刷新页面");
+    refreshWindow();
 }
 
 function simpleModeSwitchOnChange(checked) {

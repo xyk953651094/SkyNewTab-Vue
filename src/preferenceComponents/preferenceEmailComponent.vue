@@ -12,7 +12,7 @@
             <a-col :span="12">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
                         <icon-info-circle/>
@@ -23,7 +23,7 @@
             <a-col :span="12">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
                         <icon-exclamation-circle/>
@@ -39,6 +39,7 @@
 import {IconExclamationCircle, IconInfoCircle, IconEmail} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     hoverColor: {
@@ -60,6 +61,13 @@ const props = defineProps({
         required: true,
         default: () => {
             return ""
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

@@ -7,7 +7,7 @@
             position="tr"
         >
             <a-button id="authorBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
-                      shape="round"
+                      :shape="preferenceData.buttonShape"
                       size="large"
                       type="primary">
                 <template #icon>
@@ -23,7 +23,7 @@
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="authorLinkBtnOnClick">
                                 <template #icon>
                                     <icon-link/>
@@ -31,7 +31,7 @@
                                 {{ "摄影师主页" }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="imageLinkBtnOnClick">
                                 <template #icon>
                                     <icon-link/>
@@ -50,7 +50,7 @@
                             <a-space direction="vertical">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor}"
-                                          shape="round" type="text" @click="authorLinkBtnOnClick">
+                                          :shape="preferenceData.buttonShape" type="text" @click="authorLinkBtnOnClick">
                                     <template #icon>
                                         <icon-user/>
                                     </template>
@@ -61,7 +61,7 @@
                                 <a-space>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-collection"></i>
                                         </template>
@@ -69,7 +69,7 @@
                                     </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-heart"></i>
                                         </template>
@@ -77,7 +77,7 @@
                                     </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <i class="bi bi-images"></i>
                                         </template>
@@ -95,7 +95,7 @@
                             <a-space direction="vertical">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor}"
-                                          shape="round"
+                                          :shape="preferenceData.buttonShape"
                                           type="text" @click="imageLocationBtnOnClick">
                                     <template #icon>
                                         <icon-location/>
@@ -106,7 +106,7 @@
                                 </a-button>
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                           :style="{color: fontColor}"
-                                          shape="round" type="text" @click="imageLinkBtnOnClick">
+                                          :shape="preferenceData.buttonShape" type="text" @click="imageLinkBtnOnClick">
                                     <template #icon>
                                         <icon-info-circle/>
                                     </template>
@@ -117,7 +117,7 @@
                                 <a-space>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              shape="round" type="text">
+                                              :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
                                             <icon-clock-circle/>
                                         </template>
@@ -125,7 +125,7 @@
                                     </a-button>
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor}"
-                                              shape="round"
+                                              :shape="preferenceData.buttonShape"
                                               type="text" @click="imageCameraBtnOnClick">
                                         <template #icon>
                                             <icon-camera/>
