@@ -1,6 +1,6 @@
 <template>
     <a-col :span="24" class="alignCenter">
-        <div id="mask" :style="{display: showMask}" class="mask zIndexMiddle"/>
+        <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
             allow-clear
@@ -26,7 +26,7 @@ import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunct
 import "../stylesheets/searchComponent.less"
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
-let showMask = ref("none");
+let displayMask = ref("none");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
 
@@ -48,13 +48,12 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
 })
 
 function onFocus() {
-    fadeIn("#mask", 300);
-    showMask.value = "block";
+    fadeIn("#searchMask", 300);
+    displayMask.value = "block";
 }
 
 function onBlur() {
-    fadeOut("#mask", 300);
-    // showMask.value = "none";
+    fadeOut("#searchMask", 300);
 }
 
 function onSearch(value) {

@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{minWidth: '360px'}"
+            :style="{minWidth: '400px'}"
             position="bl"
         >
             <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
@@ -15,28 +15,18 @@
             </a-button>
             <template #title>
                 <a-row align="center">
-                    <a-col :span="6">
+                    <a-col :span="10">
                         <a-typography-text :style="{color: fontColor}">{{ "天气信息" }}</a-typography-text>
                     </a-col>
-                    <a-col :span="18" :style="{textAlign: 'right'}">
-                        <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
-                                      type="text" @click="locationBtnOnClick">
-                                <template #icon>
-                                    <icon-location/>
-                                </template>
-                                {{ location }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
-                                      type="text" @click="infoBtnOnClick">
-                                <template #icon>
-                                    <icon-info-circle/>
-                                </template>
-                                {{ "更多信息" }}
-                            </a-button>
-                        </a-space>
+                    <a-col :span="14" :style="{textAlign: 'right'}">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                  shape="round"
+                                  type="text" @click="infoBtnOnClick">
+                            <template #icon>
+                                <icon-info-circle/>
+                            </template>
+                            {{ "更多信息" }}
+                        </a-button>
                     </a-col>
                 </a-row>
             </template>
@@ -44,6 +34,28 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
+                            <a-row gutter="8">
+                                <a-col :span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                              shape="round"
+                                              type="text" @click="locationBtnOnClick">
+                                        <template #icon>
+                                            <icon-location/>
+                                        </template>
+                                        {{ " 地理位置：" + location }}
+                                    </a-button>
+                                </a-col>
+                                <a-col :span="12">
+                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                              :style="{color: fontColor, cursor: 'default'}"
+                                              shape="round" type="text">
+                                        <template #icon>
+                                            <i class="bi bi-wind"></i>
+                                        </template>
+                                        {{ " 风速情况：" + windInfo }}
+                                    </a-button>
+                                </a-col>
+                            </a-row>
                             <a-row gutter="8">
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
@@ -87,16 +99,6 @@
                                         {{ " 视线距离：" + visibility }}
                                     </a-button>
                                 </a-col>
-                            </a-row>
-                            <a-row>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          shape="round" type="text">
-                                    <template #icon>
-                                        <i class="bi bi-wind"></i>
-                                    </template>
-                                    {{ " 风速情况：" + windInfo }}
-                                </a-button>
                             </a-row>
                         </a-space>
                     </a-list-item>

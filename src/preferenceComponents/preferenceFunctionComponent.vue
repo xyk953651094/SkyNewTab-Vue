@@ -58,16 +58,6 @@
                     </template>
                 </a-switch>
             </a-form-item>
-            <a-form-item field="noImageMode" label="无图模式">
-                <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
-            </a-form-item>
             <a-form-item field="displayAlert" label="提示信息">
                 <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
                     <template #checked>
@@ -185,18 +175,6 @@ function simpleModeSwitchOnChange(checked) {
         Message.success("已开启简洁模式，一秒后刷新页面");
     } else {
         Message.success("已关闭简洁模式，一秒后刷新页面");
-    }
-    refreshWindow();
-}
-
-function noImageModeSwitchOnChange(checked) {
-    preferenceData.value.noImageMode = checked;
-    emit("preferenceData", preferenceData.value);
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    if (checked) {
-        Message.success("已开启无图模式，一秒后刷新页面");
-    } else {
-        Message.success("已关闭无图模式，一秒后刷新页面");
     }
     refreshWindow();
 }

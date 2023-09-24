@@ -143,6 +143,26 @@
                     </a-button>
                 </a-space>
             </a-form-item>
+            <a-form-item field="nightMode" label="降低亮度">
+                <a-switch v-model="preferenceData.nightMode" @change="nightModeSwitchOnChange">
+                    <template #checked>
+                        已开启
+                    </template>
+                    <template #unchecked>
+                        已关闭
+                    </template>
+                </a-switch>
+            </a-form-item>
+            <a-form-item field="noImageMode" label="无图模式">
+                <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
+                    <template #checked>
+                        已开启
+                    </template>
+                    <template #unchecked>
+                        已关闭
+                    </template>
+                </a-switch>
+            </a-form-item>
             <a-alert :show-icon="false" title="提示信息" type="info"
                      :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
                 <a-typography-paragraph>
@@ -264,6 +284,30 @@ function clearCustomTopicBtnOnClick() {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已修改自定主题，一秒后刷新页面");
     disableImageTopic.value = false;
+    refreshWindow();
+}
+
+function nightModeSwitchOnChange(checked) {
+    preferenceData.value.nightMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已降低背景亮度，一秒后刷新页面");
+    } else {
+        Message.success("已恢复背景亮度，一秒后刷新页面");
+    }
+    refreshWindow();
+}
+
+function noImageModeSwitchOnChange(checked) {
+    preferenceData.value.noImageMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已开启无图模式，一秒后刷新页面");
+    } else {
+        Message.success("已关闭无图模式，一秒后刷新页面");
+    }
     refreshWindow();
 }
 
