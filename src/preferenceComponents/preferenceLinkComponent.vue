@@ -15,9 +15,7 @@
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
-                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                  image-url="https://unsplash.com/favicon.ico"
-                                  shape="square"/>
+                        <icon-file-image />
                     </template>
                     Unsplash
                 </a-button>
@@ -28,9 +26,7 @@
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
-                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                  image-url="https://www.pexels.com/favicon.ico"
-                                  shape="square"/>
+                        <icon-file-image />
                     </template>
                     Pexels
                 </a-button>
@@ -41,9 +37,7 @@
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
-                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                  image-url="https://pixabay.com/favicon.ico"
-                                  shape="square"/>
+                        <icon-file-image />
                     </template>
                     Pixabay
                 </a-button>
@@ -54,9 +48,7 @@
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
-                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                                  image-url="https://www.jetbrains.com/favicon.ico"
-                                  shape="square"/>
+                        <icon-code-square />
                     </template>
                     JetBrains
                 </a-button>
@@ -66,7 +58,7 @@
 </template>
 
 <script setup>
-import {IconLink} from "@arco-design/web-vue/es/icon";
+import {IconLink, IconFileImage, IconCodeSquare} from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
