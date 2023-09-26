@@ -42,19 +42,25 @@
                         :hover-color="hoverColor"
                         @preference-data="getPreferenceData"
                     />
-                    <preference-link-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
                     <preference-info-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
+                    <preference-product-component
+                        :background-color="backgroundColor"
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                        :preference-data="preferenceData"
+                    />
                     <preference-email-component
+                        :background-color="backgroundColor"
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                        :preference-data="preferenceData"
+                    />
+                    <preference-link-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
@@ -85,6 +91,7 @@ import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoCompo
 import PreferenceImageComponent from "../preferenceComponents/preferenceImageComponent.vue";
 import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunctionComponent.vue";
 import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
+import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");

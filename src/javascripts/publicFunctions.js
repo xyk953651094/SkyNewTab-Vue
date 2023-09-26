@@ -251,36 +251,42 @@ export function getDevice() {
     } else if (ua.indexOf("Android") > -1) {
         return "Android"
     } else {
-        return ''
+        return ""
     }
 }
 
 export function getSearchEngineDetail(searchEngine) {
+    let searchEngineName;
     let searchEngineUrl;
     let searchEngineIconUrl;
     switch (searchEngine) {
         case "baidu":
+            searchEngineName = "Baidu";
             searchEngineUrl = "https://www.baidu.com/s?wd=";
             searchEngineIconUrl = "https://www.baidu.com/favicon.ico";
             break;
         case "bing":
+            searchEngineName = "Bing";
             searchEngineUrl = "https://www.bing.com/search?q=";
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
         case "google":
+            searchEngineName = "Google";
             searchEngineUrl = "https://www.google.com/search?q=";
             searchEngineIconUrl = "https://www.google.com/favicon.ico";
             break;
         case "yandex":
+            searchEngineName = "Yandex";
             searchEngineUrl = "https://yandex.com/search/?text=";
             searchEngineIconUrl = "https://yastatic.net/s3/home-static/_/92/929b10d17990e806734f68758ec917ec.png";
             break;
         default:
+            searchEngineName = "Bing";
             searchEngineUrl = "https://www.bing.com/search?q=";
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
     }
-    return {"searchEngineUrl": searchEngineUrl, "searchEngineIconUrl": searchEngineIconUrl};
+    return {"searchEngineName": searchEngineName, "searchEngineUrl": searchEngineUrl, "searchEngineIconUrl": searchEngineIconUrl};
 }
 
 // 过渡动画

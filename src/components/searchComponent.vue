@@ -13,24 +13,40 @@
             @press-enter="onPressEnter"
         >
             <template #prefix>
-                <a-avatar :image-url="searchEngineIconUrl" :size="24" :style="{backgroundColor: 'transparent'}"/>
+                <a-button type="text" shape="round" size="small"
+                          id="searchEngineIconBtn" :style="{cursor: 'default'}">
+                    {{searchEngineName}}
+                </a-button>
+                <a-divider direction="vertical" />
             </template>
         </a-input-search>
     </a-col>
 </template>
 
 <script setup>
-// import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
-import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
+import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
-let displayMask = ref("none");
+let backgroundColor = ref("");
+let fontColor = ref("");
+let searchEngineName = ref("Bing");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
-let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
+let displayMask = ref("none");
 
 const props = defineProps({
+    themeColor: {
+        type: Object,
+        required: true,
+        default: () => {
+            return {
+                "themeColor": "",
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
+    },
     preferenceData: {
         type: Object,
         required: true,
@@ -40,10 +56,19 @@ const props = defineProps({
     }
 });
 
+watch(() => props.themeColor, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#searchEngineIconBtn", backgroundColor.value, fontColor.value);
+    }
+})
+
 watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
-        searchEngineIconUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineIconUrl;
+        let searchEngineDetail = getSearchEngineDetail(newValue.searchEngine);
+        searchEngineName.value = searchEngineDetail.searchEngineName;
+        searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
     }
 })
 

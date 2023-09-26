@@ -14,10 +14,12 @@
                           :style="{color: fontColor}" href="https://unsplash.com/"
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
-                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                              image-url="https://unsplash.com/favicon.ico"
-                              shape="square"/>
-                    &nbsp;&nbsp;Unsplash
+                    <template #icon>
+                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                  image-url="https://unsplash.com/favicon.ico"
+                                  shape="square"/>
+                    </template>
+                    Unsplash
                 </a-button>
             </a-col>
             <a-col :span="12">
@@ -25,10 +27,12 @@
                           :style="{color: fontColor}" href="https://www.pexels.com/"
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
-                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                              image-url="https://www.pexels.com/favicon.ico"
-                              shape="square"/>
-                    &nbsp;&nbsp;Pexels
+                    <template #icon>
+                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                  image-url="https://www.pexels.com/favicon.ico"
+                                  shape="square"/>
+                    </template>
+                    Pexels
                 </a-button>
             </a-col>
             <a-col :span="12">
@@ -36,10 +40,12 @@
                           :style="{color: fontColor}" href="https://pixabay.com/"
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
-                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                              image-url="https://pixabay.com/favicon.ico"
-                              shape="square"/>
-                    &nbsp;&nbsp;Pixabay
+                    <template #icon>
+                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                  image-url="https://pixabay.com/favicon.ico"
+                                  shape="square"/>
+                    </template>
+                    Pixabay
                 </a-button>
             </a-col>
             <a-col :span="12">
@@ -47,10 +53,12 @@
                           :style="{color: fontColor}" href="https://www.jetbrains.com/"
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
-                    <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
-                              image-url="https://www.jetbrains.com/favicon.ico"
-                              shape="square"/>
-                    &nbsp;&nbsp;JetBrains
+                    <template #icon>
+                        <a-avatar :size="16" :style="{backgroundColor: 'transparent'}"
+                                  image-url="https://www.jetbrains.com/favicon.ico"
+                                  shape="square"/>
+                    </template>
+                    JetBrains
                 </a-button>
             </a-col>
         </a-row>

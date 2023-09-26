@@ -6,7 +6,7 @@
             title="产品信息"
     >
         <template #extra>
-            <icon-apps/>
+            <icon-info-circle/>
         </template>
         <a-space direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import {IconApps, IconCalendar, IconCloud, IconFileImage} from "@arco-design/web-vue/es/icon";
+import {IconInfoCircle, IconCalendar, IconCloud, IconFileImage} from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";

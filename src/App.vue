@@ -52,7 +52,7 @@
             <wallpaper-component @imageData="getImageData"/>
             <a-space align="center" direction="vertical">
                 <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
-                <search-component :preference-data="preferenceData"/>
+                <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 </a-col>
