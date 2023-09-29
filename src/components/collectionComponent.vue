@@ -1,11 +1,11 @@
 <template>
     <a-row :style="{display: display}">
-        <a-col :span="24" class="alignCenter zIndexHigh">
+        <a-col :span="24" class="alignCenter">
             <a-space>
                 <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
                            :content="item.webUrl"
                            :content-style="{color: fontColor}" position="bottom">
-                    <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                    <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
                               :shape="preferenceData.buttonShape"
                               type="primary"
                               @click="collectionBtnOnClick(item)">
@@ -16,7 +16,7 @@
                 <a-space>
                     <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
                                position="bottom">
-                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
                                   :shape="preferenceData.buttonShape"
                                   type="primary"
                                   @click="showAddModalBtnOnClick">
@@ -27,7 +27,7 @@
                     </a-tooltip>
                     <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
                                position="bottom">
-                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
                                   :shape="preferenceData.buttonShape"
                                   type="primary"
                                   @click="showEditModalBtnOnClick">
@@ -38,7 +38,7 @@
                     </a-tooltip>
                     <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
                                position="bottom">
-                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme"
+                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
                                   :shape="preferenceData.buttonShape"
                                   type="primary"
                                   @click="removeAllBtnOnClick">

@@ -1,8 +1,8 @@
 <template>
     <a-space align="center">
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                  :style="{color: fontColor, cursor: 'default'}" href="https://github.com/xyk953651094"
-                  :shape="preferenceData.buttonShape" target="_blank"
+                  :style="{color: fontColor, cursor: 'default'}"
+                  :shape="preferenceData.buttonShape"
                   type="text">
             <template #icon>
                 <icon-dashboard/>

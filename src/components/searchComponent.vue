@@ -11,9 +11,10 @@
             @focus="onFocus"
             @search="onSearch"
             @press-enter="onPressEnter"
+            :style="{borderRadius: borderRadius}"
         >
             <template #prefix>
-                <a-button type="text" shape="round" size="small"
+                <a-button type="text" :shape="preferenceData.buttonShape" size="small"
                           id="searchEngineIconBtn" :style="{cursor: 'default'}">
                     {{searchEngineName}}
                 </a-button>
@@ -34,6 +35,7 @@ let fontColor = ref("");
 let searchEngineName = ref("Bing");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let displayMask = ref("none");
+let borderRadius = ref("calc(36px * 0.5)");
 
 const props = defineProps({
     themeColor: {
@@ -69,6 +71,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         let searchEngineDetail = getSearchEngineDetail(newValue.searchEngine);
         searchEngineName.value = searchEngineDetail.searchEngineName;
         searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
+        borderRadius.value = newValue.buttonShape === "round" ? "calc(36px * 0.5)" : "";
     }
 })
 

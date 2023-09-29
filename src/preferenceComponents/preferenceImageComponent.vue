@@ -175,7 +175,7 @@
                     <ol>
                         <a-space direction="vertical">
                             <li>新的主题刷新后可能不会立即生效</li>
-                            <li>使用自定主题时不能使用图片主题</li>
+                            <li>启用自定主题时不能使用图片主题</li>
                             <li>禁用自定主题时才能使用图片主题</li>
                         </a-space>
                     </ol>
@@ -278,7 +278,7 @@ function submitCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = inputValue;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已禁用自定主题，一秒后刷新页面");
+    Message.success("已启用自定主题，一秒后刷新页面");
     disableImageTopic.value = !isEmptyString(inputValue);
     refreshWindow();
 }
@@ -287,7 +287,7 @@ function clearCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = "";
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已修改自定主题，一秒后刷新页面");
+    Message.success("已禁用自定主题，一秒后刷新页面");
     disableImageTopic.value = false;
     refreshWindow();
 }
