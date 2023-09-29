@@ -32,7 +32,7 @@
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                @change="searchEngineRadioOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-radio value="baidu">Baidu</a-radio>
                         </a-col>
@@ -61,35 +61,41 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-form-item field="simpleMode" label="简洁模式">
-                <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
-            </a-form-item>
-            <a-form-item field="displayAlert" label="提示信息">
-                <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
-                    <template #checked>
-                        已显示
-                    </template>
-                    <template #unchecked>
-                        已隐藏
-                    </template>
-                </a-switch>
-            </a-form-item>
+            <a-row gutter="24">
+                <a-col span="12">
+                    <a-form-item field="simpleMode" label="简洁模式">
+                        <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+                <a-col span="12">
+                    <a-form-item field="displayAlert" label="提示信息">
+                        <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
+                            <template #checked>
+                                已显示
+                            </template>
+                            <template #unchecked>
+                                已隐藏
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+            </a-row>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                           type="text" @click="clearStorageBtnOnClick"
                 >
                     <template #icon>
-                        <icon-delete/>
+                        <icon-redo />
                     </template>
-                    清空并重置所有内容
+                    重置插件
                 </a-button>
             </a-form-item>
         </a-form>
@@ -98,8 +104,8 @@
             <a-typography-paragraph>
                 <ol>
                     <a-space direction="vertical">
-                        <li>清空并重置所有内容将恢复插件初始状态，插件出现问题时可尝试此按钮</li>
-                        <li>版本更新后若设置出现异常可尝试此按钮</li>
+                        <li>重置插件将清空缓存恢复初始设置</li>
+                        <li>插件设置出现异常可尝试重置插件</li>
                     </a-space>
                 </ol>
             </a-typography-paragraph>
@@ -108,7 +114,7 @@
 </template>
 
 <script setup>
-import {IconDelete, IconSettings} from "@arco-design/web-vue/es/icon";
+import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
 import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";

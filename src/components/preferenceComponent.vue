@@ -48,24 +48,24 @@
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <preference-product-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
                     <preference-email-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <preference-link-component
+                    <preference-product-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
+<!--                    <preference-link-component-->
+<!--                        :background-color="backgroundColor"-->
+<!--                        :font-color="fontColor"-->
+<!--                        :hover-color="hoverColor"-->
+<!--                        :preference-data="preferenceData"-->
+<!--                    />-->
                 </a-space>
                 <template #footer>
                     <preference-footer-component
@@ -85,7 +85,7 @@ import {IconMenu} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {defaultPreferenceData, device} from "../javascripts/publicConstants";
 import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
-import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
+// import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
 import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
 import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";
 import PreferenceImageComponent from "../preferenceComponents/preferenceImageComponent.vue";

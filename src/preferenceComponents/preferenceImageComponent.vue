@@ -12,7 +12,7 @@
             <a-form-item field="dynamicEffect" label="鼠标互动">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-radio value="all">视差</a-radio>
                         </a-col>
@@ -31,7 +31,7 @@
             <a-form-item field="imageQuality" label="图片质量">
                 <a-radio-group v-model="preferenceData.imageQuality"
                                @change="imageQualityRadioOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-radio value="full">最高</a-radio>
                         </a-col>
@@ -50,7 +50,7 @@
             <a-form-item field="imageTopics" label="图片主题">
                 <a-checkbox-group v-model="preferenceData.imageTopics" :disabled="disableImageTopic"
                                   direction="horizontal" @change="imageTopicsCheckboxOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-checkbox name="travel" value="Fzo3zuOHN6w">旅游</a-checkbox>
                         </a-col>
@@ -143,33 +143,38 @@
                     </a-button>
                 </a-space>
             </a-form-item>
-            <a-form-item field="nightMode" label="降低亮度">
-                <a-switch v-model="preferenceData.nightMode" @change="nightModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
-            </a-form-item>
-            <a-form-item field="noImageMode" label="无图模式">
-                <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
-            </a-form-item>
+            <a-row gutter="24">
+                <a-col span="12">
+                    <a-form-item field="nightMode" label="降低亮度">
+                        <a-switch v-model="preferenceData.nightMode" @change="nightModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+                <a-col span="12">
+                    <a-form-item field="noImageMode" label="无图模式">
+                        <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+            </a-row>
             <a-alert :show-icon="false" title="提示信息" type="info"
                      :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
                 <a-typography-paragraph>
                     <ol>
                         <a-space direction="vertical">
                             <li>新的主题刷新后可能不会立即生效</li>
-                            <li>图片主题全不选的效果与全选一致</li>
                             <li>使用自定主题时不能使用图片主题</li>
                             <li>禁用自定主题时才能使用图片主题</li>
                         </a-space>

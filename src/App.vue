@@ -182,7 +182,15 @@ onMounted(() => {
             $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
+            // $(".arco-radio-icon").css({
+            //     "borderColor": themeColor.value.themeColor,
+            //     "backgroundColor": themeColor.value.themeColor,
+            // });
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
+            // $(".arco-checkbox-icon").css({
+            //     "borderColor": "transparent",
+            //     "backgroundColor": themeColor.value.themeColor,
+            // });
             $(".arco-collapse-item-header").css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor

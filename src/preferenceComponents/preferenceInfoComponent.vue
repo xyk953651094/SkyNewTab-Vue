@@ -36,15 +36,21 @@
                 </template>
                 {{ "图片来源：https://unsplash.com" }}
             </a-button>
-            <!--            <a-alert title="免责声明" type="info" :show-icon="false">-->
-            <!--                本产品的所有数据源自第三方接口，内容不受作者本人控制，不代表作者本人的观点与立场-->
-            <!--            </a-alert>-->
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor}" href="https://www.jetbrains.com.cn/community/opensource/#support/"
+                      :shape="preferenceData.buttonShape"
+                      target="_blank" type="text">
+                <template #icon>
+                    <icon-code-square />
+                </template>
+                {{ "开发支持：JetBrains 免费许可证计划" }}
+            </a-button>
         </a-space>
     </a-card>
 </template>
 
 <script setup>
-import {IconInfoCircle, IconCalendar, IconCloud, IconFileImage} from "@arco-design/web-vue/es/icon";
+import {IconInfoCircle, IconCalendar, IconCloud, IconFileImage, IconCodeSquare} from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
