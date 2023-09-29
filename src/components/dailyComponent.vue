@@ -7,7 +7,7 @@
             position="br"
         >
             <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                      shape="round"
+                      :shape="preferenceData.buttonShape"
                       size="large"
                       type="primary">
                 <template #icon>
@@ -26,7 +26,7 @@
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
                                     <icon-plus/>
@@ -34,7 +34,7 @@
                                 {{ "添加倒数日" }}
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="round"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="removeAllBtnOnClick">
                                 <template #icon>
                                     <icon-delete/>
@@ -51,7 +51,7 @@
                         <a-row>
                             <a-col :span="10">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                           type="text">
                                     <template #icon>
                                         <icon-calendar-clock/>
@@ -61,7 +61,7 @@
                             </a-col>
                             <a-col :span="14">
                                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                          :style="{color: fontColor, cursor: 'default'}" shape="round"
+                                          :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                           type="text">
                                     <template #icon>
                                         <icon-clock-circle/>
@@ -74,7 +74,7 @@
                         </a-row>
                         <template #actions>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                      shape="circle"
+                                      :shape="preferenceData.buttonShape"
                                       type="text" @click="removeBtnOnClick(item)">
                                 <template #icon>
                                     <icon-delete/>

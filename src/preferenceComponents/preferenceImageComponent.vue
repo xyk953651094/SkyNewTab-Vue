@@ -12,7 +12,7 @@
             <a-form-item field="dynamicEffect" label="鼠标互动">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-radio value="all">视差</a-radio>
                         </a-col>
@@ -31,7 +31,7 @@
             <a-form-item field="imageQuality" label="图片质量">
                 <a-radio-group v-model="preferenceData.imageQuality"
                                @change="imageQualityRadioOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-radio value="full">最高</a-radio>
                         </a-col>
@@ -50,7 +50,7 @@
             <a-form-item field="imageTopics" label="图片主题">
                 <a-checkbox-group v-model="preferenceData.imageTopics" :disabled="disableImageTopic"
                                   direction="horizontal" @change="imageTopicsCheckboxOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-checkbox name="travel" value="Fzo3zuOHN6w">旅游</a-checkbox>
                         </a-col>
@@ -126,7 +126,7 @@
                                  placeholder="英文搜索最准确"/>
                     </a-form-item>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor}" shape="circle"
+                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                               type="text" @click="submitCustomTopicBtnOnClick"
                     >
                         <template #icon>
@@ -134,7 +134,7 @@
                         </template>
                     </a-button>
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                              :style="{color: fontColor}" shape="circle"
+                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                               type="text" @click="clearCustomTopicBtnOnClick"
                     >
                         <template #icon>
@@ -143,15 +143,40 @@
                     </a-button>
                 </a-space>
             </a-form-item>
+            <a-row gutter="24">
+                <a-col span="12">
+                    <a-form-item field="nightMode" label="降低亮度">
+                        <a-switch v-model="preferenceData.nightMode" @change="nightModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+                <a-col span="12">
+                    <a-form-item field="noImageMode" label="无图模式">
+                        <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+            </a-row>
             <a-alert :show-icon="false" title="提示信息" type="info"
                      :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
                 <a-typography-paragraph>
                     <ol>
                         <a-space direction="vertical">
                             <li>新的主题刷新后可能不会立即生效</li>
-                            <li>图片主题全不选与全选的效果一致</li>
-                            <li>自定主题不为空时将禁用图片主题</li>
-                            <li>只有禁用自定主题图片主题才生效</li>
+                            <li>启用自定主题时不能使用图片主题</li>
+                            <li>禁用自定主题时才能使用图片主题</li>
                         </a-space>
                     </ol>
                 </a-typography-paragraph>
@@ -253,7 +278,7 @@ function submitCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = inputValue;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已禁用自定主题，一秒后刷新页面");
+    Message.success("已启用自定主题，一秒后刷新页面");
     disableImageTopic.value = !isEmptyString(inputValue);
     refreshWindow();
 }
@@ -262,8 +287,32 @@ function clearCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = "";
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已修改自定主题，一秒后刷新页面");
+    Message.success("已禁用自定主题，一秒后刷新页面");
     disableImageTopic.value = false;
+    refreshWindow();
+}
+
+function nightModeSwitchOnChange(checked) {
+    preferenceData.value.nightMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已降低背景亮度，一秒后刷新页面");
+    } else {
+        Message.success("已恢复背景亮度，一秒后刷新页面");
+    }
+    refreshWindow();
+}
+
+function noImageModeSwitchOnChange(checked) {
+    preferenceData.value.noImageMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    if (checked) {
+        Message.success("已开启无图模式，一秒后刷新页面");
+    } else {
+        Message.success("已关闭无图模式，一秒后刷新页面");
+    }
     refreshWindow();
 }
 

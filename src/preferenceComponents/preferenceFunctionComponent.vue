@@ -19,7 +19,7 @@
 <!--                                 placeholder="请输入您的地理位置"/>-->
 <!--                    </a-form-item>-->
 <!--                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
-<!--                              :style="{color: fontColor}" shape="round"-->
+<!--                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"-->
 <!--                              type="text" @click="submitLocationBtnOnClick"-->
 <!--                    >-->
 <!--                        <template #icon>-->
@@ -32,7 +32,7 @@
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                @change="searchEngineRadioOnChange">
-                    <a-row>
+                    <a-row :gutter="[0, 8]">
                         <a-col :span="12">
                             <a-radio value="baidu">Baidu</a-radio>
                         </a-col>
@@ -48,57 +48,73 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-form-item field="simpleMode" label="简洁模式">
-                <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
+            <a-form-item field="buttonShape" label="按钮形状">
+                <a-radio-group v-model="preferenceData.buttonShape"
+                               @change="buttonShapeRadioOnChange" :style="{width: '100%'}">
+                    <a-row>
+                        <a-col :span="12">
+                            <a-radio value="round">圆形</a-radio>
+                        </a-col>
+                        <a-col :span="12">
+                            <a-radio value="default">方形</a-radio>
+                        </a-col>
+                    </a-row>
+                </a-radio-group>
             </a-form-item>
-            <a-form-item field="noImageMode" label="无图模式">
-                <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
-            </a-form-item>
-            <a-form-item field="displayAlert" label="提示信息">
-                <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
-                    <template #checked>
-                        已显示
-                    </template>
-                    <template #unchecked>
-                        已隐藏
-                    </template>
-                </a-switch>
-            </a-form-item>
+            <a-row gutter="24">
+                <a-col span="12">
+                    <a-form-item field="simpleMode" label="简洁模式">
+                        <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+                <a-col span="12">
+                    <a-form-item field="displayAlert" label="提示信息">
+                        <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
+                            <template #checked>
+                                已显示
+                            </template>
+                            <template #unchecked>
+                                已隐藏
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+            </a-row>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                          :style="{color: fontColor}" shape="round"
+                          :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                           type="text" @click="clearStorageBtnOnClick"
                 >
                     <template #icon>
-                        <icon-delete/>
+                        <icon-redo />
                     </template>
-                    清空并重置所有内容
+                    重置插件
                 </a-button>
             </a-form-item>
         </a-form>
-        <a-alert :show-icon="false" title="警告信息" type="warning"
+        <a-alert :show-icon="false" title="提示信息" type="info"
                  :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
-            清空并重置所有内容将删除所有缓存并恢复初始状态，插件出现问题时可尝试此按钮
+            <a-typography-paragraph>
+                <ol>
+                    <a-space direction="vertical">
+                        <li>重置插件将清空缓存恢复初始设置</li>
+                        <li>插件设置出现异常可尝试重置插件</li>
+                    </a-space>
+                </ol>
+            </a-typography-paragraph>
         </a-alert>
     </a-card>
 </template>
 
 <script setup>
-import {IconDelete, IconSettings} from "@arco-design/web-vue/es/icon";
+import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
 import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
@@ -177,6 +193,14 @@ function searchEngineRadioOnChange(value) {
     Message.success("已更换搜索引擎");
 }
 
+function buttonShapeRadioOnChange(value) {
+    preferenceData.value.buttonShape = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已更换按钮形状，一秒后刷新页面");
+    refreshWindow();
+}
+
 function simpleModeSwitchOnChange(checked) {
     preferenceData.value.simpleMode = checked;
     emit("preferenceData", preferenceData.value);
@@ -185,18 +209,6 @@ function simpleModeSwitchOnChange(checked) {
         Message.success("已开启简洁模式，一秒后刷新页面");
     } else {
         Message.success("已关闭简洁模式，一秒后刷新页面");
-    }
-    refreshWindow();
-}
-
-function noImageModeSwitchOnChange(checked) {
-    preferenceData.value.noImageMode = checked;
-    emit("preferenceData", preferenceData.value);
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    if (checked) {
-        Message.success("已开启无图模式，一秒后刷新页面");
-    } else {
-        Message.success("已关闭无图模式，一秒后刷新页面");
     }
     refreshWindow();
 }

@@ -6,7 +6,7 @@
                    position="bl"
         >
             <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                       shape="round" size="large" type="primary">
+                       :shape="preferenceData.buttonShape" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -14,36 +14,18 @@
             </a-button>
             <template #title>
                 <a-row align="center">
-                    <a-col :span="6">
+                    <a-col :span="10">
                         <a-typography-text :style="{color: fontColor}">{{ "万年历" }}</a-typography-text>
                     </a-col>
-                    <a-col :span="18" :style="{textAlign: 'right'}">
-                        <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                       shape="round"
-                                      type="text" @click="constellationBtnOnClick">
-                                <template #icon>
-                                    <icon-star/>
-                                </template>
-                                {{ "星座运势" }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                       shape="round"
-                                      type="text" @click="historyBtnOnClick">
-                                <template #icon>
-                                    <icon-history/>
-                                </template>
-                                {{ "历史上的今天" }}
-                            </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                       shape="round"
-                                      type="text" @click="infoBtnOnClick">
-                                <template #icon>
-                                    <icon-info-circle/>
-                                </template>
-                                {{ "更多信息" }}
-                            </a-button>
-                        </a-space>
+                    <a-col :span="14" :style="{textAlign: 'right'}">
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                   :shape="preferenceData.buttonShape"
+                                  type="text" @click="infoBtnOnClick">
+                            <template #icon>
+                                <icon-info-circle/>
+                            </template>
+                            {{ "更多信息" }}
+                        </a-button>
                     </a-col>
                 </a-row>
             </template>
@@ -53,7 +35,7 @@
                         <a-space direction="vertical">
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="round" type="text">
+                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>
@@ -61,7 +43,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="round" type="text">
+                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-check-circle/>
                                 </template>
@@ -69,7 +51,7 @@
                             </a-button>
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       shape="round" type="text">
+                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-close-circle/>
                                 </template>
@@ -92,9 +74,7 @@ import {
     IconCalendar,
     IconCheckCircle,
     IconCloseCircle,
-    IconHistory,
     IconInfoCircle,
-    IconStar
 } from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,
@@ -142,8 +122,6 @@ let timeDetails = ref(getTimeDetails(new Date()));
 let calendar = ref(timeDetails.value.showDate4 + " " + timeDetails.value.showWeek);
 let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
-// let toast = ref("暂无信息");
-// let history = ref([]);
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -174,14 +152,6 @@ function btnMouseOver() {
 function btnMouseOut() {
     this.style.backgroundColor = "transparent";
     this.style.color = fontColor.value;
-}
-
-function constellationBtnOnClick() {
-    window.open(searchEngineUrl.value + "星座运势", "_blank");
-}
-
-function historyBtnOnClick() {
-    window.open(searchEngineUrl.value + "历史上的今天", "_blank");
 }
 
 function infoBtnOnClick() {

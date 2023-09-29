@@ -1,17 +1,17 @@
 <template>
     <a-row justify="center">
         <a-col :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :span="24"
-               :style="{padding: '5px 10px', borderRadius: '10px'}"
+               :style="{padding: '5px 10px', borderRadius: '2px'}"
                class="zIndexHigh">
             <a-space id="clock" align="center">
-                <a-typography-text :style="{color: backgroundColor}" class="clockText">
+                <a-typography-text :style="{color: backgroundColor}" class="textShadow clockText">
                     {{ currentTime }}
                 </a-typography-text>
                 <a-space align="center" direction="vertical">
-                    <a-typography-text :style="{color: backgroundColor}" class="dateText">
+                    <a-typography-text :style="{color: backgroundColor}" class="textShadow dateText">
                         {{ currentWeek }}
                     </a-typography-text>
-                    <a-typography-text :style="{color: backgroundColor}" class="dateText">
+                    <a-typography-text :style="{color: backgroundColor}" class="textShadow dateText">
                         {{ currentDate }}
                     </a-typography-text>
                 </a-space>
@@ -25,6 +25,8 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {changeBackgroundColor, changeFontColor, getTimeDetails} from "../javascripts/publicFunctions";
 import "../stylesheets/clockComponent.less";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
+
+const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
@@ -79,6 +81,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
 function btnMouseOver() {
     if (!noImageMode.value) {
         new Promise((resolve) => {
+            $(".clockText, .dateText").removeClass("textShadow");
             changeBackgroundColor(this, backgroundColor.value, 150);
             changeFontColor(".clockText, .dateText", fontColor.value, 150);
             resolve("success");
@@ -91,6 +94,7 @@ function btnMouseOver() {
 function btnMouseOut() {
     if (!noImageMode.value) {
         this.classList.remove("componentTheme");
+        $(".clockText, .dateText").addClass("textShadow");
         changeBackgroundColor(this, "transparent", 150);
         changeFontColor(".clockText, .dateText", backgroundColor.value, 150);
     }

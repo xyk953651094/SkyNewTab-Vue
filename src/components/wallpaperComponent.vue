@@ -10,6 +10,7 @@
     >
     </a-image>
     <canvas id="backgroundCanvas" :style="{display: displayCanvas}" class="backgroundCanvas"/>
+    <div id="backgroundMask" :style="{display: displayMask}" class="backgroundMask zIndexMiddle"/>
 </template>
 
 <script setup>
@@ -27,6 +28,7 @@ let preferenceData = ref(defaultPreferenceData);
 let imageLink = ref("");
 let display = ref("none");
 let displayCanvas = ref("none");
+let displayMask = ref("none");
 
 // 请求完成后处理步骤
 function setWallpaper(data) {
@@ -163,9 +165,9 @@ onMounted(() => {
 
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
+                displayMask.value = preferenceData.value.nightMode ? "block" : "none";
                 Message.clear();
                 Message.success("图片加载成功");
-                // document.getElementById("backgroundCanvas").remove();
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
 

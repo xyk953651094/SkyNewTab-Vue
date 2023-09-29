@@ -4,7 +4,7 @@
             <a-image
                 id="popupImage"
                 :src="imagePreviewUrl"
-                :style="{borderRadius: '10px'}"
+                :style="{borderRadius: '2px'}"
                 alt="图片加载失败"
                 height="150px"
                 width="250px"
@@ -14,7 +14,7 @@
         </div>
         <a-space align="start" direction="vertical">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                      shape="round" target="_blank"
+                      :shape="preferenceData.buttonShape" target="_blank"
                       type="text" @click="authorLinkBtnOnClick">
                 <template #icon>
                     <icon-user/>
@@ -22,7 +22,7 @@
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                      shape="round" target="_blank"
+                      :shape="preferenceData.buttonShape" target="_blank"
                       type="text" @click="imageLocationBtnOnClick">
                 <template #icon>
                     <icon-location/>
@@ -30,7 +30,7 @@
                 {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                      shape="round" target="_blank"
+                      :shape="preferenceData.buttonShape" target="_blank"
                       type="text" @click="imageLinkBtnOnClick"
             >
                 <template #icon>
@@ -43,7 +43,7 @@
             <a-space>
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor, cursor: 'default'}"
-                          shape="round" type="text">
+                          :shape="preferenceData.buttonShape" type="text">
                     <template #icon>
                         <icon-clock-circle/>
                     </template>
@@ -51,7 +51,7 @@
                 </a-button>
                 <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                           :style="{color: fontColor}"
-                          shape="round"
+                          :shape="preferenceData.buttonShape"
                           type="text" @click="imageCameraBtnOnClick">
                     <template #icon>
                         <icon-camera/>
@@ -63,7 +63,7 @@
     </a-space>
     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
               :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
-              shape="round"
+              :shape="preferenceData.buttonShape"
               type="text">
         <template #icon>
             <icon-info-circle/>

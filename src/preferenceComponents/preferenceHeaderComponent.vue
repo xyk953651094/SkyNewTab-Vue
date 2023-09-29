@@ -6,7 +6,7 @@
         <a-col :span="12" :style="{textAlign: 'right'}">
             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                       href="https://afdian.net/a/xyk953651094"
-                      shape="round" target="_blank" type="text">
+                      :shape="preferenceData.buttonShape" target="_blank" type="text">
                 <template #icon>
                     <icon-gift/>
                 </template>
@@ -20,6 +20,7 @@
 import {IconGift} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     hoverColor: {
@@ -34,6 +35,13 @@ const props = defineProps({
         required: true,
         default: () => {
             return ""
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

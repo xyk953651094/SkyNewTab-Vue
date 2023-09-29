@@ -2,7 +2,7 @@
     <a-space>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                   href="https://github.com/xyk953651094"
-                  shape="round" target="_blank" type="text">
+                  :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-github/>
             </template>
@@ -10,7 +10,7 @@
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                   href="https://gitlab.com/xyk953651094"
-                  shape="round" target="_blank" type="text">
+                  :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-gitlab />
             </template>
@@ -18,7 +18,7 @@
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                   href="https://xyk953651094.blogspot.com"
-                  shape="round" target="_blank" type="text">
+                  :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-notification />
             </template>
@@ -26,7 +26,7 @@
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                   href="https://afdian.net/a/xyk953651094"
-                  shape="round" target="_blank" type="text">
+                  :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-gift/>
             </template>
@@ -39,6 +39,7 @@
 import {IconGift, IconGithub, IconGitlab, IconNotification} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     hoverColor: {
@@ -53,6 +54,13 @@ const props = defineProps({
         required: true,
         default: () => {
             return ""
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

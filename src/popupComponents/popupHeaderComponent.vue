@@ -1,8 +1,8 @@
 <template>
     <a-space align="center">
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                  :style="{color: fontColor, cursor: 'default'}" href="https://github.com/xyk953651094"
-                  shape="round" target="_blank"
+                  :style="{color: fontColor, cursor: 'default'}"
+                  :shape="preferenceData.buttonShape"
                   type="text">
             <template #icon>
                 <icon-dashboard/>
@@ -16,6 +16,7 @@
 import {IconDashboard} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
     hoverColor: {
@@ -30,6 +31,13 @@ const props = defineProps({
         required: true,
         default: () => {
             return ""
+        }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
         }
     }
 });

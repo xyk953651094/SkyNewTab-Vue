@@ -1,6 +1,6 @@
 <template>
     <a-col :span="24" class="alignCenter">
-        <div id="mask" :style="{display: showMask}" class="mask zIndexMiddle"/>
+        <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
             allow-clear
@@ -11,26 +11,44 @@
             @focus="onFocus"
             @search="onSearch"
             @press-enter="onPressEnter"
+            :style="{borderRadius: borderRadius}"
         >
             <template #prefix>
-                <a-avatar :image-url="searchEngineIconUrl" :size="24" :style="{backgroundColor: 'transparent'}"/>
+                <a-button type="text" :shape="preferenceData.buttonShape" size="small"
+                          id="searchEngineIconBtn" :style="{cursor: 'default'}">
+                    {{searchEngineName}}
+                </a-button>
+                <a-divider direction="vertical" />
             </template>
         </a-input-search>
     </a-col>
 </template>
 
 <script setup>
-// import "../stylesheets/publicStyles.less"
 import {defineProps, ref, watch} from "vue";
-import {fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
+import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
-let showMask = ref("none");
+let backgroundColor = ref("");
+let fontColor = ref("");
+let searchEngineName = ref("Bing");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
-let searchEngineIconUrl = ref("https://www.bing.com/favicon.ico")
+let displayMask = ref("none");
+let borderRadius = ref("calc(36px * 0.5)");
 
 const props = defineProps({
+    themeColor: {
+        type: Object,
+        required: true,
+        default: () => {
+            return {
+                "themeColor": "",
+                "componentBackgroundColor": "",
+                "componentFontColor": ""
+            }
+        }
+    },
     preferenceData: {
         type: Object,
         required: true,
@@ -40,21 +58,30 @@ const props = defineProps({
     }
 });
 
+watch(() => props.themeColor, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        backgroundColor.value = props.themeColor.componentBackgroundColor;
+        fontColor.value = props.themeColor.componentFontColor;
+        changeThemeColor("#searchEngineIconBtn", backgroundColor.value, fontColor.value);
+    }
+})
+
 watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
-        searchEngineIconUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineIconUrl;
+        let searchEngineDetail = getSearchEngineDetail(newValue.searchEngine);
+        searchEngineName.value = searchEngineDetail.searchEngineName;
+        searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
+        borderRadius.value = newValue.buttonShape === "round" ? "calc(36px * 0.5)" : "";
     }
 })
 
 function onFocus() {
-    fadeIn("#mask", 300);
-    showMask.value = "block";
+    fadeIn("#searchMask", 300);
+    displayMask.value = "block";
 }
 
 function onBlur() {
-    fadeOut("#mask", 300);
-    // showMask.value = "none";
+    fadeOut("#searchMask", 300);
 }
 
 function onSearch(value) {
