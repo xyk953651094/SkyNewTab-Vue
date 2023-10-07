@@ -15,7 +15,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {httpRequest, imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
+import {getTimeDetails, httpRequest, imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
 import {decode} from "blurhash";
@@ -165,7 +165,22 @@ onMounted(() => {
 
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
-                displayMask.value = preferenceData.value.nightMode ? "block" : "none";
+                // 降低亮度与夜间模式
+                let nightMode = preferenceData.value.nightMode;
+                let autoDarkMode = preferenceData.value.autoDarkMode;
+                let currentTime = parseInt(getTimeDetails(new Date()).hour);
+                if(currentTime > 18 || currentTime < 6) {
+                    if( nightMode === false && autoDarkMode === false ) {
+                        displayMask.value = "none";
+                    }
+                    else {
+                        displayMask.value = "block";
+                    }
+                }
+                else {
+                    displayMask.value = preferenceData.value.nightMode ? "block" : "none";
+                }
+
                 Message.clear();
                 Message.success("图片加载成功");
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";

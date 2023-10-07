@@ -19,7 +19,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                   :shape="preferenceData.buttonShape"
+                                  :shape="preferenceData.buttonShape"
                                   type="text" @click="infoBtnOnClick">
                             <template #icon>
                                 <icon-info-circle/>
@@ -35,7 +35,7 @@
                         <a-space direction="vertical">
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       :shape="preferenceData.buttonShape" type="text">
+                                      :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>

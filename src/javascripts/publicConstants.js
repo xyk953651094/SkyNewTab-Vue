@@ -40,15 +40,17 @@ export let themeArray = [
 ];
 
 export let defaultPreferenceData = {
-    searchEngine: "bing",
     dynamicEffect: "all",
     imageQuality: "regular",
     imageTopics: ["bo8jQKTaE0Y"],
     customTopic: "",
     nightMode: false,
-    simpleMode: false,
+    autoDarkMode: false,
     noImageMode: false,
+
+    searchEngine: "bing",
     buttonShape: "round",
+    simpleMode: false,
     displayAlert: true,
 }
 
