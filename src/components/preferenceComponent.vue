@@ -97,7 +97,7 @@ import PreferenceImageComponent from "../preferenceComponents/preferenceImageCom
 import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunctionComponent.vue";
 import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
 import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
-import PreferenceToTopComponent from "@/preferenceComponents/preferenceToTopComponent.vue";
+import PreferenceToTopComponent from "../preferenceComponents/preferenceToTopComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
