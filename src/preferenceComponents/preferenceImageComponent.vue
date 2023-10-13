@@ -143,6 +143,13 @@
                     </a-button>
                 </a-space>
             </a-form-item>
+            <a-form-item field="changeImageTime" label="切换间隔">
+                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}">
+                    <a-option value="900000">{{"每 15 分钟"}}</a-option>
+                    <a-option value="1800000">{{"每 30 分钟"}}</a-option>
+                    <a-option value="3600000">{{"每 60 分钟"}}</a-option>
+                </a-select>
+            </a-form-item>
             <a-row gutter="24">
                 <a-col span="12">
                     <a-form-item field="nightMode" label="降低亮度">
@@ -168,17 +175,19 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
+                <a-col span="12">
+                    <a-form-item field="noImageMode" label="无图模式">
+                        <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
             </a-row>
-            <a-form-item field="noImageMode" label="无图模式">
-                <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
-                    <template #checked>
-                        已开启
-                    </template>
-                    <template #unchecked>
-                        已关闭
-                    </template>
-                </a-switch>
-            </a-form-item>
             <a-alert :show-icon="false" title="提示信息" type="info"
                      :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
                 <a-typography-paragraph>
@@ -198,12 +207,16 @@
 
 <script setup>
 import {IconCheck, IconStop} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getTimeDetails, isEmptyString} from "../javascripts/publicFunctions";
+import {
+    getFontColor,
+    getPreferenceDataStorage,
+    getTimeDetails,
+    isEmptyString
+} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
 const props = defineProps({
@@ -233,14 +246,6 @@ const props = defineProps({
 const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
-    // 初始化偏好设置
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    if (tempPreferenceData === null) {
-        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
-        preferenceData.value = defaultPreferenceData;
-    } else {
-        preferenceData.value = JSON.parse(tempPreferenceData);
-    }
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 })
 

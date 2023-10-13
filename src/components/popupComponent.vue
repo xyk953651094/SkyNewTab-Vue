@@ -38,12 +38,15 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {getFontColor, getReverseColor} from "../javascripts/publicFunctions";
+import {
+    getFontColor,
+    getPreferenceDataStorage,
+    getReverseColor
+} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
 import PopupFooterComponent from "../popupComponents/popupFooterComponent.vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
 import PopupHeaderComponent from "../popupComponents/popupHeaderComponent.vue";
 
 const $ = require("jquery");
@@ -52,13 +55,11 @@ let imageData = ref({});
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
 
 onMounted(() => {
     let tempImageData = localStorage.getItem("lastImage");
     if (tempImageData) {
-        tempImageData = JSON.parse(tempImageData);
-
         imageData.value = tempImageData;
         hoverColor.value = tempImageData.color;
         backgroundColor.value = getReverseColor(tempImageData.color);
@@ -68,9 +69,6 @@ onMounted(() => {
     } else {
         Message.error("暂无图片信息");
     }
-
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    preferenceData.value = tempPreferenceData === null ? defaultPreferenceData : JSON.parse(tempPreferenceData);
 
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {

@@ -23,7 +23,7 @@
                                   :shape="preferenceData.buttonShape"
                                   type="text" @click="infoBtnOnClick">
                             <template #icon>
-                                <icon-info-circle/>
+                                <icon-more-vertical />
                             </template>
                             {{ "更多信息" }}
                         </a-button>
@@ -118,7 +118,7 @@ import {
     httpRequest
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
-import {IconInfoCircle, IconLocation} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconLocation} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({

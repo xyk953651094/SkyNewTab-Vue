@@ -15,16 +15,22 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {getTimeDetails, httpRequest, imageDynamicEffect, isEmptyString} from "../javascripts/publicFunctions";
+import {
+    getPreferenceDataStorage,
+    getTimeDetails,
+    httpRequest,
+    imageDynamicEffect,
+    isEmptyString
+} from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {clientId, defaultPreferenceData, device} from "../javascripts/publicConstants";
+import {clientId, device} from "../javascripts/publicConstants";
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 
 const emit = defineEmits(["imageData"]);
 
 let imageData = ref(null);
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
 let imageLink = ref("");
 let display = ref("none");
 let displayCanvas = ref("none");
@@ -117,13 +123,13 @@ function getWallpaper() {
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
                 lastImage = JSON.parse(lastImage);
-                Message.error({
+                Message.loading({
                     content: "获取图片失败，加载历史图片",
                     duration: 0
                 });
                 setWallpaper(lastImage);
             } else {
-                Message.error("获取图片失败");
+                Message.error("获取图片失败，请检查网络连接");
             }
         })
         .finally(function () {
@@ -131,13 +137,6 @@ function getWallpaper() {
 }
 
 onMounted(() => {
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    if (tempPreferenceData === null) {
-        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
-        preferenceData.value = defaultPreferenceData;
-    } else {
-        preferenceData.value = JSON.parse(tempPreferenceData);
-    }
     let noImageMode = preferenceData.value.noImageMode;
 
     if (!noImageMode) {
@@ -146,16 +145,23 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
-        } else if (nowTimeStamp - parseInt(lastRequestTime) > 60 * 1000) {  // 必须多于一分钟才能进行新的请求
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > parseInt(preferenceData.value.changeImageTime)) {  // 必须多于切换间隔才能进行新的请求
             getWallpaper();
-        } else {  // 一分钟之内使用上一次请求结果
+        } else {  // 切换间隔内使用上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
-                Message.info("正在加载历史图片");
+                Message.loading({
+                    content: "正在加载历史图片",
+                    duration: 0
+                });
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
-                Message.error("加载历史图片失败");
+                Message.error("无历史图片可加载，一秒后刷新页面");
+                localStorage.removeItem("lastImageRequestTime");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             }
         }
 

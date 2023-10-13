@@ -115,12 +115,11 @@
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
+import {getFontColor, getPreferenceDataStorage, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
 const props = defineProps({
@@ -150,14 +149,6 @@ const props = defineProps({
 const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
-    // 初始化偏好设置
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    if (tempPreferenceData === null) {
-        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
-        preferenceData.value = defaultPreferenceData;
-    } else {
-        preferenceData.value = JSON.parse(tempPreferenceData);
-    }
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 })
 

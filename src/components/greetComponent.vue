@@ -22,7 +22,7 @@
                                   :shape="preferenceData.buttonShape"
                                   type="text" @click="infoBtnOnClick">
                             <template #icon>
-                                <icon-info-circle/>
+                                <icon-more-vertical />
                             </template>
                             {{ "更多信息" }}
                         </a-button>
@@ -74,7 +74,7 @@ import {
     IconCalendar,
     IconCheckCircle,
     IconCloseCircle,
-    IconInfoCircle,
+    IconMoreVertical,
 } from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,

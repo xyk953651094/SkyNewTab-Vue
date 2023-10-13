@@ -15,7 +15,7 @@
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
-                        <icon-info-circle/>
+                        <icon-thumb-up />
                     </template>
                     功能建议
                 </a-button>
@@ -26,7 +26,7 @@
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
                     <template #icon>
-                        <icon-exclamation-circle/>
+                        <icon-thumb-down />
                     </template>
                     问题反馈
                 </a-button>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import {IconExclamationCircle, IconInfoCircle, IconEmail} from "@arco-design/web-vue/es/icon";
+import {IconThumbUp, IconThumbDown, IconEmail} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
