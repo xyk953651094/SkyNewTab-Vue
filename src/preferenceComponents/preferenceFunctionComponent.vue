@@ -61,8 +61,8 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-row gutter="24">
-                <a-col span="12">
+            <a-row :gutter="24">
+                <a-col :span="12">
                     <a-form-item field="simpleMode" label="简洁模式">
                         <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
                             <template #checked>
@@ -74,7 +74,7 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
-                <a-col span="12">
+                <a-col :span="12">
                     <a-form-item field="displayAlert" label="提示信息">
                         <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
                             <template #checked>
@@ -105,7 +105,7 @@
                 <ol>
                     <a-space direction="vertical">
                         <li>重置插件将清空缓存恢复初始设置</li>
-                        <li>插件设置出现异常可尝试重置插件</li>
+                        <li>插件出现任何异常可尝试重置插件</li>
                     </a-space>
                 </ol>
             </a-typography-paragraph>

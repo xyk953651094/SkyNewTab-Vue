@@ -118,13 +118,14 @@ function getWallpaper() {
         .catch(function () {
             Message.clear();
             // 请求失败也更新请求时间，防止超时后无信息可显示
-            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-            // 获取图片失败时显示上次图片
+            // localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+
+            // 请求失败时显示上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
                 lastImage = JSON.parse(lastImage);
                 Message.loading({
-                    content: "获取图片失败，加载历史图片",
+                    content: "获取图片失败，正在加载缓存图片",
                     duration: 0
                 });
                 setWallpaper(lastImage);
@@ -151,17 +152,19 @@ onMounted(() => {
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
                 Message.loading({
-                    content: "正在加载历史图片",
+                    content: "正在加载缓存图片",
                     duration: 0
                 });
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
-                Message.error("无历史图片可加载，一秒后刷新页面");
-                localStorage.removeItem("lastImageRequestTime");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                Message.error("无缓存图片可加载，请前往设置手动刷新");
+
+                // Message.error("无缓存图片可加载，一秒后刷新页面");
+                // localStorage.removeItem("lastImageRequestTime");
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 1000);
             }
         }
 

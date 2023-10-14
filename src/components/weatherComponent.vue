@@ -34,7 +34,16 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-row gutter="8">
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                      :style="{color: fontColor, cursor: 'default'}"
+                                      :shape="preferenceData.buttonShape"
+                                      type="text">
+                                <template #icon>
+                                    <icon-clock-circle />
+                                </template>
+                                {{ "最后更新时间：" + lastRequestTime }}
+                            </a-button>
+                            <a-row :gutter="8">
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
                                               :shape="preferenceData.buttonShape"
@@ -56,7 +65,7 @@
                                     </a-button>
                                 </a-col>
                             </a-row>
-                            <a-row gutter="8">
+                            <a-row :gutter="8">
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
@@ -78,7 +87,7 @@
                                     </a-button>
                                 </a-col>
                             </a-row>
-                            <a-row gutter="8">
+                            <a-row :gutter="8">
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                               :style="{color: fontColor, cursor: 'default'}"
@@ -115,10 +124,11 @@ import {
     getFontColor,
     getSearchEngineDetail,
     getWeatherIcon,
-    httpRequest
+    httpRequest,
+    getTimeDetails
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
-import {IconMoreVertical, IconLocation} from "@arco-design/web-vue/es/icon";
+import {IconMoreVertical, IconClockCircle, IconLocation} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -146,6 +156,7 @@ let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
+let lastRequestTime = ref("暂无信息");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无信息");
 let searchEngineUrl = ref("https://www.bing.com/search?q=")
@@ -227,18 +238,25 @@ function getWeather() {
         })
         .catch(function () {
             // 请求失败也更新请求时间，防止超时后无信息可显示
-            localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            // localStorage.setItem("lastWeatherRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+
+            // 请求失败时使用上一次请求结果
+            let lastWeather = localStorage.getItem("lastWeather");
+            if (lastWeather) {
+                lastWeather = JSON.parse(lastWeather);
+                setWeather(lastWeather);
+            }
         })
 }
 
 onMounted(() => {
     if (!props.preferenceData.simpleMode) {
         // 防抖节流
-        let lastRequestTime = localStorage.getItem("lastWeatherRequestTime");
+        let tempLastRequestTime = localStorage.getItem("lastWeatherRequestTime");
         let nowTimeStamp = new Date().getTime();
-        if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
+        if (tempLastRequestTime === null) {  // 第一次请求时 tempLastRequestTime 为 null，因此直接进行请求赋值 tempLastRequestTime
             getWeather();
-        } else if (nowTimeStamp - parseInt(lastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
+        } else if (nowTimeStamp - parseInt(tempLastRequestTime) > 60 * 60 * 1000) {  // 必须多于一小时才能进行新的请求
             getWeather();
         } else {  // 一小时之内使用上一次请求结果
             let lastWeather = localStorage.getItem("lastWeather");
@@ -246,6 +264,10 @@ onMounted(() => {
                 lastWeather = JSON.parse(lastWeather);
                 setWeather(lastWeather);
             }
+        }
+
+        if (tempLastRequestTime !== null) {
+            lastRequestTime.value = getTimeDetails(new Date(parseInt(tempLastRequestTime))).showDetail;
         }
     }
 })

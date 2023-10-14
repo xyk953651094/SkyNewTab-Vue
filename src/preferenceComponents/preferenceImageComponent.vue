@@ -144,14 +144,17 @@
                 </a-space>
             </a-form-item>
             <a-form-item field="changeImageTime" label="切换间隔">
-                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}">
+                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}" @change="changeImageTimeOnChange">
                     <a-option value="900000">{{"每 15 分钟"}}</a-option>
                     <a-option value="1800000">{{"每 30 分钟"}}</a-option>
                     <a-option value="3600000">{{"每 60 分钟"}}</a-option>
                 </a-select>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{"上次切换时间：" + lastRequestTime}}</a-typography-text>
+                </template>
             </a-form-item>
-            <a-row gutter="24">
-                <a-col span="12">
+            <a-row :gutter="24">
+                <a-col :span="12">
                     <a-form-item field="nightMode" label="降低亮度">
                         <a-switch v-model="preferenceData.nightMode" @change="nightModeSwitchOnChange">
                             <template #checked>
@@ -163,7 +166,7 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
-                <a-col span="12">
+                <a-col :span="12">
                     <a-form-item field="noImageMode" label="夜间模式">
                         <a-switch v-model="preferenceData.autoDarkMode" @change="autoDarkModeSwitchOnChange">
                             <template #checked>
@@ -175,7 +178,7 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
-                <a-col span="12">
+                <a-col :span="12">
                     <a-form-item field="noImageMode" label="无图模式">
                         <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
                             <template #checked>
@@ -217,6 +220,7 @@ import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
 
 let preferenceData = ref(getPreferenceDataStorage());
+let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 
 const props = defineProps({
@@ -246,6 +250,11 @@ const props = defineProps({
 const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
+    let tempLastRequestTime = localStorage.getItem("lastImageRequestTime");
+    if (tempLastRequestTime !== null) {
+        lastRequestTime.value = getTimeDetails(new Date(parseInt(tempLastRequestTime))).showDetail;
+    }
+
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 })
 
@@ -305,6 +314,15 @@ function clearCustomTopicBtnOnClick() {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已禁用自定主题，一秒后刷新页面");
     disableImageTopic.value = false;
+    refreshWindow();
+}
+
+function changeImageTimeOnChange(value) {
+    console.log(value);
+    preferenceData.value.changeImageTime = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已修改切换间隔，一秒后刷新页面");
     refreshWindow();
 }
 
