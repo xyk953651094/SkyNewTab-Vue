@@ -18,14 +18,24 @@
                         <a-typography-text :style="{color: fontColor}">{{ "万年历" }}</a-typography-text>
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                                   :shape="preferenceData.buttonShape"
-                                  type="text" @click="infoBtnOnClick">
-                            <template #icon>
-                                <icon-info-circle/>
-                            </template>
-                            {{ "更多信息" }}
-                        </a-button>
+                        <a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      :shape="preferenceData.buttonShape"
+                                      type="text" @click="historyBtnOnClick">
+                                <template #icon>
+                                    <icon-history />
+                                </template>
+                                {{ "历史上的今天" }}
+                            </a-button>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      :shape="preferenceData.buttonShape"
+                                      type="text" @click="infoBtnOnClick">
+                                <template #icon>
+                                    <icon-more-vertical />
+                                </template>
+                                {{ "更多信息" }}
+                            </a-button>
+                        </a-space>
                     </a-col>
                 </a-row>
             </template>
@@ -35,7 +45,7 @@
                         <a-space direction="vertical">
                             <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       :shape="preferenceData.buttonShape" type="text">
+                                      :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>
@@ -74,7 +84,8 @@ import {
     IconCalendar,
     IconCheckCircle,
     IconCloseCircle,
-    IconInfoCircle,
+    IconHistory,
+    IconMoreVertical,
 } from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,
@@ -154,6 +165,10 @@ function btnMouseOut() {
     this.style.color = fontColor.value;
 }
 
+function historyBtnOnClick() {
+    window.open(searchEngineUrl.value + "历史上的今天", "_blank");
+}
+
 function infoBtnOnClick() {
     window.open(searchEngineUrl.value + "万年历", "_blank");
 }
@@ -192,7 +207,14 @@ function getHoliday() {
         })
         .catch(function () {
             // 请求失败也更新请求时间，防止超时后无信息可显示
-            localStorage.setItem("lastGreetRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+            // localStorage.setItem("lastGreetRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
+
+            // 请求失败时使用上一次请求结果
+            let lastHoliday = localStorage.getItem("lastHoliday");
+            if (lastHoliday) {
+                lastHoliday = JSON.parse(lastHoliday);
+                setHoliday(lastHoliday);
+            }
         })
 }
 

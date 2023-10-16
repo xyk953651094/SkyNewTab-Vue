@@ -73,7 +73,12 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {changeThemeColor, getFontColor, getReverseColor, setColorTheme,} from "./javascripts/publicFunctions";
+import {
+    changeThemeColor,
+    getFontColor, getPreferenceDataStorage,
+    getReverseColor,
+    setColorTheme,
+} from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
 
 import GreetComponent from "./components/greetComponent.vue";
@@ -86,7 +91,6 @@ import CollectionComponent from "./components/collectionComponent.vue";
 import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
-import {defaultPreferenceData} from "./javascripts/publicConstants";
 import AuthorLiteComponent from "./components/authorLiteComponent.vue";
 
 const $ = require("jquery");
@@ -98,7 +102,7 @@ let themeColor = ref({
 });
 
 let imageData = ref(null);
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
 let componentDisplay = ref("none");  // 图片接口请求成功后再显示相关组件
 
 const getImageData = (value) => {
@@ -126,15 +130,6 @@ const getPreferenceData = (value) => {
 }
 
 onMounted(() => {
-    // 加载偏好设置
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    if (tempPreferenceData === null) {
-        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
-        preferenceData.value = defaultPreferenceData;
-    } else {
-        preferenceData.value = JSON.parse(tempPreferenceData);
-    }
-
     // 未加载图片前随机显示颜色主题
     if (themeColor.value.themeColor === "") {
         themeColor.value = setColorTheme();

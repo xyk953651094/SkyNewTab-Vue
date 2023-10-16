@@ -61,8 +61,8 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-row gutter="24">
-                <a-col span="12">
+            <a-row :gutter="24">
+                <a-col :span="12">
                     <a-form-item field="simpleMode" label="简洁模式">
                         <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
                             <template #checked>
@@ -74,7 +74,7 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
-                <a-col span="12">
+                <a-col :span="12">
                     <a-form-item field="displayAlert" label="提示信息">
                         <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
                             <template #checked>
@@ -105,7 +105,7 @@
                 <ol>
                     <a-space direction="vertical">
                         <li>重置插件将清空缓存恢复初始设置</li>
-                        <li>插件设置出现异常可尝试重置插件</li>
+                        <li>插件出现任何异常可尝试重置插件</li>
                     </a-space>
                 </ol>
             </a-typography-paragraph>
@@ -115,12 +115,11 @@
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
+import {getFontColor, getPreferenceDataStorage, isEmptyString} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
 const props = defineProps({
@@ -150,14 +149,6 @@ const props = defineProps({
 const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
-    // 初始化偏好设置
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    if (tempPreferenceData === null) {
-        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
-        preferenceData.value = defaultPreferenceData;
-    } else {
-        preferenceData.value = JSON.parse(tempPreferenceData);
-    }
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 })
 

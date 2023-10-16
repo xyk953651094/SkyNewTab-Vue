@@ -143,8 +143,18 @@
                     </a-button>
                 </a-space>
             </a-form-item>
-            <a-row gutter="24">
-                <a-col span="12">
+            <a-form-item field="changeImageTime" label="切换间隔">
+                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}" @change="changeImageTimeOnChange">
+                    <a-option value="900000">{{"每 15 分钟"}}</a-option>
+                    <a-option value="1800000">{{"每 30 分钟"}}</a-option>
+                    <a-option value="3600000">{{"每 60 分钟"}}</a-option>
+                </a-select>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{"上次切换时间：" + lastRequestTime}}</a-typography-text>
+                </template>
+            </a-form-item>
+            <a-row :gutter="24">
+                <a-col :span="12">
                     <a-form-item field="nightMode" label="降低亮度">
                         <a-switch v-model="preferenceData.nightMode" @change="nightModeSwitchOnChange">
                             <template #checked>
@@ -156,7 +166,19 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
-                <a-col span="12">
+                <a-col :span="12">
+                    <a-form-item field="noImageMode" label="夜间模式">
+                        <a-switch v-model="preferenceData.autoDarkMode" @change="autoDarkModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
                     <a-form-item field="noImageMode" label="无图模式">
                         <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
                             <template #checked>
@@ -177,6 +199,7 @@
                             <li>新的主题刷新后可能不会立即生效</li>
                             <li>启用自定主题时不能使用图片主题</li>
                             <li>禁用自定主题时才能使用图片主题</li>
+                            <li>夜间模式于18点至6点自动降低亮度</li>
                         </a-space>
                     </ol>
                 </a-typography-paragraph>
@@ -187,12 +210,17 @@
 
 <script setup>
 import {IconCheck, IconStop} from "@arco-design/web-vue/es/icon";
-import {getFontColor, isEmptyString} from "../javascripts/publicFunctions";
+import {
+    getFontColor,
+    getPreferenceDataStorage,
+    getTimeDetails,
+    isEmptyString
+} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
-let preferenceData = ref(defaultPreferenceData);
+let preferenceData = ref(getPreferenceDataStorage());
+let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 
 const props = defineProps({
@@ -222,14 +250,11 @@ const props = defineProps({
 const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
-    // 初始化偏好设置
-    let tempPreferenceData = localStorage.getItem("preferenceData");
-    if (tempPreferenceData === null) {
-        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
-        preferenceData.value = defaultPreferenceData;
-    } else {
-        preferenceData.value = JSON.parse(tempPreferenceData);
+    let tempLastRequestTime = localStorage.getItem("lastImageRequestTime");
+    if (tempLastRequestTime !== null) {
+        lastRequestTime.value = getTimeDetails(new Date(parseInt(tempLastRequestTime))).showDetail;
     }
+
     disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
 })
 
@@ -292,6 +317,15 @@ function clearCustomTopicBtnOnClick() {
     refreshWindow();
 }
 
+function changeImageTimeOnChange(value) {
+    console.log(value);
+    preferenceData.value.changeImageTime = value;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    Message.success("已修改切换间隔，一秒后刷新页面");
+    refreshWindow();
+}
+
 function nightModeSwitchOnChange(checked) {
     preferenceData.value.nightMode = checked;
     emit("preferenceData", preferenceData.value);
@@ -302,6 +336,29 @@ function nightModeSwitchOnChange(checked) {
         Message.success("已恢复背景亮度，一秒后刷新页面");
     }
     refreshWindow();
+}
+
+function autoDarkModeSwitchOnChange(checked) {
+    preferenceData.value.autoDarkMode = checked;
+    emit("preferenceData", preferenceData.value);
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+
+    let currentTime = parseInt(getTimeDetails(new Date()).hour);
+    if(currentTime > 18 || currentTime < 6) {
+        if (checked) {
+            Message.success("已开启夜间自动降低背景亮度，一秒后刷新页面");
+        } else {
+            Message.success("已关闭夜间自动降低背景亮度，一秒后刷新页面");
+        }
+        refreshWindow();
+    }
+    else {
+        if (checked) {
+            Message.success("已开启夜间自动降低背景亮度");
+        } else {
+            Message.success("已关闭夜间自动降低背景亮度");
+        }
+    }
 }
 
 function noImageModeSwitchOnChange(checked) {

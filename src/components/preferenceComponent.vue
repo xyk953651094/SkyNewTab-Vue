@@ -29,7 +29,7 @@
                         :preference-data="preferenceData"
                     />
                 </template>
-                <a-space direction="vertical" size="large">
+                <a-space direction="vertical" size="large" id="drawerContent">
                     <preference-image-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
@@ -66,6 +66,11 @@
 <!--                        :hover-color="hoverColor"-->
 <!--                        :preference-data="preferenceData"-->
 <!--                    />-->
+                    <preference-to-top-component
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                        :preference-data="preferenceData"
+                    />
                 </a-space>
                 <template #footer>
                     <preference-footer-component
@@ -92,6 +97,7 @@ import PreferenceImageComponent from "../preferenceComponents/preferenceImageCom
 import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunctionComponent.vue";
 import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
 import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
+import PreferenceToTopComponent from "../preferenceComponents/preferenceToTopComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");

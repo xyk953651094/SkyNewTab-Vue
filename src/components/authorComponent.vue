@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{ "由 Unsplash 的 " + authorName + " 拍摄" }}
+                {{ "由 Unsplash 的 " + (authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "...") + " 拍摄" }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -26,7 +26,7 @@
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="authorLinkBtnOnClick">
                                 <template #icon>
-                                    <icon-link/>
+                                    <icon-home />
                                 </template>
                                 {{ "摄影师主页" }}
                             </a-button>
@@ -34,7 +34,7 @@
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="imageLinkBtnOnClick">
                                 <template #icon>
-                                    <icon-link/>
+                                    <icon-file-image />
                                 </template>
                                 {{ "图片主页" }}
                             </a-button>
@@ -148,7 +148,8 @@ import {
     IconCamera,
     IconClockCircle,
     IconInfoCircle,
-    IconLink,
+    IconHome,
+    IconFileImage,
     IconLocation,
     IconUser
 } from "@arco-design/web-vue/es/icon";

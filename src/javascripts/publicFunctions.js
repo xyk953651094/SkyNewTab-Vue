@@ -1,4 +1,4 @@
-import {themeArray} from "../javascripts/publicConstants";
+import {darkThemeArray, defaultPreferenceData, lightThemeArray} from "../javascripts/publicConstants";
 import "jquery-color"
 
 const $ = require("jquery");
@@ -79,6 +79,7 @@ export function getTimeDetails(param) {
         showDate4: year + "年" + month + "月" + day + "日",
         showDate5: year + "-" + month + "-" + day,
         showTime: hour + ":" + minute,
+        showDetail: year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second,
         showLocaleDate: "农历" + localeDate.split(" ")[0] + "日"
     };
 }
@@ -153,15 +154,20 @@ export function getWeatherIcon(weatherInfo) {
 
 // 请求unsplash图片前随机显示多彩颜色主题
 export function setColorTheme() {
-    let theme = themeArray;
-    let randomNum = Math.floor(Math.random() * theme.length);
+    let currentHour = parseInt(getTimeDetails(new Date()).hour);
+    let themeArray = lightThemeArray;
+    if(currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
+        themeArray = darkThemeArray;
+    }
+
+    let randomNum = Math.floor(Math.random() * themeArray.length);
     let body = document.getElementsByTagName("body")[0];
-    body.style.backgroundColor = theme[randomNum].bodyBackgroundColor;  // 设置body背景颜色
+    body.style.backgroundColor = themeArray[randomNum].bodyBackgroundColor;  // 设置body背景颜色
 
     return {
-        "themeColor": theme[randomNum].bodyBackgroundColor,
-        "componentBackgroundColor": theme[randomNum].componentBackgroundColor,
-        "componentFontColor": getFontColor(theme[randomNum].componentBackgroundColor),
+        "themeColor": themeArray[randomNum].bodyBackgroundColor,
+        "componentBackgroundColor": themeArray[randomNum].componentBackgroundColor,
+        "componentFontColor": getFontColor(themeArray[randomNum].componentBackgroundColor),
     };  // 返回各组件背景颜色
 }
 
@@ -287,6 +293,76 @@ export function getSearchEngineDetail(searchEngine) {
             break;
     }
     return {"searchEngineName": searchEngineName, "searchEngineUrl": searchEngineUrl, "searchEngineIconUrl": searchEngineIconUrl};
+}
+
+// 补全设置数据
+// 补全设置数据
+export function fixPreferenceData(preferenceData) {
+    let isFixed = false;
+    if(!preferenceData.dynamicEffect) {
+        preferenceData.dynamicEffect = defaultPreferenceData.dynamicEffect;
+        isFixed = true;
+    }
+    if(!preferenceData.imageQuality) {
+        preferenceData.imageQuality = defaultPreferenceData.imageQuality;
+        isFixed = true;
+    }
+    if(!preferenceData.imageTopics) {
+        preferenceData.imageTopics = defaultPreferenceData.imageTopics;
+        isFixed = true;
+    }
+    if(preferenceData.customTopic === undefined || preferenceData.customTopic === null) {  // customTopic 可以为""
+        preferenceData.customTopic = defaultPreferenceData.customTopic;
+        isFixed = true;
+    }
+    if(!preferenceData.changeImageTime) {
+        preferenceData.changeImageTime = defaultPreferenceData.changeImageTime;
+        isFixed = true;
+    }
+    if(preferenceData.nightMode === undefined || preferenceData.nightMode === null) {
+        preferenceData.nightMode = defaultPreferenceData.nightMode;
+        isFixed = true;
+    }
+    if(preferenceData.autoDarkMode === undefined || preferenceData.autoDarkMode === null) {
+        preferenceData.autoDarkMode = defaultPreferenceData.autoDarkMode;
+        isFixed = true;
+    }
+    if(preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {
+        preferenceData.noImageMode = defaultPreferenceData.noImageMode;
+        isFixed = true;
+    }
+
+    if(!preferenceData.searchEngine) {
+        preferenceData.searchEngine = defaultPreferenceData.searchEngine;
+        isFixed = true;
+    }
+    if(!preferenceData.buttonShape) {
+        preferenceData.buttonShape = defaultPreferenceData.buttonShape;
+        isFixed = true;
+    }
+    if(preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {
+        preferenceData.simpleMode = defaultPreferenceData.simpleMode;
+        isFixed = true;
+    }
+    if(preferenceData.displayAlert === undefined || preferenceData.displayAlert === null) {
+        preferenceData.displayAlert = defaultPreferenceData.displayAlert;
+        isFixed = true;
+    }
+
+    if (isFixed) {
+        localStorage.setItem("preferenceData", JSON.stringify(preferenceData));  // 重新保存设置
+    }
+    return preferenceData;
+}
+
+export function getPreferenceDataStorage() {
+    let tempPreferenceData = localStorage.getItem("preferenceData");
+    if (tempPreferenceData === null) {
+        localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+        return defaultPreferenceData;
+    } else {
+        return fixPreferenceData(JSON.parse(tempPreferenceData));  // 检查是否缺少数据
+    }
 }
 
 // 过渡动画

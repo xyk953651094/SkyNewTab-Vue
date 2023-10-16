@@ -15,7 +15,7 @@
         >
             <template #prefix>
                 <a-button type="text" :shape="preferenceData.buttonShape" size="small"
-                          id="searchEngineIconBtn" :style="{cursor: 'default'}">
+                          id="searchEngineIconBtn" @click="changeSearchEngine">
                     {{searchEngineName}}
                 </a-button>
                 <a-divider direction="vertical" />
@@ -91,6 +91,18 @@ function onSearch(value) {
 function onPressEnter() {
     let value = document.getElementById("searchInput").children[1].value;
     window.open(searchEngineUrl.value + value);
+}
+
+function changeSearchEngine() {
+    const searchEngines = ["Baidu", "Bing", "Google", "Yandex"];
+    let currentIndex = searchEngines.indexOf(searchEngineName.value);
+    let nextIndex = 0;
+    if (currentIndex !== searchEngines.length - 1) {
+        nextIndex = currentIndex + 1;
+    }
+
+    searchEngineName.value = searchEngines[nextIndex];
+    searchEngineUrl.value = getSearchEngineDetail(searchEngines[nextIndex].toLowerCase()).searchEngineUrl
 }
 </script>
 

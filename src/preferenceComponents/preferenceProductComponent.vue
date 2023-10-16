@@ -9,7 +9,7 @@
             <icon-apps/>
         </template>
             <a-row :gutter="[0, 8]">
-                <a-col span="18">
+                <a-col :span="18">
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                               :style="{color: fontColor, cursor: 'default'}"
                               :shape="preferenceData.buttonShape" type="text">
@@ -19,7 +19,7 @@
                         {{ "云开新标签页（React）" }}
                     </a-button>
                 </a-col>
-                <a-col span="6">
+                <a-col :span="6">
                     <a-space>
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                   :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyNewTab-React/"
@@ -39,7 +39,7 @@
                         </a-button>
                     </a-space>
                 </a-col>
-                <a-col span="18">
+                <a-col :span="18">
                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                               :style="{color: fontColor, cursor: 'default'}"
                               :shape="preferenceData.buttonShape" type="text">
@@ -49,7 +49,7 @@
                         {{ "云开诗词新标签页" }}
                     </a-button>
                 </a-col>
-                <a-col span="6">
+                <a-col :span="6">
                     <a-space>
                         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
                                   :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyNewTab-Poem-React/"
