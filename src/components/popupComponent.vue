@@ -60,6 +60,7 @@ let preferenceData = ref(getPreferenceDataStorage());
 onMounted(() => {
     let tempImageData = localStorage.getItem("lastImage");
     if (tempImageData) {
+        tempImageData = JSON.parse(tempImageData);
         imageData.value = tempImageData;
         hoverColor.value = tempImageData.color;
         backgroundColor.value = getReverseColor(tempImageData.color);
