@@ -80,6 +80,7 @@ import {
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
+import { Notification } from '@arco-design/web-vue';
 
 import GreetComponent from "./components/greetComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
@@ -135,6 +136,19 @@ onMounted(() => {
         themeColor.value = setColorTheme();
     }
 
+    // 版本号提醒
+    let storageVersion = localStorage.getItem("SkyNewTabVueVersion");
+    let currentVersion = require('../package.json').version;
+    if(storageVersion !== currentVersion) {
+        Notification.info({
+            title: "已更新至 " + currentVersion,
+            content: "详情请前往 GitHub 或 GitLab 查看",
+            position: "bottomLeft",
+            duration: 5000
+        });
+        localStorage.setItem("SkyNewTabVueVersion", currentVersion);
+    }
+
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
         // 通用
@@ -162,10 +176,22 @@ onMounted(() => {
         if (messageEle.length && messageEle.length > 0) {
             messageEle.css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
-                "border-color": themeColor.value.componentBackgroundColor
+                "borderColor": themeColor.value.componentBackgroundColor
             });
             $(".arco-message-icon").css("color", themeColor.value.componentFontColor);
             $(".arco-message-content").css("color", themeColor.value.componentFontColor);
+        }
+
+        // notification
+        let notificationEle = $(".arco-notification");
+        if (notificationEle.length && notificationEle.length > 0) {
+            notificationEle.css({
+                "backgroundColor": themeColor.value.componentBackgroundColor,
+                "borderColor": themeColor.value.componentBackgroundColor
+            });
+            $(".arco-notification-icon").css("color", themeColor.value.componentFontColor);
+            $(".arco-notification-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-notification-content").css("color", themeColor.value.componentFontColor);
         }
 
         // drawer
