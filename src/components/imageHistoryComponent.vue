@@ -15,20 +15,22 @@
                 </template>
             </a-button>
             <template #title>
-                <a-typography-text :style="{color: fontColor}">{{ "历史图片 " + imageArray.length + " / " + imageArrayMaxSize }}</a-typography-text>
+                <a-typography-text :style="{color: fontColor}">{{ "历史记录 " + imageHistoryJson.length + " / " + imageArrayMaxSize }}</a-typography-text>
             </template>
             <template #content>
                 <a-row class="alignCenter">
-                    <a-carousel indicator-type="line" animation-name="fade" :style="{width: '350px',height: '210px'}">
-                        <a-carousel-item v-for="image in imageArray" :key="image.created_at">
+                    <a-empty :style="{display: imageHistoryJson.length === 0 ? 'block' : 'none'}"/>
+                    <a-carousel indicator-type="line" animation-name="fade" :default-current="imageHistoryJson.length"
+                                :style="{display: imageHistoryJson.length === 0 ? 'none' : 'block', width: '350px',height: '210px'}">
+                        <a-carousel-item v-for="item in imageHistoryJson" :key="item.index">
                             <a-image
-                                :src="image.urls.regular"
+                                :src="item.imageUrl"
                                 alt="图片加载失败"
                                 height="210px"
                                 width="350px"
                                 :preview="false"
                                 :style="{cursor: 'pointer'}"
-                                @click="imageOnClick(image)"
+                                @click="imageOnClick(item)"
                             >
                             </a-image>
                         </a-carousel-item>
@@ -43,7 +45,7 @@
 import {IconHistory} from "@arco-design/web-vue/es/icon";
 import {defineProps, onMounted, ref, watch} from "vue";
 import {changeThemeColor} from "../javascripts/publicFunctions";
-import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
+import {defaultPreferenceData, imageArrayMaxSize, unsplashUrl} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -51,6 +53,13 @@ const props = defineProps({
         type: String,
         default: () => {
             return "none"
+        },
+        required: true
+    },
+    imageHistory: {
+        type: Object,
+        default: () => {
+            return []
         },
         required: true
     },
@@ -77,14 +86,13 @@ const props = defineProps({
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let imageArray = ref([]);
-let imageArrayMaxSize = ref(5);
+let imageHistoryJson = ref([]);
 
 onMounted(() => {
     // 获取缓存图片列表
-    let imageArrayStorage = localStorage.getItem("imageArray");
-    if(imageArrayStorage !== null) {
-        imageArray.value = JSON.parse(imageArrayStorage);
+    let imageHistoryStorage = localStorage.getItem("imageHistory");
+    if(imageHistoryStorage !== null) {
+        imageHistoryJson.value = JSON.parse(imageHistoryStorage);
     }
 })
 
@@ -97,9 +105,15 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 })
 
-function imageOnClick(image) {
-    if(image.links.html) {
-        window.open(image.links.html + unsplashUrl, '_blank');
+watch(() => props.imageHistory, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        imageHistoryJson.value = newValue;
+    }
+})
+
+function imageOnClick(item) {
+    if(item.links.html) {
+        window.open(item.link + unsplashUrl, '_blank');
     } else {
         Message.error("无跳转链接");
     }

@@ -49,7 +49,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="alignCenter">
-            <wallpaper-component @imageData="getImageData"/>
+            <wallpaper-component @image-data="getImageData" @image-history="getImageHistory"/>
             <a-space align="center" direction="vertical">
                 <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
@@ -64,7 +64,7 @@
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
-                        <image-history-component :display="componentDisplay"
+                        <image-history-component :display="componentDisplay" :image-history="imageHistory"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
@@ -106,6 +106,7 @@ let themeColor = ref({
 });
 
 let imageData = ref(null);
+let imageHistory = ref([]);
 let preferenceData = ref(getPreferenceDataStorage());
 let componentDisplay = ref("none");  // 图片接口请求成功后再显示相关组件
 
@@ -127,6 +128,10 @@ const getImageData = (value) => {
             "componentFontColor": componentFontColor,
         };
     }
+}
+
+const getImageHistory = (value) => {
+    imageHistory.value = value;
 }
 
 const getPreferenceData = (value) => {
