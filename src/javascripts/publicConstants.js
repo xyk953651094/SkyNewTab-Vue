@@ -82,4 +82,4 @@ export const clientId = "ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM";
 export const unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
 export const appId = "cicgheqakgmpjclo";
 export const appSecret = "RVlRVjZTYXVqeHB3WCtQUG5lM0h0UT09";
-export const imageArrayMaxSize = 5;
+export const imageHistoryMaxSize = 5;

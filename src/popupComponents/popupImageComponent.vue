@@ -4,7 +4,7 @@
             <a-image
                 id="popupImage"
                 :src="imagePreviewUrl"
-                :style="{borderRadius: '2px'}"
+                :style="{borderRadius: '4px'}"
                 alt="图片加载失败"
                 height="150px"
                 width="250px"

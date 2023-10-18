@@ -23,7 +23,7 @@ import {
     isEmptyString
 } from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {clientId, device, imageArrayMaxSize} from "../javascripts/publicConstants";
+import {clientId, device, imageHistoryMaxSize} from "../javascripts/publicConstants";
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 
@@ -127,7 +127,7 @@ function getWallpaper() {
                     imageLink: lastImageJson.links.html
                 };
 
-                if(imageHistoryJson.length === imageArrayMaxSize) { // 满了就把第一个删掉
+                if(imageHistoryJson.length === imageHistoryMaxSize) { // 满了就把第一个删掉
                     imageHistoryJson.shift();
                 }
                 imageHistoryJson.push(imageArrayJsonItem);
