@@ -8,6 +8,7 @@
                 alt="图片加载失败"
                 height="150px"
                 width="250px"
+                :preview="false"
             >
             </a-image>
             <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
@@ -181,7 +182,7 @@ function btnMouseOut() {
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl);
+        window.open(authorLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }
@@ -189,7 +190,7 @@ function authorLinkBtnOnClick() {
 
 function imageLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
+        window.open(imageLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }

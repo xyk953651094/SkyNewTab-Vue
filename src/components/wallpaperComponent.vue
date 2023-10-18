@@ -113,6 +113,22 @@ function getWallpaper() {
             });
             localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
             localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
+
+            // 缓存图片
+            let imageArrayStorage = localStorage.getItem("imageArray");
+            let imageArrayJson = [];
+            if(imageArrayStorage !== null) {
+                imageArrayJson = JSON.parse(imageArrayStorage);
+            }
+            if(imageArrayJson.length === 5) {
+                imageArrayJson.shift();
+                imageArrayJson.push(resultData);
+            }
+            else {
+                imageArrayJson.push(resultData);
+            }
+            localStorage.setItem("imageArray", JSON.stringify(imageArrayJson));
+
             setWallpaper(resultData);
         })
         .catch(function () {

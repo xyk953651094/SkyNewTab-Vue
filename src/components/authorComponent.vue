@@ -252,7 +252,7 @@ function btnMouseOut() {
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl);
+        window.open(authorLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }
@@ -260,7 +260,7 @@ function authorLinkBtnOnClick() {
 
 function imageLinkBtnOnClick() {
     if (imageLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
+        window.open(imageLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }

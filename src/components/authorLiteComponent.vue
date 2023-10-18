@@ -74,7 +74,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
 
 function imageLinkBtnOnClick() {
     if (imageLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
+        window.open(imageLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }

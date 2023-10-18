@@ -55,8 +55,7 @@ import {
     IconCalendar,
     IconCloud,
     IconFileImage,
-    IconCodeSquare,
-    IconGift
+    IconCodeSquare
 } from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";

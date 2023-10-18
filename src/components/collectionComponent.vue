@@ -202,7 +202,7 @@ function btnMouseOut() {
 }
 
 function collectionBtnOnClick(item) {
-    window.open(item.webUrl);
+    window.open(item.webUrl, "_blank");
 }
 
 // 添加导航弹窗

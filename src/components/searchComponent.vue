@@ -90,7 +90,7 @@ function onSearch(value) {
 
 function onPressEnter() {
     let value = document.getElementById("searchInput").children[1].value;
-    window.open(searchEngineUrl.value + value);
+    window.open(searchEngineUrl.value + value, "_blank");
 }
 
 function changeSearchEngine() {

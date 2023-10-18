@@ -64,6 +64,8 @@
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <image-history-component :display="componentDisplay"
+                                          :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -93,6 +95,7 @@ import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import AuthorLiteComponent from "./components/authorLiteComponent.vue";
+import ImageHistoryComponent from "@/components/imageHistoryComponent.vue";
 
 const $ = require("jquery");
 
