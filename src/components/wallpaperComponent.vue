@@ -20,7 +20,7 @@ import {
     getTimeDetails,
     httpRequest,
     imageDynamicEffect,
-    isEmptyString
+    isEmpty
 } from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
 import {clientId, device, imageHistoryMaxSize} from "../javascripts/publicConstants";
@@ -61,7 +61,7 @@ function setWallpaper(data) {
     }
 
     // blurHash
-    if (!isEmptyString(data.blur_hash)) {
+    if (!isEmpty(data.blur_hash)) {
         const backgroundCanvas = document.getElementById("backgroundCanvas");
         if (backgroundCanvas instanceof HTMLCanvasElement) {
             let blurHashImage = decode(data.blur_hash, backgroundCanvas.width, backgroundCanvas.height);
@@ -95,7 +95,7 @@ function getWallpaper() {
         "topics": imageTopics,
         "content_filter": "high",
     };
-    if (!isEmptyString(imageQuery)) {
+    if (!isEmpty(imageQuery)) {
         delete data.topics;
         data.query = imageQuery;
     }

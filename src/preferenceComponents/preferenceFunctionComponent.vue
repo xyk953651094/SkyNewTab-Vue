@@ -115,7 +115,7 @@
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getPreferenceDataStorage, isEmptyString} from "../javascripts/publicFunctions";
+import {getFontColor, getPreferenceDataStorage, isEmpty} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
 
@@ -149,7 +149,7 @@ const props = defineProps({
 const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
-    disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
+    disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
 })
 
 function btnMouseOver() {
@@ -165,7 +165,7 @@ function btnMouseOut() {
 // 地理位置
 // function submitLocationBtnOnClick() {
 //     let inputValue = document.getElementById("locationInput").children[0].value;
-//     if (!isEmptyString(inputValue)) {
+//     if (!isEmpty(inputValue)) {
 //         preferenceData.value.location = inputValue;
 //         emit("preferenceData", preferenceData.value);
 //         localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));

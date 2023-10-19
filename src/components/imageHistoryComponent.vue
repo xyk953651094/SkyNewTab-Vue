@@ -4,7 +4,7 @@
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
             :style="{width: '370px'}"
-            position="tr" trigger="click"
+            position="tr"
         >
             <a-button id="imageHistoryBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
                       :shape="preferenceData.buttonShape"
@@ -15,12 +15,30 @@
                 </template>
             </a-button>
             <template #title>
-                <a-typography-text :style="{color: fontColor}">{{ "历史记录 " + imageHistoryJson.length + " / " + imageHistoryMaxSize }}</a-typography-text>
+                <a-row align="center">
+                    <a-col :span="10">
+                        <a-typography-text :style="{color: fontColor}">
+                            {{ "历史记录 " + imageHistoryJson.length + " / " + imageHistoryMaxSize }}
+                        </a-typography-text>
+                    </a-col>
+                    <a-col :span="14" :style="{textAlign: 'right'}">
+                        <a-space>
+                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                      :shape="preferenceData.buttonShape"
+                                      type="text" @click="imageLinkBtnOnClick">
+                                <template #icon>
+                                    <icon-file-image />
+                                </template>
+                                {{ "当前历史图片主页" }}
+                            </a-button>
+                        </a-space>
+                    </a-col>
+                </a-row>
             </template>
             <template #content>
                 <a-row class="alignCenter">
                     <a-empty :style="{display: imageHistoryJson.length === 0 ? 'block' : 'none'}"/>
-                    <a-carousel indicator-type="line" animation-name="fade" :default-current="imageHistoryJson.length"
+                    <a-carousel indicator-type="line" animation-name="fade" @change="carouselOnChange"
                                 :style="{display: imageHistoryJson.length === 0 ? 'none' : 'block', width: '350px',height: '210px', borderRadius: '4px'}">
                         <a-carousel-item v-for="item in imageHistoryJson" :key="item.index" :style="{borderRadius: '4px'}">
                             <a-image
@@ -29,8 +47,7 @@
                                 height="210px"
                                 width="350px"
                                 :preview="false"
-                                :style="{borderRadius: '4px', cursor: 'pointer'}"
-                                @click="imageOnClick(item)"
+                                :style="{borderRadius: '4px'}"
                             >
                             </a-image>
                         </a-carousel-item>
@@ -42,9 +59,9 @@
 </template>
 
 <script setup>
-import {IconHistory} from "@arco-design/web-vue/es/icon";
+import {IconFileImage, IconHistory} from "@arco-design/web-vue/es/icon";
 import {defineProps, onMounted, ref, watch} from "vue";
-import {changeThemeColor} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, isEmpty} from "../javascripts/publicFunctions";
 import {defaultPreferenceData, imageHistoryMaxSize, unsplashUrl} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
@@ -87,12 +104,18 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let imageHistoryJson = ref([]);
+let imageLink = ref("");
 
 onMounted(() => {
     // 获取缓存图片列表
     let imageHistoryStorage = localStorage.getItem("imageHistory");
     if(imageHistoryStorage !== null) {
-        imageHistoryJson.value = JSON.parse(imageHistoryStorage);
+        let tempImageHistoryJson = JSON.parse(imageHistoryStorage);
+        if (!isEmpty(tempImageHistoryJson)) {
+            tempImageHistoryJson = tempImageHistoryJson.reverse(); // 重新到旧排序
+            imageHistoryJson.value = tempImageHistoryJson;
+            imageLink.value = tempImageHistoryJson[0].imageLink;
+        }
     }
 })
 
@@ -106,17 +129,33 @@ watch(() => props.themeColor, (newValue, oldValue) => {
 })
 
 watch(() => props.imageHistory, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        imageHistoryJson.value = newValue;
+    if (newValue.length > 0 && newValue !== oldValue) {
+        let tempImageHistoryJson = newValue.reverse(); // 重新到旧排序
+        imageHistoryJson.value = tempImageHistoryJson;
+        imageLink.value = tempImageHistoryJson[0].imageLink;
     }
 })
 
-function imageOnClick(item) {
-    if(item.links.html) {
-        window.open(item.imageLink + unsplashUrl, '_blank');
+function btnMouseOver() {
+    this.style.backgroundColor = hoverColor.value;
+    this.style.color = getFontColor(hoverColor.value);
+}
+
+function btnMouseOut() {
+    this.style.backgroundColor = "transparent";
+    this.style.color = fontColor.value;
+}
+
+function imageLinkBtnOnClick() {
+    if (!isEmpty(imageLink.value)) {
+        window.open(imageLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }
+}
+
+function carouselOnChange(currentIndex) {
+    imageLink.value = imageHistoryJson.value[currentIndex - 1].imageLink
 }
 </script>
 

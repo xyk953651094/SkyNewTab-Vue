@@ -95,7 +95,7 @@ import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import AuthorLiteComponent from "./components/authorLiteComponent.vue";
-import ImageHistoryComponent from "@/components/imageHistoryComponent.vue";
+import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
 
 const $ = require("jquery");
 

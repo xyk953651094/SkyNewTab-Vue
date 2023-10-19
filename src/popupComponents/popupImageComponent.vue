@@ -76,7 +76,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
+import {getFontColor, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
@@ -140,13 +140,13 @@ watch(() => props.imageData, (newValue, oldValue) => {
         authorLink.value = props.imageData.user.links.html;
         imageLink.value = props.imageData.links.html;
         imagePreviewUrl.value = props.imageData.urls.regular;
-        imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
-        imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
+        imageLocation.value = isEmpty(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
+        imageDescription.value = isEmpty(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
         imageCreateTime.value = getCreateTime(props.imageData.created_at);
-        imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
+        imageCamera.value = isEmpty(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
 
         blurHashCode.value = newValue.blur_hash;
-        if (!isEmptyString(blurHashCode.value)) {
+        if (!isEmpty(blurHashCode.value)) {
             const popupCanvas = document.getElementById("popupCanvas");
             if (popupCanvas instanceof HTMLCanvasElement) {
                 let blurHashImage = decode(blurHashCode.value, popupCanvas.width, popupCanvas.height);
