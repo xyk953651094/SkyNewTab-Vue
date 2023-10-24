@@ -14,7 +14,7 @@
                 </a-tooltip>
 
                 <a-space>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加链接"
+                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加快速链接"
                                position="bottom">
                         <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
                                   :shape="preferenceData.buttonShape"
@@ -25,7 +25,7 @@
                             </template>
                         </a-button>
                     </a-tooltip>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑链接"
+                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑快速链接"
                                position="bottom">
                         <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
                                   :shape="preferenceData.buttonShape"
@@ -55,7 +55,15 @@
              :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              :onBeforeOk="addModalBeforeOk" unmount-on-close
              @cancel="addModalCancelBtnOnClick" @ok="addModalOkBtnOnClick">
-        <template #title>{{ "添加链接 " + collectionSize + " / " + collectionMaxSize }}</template>
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "添加快速链接 " + collectionSize + " / " + collectionMaxSize }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
         <a-form>
             <a-form-item field="name" label="网站名称">
                 <a-input id="webNameInput" allow-clear maxLength="5" placeholder="请输入网站名称" showWordLimit/>
@@ -73,7 +81,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "编辑链接 " + collectionSize + " / " + collectionMaxSize }}
+                        {{ "编辑快速链接 " + collectionSize + " / " + collectionMaxSize }}
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">

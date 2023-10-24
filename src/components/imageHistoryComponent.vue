@@ -36,23 +36,37 @@
                 </a-row>
             </template>
             <template #content>
-                <a-row class="alignCenter">
-                    <a-empty :style="{display: imageHistoryJson.length === 0 ? 'block' : 'none'}"/>
-                    <a-carousel indicator-type="line" animation-name="fade" @change="carouselOnChange"
-                                :style="{display: imageHistoryJson.length === 0 ? 'none' : 'block', width: '350px',height: '210px', borderRadius: '4px'}">
-                        <a-carousel-item v-for="item in imageHistoryJson" :key="item.index" :style="{borderRadius: '4px'}">
-                            <a-image
-                                :src="item.imageUrl"
-                                alt="图片加载失败"
-                                height="210px"
-                                width="350px"
-                                :preview="false"
-                                :style="{borderRadius: '4px'}"
-                            >
-                            </a-image>
-                        </a-carousel-item>
-                    </a-carousel>
-                </a-row>
+                <a-list :bordered=false>
+                    <a-list-item>
+                        <a-row class="alignCenter">
+                            <a-empty :style="{display: imageHistoryJson.length === 0 ? 'block' : 'none'}"/>
+                            <a-carousel indicator-type="line" animation-name="fade" @change="carouselOnChange"
+                                        :style="{display: imageHistoryJson.length === 0 ? 'none' : 'block', width: '350px',height: '210px', borderRadius: '4px'}">
+                                <a-carousel-item v-for="item in imageHistoryJson" :key="item.index" :style="{borderRadius: '4px'}">
+                                    <a-image
+                                        :src="item.imageUrl"
+                                        alt="图片加载失败"
+                                        height="210px"
+                                        width="350px"
+                                        :preview="false"
+                                        :style="{borderRadius: '4px'}"
+                                    >
+                                        <template #loader>
+                                            <a-image
+                                                :src="item.placeholderUrl"
+                                                alt="图片加载失败"
+                                                height="210px"
+                                                width="350px"
+                                                :preview="false"
+                                                :style="{borderRadius: '4px'}"
+                                            />
+                                        </template>
+                                    </a-image>
+                                </a-carousel-item>
+                            </a-carousel>
+                        </a-row>
+                    </a-list-item>
+                </a-list>
             </template>
         </a-popover>
     </a-space>
