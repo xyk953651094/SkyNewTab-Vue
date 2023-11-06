@@ -85,7 +85,7 @@ export function getTimeDetails(param) {
 }
 
 // 判断字符串是否合规
-export function isEmptyString(param) {
+export function isEmpty(param) {
     return (param === null || param === undefined || param.length === 0);
 }
 

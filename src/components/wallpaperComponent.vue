@@ -20,14 +20,14 @@ import {
     getTimeDetails,
     httpRequest,
     imageDynamicEffect,
-    isEmptyString
+    isEmpty
 } from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {clientId, device} from "../javascripts/publicConstants";
+import {clientId, device, imageHistoryMaxSize} from "../javascripts/publicConstants";
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 
-const emit = defineEmits(["imageData"]);
+const emit = defineEmits(["imageData", "imageHistory"]);
 
 let imageData = ref(null);
 let preferenceData = ref(getPreferenceDataStorage());
@@ -61,7 +61,7 @@ function setWallpaper(data) {
     }
 
     // blurHash
-    if (!isEmptyString(data.blur_hash)) {
+    if (!isEmpty(data.blur_hash)) {
         const backgroundCanvas = document.getElementById("backgroundCanvas");
         if (backgroundCanvas instanceof HTMLCanvasElement) {
             let blurHashImage = decode(data.blur_hash, backgroundCanvas.width, backgroundCanvas.height);
@@ -95,7 +95,7 @@ function getWallpaper() {
         "topics": imageTopics,
         "content_filter": "high",
     };
-    if (!isEmptyString(imageQuery)) {
+    if (!isEmpty(imageQuery)) {
         delete data.topics;
         data.query = imageQuery;
     }
@@ -111,15 +111,37 @@ function getWallpaper() {
                 content: "正在加载图片",
                 duration: 0
             });
-            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-            localStorage.setItem("lastImage", JSON.stringify(resultData));               // 保存请求结果，防抖节流
+
+            // 缓存历史图片
+            let lastImageStorage = localStorage.getItem("lastImage"); // 上一张图片
+            let imageHistoryStorage = localStorage.getItem("imageHistory");
+            let imageHistoryJson = [];
+            if(imageHistoryStorage !== null) {
+                imageHistoryJson = JSON.parse(imageHistoryStorage);
+            }
+            if(lastImageStorage !== null) {
+                let lastImageJson = JSON.parse(lastImageStorage);
+                let imageArrayJsonItem = {
+                    index: new Date().getTime(),
+                    imageUrl: lastImageJson.urls.regular,
+                    imageLink: lastImageJson.links.html,
+                };
+
+                if(imageHistoryJson.length === imageHistoryMaxSize) { // 满了就把第一个删掉
+                    imageHistoryJson.shift();
+                }
+                imageHistoryJson.push(imageArrayJsonItem);
+            }
+            localStorage.setItem("imageHistory", JSON.stringify(imageHistoryJson));
+            emit("imageHistory", imageHistoryJson); // 传递给历史图片组件
+
+            // 保存请求结果，防抖节流
+            localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));
+            localStorage.setItem("lastImage", JSON.stringify(resultData)); // 更新上一张图片为本次图片
             setWallpaper(resultData);
         })
         .catch(function () {
             Message.clear();
-            // 请求失败也更新请求时间，防止超时后无信息可显示
-            // localStorage.setItem("lastImageRequestTime", String(new Date().getTime()));  // 保存请求时间，防抖节流
-
             // 请求失败时显示上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
@@ -146,6 +168,7 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
+        // } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {
         } else if (nowTimeStamp - parseInt(lastRequestTime) > parseInt(preferenceData.value.changeImageTime)) {  // 必须多于切换间隔才能进行新的请求
             getWallpaper();
         } else {  // 切换间隔内使用上一次请求结果
@@ -159,12 +182,6 @@ onMounted(() => {
                 setWallpaper(lastImage);
             } else {
                 Message.error("无缓存图片可加载，请前往设置手动刷新");
-
-                // Message.error("无缓存图片可加载，一秒后刷新页面");
-                // localStorage.removeItem("lastImageRequestTime");
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 1000);
             }
         }
 

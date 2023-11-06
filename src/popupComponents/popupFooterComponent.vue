@@ -1,7 +1,7 @@
 <template>
     <a-space>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                  href="https://github.com/xyk953651094"
+                  href="https://github.com/xyk953651094/SkyNewTab-Vue/"
                   :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-github/>
@@ -9,7 +9,7 @@
             Github
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                  href="https://gitlab.com/xyk953651094"
+                  href="https://gitlab.com/xyk953651094/SkyNewTab-Vue/"
                   :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-gitlab />
@@ -17,7 +17,7 @@
             GitLab
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                  href="https://xyk953651094.blogspot.com"
+                  href="https://xyk953651094.blogspot.com/"
                   :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-notification />
@@ -25,7 +25,7 @@
             博客
         </a-button>
         <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                  href="https://afdian.net/a/xyk953651094"
+                  href="https://afdian.net/a/xyk953651094/"
                   :shape="preferenceData.buttonShape" target="_blank" type="text">
             <template #icon>
                 <icon-gift/>

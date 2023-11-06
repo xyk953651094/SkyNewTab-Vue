@@ -50,7 +50,13 @@
 </template>
 
 <script setup>
-import {IconInfoCircle, IconCalendar, IconCloud, IconFileImage, IconCodeSquare} from "@arco-design/web-vue/es/icon";
+import {
+    IconInfoCircle,
+    IconCalendar,
+    IconCloud,
+    IconFileImage,
+    IconCodeSquare
+} from "@arco-design/web-vue/es/icon";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";

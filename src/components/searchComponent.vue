@@ -11,7 +11,7 @@
             @focus="onFocus"
             @search="onSearch"
             @press-enter="onPressEnter"
-            :style="{borderRadius: borderRadius}"
+            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
         >
             <template #prefix>
                 <a-button type="text" :shape="preferenceData.buttonShape" size="small"
@@ -35,7 +35,6 @@ let fontColor = ref("");
 let searchEngineName = ref("Bing");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let displayMask = ref("none");
-let borderRadius = ref("calc(36px * 0.5)");
 
 const props = defineProps({
     themeColor: {
@@ -71,7 +70,6 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         let searchEngineDetail = getSearchEngineDetail(newValue.searchEngine);
         searchEngineName.value = searchEngineDetail.searchEngineName;
         searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
-        borderRadius.value = newValue.buttonShape === "round" ? "calc(36px * 0.5)" : "";
     }
 })
 
@@ -90,7 +88,7 @@ function onSearch(value) {
 
 function onPressEnter() {
     let value = document.getElementById("searchInput").children[1].value;
-    window.open(searchEngineUrl.value + value);
+    window.open(searchEngineUrl.value + value, "_blank");
 }
 
 function changeSearchEngine() {

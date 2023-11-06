@@ -49,7 +49,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="alignCenter">
-            <wallpaper-component @imageData="getImageData"/>
+            <wallpaper-component @image-data="getImageData" @image-history="getImageHistory"/>
             <a-space align="center" direction="vertical">
                 <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
@@ -63,6 +63,8 @@
                 <a-col :lg="20" :md="0" :sm="0" :xl="20" :xs="0" :xxl="20" style="text-align: right">
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
+                                          :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <image-history-component :display="componentDisplay" :image-history="imageHistory"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
@@ -80,6 +82,7 @@ import {
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
+import { Notification } from '@arco-design/web-vue';
 
 import GreetComponent from "./components/greetComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
@@ -92,6 +95,7 @@ import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import AuthorLiteComponent from "./components/authorLiteComponent.vue";
+import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
 
 const $ = require("jquery");
 
@@ -102,6 +106,7 @@ let themeColor = ref({
 });
 
 let imageData = ref(null);
+let imageHistory = ref([]);
 let preferenceData = ref(getPreferenceDataStorage());
 let componentDisplay = ref("none");  // 图片接口请求成功后再显示相关组件
 
@@ -125,6 +130,10 @@ const getImageData = (value) => {
     }
 }
 
+const getImageHistory = (value) => {
+    imageHistory.value = value;
+}
+
 const getPreferenceData = (value) => {
     preferenceData.value = value;
 }
@@ -133,6 +142,19 @@ onMounted(() => {
     // 未加载图片前随机显示颜色主题
     if (themeColor.value.themeColor === "") {
         themeColor.value = setColorTheme();
+    }
+
+    // 版本号提醒
+    let storageVersion = localStorage.getItem("SkyNewTabVueVersion");
+    let currentVersion = require('../package.json').version;
+    if(storageVersion !== currentVersion) {
+        Notification.info({
+            title: "已更新至 " + currentVersion,
+            content: "详情请前往 GitHub 或 GitLab 查看",
+            position: "bottomLeft",
+            duration: 5000
+        });
+        localStorage.setItem("SkyNewTabVueVersion", currentVersion);
     }
 
     // 修改各类弹窗样式
@@ -162,10 +184,22 @@ onMounted(() => {
         if (messageEle.length && messageEle.length > 0) {
             messageEle.css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
-                "border-color": themeColor.value.componentBackgroundColor
+                "borderColor": themeColor.value.componentBackgroundColor
             });
             $(".arco-message-icon").css("color", themeColor.value.componentFontColor);
             $(".arco-message-content").css("color", themeColor.value.componentFontColor);
+        }
+
+        // notification
+        let notificationEle = $(".arco-notification");
+        if (notificationEle.length && notificationEle.length > 0) {
+            notificationEle.css({
+                "backgroundColor": themeColor.value.componentBackgroundColor,
+                "borderColor": themeColor.value.componentBackgroundColor
+            });
+            $(".arco-notification-icon").css("color", themeColor.value.componentFontColor);
+            $(".arco-notification-title").css("color", themeColor.value.componentFontColor);
+            $(".arco-notification-content").css("color", themeColor.value.componentFontColor);
         }
 
         // drawer

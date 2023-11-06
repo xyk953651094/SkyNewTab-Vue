@@ -1,7 +1,7 @@
 <template>
     <a-row justify="center">
         <a-col :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :span="24"
-               :style="{padding: '5px 10px', borderRadius: '2px'}"
+               :style="{padding: '5px 10px', borderRadius: '4px'}"
                class="zIndexHigh">
             <a-space id="clock" align="center">
                 <a-typography-text :style="{color: backgroundColor}" class="textShadow clockText">

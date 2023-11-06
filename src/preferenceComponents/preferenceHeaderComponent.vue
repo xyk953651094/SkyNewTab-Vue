@@ -4,23 +4,24 @@
             <a-typography-text :style="{color: fontColor}">{{ "菜单栏" }}</a-typography-text>
         </a-col>
         <a-col :span="12" :style="{textAlign: 'right'}">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
-                      href="https://afdian.net/a/xyk953651094"
-                      :shape="preferenceData.buttonShape" target="_blank" type="text">
+            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                      :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
+                      :shape="preferenceData.buttonShape"
+                      target="_blank" type="text">
                 <template #icon>
                     <icon-gift/>
                 </template>
-                支持
+                {{ "支持作者" }}
             </a-button>
         </a-col>
     </a-row>
 </template>
 
 <script setup>
-import {IconGift} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {getFontColor} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {IconGift} from "@arco-design/web-vue/es/icon";
 
 const props = defineProps({
     hoverColor: {

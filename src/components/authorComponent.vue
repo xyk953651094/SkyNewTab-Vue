@@ -154,7 +154,7 @@ import {
     IconUser
 } from "@arco-design/web-vue/es/icon";
 import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
-import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
+import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const btnMaxSize = 50;
@@ -227,10 +227,10 @@ watch(() => props.imageData, (newValue, oldValue) => {
         authorPhotos.value = props.imageData.user.total_photos;
         imageLink.value = props.imageData.links.html;
         imagePreviewUrl.value = props.imageData.urls.regular;
-        imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
-        imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
+        imageLocation.value = isEmpty(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
+        imageDescription.value = isEmpty(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
         imageCreateTime.value = getCreateTime(props.imageData.created_at);
-        imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
+        imageCamera.value = isEmpty(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
     }
 })
 
@@ -252,7 +252,7 @@ function btnMouseOut() {
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl);
+        window.open(authorLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }
@@ -260,7 +260,7 @@ function authorLinkBtnOnClick() {
 
 function imageLinkBtnOnClick() {
     if (imageLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
+        window.open(imageLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }

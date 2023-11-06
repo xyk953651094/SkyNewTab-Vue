@@ -4,10 +4,11 @@
             <a-image
                 id="popupImage"
                 :src="imagePreviewUrl"
-                :style="{borderRadius: '2px'}"
+                :style="{borderRadius: '4px'}"
                 alt="图片加载失败"
                 height="150px"
                 width="250px"
+                :preview="false"
             >
             </a-image>
             <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
@@ -75,7 +76,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getSearchEngineDetail, isEmptyString} from "../javascripts/publicFunctions";
+import {getFontColor, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
@@ -139,13 +140,13 @@ watch(() => props.imageData, (newValue, oldValue) => {
         authorLink.value = props.imageData.user.links.html;
         imageLink.value = props.imageData.links.html;
         imagePreviewUrl.value = props.imageData.urls.regular;
-        imageLocation.value = isEmptyString(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
-        imageDescription.value = isEmptyString(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
+        imageLocation.value = isEmpty(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
+        imageDescription.value = isEmpty(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
         imageCreateTime.value = getCreateTime(props.imageData.created_at);
-        imageCamera.value = isEmptyString(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
+        imageCamera.value = isEmpty(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
 
         blurHashCode.value = newValue.blur_hash;
-        if (!isEmptyString(blurHashCode.value)) {
+        if (!isEmpty(blurHashCode.value)) {
             const popupCanvas = document.getElementById("popupCanvas");
             if (popupCanvas instanceof HTMLCanvasElement) {
                 let blurHashImage = decode(blurHashCode.value, popupCanvas.width, popupCanvas.height);
@@ -181,7 +182,7 @@ function btnMouseOut() {
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl);
+        window.open(authorLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }
@@ -189,7 +190,7 @@ function authorLinkBtnOnClick() {
 
 function imageLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
-        window.open(imageLink.value + unsplashUrl);
+        window.open(imageLink.value + unsplashUrl, "_blank");
     } else {
         Message.error("无跳转链接");
     }

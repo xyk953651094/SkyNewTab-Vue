@@ -214,7 +214,7 @@ import {
     getFontColor,
     getPreferenceDataStorage,
     getTimeDetails,
-    isEmptyString
+    isEmpty
 } from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
@@ -255,7 +255,7 @@ onMounted(() => {
         lastRequestTime.value = getTimeDetails(new Date(parseInt(tempLastRequestTime))).showDetail;
     }
 
-    disableImageTopic.value = !isEmptyString(preferenceData.value.customTopic);
+    disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
 })
 
 function btnMouseOver() {
@@ -304,7 +304,7 @@ function submitCustomTopicBtnOnClick() {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已启用自定主题，一秒后刷新页面");
-    disableImageTopic.value = !isEmptyString(inputValue);
+    disableImageTopic.value = !isEmpty(inputValue);
     refreshWindow();
 }
 

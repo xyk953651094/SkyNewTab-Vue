@@ -90,7 +90,6 @@ import {IconMenu} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "../javascripts/publicFunctions";
 import {defaultPreferenceData, device} from "../javascripts/publicConstants";
 import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
-// import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
 import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
 import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";
 import PreferenceImageComponent from "../preferenceComponents/preferenceImageComponent.vue";
@@ -98,6 +97,7 @@ import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunct
 import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
 import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
 import PreferenceToTopComponent from "../preferenceComponents/preferenceToTopComponent.vue";
+// import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");

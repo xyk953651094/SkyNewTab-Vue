@@ -90,7 +90,15 @@
              :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              :onBeforeOk="modalBeforeOk"
              unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
-        <template #title>{{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}</template>
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
         <a-form>
             <a-form-item field="dailyInput" label="倒数标题">
                 <a-input id="dailyInput" allow-clear maxLength="10" placeholder="请输入标题" showWordLimit/>
