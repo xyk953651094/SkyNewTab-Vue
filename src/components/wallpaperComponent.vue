@@ -124,7 +124,6 @@ function getWallpaper() {
                 let imageArrayJsonItem = {
                     index: new Date().getTime(),
                     imageUrl: lastImageJson.urls.regular,
-                    placeholderUrl: lastImageJson.urls.small_s3,
                     imageLink: lastImageJson.links.html,
                 };
 

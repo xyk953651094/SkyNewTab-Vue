@@ -55,14 +55,6 @@
                                             <div :style="{width: '350px',height: '210px', borderRadius: '4px'}" class="alignCenter">
                                                 <a-spin dot tip="加载中，请稍后..."/>
                                             </div>
-<!--                                            <a-image-->
-<!--                                                :src="item.placeholderUrl"-->
-<!--                                                alt="图片加载失败"-->
-<!--                                                height="210px"-->
-<!--                                                width="350px"-->
-<!--                                                :preview="false"-->
-<!--                                                :style="{borderRadius: '4px'}"-->
-<!--                                            />-->
                                         </template>
                                     </a-image>
                                 </a-carousel-item>
