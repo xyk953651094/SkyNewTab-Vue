@@ -51,7 +51,7 @@
         <a-layout-content id="content" class="alignCenter">
             <wallpaper-component @image-data="getImageData" @image-history="getImageHistory"/>
             <a-space align="center" direction="vertical">
-                <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                <clock-component :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>

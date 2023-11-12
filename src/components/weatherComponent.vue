@@ -34,15 +34,6 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text">
-                                <template #icon>
-                                    <icon-clock-circle />
-                                </template>
-                                {{ "最后更新时间：" + lastRequestTime }}
-                            </a-button>
                             <a-row :gutter="8">
                                 <a-col :span="12">
                                     <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
@@ -108,6 +99,17 @@
                                         {{ " 视线距离：" + visibility }}
                                     </a-button>
                                 </a-col>
+                            </a-row>
+                            <a-row>
+                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          :shape="preferenceData.buttonShape"
+                                          type="text">
+                                    <template #icon>
+                                        <icon-clock-circle />
+                                    </template>
+                                    {{ "上次更新：" + lastRequestTime }}
+                                </a-button>
                             </a-row>
                         </a-space>
                     </a-list-item>
