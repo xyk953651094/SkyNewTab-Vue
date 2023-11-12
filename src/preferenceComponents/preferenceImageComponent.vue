@@ -150,7 +150,7 @@
                     <a-option value="3600000">{{"每 60 分钟"}}</a-option>
                 </a-select>
                 <template #extra>
-                    <a-typography-text :style="{color: fontColor}">{{"上次切换时间：" + lastRequestTime}}</a-typography-text>
+                    <a-typography-text :style="{color: fontColor}">{{"上次切换：" + lastRequestTime}}</a-typography-text>
                 </template>
             </a-form-item>
             <a-row :gutter="24">

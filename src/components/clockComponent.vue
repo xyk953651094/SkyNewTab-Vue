@@ -22,9 +22,8 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {changeBackgroundColor, changeFontColor, getTimeDetails} from "../javascripts/publicFunctions";
+import {getTimeDetails} from "../javascripts/publicFunctions";
 import "../stylesheets/clockComponent.less";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -39,17 +38,9 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
-    },
-    preferenceData: {
-        type: Object,
-        required: true,
-        default: () => {
-            return defaultPreferenceData
-        }
     }
 });
 
-let noImageMode = ref(false);
 let backgroundColor = ref("");
 let fontColor = ref("");
 let currentTime = ref(getTimeDetails(new Date()).showTime);
@@ -72,32 +63,30 @@ watch(() => props.themeColor, (newValue, oldValue) => {
     }
 });
 
-watch(() => props.preferenceData, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        noImageMode.value = newValue.noImageMode;
-    }
-});
-
 function btnMouseOver() {
-    if (!noImageMode.value) {
-        new Promise((resolve) => {
-            $(".clockText, .dateText").removeClass("textShadow");
-            changeBackgroundColor(this, backgroundColor.value, 150);
-            changeFontColor(".clockText, .dateText", fontColor.value, 150);
-            resolve("success");
-        }).then(() => {
-            this.classList.add("componentTheme");
-        })
-    }
+    $(".clockText, .dateText").removeClass("textShadow").css("color", fontColor.value);
+    this.style.backgroundColor = backgroundColor.value;
+    this.classList.add("componentTheme");
+
+    // new Promise((resolve) => {
+    //     $(".clockText, .dateText").removeClass("textShadow");
+    //     changeBackgroundColor(this, backgroundColor.value, 150);
+    //     changeFontColor(".clockText, .dateText", fontColor.value, 150);
+    //     resolve("success");
+    // }).then(() => {
+    //     this.classList.add("componentTheme");
+    // })
 }
 
 function btnMouseOut() {
-    if (!noImageMode.value) {
-        this.classList.remove("componentTheme");
-        $(".clockText, .dateText").addClass("textShadow");
-        changeBackgroundColor(this, "transparent", 150);
-        changeFontColor(".clockText, .dateText", backgroundColor.value, 150);
-    }
+    $(".clockText, .dateText").addClass("textShadow").css("color", backgroundColor.value);
+    this.style.backgroundColor = "transparent";
+    this.classList.remove("componentTheme");
+
+    // this.classList.remove("componentTheme");
+    // $(".clockText, .dateText").addClass("textShadow");
+    // changeBackgroundColor(this, "transparent", 150);
+    // changeFontColor(".clockText, .dateText", backgroundColor.value, 150);
 }
 
 </script>
