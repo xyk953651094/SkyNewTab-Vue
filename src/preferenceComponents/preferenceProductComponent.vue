@@ -16,6 +16,36 @@
                         <template #icon>
                             <icon-apps/>
                         </template>
+                        {{ "云开壁纸" }}
+                    </a-button>
+                </a-col>
+                <a-col :span="6">
+                    <a-space>
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyWallpaper-Electron/"
+                                  :shape="preferenceData.buttonShape"
+                                  target="_blank" type="text">
+                            <template #icon>
+                                <icon-github />
+                            </template>
+                        </a-button>
+                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                  :style="{color: fontColor}" href="https://gitlab.com/xyk953651094/SkyWallpaper-Electron/"
+                                  :shape="preferenceData.buttonShape"
+                                  target="_blank" type="text">
+                            <template #icon>
+                                <icon-gitlab />
+                            </template>
+                        </a-button>
+                    </a-space>
+                </a-col>
+                <a-col :span="18">
+                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                              :style="{color: fontColor, cursor: 'default'}"
+                              :shape="preferenceData.buttonShape" type="text">
+                        <template #icon>
+                            <i class="bi bi-puzzle"/>
+                        </template>
                         {{ "云开新标签页（React）" }}
                     </a-button>
                 </a-col>
@@ -44,7 +74,7 @@
                               :style="{color: fontColor, cursor: 'default'}"
                               :shape="preferenceData.buttonShape" type="text">
                         <template #icon>
-                            <icon-apps/>
+                            <i class="bi bi-puzzle"/>
                         </template>
                         {{ "云开诗词新标签页" }}
                     </a-button>
