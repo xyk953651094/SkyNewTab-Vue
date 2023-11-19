@@ -85,7 +85,7 @@
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                               :shape="preferenceData.buttonShape"
                               type="text" @click="removeAllBtnOnClick">
                         <template #icon>
@@ -100,7 +100,7 @@
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-row>
                     <a-col :span="8">
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                   type="text">
                             <template #icon>
@@ -110,7 +110,7 @@
                         </a-button>
                     </a-col>
                     <a-col :span="16">
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                   type="text">
                             <template #icon>
@@ -121,7 +121,7 @@
                     </a-col>
                 </a-row>
                 <template #actions>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                               :shape="preferenceData.buttonShape"
                               type="text" @click="removeBtnOnClick(item)">
                         <template #icon>
@@ -138,7 +138,7 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconDelete, IconEdit, IconLink, IconPlus, IconPushpin} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const $ = require("jquery");
@@ -198,16 +198,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
     }
 })
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
 
 function collectionBtnOnClick(item) {
     window.open(item.webUrl, "_blank");

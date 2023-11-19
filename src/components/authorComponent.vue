@@ -22,7 +22,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="authorLinkBtnOnClick">
                                 <template #icon>
@@ -30,7 +30,7 @@
                                 </template>
                                 {{ "摄影师主页" }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="imageLinkBtnOnClick">
                                 <template #icon>
@@ -48,7 +48,7 @@
                         <a-space>
                             <a-avatar :image-url="authorIconUrl" :size="64" :style="{backgroundColor: 'transparent'}"/>
                             <a-space direction="vertical">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                           :style="{color: fontColor}"
                                           :shape="preferenceData.buttonShape" type="text" @click="authorLinkBtnOnClick">
                                     <template #icon>
@@ -59,7 +59,7 @@
                                     }}
                                 </a-button>
                                 <a-space>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -67,7 +67,7 @@
                                         </template>
                                         {{ " " + authorCollections + " 个合集" }}
                                     </a-button>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -75,7 +75,7 @@
                                         </template>
                                         {{ " " + authorLikes + " 个点赞" }}
                                     </a-button>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -93,7 +93,7 @@
                                       :style="{backgroundColor: 'transparent'}"
                                       shape="square"/>
                             <a-space direction="vertical">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                           :style="{color: fontColor}"
                                           :shape="preferenceData.buttonShape"
                                           type="text" @click="imageLocationBtnOnClick">
@@ -104,7 +104,7 @@
                                         imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
                                     }}
                                 </a-button>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                           :style="{color: fontColor}"
                                           :shape="preferenceData.buttonShape" type="text" @click="imageLinkBtnOnClick">
                                     <template #icon>
@@ -115,7 +115,7 @@
                                     }}
                                 </a-button>
                                 <a-space>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -123,7 +123,7 @@
                                         </template>
                                         {{ imageCreateTime }}
                                     </a-button>
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor}"
                                               :shape="preferenceData.buttonShape"
                                               type="text" @click="imageCameraBtnOnClick">
@@ -154,7 +154,12 @@ import {
     IconUser
 } from "@arco-design/web-vue/es/icon";
 import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
-import {changeThemeColor, getFontColor, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
+import {
+    btnMouseOut, btnMouseOver,
+    changeThemeColor,
+    getSearchEngineDetail,
+    isEmpty
+} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const btnMaxSize = 50;
@@ -239,16 +244,6 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {

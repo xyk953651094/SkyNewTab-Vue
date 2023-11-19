@@ -1,6 +1,6 @@
 <template>
     <a-space align="center">
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                   :style="{color: fontColor, cursor: 'default'}"
                   :shape="preferenceData.buttonShape"
                   type="text">
@@ -15,7 +15,7 @@
 <script setup>
 import {IconDashboard} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
@@ -41,16 +41,6 @@ const props = defineProps({
         }
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 </script>
 
 <style scoped>

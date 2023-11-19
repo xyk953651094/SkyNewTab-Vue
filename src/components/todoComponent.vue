@@ -24,7 +24,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="showAddModalBtnOnClick">
                                 <template #icon>
@@ -32,7 +32,7 @@
                                 </template>
                                 {{ "添加待办事项" }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="finishAllBtnOnClick">
                                 <template #icon>
@@ -49,7 +49,7 @@
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
                         <a-row>
                             <a-col :span="12">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                           :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                           type="text">
                                     <template #icon>
@@ -59,7 +59,7 @@
                                 </a-button>
                             </a-col>
                             <a-col :span="12">
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                           :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
                                           type="text">
                                     <template #icon>
@@ -70,7 +70,7 @@
                             </a-col>
                         </a-row>
                         <template #actions>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="finishBtnOnClick(item)">
                                 <template #icon>
@@ -117,7 +117,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCheck, IconCheckSquare, IconPlus, IconTag} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getFontColor} from "../javascripts/publicFunctions";
+import {changeThemeColor, btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
@@ -180,16 +180,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
     }
 })
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
 
 function finishAllBtnOnClick() {
     let tempTodos = localStorage.getItem("todos");

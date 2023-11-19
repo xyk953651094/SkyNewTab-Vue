@@ -392,3 +392,14 @@ export function fadeIn(element, time = 300) {
 export function fadeOut(element, time = 300) {
     $(element).fadeOut(time);
 }
+
+// 按钮（clockComponent 不适用公共方法，已单独实现）
+export function btnMouseOver(hoverColor, e) {
+    e.currentTarget.style.backgroundColor = hoverColor;
+    e.currentTarget.style.color = getFontColor(hoverColor);
+}
+
+export function btnMouseOut(fontColor, e) {
+    e.currentTarget.style.backgroundColor = "transparent";
+    e.currentTarget.style.color = fontColor;
+}

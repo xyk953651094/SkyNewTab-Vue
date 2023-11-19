@@ -1,6 +1,6 @@
 <template>
     <a-space :style="{display: simpleMode ? 'none' : 'inline-flex'}">
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                   :shape="preferenceData.buttonShape"
                   type="text" @click="greetBtnOnClick">
             <template #icon>
@@ -8,7 +8,7 @@
             </template>
             {{ greetContent }}
         </a-button>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                   :shape="preferenceData.buttonShape"
                   type="text" @click="weatherBtnOnClick">
             <template #icon>
@@ -16,7 +16,7 @@
             </template>
             {{ weatherContent }}
         </a-button>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor, cursor: 'default'}"
                   :shape="preferenceData.buttonShape"
                   type="text">
             <template #icon>
@@ -24,7 +24,7 @@
             </template>
             {{ dailySize + " 个倒数日" }}
         </a-button>
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor, cursor: 'default'}"
+        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor, cursor: 'default'}"
                   :shape="preferenceData.buttonShape"
                   type="text">
             <template #icon>
@@ -33,7 +33,7 @@
             {{ todoSize + " 个待办事项" }}
         </a-button>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
               :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}"
               :shape="preferenceData.buttonShape"
               type="text">
@@ -48,11 +48,10 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconCheckSquare, IconInfoCircle} from "@arco-design/web-vue/es/icon";
 import {
-    getFontColor,
     getGreetContent,
     getGreetIcon,
     getSearchEngineDetail,
-    getWeatherIcon
+    getWeatherIcon, btnMouseOver, btnMouseOut
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
@@ -60,6 +59,13 @@ const props = defineProps({
     imageData: {
         type: Object,
         required: true
+    },
+    hoverColor: {
+        type: String,
+        required: true,
+        default: () => {
+            return ""
+        }
     },
     fontColor: {
         type: String,
@@ -115,16 +121,6 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         simpleMode.value = newValue.simpleMode;
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.imageData.color;
-    this.style.color = getFontColor(props.imageData.color);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 
 function greetBtnOnClick() {
     window.open(searchEngineUrl.value + "万年历", "_blank",);

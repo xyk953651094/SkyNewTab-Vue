@@ -19,7 +19,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="historyBtnOnClick">
                                 <template #icon>
@@ -27,7 +27,7 @@
                                 </template>
                                 {{ "历史上的今天" }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="infoBtnOnClick">
                                 <template #icon>
@@ -43,7 +43,7 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                       :style="{color: fontColor, cursor: 'default'}"
                                       :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
@@ -51,7 +51,7 @@
                                 </template>
                                 {{ calendar }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                       :style="{color: fontColor, cursor: 'default'}"
                                        :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
@@ -59,7 +59,7 @@
                                 </template>
                                 {{ "宜：" + (suit.length < btnMaxSize ? suit : suit.substring(0, btnMaxSize) + "...") }}
                             </a-button>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                       :style="{color: fontColor, cursor: 'default'}"
                                        :shape="preferenceData.buttonShape" type="text">
                                 <template #icon>
@@ -89,12 +89,11 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import {
     changeThemeColor,
-    getFontColor,
     getGreetContent,
     getGreetIcon,
     getSearchEngineDetail,
     getTimeDetails,
-    httpRequest,
+    httpRequest, btnMouseOut, btnMouseOver
 } from "../javascripts//publicFunctions";
 import {appId, appSecret, defaultPreferenceData} from "../javascripts/publicConstants";
 
@@ -154,16 +153,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
 
 function historyBtnOnClick() {
     window.open(searchEngineUrl.value + "历史上的今天", "_blank");

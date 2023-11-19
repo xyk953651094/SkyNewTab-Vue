@@ -10,7 +10,7 @@
         </template>
         <a-row :gutter="[0, 8]">
             <a-col :span="12">
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
@@ -21,7 +21,7 @@
                 </a-button>
             </a-col>
             <a-col :span="12">
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
                           :shape="preferenceData.buttonShape"
                           target="_blank" type="text">
@@ -38,7 +38,7 @@
 <script setup>
 import {IconThumbUp, IconThumbDown, IconEmail} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
@@ -71,16 +71,6 @@ const props = defineProps({
         }
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 </script>
 
 <style scoped>

@@ -23,7 +23,7 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                       :shape="preferenceData.buttonShape"
                                       type="text" @click="imageLinkBtnOnClick">
                                 <template #icon>
@@ -70,7 +70,7 @@
 <script setup>
 import {IconFileImage, IconHistory} from "@arco-design/web-vue/es/icon";
 import {defineProps, onMounted, ref, watch} from "vue";
-import {changeThemeColor, getFontColor, isEmpty} from "../javascripts/publicFunctions";
+import {changeThemeColor, isEmpty, btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defaultPreferenceData, imageHistoryMaxSize, unsplashUrl} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
@@ -144,16 +144,6 @@ watch(() => props.imageHistory, (newValue, oldValue) => {
         imageLink.value = tempImageHistoryJson[0].imageLink;
     }
 })
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
 
 function imageLinkBtnOnClick() {
     if (!isEmpty(imageLink.value)) {

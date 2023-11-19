@@ -19,7 +19,7 @@
                         <a-typography-text :style="{color: fontColor}">{{ "天气信息" }}</a-typography-text>
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                   :shape="preferenceData.buttonShape"
                                   type="text" @click="infoBtnOnClick">
                             <template #icon>
@@ -36,7 +36,7 @@
                         <a-space direction="vertical">
                             <a-row :gutter="8">
                                 <a-col :span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                                               :shape="preferenceData.buttonShape"
                                               type="text" @click="locationBtnOnClick">
                                         <template #icon>
@@ -46,7 +46,7 @@
                                     </a-button>
                                 </a-col>
                                 <a-col :span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -58,7 +58,7 @@
                             </a-row>
                             <a-row :gutter="8">
                                 <a-col :span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -68,7 +68,7 @@
                                     </a-button>
                                 </a-col>
                                 <a-col :span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -80,7 +80,7 @@
                             </a-row>
                             <a-row :gutter="8">
                                 <a-col :span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -90,7 +90,7 @@
                                     </a-button>
                                 </a-col>
                                 <a-col :span="12">
-                                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               :shape="preferenceData.buttonShape" type="text">
                                         <template #icon>
@@ -101,7 +101,7 @@
                                 </a-col>
                             </a-row>
                             <a-row>
-                                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           :shape="preferenceData.buttonShape"
                                           type="text">
@@ -123,11 +123,10 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {
     changeThemeColor,
-    getFontColor,
     getSearchEngineDetail,
     getWeatherIcon,
     httpRequest,
-    getTimeDetails
+    getTimeDetails, btnMouseOut, btnMouseOver
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {IconMoreVertical, IconClockCircle, IconLocation} from "@arco-design/web-vue/es/icon";
@@ -191,16 +190,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = hoverColor.value;
-    this.style.color = getFontColor(hoverColor.value);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = fontColor.value;
-}
 
 function infoBtnOnClick() {
     window.open(searchEngineUrl.value + "天气", "_blank");
