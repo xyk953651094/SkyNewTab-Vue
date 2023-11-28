@@ -148,9 +148,10 @@ onMounted(() => {
     let storageVersion = localStorage.getItem("SkyNewTabVueVersion");
     let currentVersion = require('../package.json').version;
     if(storageVersion !== currentVersion) {
-        Notification.info({
-            title: "已更新至 " + currentVersion,
-            content: "详情请前往 GitHub 或 GitLab 查看",
+        Notification.success({
+            showIcon: false,
+            title: "已更新至版本 V" + currentVersion,
+            content: "详细更新内容请前往 GitHub 或 GitLab 主页查看",
             position: "bottomLeft",
             duration: 5000
         });
