@@ -14,7 +14,7 @@
             <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
         </div>
         <a-space align="start" direction="vertical">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                       :shape="preferenceData.buttonShape" target="_blank"
                       type="text" @click="authorLinkBtnOnClick">
                 <template #icon>
@@ -22,7 +22,7 @@
                 </template>
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                       :shape="preferenceData.buttonShape" target="_blank"
                       type="text" @click="imageLocationBtnOnClick">
                 <template #icon>
@@ -30,7 +30,7 @@
                 </template>
                 {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" :style="{color: fontColor}"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                       :shape="preferenceData.buttonShape" target="_blank"
                       type="text" @click="imageLinkBtnOnClick"
             >
@@ -42,7 +42,7 @@
                 }}
             </a-button>
             <a-space>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                           :style="{color: fontColor, cursor: 'default'}"
                           :shape="preferenceData.buttonShape" type="text">
                     <template #icon>
@@ -50,7 +50,7 @@
                     </template>
                     {{ imageCreateTime }}
                 </a-button>
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                           :style="{color: fontColor}"
                           :shape="preferenceData.buttonShape"
                           type="text" @click="imageCameraBtnOnClick">
@@ -62,7 +62,7 @@
             </a-space>
         </a-space>
     </a-space>
-    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
               :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
               :shape="preferenceData.buttonShape"
               type="text">
@@ -76,7 +76,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
+import {getSearchEngineDetail, isEmpty, btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
@@ -88,6 +88,13 @@ const props = defineProps({
     imageData: {
         type: Object,
         required: true
+    },
+    hoverColor: {
+        type: String,
+        required: true,
+        default: () => {
+            return ""
+        }
     },
     fontColor: {
         type: String,
@@ -169,16 +176,6 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         noImageMode.value = newValue.noImageMode;
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.imageData.color;
-    this.style.color = getFontColor(props.imageData.color);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {

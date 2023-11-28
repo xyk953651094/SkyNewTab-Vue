@@ -18,7 +18,7 @@
 <!--                                 allow-clear-->
 <!--                                 placeholder="请输入您的地理位置"/>-->
 <!--                    </a-form-item>-->
-<!--                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"-->
+<!--                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"-->
 <!--                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"-->
 <!--                              type="text" @click="submitLocationBtnOnClick"-->
 <!--                    >-->
@@ -88,7 +88,7 @@
                 </a-col>
             </a-row>
             <a-form-item field="clearStorageButton" label="危险设置">
-                <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                           :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                           type="text" @click="clearStorageBtnOnClick"
                 >
@@ -115,14 +115,14 @@
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getFontColor, getPreferenceDataStorage, isEmpty} from "../javascripts/publicFunctions";
+import {getPreferenceDataStorage, isEmpty, btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
 
 let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -151,16 +151,6 @@ const emit = defineEmits(["preferenceData"]);
 onMounted(() => {
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
 })
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 
 // 地理位置
 // function submitLocationBtnOnClick() {

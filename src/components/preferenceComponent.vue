@@ -17,7 +17,7 @@
                 :height="500"
                 :placement="drawerPosition"
                 :visible="visible"
-                :width="380"
+                :width="400"
                 unmountOnClose
                 @cancel="handleCancel"
                 @ok="handleOk"
@@ -97,7 +97,6 @@ import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunct
 import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
 import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
 import PreferenceToTopComponent from "../preferenceComponents/preferenceToTopComponent.vue";
-// import PreferenceLinkComponent from "../preferenceComponents/preferenceLinkComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");

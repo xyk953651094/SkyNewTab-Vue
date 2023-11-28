@@ -125,7 +125,7 @@
                                  allow-clear
                                  placeholder="英文搜索最准确"/>
                     </a-form-item>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                               :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                               type="text" @click="submitCustomTopicBtnOnClick"
                     >
@@ -133,7 +133,7 @@
                             <icon-check/>
                         </template>
                     </a-button>
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                               :style="{color: fontColor}" :shape="preferenceData.buttonShape"
                               type="text" @click="clearCustomTopicBtnOnClick"
                     >
@@ -211,10 +211,9 @@
 <script setup>
 import {IconCheck, IconStop} from "@arco-design/web-vue/es/icon";
 import {
-    getFontColor,
     getPreferenceDataStorage,
     getTimeDetails,
-    isEmpty
+    isEmpty, btnMouseOver, btnMouseOut
 } from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
@@ -257,16 +256,6 @@ onMounted(() => {
 
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
 })
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 
 // 动效样式
 function dynamicEffectRadioOnChange(value) {

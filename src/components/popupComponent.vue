@@ -11,6 +11,7 @@
             <a-list :bordered=false>
                 <a-list-item :style="{borderBottomColor: fontColor}" class="alignCenter">
                     <popup-status-component
+                        :hover-color="hoverColor"
                         :font-color="fontColor"
                         :image-data="imageData"
                         :preference-data="preferenceData"
@@ -18,6 +19,7 @@
                 </a-list-item>
                 <a-list-item class="alignCenter">
                     <popup-image-component
+                        :hover-color="hoverColor"
                         :font-color="fontColor"
                         :image-data="imageData"
                         :preference-data="preferenceData"

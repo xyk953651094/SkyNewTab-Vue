@@ -9,7 +9,7 @@
             <icon-info-circle/>
         </template>
         <a-space direction="vertical">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                       :style="{color: fontColor}" href="https://www.mxnzp.com/"
                       :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
@@ -18,7 +18,7 @@
                 </template>
                 {{ "节气来源：https://www.mxnzp.com" }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                       :style="{color: fontColor}" href="https://www.jinrishici.com/"
                       :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
@@ -27,7 +27,7 @@
                 </template>
                 {{ "天气来源：https://www.jinrishici.com" }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                       :style="{color: fontColor}" href="https://unsplash.com/"
                       :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
@@ -36,7 +36,7 @@
                 </template>
                 {{ "图片来源：https://unsplash.com" }}
             </a-button>
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                       :style="{color: fontColor}" href="https://www.jetbrains.com.cn/community/opensource/#support/"
                       :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
@@ -57,7 +57,7 @@ import {
     IconFileImage,
     IconCodeSquare
 } from "@arco-design/web-vue/es/icon";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
@@ -91,16 +91,6 @@ const props = defineProps({
         }
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 </script>
 
 <style scoped>

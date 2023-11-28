@@ -1,10 +1,10 @@
 <template>
-    <a-row align="center" :style="{width: '348px'}"><!-- 380（drawer 的宽度） - 16 * 2 -->
+    <a-row align="center" :style="{width: '368px'}"><!-- drawer 的宽度 - 16 * 2 -->
         <a-col :span="12">
             <a-typography-text :style="{color: fontColor}">{{ "菜单栏" }}</a-typography-text>
         </a-col>
         <a-col :span="12" :style="{textAlign: 'right'}">
-            <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                       :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
                       :shape="preferenceData.buttonShape"
                       target="_blank" type="text">
@@ -19,11 +19,11 @@
 
 <script setup>
 import {defineProps} from "vue";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {IconGift} from "@arco-design/web-vue/es/icon";
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -46,16 +46,6 @@ const props = defineProps({
         }
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 </script>
 
 <style scoped>

@@ -15,10 +15,10 @@
 
 ## 安装
 * Chrome、Edge：前往插件商店搜索“云开新标签页”（推荐）
-* Firefox：由于审核原因，本插件与 [SkyNewTab-React](https://github.com/xyk953651094/SkyNewTab-React/) 重复，暂不提供安装方式
+* Firefox：由于审核原因，本插件与 SkyNewTab-React 重复，暂不提供安装方式
 * Safari：由于成本原因，暂不提供安装方式
 * 其他浏览器（Brave、Avast、Whale、Opera 等）：前往 Chrome 插件商店搜索“云开新标签页”（推荐）
-* 下载 [Releases](https://github.com/xyk953651094/SkyNewTab-Vue/releases/) 页面提供的安装包自行安装
+* 下载发布（Releases）页面提供的安装包自行安装
 
 ## 注意
 * 由于 Edge 插件商店审核周期过长（一般为 7 天），Edge 更新时间会晚于 Chrome

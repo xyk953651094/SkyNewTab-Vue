@@ -9,19 +9,19 @@
             <icon-apps/>
         </template>
             <a-row :gutter="[0, 8]">
-                <a-col :span="18">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-col :span="19">
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                               :style="{color: fontColor, cursor: 'default'}"
                               :shape="preferenceData.buttonShape" type="text">
                         <template #icon>
                             <icon-apps/>
                         </template>
-                        {{ "云开壁纸" }}
+                        {{ "云开壁纸（React）" }}
                     </a-button>
                 </a-col>
-                <a-col :span="6">
+                <a-col :span="5">
                     <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyWallpaper-Electron/"
                                   :shape="preferenceData.buttonShape"
                                   target="_blank" type="text">
@@ -29,7 +29,7 @@
                                 <icon-github />
                             </template>
                         </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor}" href="https://gitlab.com/xyk953651094/SkyWallpaper-Electron/"
                                   :shape="preferenceData.buttonShape"
                                   target="_blank" type="text">
@@ -39,8 +39,8 @@
                         </a-button>
                     </a-space>
                 </a-col>
-                <a-col :span="18">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-col :span="19">
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                               :style="{color: fontColor, cursor: 'default'}"
                               :shape="preferenceData.buttonShape" type="text">
                         <template #icon>
@@ -49,9 +49,9 @@
                         {{ "云开新标签页（React）" }}
                     </a-button>
                 </a-col>
-                <a-col :span="6">
+                <a-col :span="5">
                     <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyNewTab-React/"
                                   :shape="preferenceData.buttonShape"
                                   target="_blank" type="text">
@@ -59,7 +59,7 @@
                                 <icon-github />
                             </template>
                         </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor}" href="https://gitlab.com/xyk953651094/SkyNewTab-React/"
                                   :shape="preferenceData.buttonShape"
                                   target="_blank" type="text">
@@ -69,19 +69,19 @@
                         </a-button>
                     </a-space>
                 </a-col>
-                <a-col :span="18">
-                    <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                <a-col :span="19">
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                               :style="{color: fontColor, cursor: 'default'}"
                               :shape="preferenceData.buttonShape" type="text">
                         <template #icon>
                             <i class="bi bi-puzzle"/>
                         </template>
-                        {{ "云开诗词新标签页" }}
+                        {{ "云开诗词新标签页（React）" }}
                     </a-button>
                 </a-col>
-                <a-col :span="6">
+                <a-col :span="5">
                     <a-space>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyNewTab-Poem-React/"
                                   :shape="preferenceData.buttonShape"
                                   target="_blank" type="text">
@@ -89,8 +89,38 @@
                                 <icon-github/>
                             </template>
                         </a-button>
-                        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver"
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                                   :style="{color: fontColor}" href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-React/"
+                                  :shape="preferenceData.buttonShape"
+                                  target="_blank" type="text">
+                            <template #icon>
+                                <icon-gitlab />
+                            </template>
+                        </a-button>
+                    </a-space>
+                </a-col>
+                <a-col :span="19">
+                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                              :style="{color: fontColor, cursor: 'default'}"
+                              :shape="preferenceData.buttonShape" type="text">
+                        <template #icon>
+                            <i class="bi bi-puzzle"/>
+                        </template>
+                        {{ "云开诗词新标签页（Angular）" }}
+                    </a-button>
+                </a-col>
+                <a-col :span="5">
+                    <a-space>
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                  :style="{color: fontColor}" href="https://github.com/xyk953651094/SkyNewTab-Poem-Angular/"
+                                  :shape="preferenceData.buttonShape"
+                                  target="_blank" type="text">
+                            <template #icon>
+                                <icon-github/>
+                            </template>
+                        </a-button>
+                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                  :style="{color: fontColor}" href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-Angular/"
                                   :shape="preferenceData.buttonShape"
                                   target="_blank" type="text">
                             <template #icon>
@@ -105,11 +135,11 @@
 
 <script setup>
 import {IconApps, IconGithub, IconGitlab} from "@arco-design/web-vue/es/icon";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -139,16 +169,6 @@ const props = defineProps({
         }
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
     <a-row justify="center">
-        <a-button :onmouseout="btnMouseOut" :onmouseover="btnMouseOver" @click="toTopBtnOnClick"
+        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" @click="toTopBtnOnClick"
                   :shape="preferenceData.buttonShape" type="text" :style="{color: fontColor}">
             <template #icon>
                 <icon-to-top />
@@ -13,7 +13,7 @@
 <script setup>
 import {IconToTop} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {getFontColor} from "../javascripts/publicFunctions";
+import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({
@@ -39,16 +39,6 @@ const props = defineProps({
         }
     }
 });
-
-function btnMouseOver() {
-    this.style.backgroundColor = props.hoverColor;
-    this.style.color = getFontColor(props.hoverColor);
-}
-
-function btnMouseOut() {
-    this.style.backgroundColor = "transparent";
-    this.style.color = props.fontColor;
-}
 
 function toTopBtnOnClick() {
     document.getElementById("drawerContent").scrollIntoView({behavior: "smooth"});
