@@ -17,7 +17,7 @@
                 :height="500"
                 :placement="drawerPosition"
                 :visible="visible"
-                :width="380"
+                :width="400"
                 unmountOnClose
                 @cancel="handleCancel"
                 @ok="handleOk"

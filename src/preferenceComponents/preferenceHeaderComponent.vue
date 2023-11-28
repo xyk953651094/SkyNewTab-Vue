@@ -1,5 +1,5 @@
 <template>
-    <a-row align="center" :style="{width: '348px'}"><!-- 380（drawer 的宽度） - 16 * 2 -->
+    <a-row align="center" :style="{width: '368px'}"><!-- drawer 的宽度 - 16 * 2 -->
         <a-col :span="12">
             <a-typography-text :style="{color: fontColor}">{{ "菜单栏" }}</a-typography-text>
         </a-col>

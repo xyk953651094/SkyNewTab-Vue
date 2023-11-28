@@ -77,7 +77,7 @@
 import {onMounted, ref} from "vue";
 import {
     changeThemeColor,
-    getFontColor, getPreferenceDataStorage,
+    getFontColor, getImageHistoryStorage, getPreferenceDataStorage,
     getReverseColor,
     setColorTheme,
 } from "./javascripts/publicFunctions";
@@ -106,7 +106,7 @@ let themeColor = ref({
 });
 
 let imageData = ref(null);
-let imageHistory = ref([]);
+let imageHistory = ref(getImageHistoryStorage());
 let preferenceData = ref(getPreferenceDataStorage());
 let componentDisplay = ref("none");  // 图片接口请求成功后再显示相关组件
 
