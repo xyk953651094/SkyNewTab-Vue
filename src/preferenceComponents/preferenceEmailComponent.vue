@@ -8,7 +8,7 @@
         <template #extra>
             <icon-email />
         </template>
-        <a-row :gutter="[0, 8]">
+        <a-row :gutter="[8, 8]">
             <a-col :span="12">
                 <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
@@ -31,12 +31,23 @@
                     问题反馈
                 </a-button>
             </a-col>
+            <a-col :span="12">
+                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+                          href="https://xyk953651094.github.io/SkyDocuments/"
+                          :shape="preferenceData.buttonShape"
+                          target="_blank" type="text">
+                    <template #icon>
+                        <icon-question-circle />
+                    </template>
+                    帮助文档
+                </a-button>
+            </a-col>
         </a-row>
     </a-card>
 </template>
 
 <script setup>
-import {IconThumbUp, IconThumbDown, IconEmail} from "@arco-design/web-vue/es/icon";
+import {IconThumbUp, IconThumbDown, IconEmail, IconQuestionCircle} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
