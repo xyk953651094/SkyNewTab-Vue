@@ -5,8 +5,8 @@
                    :style="{minWidth: '550px'}"
                    position="bl"
         >
-            <a-button id="greetBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                       :shape="preferenceData.buttonShape" size="large" type="primary">
+            <a-button id="greetBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
+                      class="componentTheme zIndexHigh" size="large" type="primary">
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
@@ -19,19 +19,21 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="historyBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="historyBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-history />
+                                    <icon-history/>
                                 </template>
                                 {{ "历史上的今天" }}
                             </a-button>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="infoBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="infoBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-more-vertical />
+                                    <icon-more-vertical/>
                                 </template>
                                 {{ "更多信息" }}
                             </a-button>
@@ -43,25 +45,28 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                            <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                      :shape="preferenceData.buttonShape" type="text">
+                                      type="text"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
                                     <icon-calendar/>
                                 </template>
                                 {{ calendar }}
                             </a-button>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                            <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       :shape="preferenceData.buttonShape" type="text">
+                                      type="text"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
                                     <icon-check-circle/>
                                 </template>
                                 {{ "宜：" + (suit.length < btnMaxSize ? suit : suit.substring(0, btnMaxSize) + "...") }}
                             </a-button>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                            <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor, cursor: 'default'}"
-                                       :shape="preferenceData.buttonShape" type="text">
+                                      type="text"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
                                     <icon-close-circle/>
                                 </template>
@@ -88,12 +93,14 @@ import {
     IconMoreVertical,
 } from "@arco-design/web-vue/es/icon";
 import {
+    btnMouseOut,
+    btnMouseOver,
     changeThemeColor,
     getGreetContent,
     getGreetIcon,
     getSearchEngineDetail,
     getTimeDetails,
-    httpRequest, btnMouseOut, btnMouseOver
+    httpRequest
 } from "../javascripts//publicFunctions";
 import {appId, appSecret, defaultPreferenceData} from "../javascripts/publicConstants";
 

@@ -6,8 +6,8 @@
             :style="{width: '550px'}"
             position="br"
         >
-            <a-button id="dailyBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                      :shape="preferenceData.buttonShape"
+            <a-button id="dailyBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
+                      class="componentTheme zIndexHigh"
                       size="large"
                       type="primary">
                 <template #icon>
@@ -25,17 +25,19 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="showAddModalBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="showAddModalBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
                                 {{ "添加倒数日" }}
                             </a-button>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="removeAllBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="removeAllBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
                                     <icon-delete/>
                                 </template>
@@ -50,9 +52,11 @@
                     <a-list-item v-for="item in listItems" :key="item.timestamp">
                         <a-row>
                             <a-col :span="10">
-                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                                          :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
-                                          type="text">
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)"
+                                          @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-calendar-clock/>
                                     </template>
@@ -60,9 +64,11 @@
                                 </a-button>
                             </a-col>
                             <a-col :span="14">
-                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                                          :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
-                                          type="text">
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)"
+                                          @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-clock-circle/>
                                     </template>
@@ -73,9 +79,10 @@
                             </a-col>
                         </a-row>
                         <template #actions>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="removeBtnOnClick(item)">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="removeBtnOnClick(item)"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
                                     <icon-delete/>
                                 </template>
@@ -113,7 +120,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor, getTimeDetails, btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 

@@ -1,26 +1,29 @@
 <template>
     <a-space>
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://github.com/xyk953651094/SkyNewTab-Vue/"
-                  :shape="preferenceData.buttonShape" target="_blank" type="text">
+                  target="_blank"
+                  type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <icon-github/>
             </template>
             Github
         </a-button>
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://gitlab.com/xyk953651094/SkyNewTab-Vue/"
-                  :shape="preferenceData.buttonShape" target="_blank" type="text">
+                  target="_blank"
+                  type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
-                <icon-gitlab />
+                <icon-gitlab/>
             </template>
             GitLab
         </a-button>
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://xyk953651094.blogspot.com/"
-                  :shape="preferenceData.buttonShape" target="_blank" type="text">
+                  target="_blank"
+                  type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
-                <icon-notification />
+                <icon-notification/>
             </template>
             博客
         </a-button>
@@ -30,7 +33,7 @@
 <script setup>
 import {IconGithub, IconGitlab, IconNotification} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 defineProps({

@@ -6,14 +6,16 @@
             :style="{width: '550px'}"
             position="tr"
         >
-            <a-button id="authorBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
-                      :shape="preferenceData.buttonShape"
+            <a-button id="authorBtn" :shape="preferenceData.buttonShape" :style="{display: display, cursor: 'default'}"
+                      class="componentTheme zIndexHigh"
                       size="large"
                       type="primary">
                 <template #icon>
                     <icon-camera/>
                 </template>
-                {{ "由 Unsplash 的 " + (authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "...") + " 拍摄" }}
+                {{
+                    "由 Unsplash 的 " + (authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "...") + " 拍摄"
+                }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -22,19 +24,21 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="authorLinkBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="authorLinkBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-home />
+                                    <icon-home/>
                                 </template>
                                 {{ "摄影师主页" }}
                             </a-button>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="imageLinkBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="imageLinkBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-file-image />
+                                    <icon-file-image/>
                                 </template>
                                 {{ "图片主页" }}
                             </a-button>
@@ -48,9 +52,10 @@
                         <a-space>
                             <a-avatar :image-url="authorIconUrl" :size="64" :style="{backgroundColor: 'transparent'}"/>
                             <a-space direction="vertical">
-                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor}"
-                                          :shape="preferenceData.buttonShape" type="text" @click="authorLinkBtnOnClick">
+                                          type="text"
+                                          @click="authorLinkBtnOnClick" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-user/>
                                     </template>
@@ -59,25 +64,28 @@
                                     }}
                                 </a-button>
                                 <a-space>
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-collection"></i>
                                         </template>
                                         {{ " " + authorCollections + " 个合集" }}
                                     </a-button>
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-heart"></i>
                                         </template>
                                         {{ " " + authorLikes + " 个点赞" }}
                                     </a-button>
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-images"></i>
                                         </template>
@@ -93,10 +101,11 @@
                                       :style="{backgroundColor: 'transparent'}"
                                       shape="square"/>
                             <a-space direction="vertical">
-                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor}"
-                                          :shape="preferenceData.buttonShape"
-                                          type="text" @click="imageLocationBtnOnClick">
+                                          type="text"
+                                          @click="imageLocationBtnOnClick"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-location/>
                                     </template>
@@ -104,9 +113,10 @@
                                         imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
                                     }}
                                 </a-button>
-                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor}"
-                                          :shape="preferenceData.buttonShape" type="text" @click="imageLinkBtnOnClick">
+                                          type="text"
+                                          @click="imageLinkBtnOnClick" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-info-circle/>
                                     </template>
@@ -115,18 +125,20 @@
                                     }}
                                 </a-button>
                                 <a-space>
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <icon-clock-circle/>
                                         </template>
                                         {{ imageCreateTime }}
                                     </a-button>
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor}"
-                                              :shape="preferenceData.buttonShape"
-                                              type="text" @click="imageCameraBtnOnClick">
+                                              type="text"
+                                              @click="imageCameraBtnOnClick"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <icon-camera/>
                                         </template>
@@ -147,15 +159,16 @@ import {defineProps, ref, watch} from "vue"
 import {
     IconCamera,
     IconClockCircle,
-    IconInfoCircle,
-    IconHome,
     IconFileImage,
+    IconHome,
+    IconInfoCircle,
     IconLocation,
     IconUser
 } from "@arco-design/web-vue/es/icon";
 import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
 import {
-    btnMouseOut, btnMouseOver,
+    btnMouseOut,
+    btnMouseOver,
     changeThemeColor,
     getSearchEngineDetail,
     isEmpty

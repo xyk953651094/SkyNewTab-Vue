@@ -2,10 +2,11 @@
     <a-space>
         <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="菜单栏"
                    position="br">
-            <a-button id="preferenceBtn" class="componentTheme zIndexHigh" :shape="preferenceData.buttonShape" size="large" type="primary"
+            <a-button id="preferenceBtn" :shape="preferenceData.buttonShape" class="componentTheme zIndexHigh"
+                      size="large" type="primary"
                       @click="showDrawerBtnOnClick">
                 <template #icon>
-                    <icon-menu />
+                    <icon-menu/>
                 </template>
             </a-button>
             <a-drawer
@@ -29,7 +30,7 @@
                         :preference-data="preferenceData"
                     />
                 </template>
-                <a-space direction="vertical" size="large" id="drawerContent">
+                <a-space id="drawerContent" direction="vertical" size="large">
                     <preference-image-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
@@ -60,12 +61,12 @@
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-<!--                    <preference-link-component-->
-<!--                        :background-color="backgroundColor"-->
-<!--                        :font-color="fontColor"-->
-<!--                        :hover-color="hoverColor"-->
-<!--                        :preference-data="preferenceData"-->
-<!--                    />-->
+                    <!--                    <preference-link-component-->
+                    <!--                        :background-color="backgroundColor"-->
+                    <!--                        :font-color="fontColor"-->
+                    <!--                        :hover-color="hoverColor"-->
+                    <!--                        :preference-data="preferenceData"-->
+                    <!--                    />-->
                     <preference-to-top-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"

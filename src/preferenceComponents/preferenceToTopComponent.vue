@@ -1,9 +1,10 @@
 <template>
     <a-row justify="center">
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" @click="toTopBtnOnClick"
-                  :shape="preferenceData.buttonShape" type="text" :style="{color: fontColor}">
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                  type="text"
+                  @click="toTopBtnOnClick" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
-                <icon-to-top />
+                <icon-to-top/>
             </template>
             {{ "回到顶部" }}
         </a-button>
@@ -13,7 +14,7 @@
 <script setup>
 import {IconToTop} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({

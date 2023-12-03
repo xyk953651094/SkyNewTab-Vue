@@ -156,7 +156,7 @@ export function getWeatherIcon(weatherInfo) {
 export function setColorTheme() {
     let currentHour = parseInt(getTimeDetails(new Date()).hour);
     let themeArray = lightThemeArray;
-    if(currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
+    if (currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
         themeArray = darkThemeArray;
     }
 
@@ -292,59 +292,63 @@ export function getSearchEngineDetail(searchEngine) {
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
     }
-    return {"searchEngineName": searchEngineName, "searchEngineUrl": searchEngineUrl, "searchEngineIconUrl": searchEngineIconUrl};
+    return {
+        "searchEngineName": searchEngineName,
+        "searchEngineUrl": searchEngineUrl,
+        "searchEngineIconUrl": searchEngineIconUrl
+    };
 }
 
 // 补全设置数据
 // 补全设置数据
 export function fixPreferenceData(preferenceData) {
     let isFixed = false;
-    if(!preferenceData.dynamicEffect) {
+    if (!preferenceData.dynamicEffect) {
         preferenceData.dynamicEffect = defaultPreferenceData.dynamicEffect;
         isFixed = true;
     }
-    if(!preferenceData.imageQuality) {
+    if (!preferenceData.imageQuality) {
         preferenceData.imageQuality = defaultPreferenceData.imageQuality;
         isFixed = true;
     }
-    if(!preferenceData.imageTopics) {
+    if (!preferenceData.imageTopics) {
         preferenceData.imageTopics = defaultPreferenceData.imageTopics;
         isFixed = true;
     }
-    if(preferenceData.customTopic === undefined || preferenceData.customTopic === null) {  // customTopic 可以为""
+    if (preferenceData.customTopic === undefined || preferenceData.customTopic === null) {  // customTopic 可以为""
         preferenceData.customTopic = defaultPreferenceData.customTopic;
         isFixed = true;
     }
-    if(!preferenceData.changeImageTime) {
+    if (!preferenceData.changeImageTime) {
         preferenceData.changeImageTime = defaultPreferenceData.changeImageTime;
         isFixed = true;
     }
-    if(preferenceData.nightMode === undefined || preferenceData.nightMode === null) {
+    if (preferenceData.nightMode === undefined || preferenceData.nightMode === null) {
         preferenceData.nightMode = defaultPreferenceData.nightMode;
         isFixed = true;
     }
-    if(preferenceData.autoDarkMode === undefined || preferenceData.autoDarkMode === null) {
+    if (preferenceData.autoDarkMode === undefined || preferenceData.autoDarkMode === null) {
         preferenceData.autoDarkMode = defaultPreferenceData.autoDarkMode;
         isFixed = true;
     }
-    if(preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {
+    if (preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {
         preferenceData.noImageMode = defaultPreferenceData.noImageMode;
         isFixed = true;
     }
 
-    if(!preferenceData.searchEngine) {
+    if (!preferenceData.searchEngine) {
         preferenceData.searchEngine = defaultPreferenceData.searchEngine;
         isFixed = true;
     }
-    if(!preferenceData.buttonShape) {
+    if (!preferenceData.buttonShape) {
         preferenceData.buttonShape = defaultPreferenceData.buttonShape;
         isFixed = true;
     }
-    if(preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {
+    if (preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {
         preferenceData.simpleMode = defaultPreferenceData.simpleMode;
         isFixed = true;
     }
-    if(preferenceData.displayAlert === undefined || preferenceData.displayAlert === null) {
+    if (preferenceData.displayAlert === undefined || preferenceData.displayAlert === null) {
         preferenceData.displayAlert = defaultPreferenceData.displayAlert;
         isFixed = true;
     }
@@ -371,12 +375,10 @@ export function getImageHistoryStorage() {
         let tempImageHistoryJson = JSON.parse(imageHistoryStorage);
         if (!isEmpty(tempImageHistoryJson)) {
             return tempImageHistoryJson.reverse();  // 重新到旧排序
-        }
-        else {
+        } else {
             return [];
         }
-    }
-    else {
+    } else {
         return [];
     }
 }

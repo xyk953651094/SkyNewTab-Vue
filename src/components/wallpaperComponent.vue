@@ -116,10 +116,10 @@ function getWallpaper() {
             let lastImageStorage = localStorage.getItem("lastImage"); // 上一张图片
             let imageHistoryStorage = localStorage.getItem("imageHistory");
             let imageHistoryJson = [];
-            if(imageHistoryStorage !== null) {
+            if (imageHistoryStorage !== null) {
                 imageHistoryJson = JSON.parse(imageHistoryStorage);
             }
-            if(lastImageStorage !== null) {
+            if (lastImageStorage !== null) {
                 let lastImageJson = JSON.parse(lastImageStorage);
                 let imageArrayJsonItem = {
                     index: new Date().getTime(),
@@ -127,7 +127,7 @@ function getWallpaper() {
                     imageLink: lastImageJson.links.html,
                 };
 
-                if(imageHistoryJson.length === imageHistoryMaxSize) { // 满了就把第一个删掉
+                if (imageHistoryJson.length === imageHistoryMaxSize) { // 满了就把第一个删掉
                     imageHistoryJson.shift();
                 }
                 imageHistoryJson.push(imageArrayJsonItem);
@@ -168,7 +168,7 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
-        // } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {
+            // } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {
         } else if (nowTimeStamp - parseInt(lastRequestTime) > parseInt(preferenceData.value.changeImageTime)) {  // 必须多于切换间隔才能进行新的请求
             getWallpaper();
         } else {  // 切换间隔内使用上一次请求结果
@@ -195,15 +195,13 @@ onMounted(() => {
                 let nightMode = preferenceData.value.nightMode;
                 let autoDarkMode = preferenceData.value.autoDarkMode;
                 let currentTime = parseInt(getTimeDetails(new Date()).hour);
-                if(currentTime > 18 || currentTime < 6) {
-                    if( nightMode === false && autoDarkMode === false ) {
+                if (currentTime > 18 || currentTime < 6) {
+                    if (nightMode === false && autoDarkMode === false) {
                         displayMask.value = "none";
-                    }
-                    else {
+                    } else {
                         displayMask.value = "block";
                     }
-                }
-                else {
+                } else {
                     displayMask.value = preferenceData.value.nightMode ? "block" : "none";
                 }
 

@@ -6,38 +6,53 @@
             title="联系作者"
     >
         <template #extra>
-            <icon-email />
+            <icon-email/>
         </template>
         <a-row :gutter="[8, 8]">
             <a-col :span="12">
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
-                          :shape="preferenceData.buttonShape"
-                          target="_blank" type="text">
+                          target="_blank"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-thumb-up />
+                        <icon-thumb-up/>
                     </template>
                     功能建议
                 </a-button>
             </a-col>
             <a-col :span="12">
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
-                          :shape="preferenceData.buttonShape"
-                          target="_blank" type="text">
+                          target="_blank"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-thumb-down />
+                        <icon-thumb-down/>
                     </template>
                     问题反馈
                 </a-button>
             </a-col>
             <a-col :span="12">
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="https://xyk953651094.github.io/SkyDocuments/"
-                          :shape="preferenceData.buttonShape"
-                          target="_blank" type="text">
+                          target="_blank"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-question-circle />
+                        <icon-github/>
+                    </template>
+                    帮助文档
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://xyk953651094.gitlab.io/SkyDocuments/"
+                          target="_blank"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-gitlab/>
                     </template>
                     帮助文档
                 </a-button>
@@ -47,9 +62,9 @@
 </template>
 
 <script setup>
-import {IconThumbUp, IconThumbDown, IconEmail, IconQuestionCircle} from "@arco-design/web-vue/es/icon";
+import {IconEmail, IconGithub, IconGitlab, IconThumbDown, IconThumbUp} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 const props = defineProps({

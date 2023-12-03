@@ -9,26 +9,26 @@
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width>
-<!--            <a-form-item label="天气位置">-->
-<!--                <a-space>-->
-<!--                    <a-form-item field="location" no-style>-->
-<!--                        <a-input id="locationInput"-->
-<!--                                 v-model="preferenceData.customTopic"-->
-<!--                                 :default-value="preferenceData.customTopic"-->
-<!--                                 allow-clear-->
-<!--                                 placeholder="请输入您的地理位置"/>-->
-<!--                    </a-form-item>-->
-<!--                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"-->
-<!--                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"-->
-<!--                              type="text" @click="submitLocationBtnOnClick"-->
-<!--                    >-->
-<!--                        <template #icon>-->
-<!--                            <icon-check/>-->
-<!--                        </template>-->
-<!--                        确定-->
-<!--                    </a-button>-->
-<!--                </a-space>-->
-<!--            </a-form-item>-->
+            <!--            <a-form-item label="天气位置">-->
+            <!--                <a-space>-->
+            <!--                    <a-form-item field="location" no-style>-->
+            <!--                        <a-input id="locationInput"-->
+            <!--                                 v-model="preferenceData.customTopic"-->
+            <!--                                 :default-value="preferenceData.customTopic"-->
+            <!--                                 allow-clear-->
+            <!--                                 placeholder="请输入您的地理位置"/>-->
+            <!--                    </a-form-item>-->
+            <!--                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"-->
+            <!--                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"-->
+            <!--                              type="text" @click="submitLocationBtnOnClick"-->
+            <!--                    >-->
+            <!--                        <template #icon>-->
+            <!--                            <icon-check/>-->
+            <!--                        </template>-->
+            <!--                        确定-->
+            <!--                    </a-button>-->
+            <!--                </a-space>-->
+            <!--            </a-form-item>-->
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                @change="searchEngineRadioOnChange">
@@ -50,7 +50,7 @@
             </a-form-item>
             <a-form-item field="buttonShape" label="按钮形状">
                 <a-radio-group v-model="preferenceData.buttonShape"
-                               @change="buttonShapeRadioOnChange" :style="{width: '100%'}">
+                               :style="{width: '100%'}" @change="buttonShapeRadioOnChange">
                     <a-row>
                         <a-col :span="12">
                             <a-radio value="round">圆形</a-radio>
@@ -88,19 +88,19 @@
                 </a-col>
             </a-row>
             <a-form-item field="clearStorageButton" label="危险设置">
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                          :style="{color: fontColor}" :shape="preferenceData.buttonShape"
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           type="text" @click="clearStorageBtnOnClick"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                 >
                     <template #icon>
-                        <icon-redo />
+                        <icon-redo/>
                     </template>
                     重置插件
                 </a-button>
             </a-form-item>
         </a-form>
-        <a-alert :show-icon="false" title="提示信息" type="info"
-                 :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
+        <a-alert :show-icon="false" :style="{display: preferenceData.displayAlert ? 'block' : 'none'}" title="提示信息"
+                 type="info">
             <a-typography-paragraph>
                 <ol>
                     <a-space direction="vertical">
@@ -115,7 +115,7 @@
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getPreferenceDataStorage, isEmpty, btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver, getPreferenceDataStorage, isEmpty} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
 

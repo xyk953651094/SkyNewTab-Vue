@@ -3,6 +3,7 @@
         <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
+            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
             allow-clear
             class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
@@ -11,14 +12,13 @@
             @focus="onFocus"
             @search="onSearch"
             @press-enter="onPressEnter"
-            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
         >
             <template #prefix>
-                <a-button type="text" :shape="preferenceData.buttonShape" size="small"
-                          id="searchEngineIconBtn" @click="changeSearchEngine">
-                    {{searchEngineName}}
+                <a-button id="searchEngineIconBtn" :shape="preferenceData.buttonShape" size="small"
+                          type="text" @click="changeSearchEngine">
+                    {{ searchEngineName }}
                 </a-button>
-                <a-divider direction="vertical" />
+                <a-divider direction="vertical"/>
             </template>
         </a-input-search>
     </a-col>

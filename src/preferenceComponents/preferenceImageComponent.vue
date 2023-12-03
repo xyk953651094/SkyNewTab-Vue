@@ -125,32 +125,34 @@
                                  allow-clear
                                  placeholder="英文搜索最准确"/>
                     </a-form-item>
-                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                               type="text" @click="submitCustomTopicBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                     >
                         <template #icon>
                             <icon-check/>
                         </template>
                     </a-button>
-                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                               type="text" @click="clearCustomTopicBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                     >
                         <template #icon>
-                            <icon-stop />
+                            <icon-stop/>
                         </template>
                     </a-button>
                 </a-space>
             </a-form-item>
             <a-form-item field="changeImageTime" label="切换间隔">
-                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}" @change="changeImageTimeOnChange">
-                    <a-option value="900000">{{"每 15 分钟"}}</a-option>
-                    <a-option value="1800000">{{"每 30 分钟"}}</a-option>
-                    <a-option value="3600000">{{"每 60 分钟"}}</a-option>
+                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}"
+                          @change="changeImageTimeOnChange">
+                    <a-option value="900000">{{ "每 15 分钟" }}</a-option>
+                    <a-option value="1800000">{{ "每 30 分钟" }}</a-option>
+                    <a-option value="3600000">{{ "每 60 分钟" }}</a-option>
                 </a-select>
                 <template #extra>
-                    <a-typography-text :style="{color: fontColor}">{{"上次切换：" + lastRequestTime}}</a-typography-text>
+                    <a-typography-text :style="{color: fontColor}">{{ "上次切换：" + lastRequestTime }}
+                    </a-typography-text>
                 </template>
             </a-form-item>
             <a-row :gutter="24">
@@ -191,8 +193,8 @@
                     </a-form-item>
                 </a-col>
             </a-row>
-            <a-alert :show-icon="false" title="提示信息" type="info"
-                     :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
+            <a-alert :show-icon="false" :style="{display: preferenceData.displayAlert ? 'block' : 'none'}" title="提示信息"
+                     type="info">
                 <a-typography-paragraph>
                     <ol>
                         <a-space direction="vertical">
@@ -211,9 +213,11 @@
 <script setup>
 import {IconCheck, IconStop} from "@arco-design/web-vue/es/icon";
 import {
+    btnMouseOut,
+    btnMouseOver,
     getPreferenceDataStorage,
     getTimeDetails,
-    isEmpty, btnMouseOver, btnMouseOut
+    isEmpty
 } from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
@@ -333,15 +337,14 @@ function autoDarkModeSwitchOnChange(checked) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
 
     let currentTime = parseInt(getTimeDetails(new Date()).hour);
-    if(currentTime > 18 || currentTime < 6) {
+    if (currentTime > 18 || currentTime < 6) {
         if (checked) {
             Message.success("已开启夜间自动降低背景亮度，一秒后刷新页面");
         } else {
             Message.success("已关闭夜间自动降低背景亮度，一秒后刷新页面");
         }
         refreshWindow();
-    }
-    else {
+    } else {
         if (checked) {
             Message.success("已开启夜间自动降低背景亮度");
         } else {

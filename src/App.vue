@@ -40,8 +40,8 @@
                             :theme-color="themeColor"
                         />
                         <preference-component
-                            :theme-color="themeColor"
                             :preference-data="preferenceData"
+                            :theme-color="themeColor"
                             @preference-data="getPreferenceData"
                         />
                     </a-space>
@@ -65,7 +65,7 @@
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
                         <image-history-component :display="componentDisplay" :image-history="imageHistory"
-                                          :preference-data="preferenceData" :theme-color="themeColor"/>
+                                                 :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -77,12 +77,14 @@
 import {onMounted, ref} from "vue";
 import {
     changeThemeColor,
-    getFontColor, getImageHistoryStorage, getPreferenceDataStorage,
+    getFontColor,
+    getImageHistoryStorage,
+    getPreferenceDataStorage,
     getReverseColor,
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
-import { Notification } from '@arco-design/web-vue';
+import {Notification} from '@arco-design/web-vue';
 
 import GreetComponent from "./components/greetComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
@@ -147,7 +149,7 @@ onMounted(() => {
     // 版本号提醒
     let storageVersion = localStorage.getItem("SkyNewTabVueVersion");
     let currentVersion = require('../package.json').version;
-    if(storageVersion !== currentVersion) {
+    if (storageVersion !== currentVersion) {
         Notification.success({
             showIcon: false,
             title: "已更新至版本 V" + currentVersion,
@@ -245,10 +247,9 @@ onMounted(() => {
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer").css("borderTopColor", "transparent");
             $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
-            if(preferenceData.value.buttonShape === "round") {
+            if (preferenceData.value.buttonShape === "round") {
                 $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
-            }
-            else {
+            } else {
                 $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-square arco-btn-text").removeClass("arco-btn-shape-round");
             }
             $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {

@@ -5,8 +5,9 @@
                 <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
                            :content="item.webUrl"
                            :content-style="{color: fontColor}" position="bottom">
-                    <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
-                              :shape="preferenceData.buttonShape"
+                    <a-button :shape="preferenceData.buttonShape"
+                              :style="{color: fontColor, backgroundColor: backgroundColor}"
+                              class="componentTheme zIndexHigh"
                               type="primary"
                               @click="collectionBtnOnClick(item)">
                         {{ item.webName }}
@@ -14,10 +15,12 @@
                 </a-tooltip>
 
                 <a-space>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="添加快速链接"
+                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
+                               content="添加快速链接"
                                position="bottom">
-                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
-                                  :shape="preferenceData.buttonShape"
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, backgroundColor: backgroundColor}"
+                                  class="componentTheme zIndexHigh"
                                   type="primary"
                                   @click="showAddModalBtnOnClick">
                             <template #icon>
@@ -25,10 +28,12 @@
                             </template>
                         </a-button>
                     </a-tooltip>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="编辑快速链接"
+                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
+                               content="编辑快速链接"
                                position="bottom">
-                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
-                                  :shape="preferenceData.buttonShape"
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, backgroundColor: backgroundColor}"
+                                  class="componentTheme zIndexHigh"
                                   type="primary"
                                   @click="showEditModalBtnOnClick">
                             <template #icon>
@@ -36,10 +41,12 @@
                             </template>
                         </a-button>
                     </a-tooltip>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}" content="全部删除"
+                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
+                               content="全部删除"
                                position="bottom">
-                        <a-button :style="{color: fontColor, backgroundColor: backgroundColor}" class="componentTheme zIndexHigh"
-                                  :shape="preferenceData.buttonShape"
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, backgroundColor: backgroundColor}"
+                                  class="componentTheme zIndexHigh"
                                   type="primary"
                                   @click="removeAllBtnOnClick">
                             <template #icon>
@@ -85,9 +92,10 @@
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
-                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                              :shape="preferenceData.buttonShape"
-                              type="text" @click="removeAllBtnOnClick">
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                              type="text"
+                              @click="removeAllBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
                             <icon-delete/>
                         </template>
@@ -100,9 +108,10 @@
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
                 <a-row>
                     <a-col :span="8">
-                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                                  :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
-                                  type="text">
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text" @mouseout="btnMouseOut(fontColor, $event)"
+                                  @mouseover="btnMouseOver(hoverColor, $event)">
                             <template #icon>
                                 <icon-pushpin/>
                             </template>
@@ -110,9 +119,10 @@
                         </a-button>
                     </a-col>
                     <a-col :span="16">
-                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                                  :style="{color: fontColor, cursor: 'default'}" :shape="preferenceData.buttonShape"
-                                  type="text">
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text" @mouseout="btnMouseOut(fontColor, $event)"
+                                  @mouseover="btnMouseOver(hoverColor, $event)">
                             <template #icon>
                                 <icon-link/>
                             </template>
@@ -121,9 +131,10 @@
                     </a-col>
                 </a-row>
                 <template #actions>
-                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                              :shape="preferenceData.buttonShape"
-                              type="text" @click="removeBtnOnClick(item)">
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                              type="text"
+                              @click="removeBtnOnClick(item)"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
                             <icon-delete/>
                         </template>

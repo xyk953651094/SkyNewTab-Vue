@@ -3,36 +3,39 @@
         <div class="popupImageDiv">
             <a-image
                 id="popupImage"
+                :preview="false"
                 :src="imagePreviewUrl"
                 :style="{borderRadius: '4px'}"
                 alt="图片加载失败"
                 height="150px"
                 width="250px"
-                :preview="false"
             >
             </a-image>
             <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
         </div>
         <a-space align="start" direction="vertical">
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                      :shape="preferenceData.buttonShape" target="_blank"
-                      type="text" @click="authorLinkBtnOnClick">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      target="_blank"
+                      type="text" @click="authorLinkBtnOnClick"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-user/>
                 </template>
                 {{ authorName.length < btnMaxSize ? authorName : authorName.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                      :shape="preferenceData.buttonShape" target="_blank"
-                      type="text" @click="imageLocationBtnOnClick">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      target="_blank"
+                      type="text" @click="imageLocationBtnOnClick"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-location/>
                 </template>
                 {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                      :shape="preferenceData.buttonShape" target="_blank"
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      target="_blank"
                       type="text" @click="imageLinkBtnOnClick"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
             >
                 <template #icon>
                     <icon-info-circle/>
@@ -42,18 +45,18 @@
                 }}
             </a-button>
             <a-space>
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                          :style="{color: fontColor, cursor: 'default'}"
-                          :shape="preferenceData.buttonShape" type="text">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
                         <icon-clock-circle/>
                     </template>
                     {{ imageCreateTime }}
                 </a-button>
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                          :style="{color: fontColor}"
-                          :shape="preferenceData.buttonShape"
-                          type="text" @click="imageCameraBtnOnClick">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          type="text"
+                          @click="imageCameraBtnOnClick"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
                         <icon-camera/>
                     </template>
@@ -62,10 +65,10 @@
             </a-space>
         </a-space>
     </a-space>
-    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-              :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
-              :shape="preferenceData.buttonShape"
-              type="text">
+    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
+              type="text"
+              @mouseout="btnMouseOut(fontColor, $event)"
+              @mouseover="btnMouseOver(hoverColor, $event)">
         <template #icon>
             <icon-info-circle/>
         </template>
@@ -76,7 +79,7 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
-import {getSearchEngineDetail, isEmpty, btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";

@@ -9,39 +9,39 @@
             <icon-info-circle/>
         </template>
         <a-space direction="vertical">
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                      :style="{color: fontColor}" href="https://www.mxnzp.com/"
-                      :shape="preferenceData.buttonShape"
-                      target="_blank" type="text">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      href="https://www.mxnzp.com/" target="_blank"
+                      type="text"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-calendar/>
                 </template>
                 {{ "节气来源：https://www.mxnzp.com" }}
             </a-button>
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                      :style="{color: fontColor}" href="https://www.jinrishici.com/"
-                      :shape="preferenceData.buttonShape"
-                      target="_blank" type="text">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      href="https://www.jinrishici.com/" target="_blank"
+                      type="text"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-cloud/>
                 </template>
                 {{ "天气来源：https://www.jinrishici.com" }}
             </a-button>
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                      :style="{color: fontColor}" href="https://unsplash.com/"
-                      :shape="preferenceData.buttonShape"
-                      target="_blank" type="text">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      href="https://unsplash.com/" target="_blank"
+                      type="text"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-file-image/>
                 </template>
                 {{ "图片来源：https://unsplash.com" }}
             </a-button>
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                      :style="{color: fontColor}" href="https://www.jetbrains.com.cn/community/opensource/#support/"
-                      :shape="preferenceData.buttonShape"
-                      target="_blank" type="text">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      href="https://www.jetbrains.com.cn/community/opensource/#support/" target="_blank"
+                      type="text"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
-                    <icon-code-square />
+                    <icon-code-square/>
                 </template>
                 {{ "开发支持：JetBrains 免费许可证计划" }}
             </a-button>
@@ -50,14 +50,8 @@
 </template>
 
 <script setup>
-import {
-    IconInfoCircle,
-    IconCalendar,
-    IconCloud,
-    IconFileImage,
-    IconCodeSquare
-} from "@arco-design/web-vue/es/icon";
-import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {IconCalendar, IconCloud, IconCodeSquare, IconFileImage, IconInfoCircle} from "@arco-design/web-vue/es/icon";
+import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 

@@ -1,42 +1,46 @@
 <template>
     <a-space :style="{display: simpleMode ? 'none' : 'inline-flex'}">
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                  :shape="preferenceData.buttonShape"
-                  type="text" @click="greetBtnOnClick">
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                  type="text"
+                  @click="greetBtnOnClick"
+                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <i :class="greetIcon"></i>
             </template>
             {{ greetContent }}
         </a-button>
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                  :shape="preferenceData.buttonShape"
-                  type="text" @click="weatherBtnOnClick">
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                  type="text"
+                  @click="weatherBtnOnClick"
+                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <i :class="weatherIcon"></i>
             </template>
             {{ weatherContent }}
         </a-button>
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor, cursor: 'default'}"
-                  :shape="preferenceData.buttonShape"
-                  type="text">
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
+                  type="text"
+                  @mouseout="btnMouseOut(fontColor, $event)"
+                  @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <icon-calendar-clock/>
             </template>
             {{ dailySize + " 个倒数日" }}
         </a-button>
-        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor, cursor: 'default'}"
-                  :shape="preferenceData.buttonShape"
-                  type="text">
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
+                  type="text"
+                  @mouseout="btnMouseOut(fontColor, $event)"
+                  @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <icon-check-square/>
             </template>
             {{ todoSize + " 个待办事项" }}
         </a-button>
     </a-space>
-    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-              :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}"
-              :shape="preferenceData.buttonShape"
-              type="text">
+    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}"
+              type="text"
+              @mouseout="btnMouseOut(fontColor, $event)"
+              @mouseover="btnMouseOver(hoverColor, $event)">
         <template #icon>
             <icon-info-circle/>
         </template>
@@ -48,10 +52,12 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconCheckSquare, IconInfoCircle} from "@arco-design/web-vue/es/icon";
 import {
+    btnMouseOut,
+    btnMouseOver,
     getGreetContent,
     getGreetIcon,
     getSearchEngineDetail,
-    getWeatherIcon, btnMouseOver, btnMouseOut
+    getWeatherIcon
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
