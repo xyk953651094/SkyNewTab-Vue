@@ -14,16 +14,16 @@
                                @change="searchEngineRadioOnChange">
                     <a-row :gutter="[0, 8]">
                         <a-col :span="12">
-                            <a-radio value="baidu">Baidu</a-radio>
+                            <a-radio value="baidu">百度</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="bing">Bing</a-radio>
+                            <a-radio value="bing">必应</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="google">Google</a-radio>
+                            <a-radio value="google">谷歌</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="yandex">Yandex</a-radio>
+                            <a-radio value="yandex">央捷科斯</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>

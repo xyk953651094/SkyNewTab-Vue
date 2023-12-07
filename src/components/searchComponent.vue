@@ -32,7 +32,7 @@ import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let searchEngineName = ref("Bing");
+let searchEngineName = ref("必应");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let displayMask = ref("none");
 
@@ -92,7 +92,7 @@ function onPressEnter() {
 }
 
 function changeSearchEngine() {
-    const searchEngines = ["Baidu", "Bing", "Google", "Yandex"];
+    const searchEngines = ["百度", "必应", "谷歌", "央捷科斯"];
     let currentIndex = searchEngines.indexOf(searchEngineName.value);
     let nextIndex = 0;
     if (currentIndex !== searchEngines.length - 1) {
