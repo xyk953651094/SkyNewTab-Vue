@@ -67,13 +67,11 @@ export let defaultPreferenceData = {
     customTopic: "",
     changeImageTime: "3600000",
     nightMode: false,
-    autoDarkMode: false,
     noImageMode: false,
 
     searchEngine: "bing",
     buttonShape: "round",
     simpleMode: false,
-    displayAlert: true,
 }
 
 // 常用变量

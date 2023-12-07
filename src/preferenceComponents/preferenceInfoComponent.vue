@@ -55,7 +55,7 @@ import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,

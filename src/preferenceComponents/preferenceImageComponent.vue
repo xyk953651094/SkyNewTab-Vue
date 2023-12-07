@@ -169,18 +169,6 @@
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
-                    <a-form-item field="noImageMode" label="夜间模式">
-                        <a-switch v-model="preferenceData.autoDarkMode" @change="autoDarkModeSwitchOnChange">
-                            <template #checked>
-                                已开启
-                            </template>
-                            <template #unchecked>
-                                已关闭
-                            </template>
-                        </a-switch>
-                    </a-form-item>
-                </a-col>
-                <a-col :span="12">
                     <a-form-item field="noImageMode" label="无图模式">
                         <a-switch v-model="preferenceData.noImageMode" @change="noImageModeSwitchOnChange">
                             <template #checked>
@@ -193,19 +181,6 @@
                     </a-form-item>
                 </a-col>
             </a-row>
-            <a-alert :show-icon="false" :style="{display: preferenceData.displayAlert ? 'block' : 'none'}" title="提示信息"
-                     type="info">
-                <a-typography-paragraph>
-                    <ol>
-                        <a-space direction="vertical">
-                            <li>新的主题刷新后可能不会立即生效</li>
-                            <li>启用自定主题时不能使用图片主题</li>
-                            <li>禁用自定主题时才能使用图片主题</li>
-                            <li>夜间模式于18点至6点自动降低亮度</li>
-                        </a-space>
-                    </ol>
-                </a-typography-paragraph>
-            </a-alert>
         </a-form>
     </a-card>
 </template>
@@ -226,7 +201,7 @@ let preferenceData = ref(getPreferenceDataStorage());
 let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -324,33 +299,11 @@ function nightModeSwitchOnChange(checked) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     if (checked) {
-        Message.success("已降低背景亮度，一秒后刷新页面");
+        Message.success("已降低背景亮度");
     } else {
-        Message.success("已恢复背景亮度，一秒后刷新页面");
+        Message.success("已恢复背景亮度");
     }
-    refreshWindow();
-}
-
-function autoDarkModeSwitchOnChange(checked) {
-    preferenceData.value.autoDarkMode = checked;
-    emit("preferenceData", preferenceData.value);
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-
-    let currentTime = parseInt(getTimeDetails(new Date()).hour);
-    if (currentTime > 18 || currentTime < 6) {
-        if (checked) {
-            Message.success("已开启夜间自动降低背景亮度，一秒后刷新页面");
-        } else {
-            Message.success("已关闭夜间自动降低背景亮度，一秒后刷新页面");
-        }
-        refreshWindow();
-    } else {
-        if (checked) {
-            Message.success("已开启夜间自动降低背景亮度");
-        } else {
-            Message.success("已关闭夜间自动降低背景亮度");
-        }
-    }
+    // refreshWindow();
 }
 
 function noImageModeSwitchOnChange(checked) {

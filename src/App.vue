@@ -49,7 +49,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="alignCenter">
-            <wallpaper-component @image-data="getImageData" @image-history="getImageHistory"/>
+            <wallpaper-component :preference-data="preferenceData" @image-data="getImageData" @image-history="getImageHistory"/>
             <a-space align="center" direction="vertical">
                 <clock-component :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
