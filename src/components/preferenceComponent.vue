@@ -43,13 +43,13 @@
                         :hover-color="hoverColor"
                         @preference-data="getPreferenceData"
                     />
-                    <preference-info-component
+                    <preference-email-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <preference-email-component
+                    <preference-info-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
@@ -61,12 +61,6 @@
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <!--                    <preference-link-component-->
-                    <!--                        :background-color="backgroundColor"-->
-                    <!--                        :font-color="fontColor"-->
-                    <!--                        :hover-color="hoverColor"-->
-                    <!--                        :preference-data="preferenceData"-->
-                    <!--                    />-->
                     <preference-to-top-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
