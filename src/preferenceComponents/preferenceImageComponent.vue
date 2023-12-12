@@ -259,7 +259,7 @@ function imageTopicsCheckboxOnChange(values) {
     preferenceData.value.imageTopics = values;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换图片主题，下次加载时生效");
+    Message.success("已更换图片主题，下次切换图片时生效");
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
     }
@@ -271,9 +271,9 @@ function submitCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = inputValue;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已启用自定主题，一秒后刷新页面");
+    Message.success("已启用自定主题，下次切换图片时生效");
     disableImageTopic.value = !isEmpty(inputValue);
-    refreshWindow();
+    // refreshWindow();
 }
 
 function clearCustomTopicBtnOnClick() {

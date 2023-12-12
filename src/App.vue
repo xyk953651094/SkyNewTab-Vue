@@ -33,7 +33,7 @@
                 </a-col>
                 <a-col :lg="0" :md="22" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
                     <a-space>
-                        <author-lite-component
+                        <image-link-component
                             :display="componentDisplay"
                             :image-data="imageData"
                             :preference-data="preferenceData"
@@ -96,7 +96,7 @@ import CollectionComponent from "./components/collectionComponent.vue";
 import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
-import AuthorLiteComponent from "./components/authorLiteComponent.vue";
+import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
 
 const $ = require("jquery");
@@ -158,6 +158,17 @@ onMounted(() => {
             duration: 5000
         });
         localStorage.setItem("SkyNewTabVueVersion", currentVersion);
+
+        // 额外提醒
+        if (currentVersion === "2.5.0") {
+            Notification.success({
+                showIcon: false,
+                title: "重要通知",
+                content: "本次更新改动较大，请前往 菜单栏 => 功能设置 => 重置设置",
+                position: "bottomLeft",
+                duration: 10000
+            });
+        }
     }
 
     // 修改各类弹窗样式
