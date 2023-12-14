@@ -11,19 +11,13 @@
         <a-form :model="preferenceData" auto-label-width>
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
-                               @change="searchEngineRadioOnChange">
-                    <a-row :gutter="[0, 8]">
-                        <a-col :span="12">
-                            <a-radio value="baidu">百度</a-radio>
-                        </a-col>
+                               :style="{width: '100%'}" @change="searchEngineRadioOnChange">
+                    <a-row>
                         <a-col :span="12">
                             <a-radio value="bing">必应</a-radio>
                         </a-col>
                         <a-col :span="12">
                             <a-radio value="google">谷歌</a-radio>
-                        </a-col>
-                        <a-col :span="12">
-                            <a-radio value="yandex">央捷科斯</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
@@ -164,7 +158,6 @@ function buttonShapeRadioOnChange(value) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换按钮形状");
-    // refreshWindow();
 }
 
 function simpleModeSwitchOnChange(checked) {
@@ -176,7 +169,6 @@ function simpleModeSwitchOnChange(checked) {
     } else {
         Message.success("已关闭简洁模式");
     }
-    // refreshWindow();
 }
 
 // 重置设置

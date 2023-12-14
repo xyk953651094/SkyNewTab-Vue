@@ -1,5 +1,5 @@
 <template>
-    <a-button id="authorLiteBtn" :shape="preferenceData.buttonShape" :style="{display: display, cursor: 'default'}"
+    <a-button id="authorLiteBtn" :shape="preferenceData.buttonShape" :style="{display: display}"
               class="componentTheme zIndexHigh"
               size="large" type="primary" @click="imageLinkBtnOnClick">
         <template #icon>

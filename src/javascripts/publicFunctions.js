@@ -263,37 +263,32 @@ export function getDevice() {
 
 export function getSearchEngineDetail(searchEngine) {
     let searchEngineName;
+    let searchEngineValue;
     let searchEngineUrl;
     let searchEngineIconUrl;
     switch (searchEngine) {
-        case "baidu":
-            searchEngineName = "百度";
-            searchEngineUrl = "https://www.baidu.com/s?wd=";
-            searchEngineIconUrl = "https://www.baidu.com/favicon.ico";
-            break;
         case "bing":
             searchEngineName = "必应";
+            searchEngineValue = "bing";
             searchEngineUrl = "https://www.bing.com/search?q=";
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
         case "google":
             searchEngineName = "谷歌";
+            searchEngineValue = "google";
             searchEngineUrl = "https://www.google.com/search?q=";
             searchEngineIconUrl = "https://www.google.com/favicon.ico";
             break;
-        case "yandex":
-            searchEngineName = "央捷科斯";
-            searchEngineUrl = "https://yandex.com/search/?text=";
-            searchEngineIconUrl = "https://yastatic.net/s3/home-static/_/92/929b10d17990e806734f68758ec917ec.png";
-            break;
         default:
             searchEngineName = "必应";
+            searchEngineValue = "bing";
             searchEngineUrl = "https://www.bing.com/search?q=";
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
     }
     return {
         "searchEngineName": searchEngineName,
+        "searchEngineValue": searchEngineValue,
         "searchEngineUrl": searchEngineUrl,
         "searchEngineIconUrl": searchEngineIconUrl
     };
