@@ -230,10 +230,8 @@ onMounted(() => {
             //     "backgroundColor": themeColor.value.themeColor,
             // });
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            // $(".arco-checkbox-icon").css({
-            //     "borderColor": "transparent",
-            //     "backgroundColor": themeColor.value.themeColor,
-            // });
+            // $(".arco-checkbox-icon").css("backgroundColor", themeColor.value.themeColor});
+            // $(".arco-switch-type-circle").css("backgroundColor", themeColor.value.themeColor});
             $(".arco-collapse-item-header").css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor
