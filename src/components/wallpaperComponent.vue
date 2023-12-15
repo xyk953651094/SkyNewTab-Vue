@@ -55,12 +55,6 @@ function setWallpaper(data) {
         case "regular":
             imageLink.value = imageData.value.urls.regular;
             break;
-        case "small":
-            imageLink.value = imageData.value.urls.small;
-            break;
-        case "small_s3":
-            imageLink.value = imageData.value.urls.small_s3;
-            break;
         default:
             imageLink.value = imageData.value.urls.regular;
             break;
@@ -187,7 +181,7 @@ onMounted(() => {
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
-                Message.error("无缓存图片可加载，请前往设置手动刷新");
+                Message.error("无缓存图片可加载，请尝试重置插件");
             }
         }
 

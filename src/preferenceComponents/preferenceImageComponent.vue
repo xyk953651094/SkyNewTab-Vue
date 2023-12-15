@@ -30,19 +30,13 @@
             </a-form-item>
             <a-form-item field="imageQuality" label="图片质量">
                 <a-radio-group v-model="preferenceData.imageQuality" type="button"
-                               @change="imageQualityRadioOnChange">
-                    <a-row :gutter="[0, 8]">
+                               :style="{width: '100%'}" @change="imageQualityRadioOnChange">
+                    <a-row>
                         <a-col :span="12">
-                            <a-radio value="full">最高</a-radio>
+                            <a-radio value="full">清晰</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="regular">标准</a-radio>
-                        </a-col>
-                        <a-col :span="12">
-                            <a-radio value="small">较低</a-radio>
-                        </a-col>
-                        <a-col :span="12">
-                            <a-radio value="small_s3">最低</a-radio>
+                            <a-radio value="regular">省流</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
