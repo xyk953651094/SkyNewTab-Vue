@@ -29,7 +29,7 @@
                 </a-radio-group>
             </a-form-item>
             <a-form-item field="imageQuality" label="图片质量">
-                <a-radio-group v-model="preferenceData.imageQuality" type="button"
+                <a-radio-group v-model="preferenceData.imageQuality"
                                :style="{width: '100%'}" @change="imageQualityRadioOnChange">
                     <a-row>
                         <a-col :span="12">

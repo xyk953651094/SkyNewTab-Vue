@@ -408,3 +408,4 @@ export function btnMouseOut(fontColor, e) {
     e.currentTarget.style.backgroundColor = "transparent";
     e.currentTarget.style.color = fontColor;
 }
+

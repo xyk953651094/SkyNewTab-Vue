@@ -105,7 +105,12 @@
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {btnMouseOut, btnMouseOver, getPreferenceDataStorage, isEmpty} from "../javascripts/publicFunctions";
+import {
+    btnMouseOut,
+    btnMouseOver,
+    getPreferenceDataStorage,
+    isEmpty,
+} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
