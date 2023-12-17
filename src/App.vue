@@ -225,18 +225,17 @@ onMounted(() => {
             $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-radio-checked").find(".arco-radio-icon").css({
-                "borderColor": themeColor.value.themeColor,
-                "backgroundColor": themeColor.value.themeColor,
-            });
+            // $(".arco-radio-checked").find(".arco-radio-icon").css({
+            //     "borderColor": themeColor.value.themeColor,
+            //     "backgroundColor": themeColor.value.themeColor,
+            // });
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-checkbox-checked").find(".arco-checkbox-icon").css({
-                "borderColor": themeColor.value.themeColor,
-                "backgroundColor": themeColor.value.themeColor
-            });
-            // $(".arco-switch-type-circle").css("backgroundColor", themeColor.value.themeColor});
-            $(".arco-switch-checked").css("backgroundColor", themeColor.value.themeColor)
-                .children(".arco-switch-text").css("color", getFontColor(themeColor.value.themeColor));
+            // $(".arco-checkbox-checked").find(".arco-checkbox-icon").css({
+            //     "borderColor": themeColor.value.themeColor,
+            //     "backgroundColor": themeColor.value.themeColor
+            // });
+            // $(".arco-switch-checked").css("backgroundColor", themeColor.value.themeColor)
+            //     .children(".arco-switch-text").css("color", getFontColor(themeColor.value.themeColor));
             $(".arco-collapse-item-header").css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor
@@ -252,35 +251,35 @@ onMounted(() => {
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
         }
 
-        // 监视表单元素的 class 变化
-        let antFormItem = $(".arco-radio, .arco-checkbox, .arco-switch");
-        if (antFormItem.length && antFormItem.length > 0) {
-            let observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function () {
-                    antFormItem.each((index, item) => {
-                        if ($(item).hasClass("arco-radio") && !$(item).hasClass("arco-radio-checked")) {
-                            $(item).find(".arco-radio-icon").css({
-                                "borderColor": "var(--color-neutral-3)",
-                                "backgroundColor": "#ffffff"
-                            });
-                        }
-                        if ($(item).hasClass("arco-checkbox") && !$(item).hasClass("arco-checkbox-checked")) {
-                            $(item).find(".arco-checkbox-icon").css({
-                                "borderColor": "var(--color-neutral-3)",
-                                "backgroundColor": "#ffffff",
-                            });
-                        }
-                        if ($(item).hasClass("arco-switch") && !$(item).hasClass("arco-switch-checked")) {
-                            $(item).css("backgroundColor", "var(--color-fill-4)")
-                                .children(".arco-switch-text").css("color", "var(--color-white)");
-                        }
-                    })
-                });
-            });
-            antFormItem.each((index, item) => {
-                observer.observe(item, {attributes: true, attributeFilter: ["class"]});
-            });
-        }
+        // 监视表单元素的 class 变化（卡顿）
+        // let antFormItem = $(".arco-radio, .arco-checkbox, .arco-switch");
+        // if (antFormItem.length && antFormItem.length > 0) {
+        //     let observer = new MutationObserver(function (mutations) {
+        //         mutations.forEach(function () {
+        //             antFormItem.each((index, item) => {
+        //                 if ($(item).hasClass("arco-radio") && !$(item).hasClass("arco-radio-checked")) {
+        //                     $(item).find(".arco-radio-icon").css({
+        //                         "borderColor": "var(--color-neutral-3)",
+        //                         "backgroundColor": "#ffffff"
+        //                     });
+        //                 }
+        //                 if ($(item).hasClass("arco-checkbox") && !$(item).hasClass("arco-checkbox-checked")) {
+        //                     $(item).find(".arco-checkbox-icon").css({
+        //                         "borderColor": "var(--color-neutral-3)",
+        //                         "backgroundColor": "#ffffff",
+        //                     });
+        //                 }
+        //                 if ($(item).hasClass("arco-switch") && !$(item).hasClass("arco-switch-checked")) {
+        //                     $(item).css("backgroundColor", "var(--color-fill-4)")
+        //                         .children(".arco-switch-text").css("color", "var(--color-white)");
+        //                 }
+        //             })
+        //         });
+        //     });
+        //     antFormItem.each((index, item) => {
+        //         observer.observe(item, {attributes: true, attributeFilter: ["class"]});
+        //     });
+        // }
 
         // modal
         let modalEle = $(".arco-modal");
