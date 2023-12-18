@@ -409,3 +409,50 @@ export function btnMouseOut(fontColor, e) {
     e.currentTarget.style.color = fontColor;
 }
 
+// 修改菜单栏表单控件时变化主题颜色
+export function resetRadioColor(selectedRadio, allRadios, themeColor) {
+    // 重置所有不是当前选中的选项的颜色
+    for (let i = 0; i < allRadios.length; i++) {
+        if (allRadios[i] !== selectedRadio) {
+            $("#" + allRadios[i]).find(".arco-radio-icon").css({
+                "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
+                "backgroundColor": "#ffffff"          // var(--color-bg-2)
+            });
+        }
+        else {
+            $("#" + allRadios[i]).find(".arco-radio-icon").css({
+                "borderColor": themeColor,
+                "backgroundColor": themeColor,
+            });
+        }
+    }
+}
+
+export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor) {
+    // 重置所有不是当前选中的选项的颜色
+    for (let i = 0; i < allCheckboxes.length; i++) {
+        if (selectedCheckboxes.indexOf(allCheckboxes[i]) === -1) {
+            $("#" + allCheckboxes[i]).find(".arco-checkbox-icon").css({
+                "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
+                "backgroundColor": "#ffffff"          // var(--color-bg-2)
+            });
+        }
+        else {
+            $("#" + allCheckboxes[i]).find(".arco-checkbox-icon").css({
+                "borderColor": themeColor,
+                "backgroundColor": themeColor
+            }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
+        }
+    }
+}
+
+export function resetSwitchColor(element, checked, themeColor) {
+    if (!checked) {
+        $(element).css("backgroundColor", "rgb(201, 205, 212)")      // var(--color-fill-4)
+            .children(".arco-switch-text").css("color", "#000000");  // var(--color-white)
+    }
+    else {
+        $(element).css("backgroundColor", themeColor)
+            .children(".arco-switch-text").css("color", getFontColor(themeColor));
+    }
+}

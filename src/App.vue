@@ -80,7 +80,7 @@ import {
     getFontColor,
     getImageHistoryStorage,
     getPreferenceDataStorage,
-    getReverseColor,
+    getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
@@ -98,6 +98,7 @@ import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
+import {imageTopics} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -225,17 +226,7 @@ onMounted(() => {
             $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
-            // $(".arco-radio-checked").find(".arco-radio-icon").css({
-            //     "borderColor": themeColor.value.themeColor,
-            //     "backgroundColor": themeColor.value.themeColor,
-            // });
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            // $(".arco-checkbox-checked").find(".arco-checkbox-icon").css({
-            //     "borderColor": themeColor.value.themeColor,
-            //     "backgroundColor": themeColor.value.themeColor
-            // });
-            // $(".arco-switch-checked").css("backgroundColor", themeColor.value.themeColor)
-            //     .children(".arco-switch-text").css("color", getFontColor(themeColor.value.themeColor));
             $(".arco-collapse-item-header").css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor
@@ -249,37 +240,19 @@ onMounted(() => {
                 "textAlign": "center"
             });
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
-        }
 
-        // 监视表单元素的 class 变化（卡顿）
-        // let antFormItem = $(".arco-radio, .arco-checkbox, .arco-switch");
-        // if (antFormItem.length && antFormItem.length > 0) {
-        //     let observer = new MutationObserver(function (mutations) {
-        //         mutations.forEach(function () {
-        //             antFormItem.each((index, item) => {
-        //                 if ($(item).hasClass("arco-radio") && !$(item).hasClass("arco-radio-checked")) {
-        //                     $(item).find(".arco-radio-icon").css({
-        //                         "borderColor": "var(--color-neutral-3)",
-        //                         "backgroundColor": "#ffffff"
-        //                     });
-        //                 }
-        //                 if ($(item).hasClass("arco-checkbox") && !$(item).hasClass("arco-checkbox-checked")) {
-        //                     $(item).find(".arco-checkbox-icon").css({
-        //                         "borderColor": "var(--color-neutral-3)",
-        //                         "backgroundColor": "#ffffff",
-        //                     });
-        //                 }
-        //                 if ($(item).hasClass("arco-switch") && !$(item).hasClass("arco-switch-checked")) {
-        //                     $(item).css("backgroundColor", "var(--color-fill-4)")
-        //                         .children(".arco-switch-text").css("color", "var(--color-white)");
-        //                 }
-        //             })
-        //         });
-        //     });
-        //     antFormItem.each((index, item) => {
-        //         observer.observe(item, {attributes: true, attributeFilter: ["class"]});
-        //     });
-        // }
+            // preferenceImageComponent
+            resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
+            resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
+            resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
+            resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
+            resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
+
+            // preferenceFunctionComponent
+            resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
+            resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
+            resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
+        }
 
         // modal
         let modalEle = $(".arco-modal");

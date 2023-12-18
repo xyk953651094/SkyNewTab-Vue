@@ -14,10 +14,10 @@
                                :style="{width: '100%'}" @change="searchEngineRadioOnChange">
                     <a-row>
                         <a-col :span="12">
-                            <a-radio value="bing">必应</a-radio>
+                            <a-radio value="bing" id="bing">必应</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="google">谷歌</a-radio>
+                            <a-radio value="google" id="google">谷歌</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
@@ -27,16 +27,16 @@
                                :style="{width: '100%'}" @change="buttonShapeRadioOnChange">
                     <a-row>
                         <a-col :span="12">
-                            <a-radio value="round">圆形</a-radio>
+                            <a-radio value="round" id="round">圆形</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="default">方形</a-radio>
+                            <a-radio value="default" id="default">方形</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
             </a-form-item>
             <a-form-item field="simpleMode" label="简洁模式">
-                <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
+                <a-switch v-model="preferenceData.simpleMode" id="simpleModeSwitch" @change="simpleModeSwitchOnChange">
                     <template #checked>
                         已开启
                     </template>
@@ -109,7 +109,7 @@ import {
     btnMouseOut,
     btnMouseOver,
     getPreferenceDataStorage,
-    isEmpty,
+    isEmpty, resetRadioColor, resetSwitchColor,
 } from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
@@ -120,7 +120,7 @@ let displayClearStorageModal = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
-defineProps({
+const props = defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -156,6 +156,8 @@ function searchEngineRadioOnChange(value) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
+
+    resetRadioColor(value, ["bing", "google"], props.hoverColor);
 }
 
 function buttonShapeRadioOnChange(value) {
@@ -163,6 +165,8 @@ function buttonShapeRadioOnChange(value) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换按钮形状");
+
+    resetRadioColor(value, ["round", "default"], props.hoverColor);
 }
 
 function simpleModeSwitchOnChange(checked) {
@@ -174,6 +178,8 @@ function simpleModeSwitchOnChange(checked) {
     } else {
         Message.success("已关闭简洁模式");
     }
+
+    resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
 }
 
 // 重置设置
