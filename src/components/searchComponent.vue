@@ -3,6 +3,7 @@
         <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
+            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
             allow-clear
             class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
@@ -11,20 +12,22 @@
             @focus="onFocus"
             @search="onSearch"
             @press-enter="onPressEnter"
-            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
         >
             <template #prefix>
-                <a-button type="text" :shape="preferenceData.buttonShape" size="small"
-                          id="searchEngineIconBtn" @click="changeSearchEngine">
-                    {{searchEngineName}}
+                <a-button id="searchEngineIconBtn" :shape="preferenceData.buttonShape" size="small"
+                          type="text" @click="changeSearchEngine">
+                    <template #icon>
+                        <i :class="'bi bi-' + searchEngineValue"></i>
+                    </template>
+                    {{ searchEngineName }}
                 </a-button>
-                <a-divider direction="vertical" />
+                <a-divider direction="vertical"/>
             </template>
         </a-input-search>
     </a-col>
 </template>
 
-<script setup>
+<script setup lang="jsx">
 import {defineProps, ref, watch} from "vue";
 import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
 import "../stylesheets/searchComponent.less"
@@ -32,7 +35,8 @@ import {defaultPreferenceData} from "../javascripts/publicConstants";
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let searchEngineName = ref("Bing");
+let searchEngineName = ref("必应");
+let searchEngineValue = ref("bing");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let displayMask = ref("none");
 
@@ -69,6 +73,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         let searchEngineDetail = getSearchEngineDetail(newValue.searchEngine);
         searchEngineName.value = searchEngineDetail.searchEngineName;
+        searchEngineValue.value = searchEngineDetail.searchEngineValue;
         searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
     }
 })
@@ -92,15 +97,17 @@ function onPressEnter() {
 }
 
 function changeSearchEngine() {
-    const searchEngines = ["Baidu", "Bing", "Google", "Yandex"];
-    let currentIndex = searchEngines.indexOf(searchEngineName.value);
+    const searchEngines = ["bing", "google"];
+    let currentIndex = searchEngines.indexOf(searchEngineValue.value);
     let nextIndex = 0;
     if (currentIndex !== searchEngines.length - 1) {
         nextIndex = currentIndex + 1;
     }
 
-    searchEngineName.value = searchEngines[nextIndex];
-    searchEngineUrl.value = getSearchEngineDetail(searchEngines[nextIndex].toLowerCase()).searchEngineUrl
+    let searchEngineDetail = getSearchEngineDetail(searchEngines[nextIndex]);
+    searchEngineName.value = searchEngineDetail.searchEngineName;
+    searchEngineValue.value = searchEngineDetail.searchEngineValue;
+    searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
 }
 </script>
 

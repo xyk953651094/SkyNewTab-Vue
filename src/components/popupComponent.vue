@@ -11,16 +11,16 @@
             <a-list :bordered=false>
                 <a-list-item :style="{borderBottomColor: fontColor}" class="alignCenter">
                     <popup-status-component
-                        :hover-color="hoverColor"
                         :font-color="fontColor"
+                        :hover-color="hoverColor"
                         :image-data="imageData"
                         :preference-data="preferenceData"
                     />
                 </a-list-item>
                 <a-list-item class="alignCenter">
                     <popup-image-component
-                        :hover-color="hoverColor"
                         :font-color="fontColor"
+                        :hover-color="hoverColor"
                         :image-data="imageData"
                         :preference-data="preferenceData"
                     />
@@ -40,11 +40,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {
-    getFontColor,
-    getPreferenceDataStorage,
-    getReverseColor
-} from "../javascripts/publicFunctions";
+import {getFontColor, getPreferenceDataStorage, getReverseColor} from "../javascripts/publicFunctions";
 import "../stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";

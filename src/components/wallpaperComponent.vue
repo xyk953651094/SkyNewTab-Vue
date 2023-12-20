@@ -10,31 +10,37 @@
     >
     </a-image>
     <canvas id="backgroundCanvas" :style="{display: displayCanvas}" class="backgroundCanvas"/>
-    <div id="backgroundMask" :style="{display: displayMask}" class="backgroundMask zIndexMiddle"/>
+    <div id="backgroundMask" :style="{display: preferenceData.nightMode ? 'block' : 'none'}" class="backgroundMask zIndexMiddle"/>
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {defineProps, onMounted, ref} from "vue";
 import {
-    getPreferenceDataStorage,
-    getTimeDetails,
     httpRequest,
     imageDynamicEffect,
     isEmpty
 } from "../javascripts/publicFunctions";
 import "../stylesheets/wallpaperComponent.less"
-import {clientId, device, imageHistoryMaxSize} from "../javascripts/publicConstants";
+import {clientId, defaultPreferenceData, device, imageHistoryMaxSize} from "../javascripts/publicConstants";
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 
 const emit = defineEmits(["imageData", "imageHistory"]);
 
+const props = defineProps({
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
+        }
+    }
+});
+
 let imageData = ref(null);
-let preferenceData = ref(getPreferenceDataStorage());
 let imageLink = ref("");
 let display = ref("none");
 let displayCanvas = ref("none");
-let displayMask = ref("none");
 
 // 请求完成后处理步骤
 function setWallpaper(data) {
@@ -42,18 +48,12 @@ function setWallpaper(data) {
     emit("imageData", imageData.value);
 
     // 图片质量
-    switch (preferenceData.value.imageQuality) {
+    switch (props.preferenceData.imageQuality) {
         case "full":
             imageLink.value = imageData.value.urls.full;
             break;
         case "regular":
             imageLink.value = imageData.value.urls.regular;
-            break;
-        case "small":
-            imageLink.value = imageData.value.urls.small;
-            break;
-        case "small_s3":
-            imageLink.value = imageData.value.urls.small_s3;
             break;
         default:
             imageLink.value = imageData.value.urls.regular;
@@ -79,13 +79,13 @@ function setWallpaper(data) {
 
 function getWallpaper() {
     let imageTopics = "";
-    for (let i = 0; i < preferenceData.value.imageTopics.length; i++) {
-        imageTopics += preferenceData.value.imageTopics[i];
-        if (i !== preferenceData.value.imageTopics.length - 1) {
+    for (let i = 0; i < props.preferenceData.imageTopics.length; i++) {
+        imageTopics += props.preferenceData.imageTopics[i];
+        if (i !== props.preferenceData.imageTopics.length - 1) {
             imageTopics += ",";
         }
     }
-    let imageQuery = preferenceData.value.customTopic;
+    let imageQuery = props.preferenceData.customTopic;
 
     let headers = {};
     let url = "https://api.unsplash.com/photos/random?";
@@ -116,10 +116,10 @@ function getWallpaper() {
             let lastImageStorage = localStorage.getItem("lastImage"); // 上一张图片
             let imageHistoryStorage = localStorage.getItem("imageHistory");
             let imageHistoryJson = [];
-            if(imageHistoryStorage !== null) {
+            if (imageHistoryStorage !== null) {
                 imageHistoryJson = JSON.parse(imageHistoryStorage);
             }
-            if(lastImageStorage !== null) {
+            if (lastImageStorage !== null) {
                 let lastImageJson = JSON.parse(lastImageStorage);
                 let imageArrayJsonItem = {
                     index: new Date().getTime(),
@@ -127,7 +127,7 @@ function getWallpaper() {
                     imageLink: lastImageJson.links.html,
                 };
 
-                if(imageHistoryJson.length === imageHistoryMaxSize) { // 满了就把第一个删掉
+                if (imageHistoryJson.length === imageHistoryMaxSize) { // 满了就把第一个删掉
                     imageHistoryJson.shift();
                 }
                 imageHistoryJson.push(imageArrayJsonItem);
@@ -160,7 +160,7 @@ function getWallpaper() {
 }
 
 onMounted(() => {
-    let noImageMode = preferenceData.value.noImageMode;
+    let noImageMode = props.preferenceData.noImageMode;
 
     if (!noImageMode) {
         // 防抖节流
@@ -168,8 +168,8 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
-        // } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {
-        } else if (nowTimeStamp - parseInt(lastRequestTime) > parseInt(preferenceData.value.changeImageTime)) {  // 必须多于切换间隔才能进行新的请求
+            // } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {
+        } else if (nowTimeStamp - parseInt(lastRequestTime) > parseInt(props.preferenceData.changeImageTime)) {  // 必须多于切换间隔才能进行新的请求
             getWallpaper();
         } else {  // 切换间隔内使用上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
@@ -181,7 +181,7 @@ onMounted(() => {
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
-                Message.error("无缓存图片可加载，请前往设置手动刷新");
+                Message.error("无缓存图片可加载，请尝试重置插件");
             }
         }
 
@@ -191,21 +191,6 @@ onMounted(() => {
 
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
-                // 降低亮度与夜间模式
-                let nightMode = preferenceData.value.nightMode;
-                let autoDarkMode = preferenceData.value.autoDarkMode;
-                let currentTime = parseInt(getTimeDetails(new Date()).hour);
-                if(currentTime > 18 || currentTime < 6) {
-                    if( nightMode === false && autoDarkMode === false ) {
-                        displayMask.value = "none";
-                    }
-                    else {
-                        displayMask.value = "block";
-                    }
-                }
-                else {
-                    displayMask.value = preferenceData.value.nightMode ? "block" : "none";
-                }
 
                 Message.clear();
                 Message.success("图片加载成功");
@@ -220,7 +205,7 @@ onMounted(() => {
 
                     setTimeout(() => {
                         backgroundImageDiv.style.perspective = "500px";
-                        imageDynamicEffect(backgroundImage, preferenceData.value.dynamicEffect);
+                        imageDynamicEffect(backgroundImage, props.preferenceData.dynamicEffect);
                     }, 5000);
                 }, 2000);
             }

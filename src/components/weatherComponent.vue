@@ -6,8 +6,8 @@
             :style="{minWidth: '400px'}"
             position="bl"
         >
-            <a-button id="weatherBtn" :style="{cursor: 'default', display: display}" class="componentTheme zIndexHigh"
-                      :shape="preferenceData.buttonShape" size="large" type="primary">
+            <a-button id="weatherBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
+                      class="componentTheme zIndexHigh" size="large" type="primary">
                 <template #icon>
                     <i :class="weatherIcon"></i>
                 </template>
@@ -19,11 +19,12 @@
                         <a-typography-text :style="{color: fontColor}">{{ "天气信息" }}</a-typography-text>
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
-                        <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                  :shape="preferenceData.buttonShape"
-                                  type="text" @click="infoBtnOnClick">
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor}" type="text"
+                                  @click="infoBtnOnClick"
+                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                             <template #icon>
-                                <icon-more-vertical />
+                                <icon-more-vertical/>
                             </template>
                             {{ "更多信息" }}
                         </a-button>
@@ -36,9 +37,10 @@
                         <a-space direction="vertical">
                             <a-row :gutter="8">
                                 <a-col :span="12">
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                              :shape="preferenceData.buttonShape"
-                                              type="text" @click="locationBtnOnClick">
+                                    <a-button :shape="preferenceData.buttonShape"
+                                              :style="{color: fontColor}" type="text"
+                                              @click="locationBtnOnClick"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <icon-location/>
                                         </template>
@@ -46,9 +48,10 @@
                                     </a-button>
                                 </a-col>
                                 <a-col :span="12">
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-wind"></i>
                                         </template>
@@ -58,9 +61,10 @@
                             </a-row>
                             <a-row :gutter="8">
                                 <a-col :span="12">
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-moisture"></i>
                                         </template>
@@ -68,9 +72,10 @@
                                     </a-button>
                                 </a-col>
                                 <a-col :span="12">
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-water"></i>
                                         </template>
@@ -80,9 +85,10 @@
                             </a-row>
                             <a-row :gutter="8">
                                 <a-col :span="12">
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-cloud-rain"></i>
                                         </template>
@@ -90,9 +96,10 @@
                                     </a-button>
                                 </a-col>
                                 <a-col :span="12">
-                                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                    <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
-                                              :shape="preferenceData.buttonShape" type="text">
+                                              type="text"
+                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                         <template #icon>
                                             <i class="bi bi-eye"></i>
                                         </template>
@@ -101,12 +108,13 @@
                                 </a-col>
                             </a-row>
                             <a-row>
-                                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                                <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
-                                          :shape="preferenceData.buttonShape"
-                                          type="text">
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)"
+                                          @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
-                                        <icon-clock-circle />
+                                        <icon-clock-circle/>
                                     </template>
                                     {{ "上次更新：" + lastRequestTime }}
                                 </a-button>
@@ -122,14 +130,16 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {
+    btnMouseOut,
+    btnMouseOver,
     changeThemeColor,
     getSearchEngineDetail,
+    getTimeDetails,
     getWeatherIcon,
-    httpRequest,
-    getTimeDetails, btnMouseOut, btnMouseOver
+    httpRequest
 } from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
-import {IconMoreVertical, IconClockCircle, IconLocation} from "@arco-design/web-vue/es/icon";
+import {IconClockCircle, IconLocation, IconMoreVertical} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({

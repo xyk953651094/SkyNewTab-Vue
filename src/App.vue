@@ -33,15 +33,15 @@
                 </a-col>
                 <a-col :lg="0" :md="22" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
                     <a-space>
-                        <author-lite-component
+                        <image-link-component
                             :display="componentDisplay"
                             :image-data="imageData"
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                         />
                         <preference-component
-                            :theme-color="themeColor"
                             :preference-data="preferenceData"
+                            :theme-color="themeColor"
                             @preference-data="getPreferenceData"
                         />
                     </a-space>
@@ -49,7 +49,7 @@
             </a-row>
         </a-layout-header>
         <a-layout-content id="content" class="alignCenter">
-            <wallpaper-component @image-data="getImageData" @image-history="getImageHistory"/>
+            <wallpaper-component :preference-data="preferenceData" @image-data="getImageData" @image-history="getImageHistory"/>
             <a-space align="center" direction="vertical">
                 <clock-component :theme-color="themeColor"/>
                 <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
@@ -65,7 +65,7 @@
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
                         <image-history-component :display="componentDisplay" :image-history="imageHistory"
-                                          :preference-data="preferenceData" :theme-color="themeColor"/>
+                                                 :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
             </a-row>
@@ -77,12 +77,14 @@
 import {onMounted, ref} from "vue";
 import {
     changeThemeColor,
-    getFontColor, getImageHistoryStorage, getPreferenceDataStorage,
-    getReverseColor,
+    getFontColor,
+    getImageHistoryStorage,
+    getPreferenceDataStorage,
+    getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
-import { Notification } from '@arco-design/web-vue';
+import {Notification} from '@arco-design/web-vue';
 
 import GreetComponent from "./components/greetComponent.vue";
 import SearchComponent from "./components/searchComponent.vue";
@@ -94,8 +96,9 @@ import CollectionComponent from "./components/collectionComponent.vue";
 import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
-import AuthorLiteComponent from "./components/authorLiteComponent.vue";
+import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
+import {imageTopics} from "./javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -147,7 +150,7 @@ onMounted(() => {
     // 版本号提醒
     let storageVersion = localStorage.getItem("SkyNewTabVueVersion");
     let currentVersion = require('../package.json').version;
-    if(storageVersion !== currentVersion) {
+    if (storageVersion !== currentVersion) {
         Notification.success({
             showIcon: false,
             title: "已更新至版本 V" + currentVersion,
@@ -156,6 +159,17 @@ onMounted(() => {
             duration: 5000
         });
         localStorage.setItem("SkyNewTabVueVersion", currentVersion);
+
+        // 额外提醒
+        if (currentVersion === "2.5.0") {
+            Notification.success({
+                showIcon: false,
+                title: "重要通知",
+                content: "本次更新改动较大，请前往 菜单栏 => 功能设置 => 重置设置",
+                position: "bottomLeft",
+                duration: 10000
+            });
+        }
     }
 
     // 修改各类弹窗样式
@@ -212,15 +226,7 @@ onMounted(() => {
             $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
-            // $(".arco-radio-icon").css({
-            //     "borderColor": themeColor.value.themeColor,
-            //     "backgroundColor": themeColor.value.themeColor,
-            // });
             $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            // $(".arco-checkbox-icon").css({
-            //     "borderColor": "transparent",
-            //     "backgroundColor": themeColor.value.themeColor,
-            // });
             $(".arco-collapse-item-header").css({
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "color": themeColor.value.componentFontColor
@@ -234,6 +240,18 @@ onMounted(() => {
                 "textAlign": "center"
             });
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
+
+            // preferenceImageComponent
+            // resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
+            // resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
+            // resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
+            // resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
+            // resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
+
+            // preferenceFunctionComponent
+            // resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
+            // resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
+            // resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
         }
 
         // modal
@@ -245,10 +263,9 @@ onMounted(() => {
             $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
             $(".arco-modal-footer").css("borderTopColor", "transparent");
             $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
-            if(preferenceData.value.buttonShape === "round") {
+            if (preferenceData.value.buttonShape === "round") {
                 $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
-            }
-            else {
+            } else {
                 $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-square arco-btn-text").removeClass("arco-btn-shape-round");
             }
             $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {

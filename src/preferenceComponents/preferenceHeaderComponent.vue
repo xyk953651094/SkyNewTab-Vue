@@ -1,13 +1,13 @@
 <template>
-    <a-row align="center" :style="{width: '368px'}"><!-- drawer 的宽度 - 16 * 2 -->
+    <a-row :style="{width: '368px'}" align="center"><!-- drawer 的宽度 - 16 * 2 -->
         <a-col :span="12">
             <a-typography-text :style="{color: fontColor}">{{ "菜单栏" }}</a-typography-text>
         </a-col>
         <a-col :span="12" :style="{textAlign: 'right'}">
-            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                      :style="{color: fontColor}" href="https://afdian.net/a/xyk953651094"
-                      :shape="preferenceData.buttonShape"
-                      target="_blank" type="text">
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      href="https://afdian.net/a/xyk953651094" target="_blank"
+                      type="text"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-gift/>
                 </template>
@@ -19,7 +19,7 @@
 
 <script setup>
 import {defineProps} from "vue";
-import {btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
 import {defaultPreferenceData} from "../javascripts/publicConstants";
 import {IconGift} from "@arco-design/web-vue/es/icon";
 

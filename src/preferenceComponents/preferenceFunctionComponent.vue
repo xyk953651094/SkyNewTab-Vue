@@ -9,120 +9,118 @@
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width>
-<!--            <a-form-item label="天气位置">-->
-<!--                <a-space>-->
-<!--                    <a-form-item field="location" no-style>-->
-<!--                        <a-input id="locationInput"-->
-<!--                                 v-model="preferenceData.customTopic"-->
-<!--                                 :default-value="preferenceData.customTopic"-->
-<!--                                 allow-clear-->
-<!--                                 placeholder="请输入您的地理位置"/>-->
-<!--                    </a-form-item>-->
-<!--                    <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"-->
-<!--                              :style="{color: fontColor}" :shape="preferenceData.buttonShape"-->
-<!--                              type="text" @click="submitLocationBtnOnClick"-->
-<!--                    >-->
-<!--                        <template #icon>-->
-<!--                            <icon-check/>-->
-<!--                        </template>-->
-<!--                        确定-->
-<!--                    </a-button>-->
-<!--                </a-space>-->
-<!--            </a-form-item>-->
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
-                               @change="searchEngineRadioOnChange">
-                    <a-row :gutter="[0, 8]">
+                               :style="{width: '100%'}" @change="searchEngineRadioOnChange">
+                    <a-row>
                         <a-col :span="12">
-                            <a-radio value="baidu">Baidu</a-radio>
+                            <a-radio value="bing" id="bing">必应</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="bing">Bing</a-radio>
-                        </a-col>
-                        <a-col :span="12">
-                            <a-radio value="google">Google</a-radio>
-                        </a-col>
-                        <a-col :span="12">
-                            <a-radio value="yandex">Yandex</a-radio>
+                            <a-radio value="google" id="google">谷歌</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
             </a-form-item>
             <a-form-item field="buttonShape" label="按钮形状">
                 <a-radio-group v-model="preferenceData.buttonShape"
-                               @change="buttonShapeRadioOnChange" :style="{width: '100%'}">
+                               :style="{width: '100%'}" @change="buttonShapeRadioOnChange">
                     <a-row>
                         <a-col :span="12">
-                            <a-radio value="round">圆形</a-radio>
+                            <a-radio value="round" id="round">圆形</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="default">方形</a-radio>
+                            <a-radio value="default" id="default">方形</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-row :gutter="24">
-                <a-col :span="12">
-                    <a-form-item field="simpleMode" label="简洁模式">
-                        <a-switch v-model="preferenceData.simpleMode" @change="simpleModeSwitchOnChange">
-                            <template #checked>
-                                已开启
-                            </template>
-                            <template #unchecked>
-                                已关闭
-                            </template>
-                        </a-switch>
-                    </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                    <a-form-item field="displayAlert" label="提示信息">
-                        <a-switch v-model="preferenceData.displayAlert" @change="displayAlertSwitchOnChange">
-                            <template #checked>
-                                已显示
-                            </template>
-                            <template #unchecked>
-                                已隐藏
-                            </template>
-                        </a-switch>
-                    </a-form-item>
-                </a-col>
-            </a-row>
-            <a-form-item field="clearStorageButton" label="危险设置">
-                <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                          :style="{color: fontColor}" :shape="preferenceData.buttonShape"
-                          type="text" @click="clearStorageBtnOnClick"
-                >
-                    <template #icon>
-                        <icon-redo />
+            <a-form-item field="simpleMode" label="简洁模式">
+                <a-switch v-model="preferenceData.simpleMode" id="simpleModeSwitch" @change="simpleModeSwitchOnChange">
+                    <template #checked>
+                        已开启
                     </template>
-                    重置插件
-                </a-button>
+                    <template #unchecked>
+                        已关闭
+                    </template>
+                </a-switch>
+            </a-form-item>
+            <a-form-item field="clearStorageButton" label="危险设置">
+                <a-space>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                              type="text" @click="resetPreferenceBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    >
+                        <template #icon>
+                            <icon-redo/>
+                        </template>
+                        重置设置
+                    </a-button>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                              type="text" @click="clearStorageBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    >
+                        <template #icon>
+                            <icon-redo/>
+                        </template>
+                        重置插件
+                    </a-button>
+                </a-space>
             </a-form-item>
         </a-form>
-        <a-alert :show-icon="false" title="提示信息" type="info"
-                 :style="{display: preferenceData.displayAlert ? 'block' : 'none'}">
-            <a-typography-paragraph>
-                <ol>
-                    <a-space direction="vertical">
-                        <li>重置插件将清空缓存恢复初始设置</li>
-                        <li>插件出现任何异常可尝试重置插件</li>
-                    </a-space>
-                </ol>
-            </a-typography-paragraph>
-        </a-alert>
     </a-card>
+    <a-modal v-model:visible="displayResetPreferenceModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             unmount-on-close @cancel="resetPreferenceCancelBtnOnClick" @ok="resetPreferenceOkBtnOnClick">
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "确定重置设置？" }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
+        <a-typography-text :style="{color: fontColor}">
+            {{ "注意：所有设置项将被重置为默认值，确定重置吗？" }}
+        </a-typography-text>
+    </a-modal>
+    <a-modal v-model:visible="displayClearStorageModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             unmount-on-close @cancel="clearStorageBtnCancelOnClick" @ok="clearStorageOkBtnOnClick">
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "确定重置插件？" }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
+        <a-typography-text :style="{color: fontColor}">
+            {{ "注意：本地存储的所有数据将被清空，确定重置吗？" }}
+        </a-typography-text>
+    </a-modal>
 </template>
 
 <script setup>
 import {IconRedo, IconSettings} from "@arco-design/web-vue/es/icon";
-import {getPreferenceDataStorage, isEmpty, btnMouseOver, btnMouseOut} from "../javascripts/publicFunctions";
+import {
+    btnMouseOut,
+    btnMouseOver,
+    getPreferenceDataStorage,
+    isEmpty, resetRadioColor, resetSwitchColor,
+} from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
+import {defaultPreferenceData} from "../javascripts/publicConstants";
 
+let displayResetPreferenceModal = ref(false);
+let displayClearStorageModal = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
-defineProps({
+const props = defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -152,34 +150,23 @@ onMounted(() => {
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
 })
 
-// 地理位置
-// function submitLocationBtnOnClick() {
-//     let inputValue = document.getElementById("locationInput").children[0].value;
-//     if (!isEmpty(inputValue)) {
-//         preferenceData.value.location = inputValue;
-//         emit("preferenceData", preferenceData.value);
-//         localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-//         Message.success("已修改地理位置，一秒后刷新页面");
-//         refreshWindow();
-//     } else {
-//         Message.error("请输入地理位置");
-//     }
-// }
-
 // 搜索引擎
 function searchEngineRadioOnChange(value) {
     preferenceData.value.searchEngine = value;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
+
+    // resetRadioColor(value, ["bing", "google"], props.hoverColor);
 }
 
 function buttonShapeRadioOnChange(value) {
     preferenceData.value.buttonShape = value;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换按钮形状，一秒后刷新页面");
-    refreshWindow();
+    Message.success("已更换按钮形状");
+
+    // resetRadioColor(value, ["round", "default"], props.hoverColor);
 }
 
 function simpleModeSwitchOnChange(checked) {
@@ -187,30 +174,44 @@ function simpleModeSwitchOnChange(checked) {
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     if (checked) {
-        Message.success("已开启简洁模式，一秒后刷新页面");
+        Message.success("已开启简洁模式");
     } else {
-        Message.success("已关闭简洁模式，一秒后刷新页面");
+        Message.success("已关闭简洁模式");
     }
-    refreshWindow();
-}
 
-function displayAlertSwitchOnChange(checked) {
-    preferenceData.value.displayAlert = checked;
-    emit("preferenceData", preferenceData.value);
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    if (checked) {
-        Message.success("已显示提示信息，一秒后刷新页面");
-    } else {
-        Message.success("已隐藏提示信息，一秒后刷新页面");
-    }
-    refreshWindow();
+    // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
 }
 
 // 重置设置
-function clearStorageBtnOnClick() {
-    localStorage.clear();
-    Message.success("已重置所有内容，一秒后刷新页面");
+function resetPreferenceBtnOnClick() {
+    displayResetPreferenceModal.value = true;
+}
+
+function resetPreferenceOkBtnOnClick() {
+    displayResetPreferenceModal.value = false;
+    localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+    Message.success("已重置设置，一秒后刷新页面");
     refreshWindow();
+}
+
+function resetPreferenceCancelBtnOnClick() {
+    displayResetPreferenceModal.value = false;
+}
+
+// 重置插件
+function clearStorageBtnOnClick() {
+    displayClearStorageModal.value = true;
+}
+
+function clearStorageOkBtnOnClick() {
+    displayClearStorageModal.value = false;
+    localStorage.clear();
+    Message.success("已重置插件，一秒后刷新页面");
+    refreshWindow();
+}
+
+function clearStorageBtnCancelOnClick() {
+    displayClearStorageModal.value = false;
 }
 
 function refreshWindow() {

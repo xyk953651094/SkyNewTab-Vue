@@ -1,6 +1,6 @@
 <template>
-    <a-button id="authorLiteBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
-              :shape="preferenceData.buttonShape"
+    <a-button id="authorLiteBtn" :shape="preferenceData.buttonShape" :style="{display: display}"
+              class="componentTheme zIndexHigh"
               size="large" type="primary" @click="imageLinkBtnOnClick">
         <template #icon>
             <icon-link/>
@@ -12,7 +12,7 @@
 import {defineProps, ref, watch} from "vue"
 import {IconLink,} from "@arco-design/web-vue/es/icon";
 import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
-import {changeThemeColor, getSearchEngineDetail} from "../javascripts/publicFunctions";
+import {changeThemeColor} from "../javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -49,7 +49,6 @@ const props = defineProps({
 
 let backgroundColor = ref("");
 let fontColor = ref("");
-let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let imageLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -65,12 +64,6 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imageLink.value = props.imageData.links.html;
     }
 })
-
-watch(() => props.preferenceData, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
-    }
-});
 
 function imageLinkBtnOnClick() {
     if (imageLink.value.length !== 0) {

@@ -6,12 +6,13 @@
             :style="{width: '370px'}"
             position="tr"
         >
-            <a-button id="imageHistoryBtn" :style="{display: display, cursor: 'default'}" class="componentTheme zIndexHigh"
-                      :shape="preferenceData.buttonShape"
+            <a-button id="imageHistoryBtn" :shape="preferenceData.buttonShape"
+                      :style="{display: display, cursor: 'default'}"
+                      class="componentTheme zIndexHigh"
                       size="large"
                       type="primary">
                 <template #icon>
-                    <icon-history />
+                    <icon-history/>
                 </template>
             </a-button>
             <template #title>
@@ -23,11 +24,12 @@
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
                         <a-space>
-                            <a-button @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)" :style="{color: fontColor}"
-                                      :shape="preferenceData.buttonShape"
-                                      type="text" @click="imageLinkBtnOnClick">
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor}" type="text"
+                                      @click="imageLinkBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-file-image />
+                                    <icon-file-image/>
                                 </template>
                                 {{ "图片主页" }}
                             </a-button>
@@ -40,19 +42,21 @@
                     <a-list-item>
                         <a-row class="alignCenter">
                             <a-empty :style="{display: imageHistoryJson.length === 0 ? 'block' : 'none'}"/>
-                            <a-carousel indicator-type="line" animation-name="fade" @change="carouselOnChange"
-                                        :style="{display: imageHistoryJson.length === 0 ? 'none' : 'block', width: '100%',height: '210px', borderRadius: '4px'}">
-                                <a-carousel-item v-for="item in imageHistoryJson" :key="item.index" :style="{borderRadius: '4px'}">
+                            <a-carousel :style="{display: imageHistoryJson.length === 0 ? 'none' : 'block', width: '100%',height: '210px', borderRadius: '4px'}" animation-name="fade" indicator-type="line"
+                                        @change="carouselOnChange">
+                                <a-carousel-item v-for="item in imageHistoryJson" :key="item.index"
+                                                 :style="{borderRadius: '4px'}">
                                     <a-image
+                                        :preview="false"
                                         :src="item.imageUrl"
+                                        :style="{borderRadius: '4px'}"
                                         alt="图片加载失败"
                                         height="210px"
                                         width="100%"
-                                        :preview="false"
-                                        :style="{borderRadius: '4px'}"
                                     >
                                         <template #loader>
-                                            <div :style="{width: '100%',height: '210px', borderRadius: '4px'}" class="alignCenter">
+                                            <div :style="{width: '100%',height: '210px', borderRadius: '4px'}"
+                                                 class="alignCenter">
                                                 <a-spin dot tip="加载中，请稍后..."/>
                                             </div>
                                         </template>
@@ -70,7 +74,7 @@
 <script setup>
 import {IconFileImage, IconHistory} from "@arco-design/web-vue/es/icon";
 import {defineProps, onMounted, ref, watch} from "vue";
-import {changeThemeColor, isEmpty, btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver, changeThemeColor, isEmpty} from "../javascripts/publicFunctions";
 import {defaultPreferenceData, imageHistoryMaxSize, unsplashUrl} from "../javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
@@ -115,7 +119,8 @@ let fontColor = ref("");
 let imageHistoryJson = ref([]);
 let imageLink = ref("");
 
-onMounted(() => {})
+onMounted(() => {
+})
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {

@@ -156,7 +156,7 @@ export function getWeatherIcon(weatherInfo) {
 export function setColorTheme() {
     let currentHour = parseInt(getTimeDetails(new Date()).hour);
     let themeArray = lightThemeArray;
-    if(currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
+    if (currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
         themeArray = darkThemeArray;
     }
 
@@ -263,89 +263,80 @@ export function getDevice() {
 
 export function getSearchEngineDetail(searchEngine) {
     let searchEngineName;
+    let searchEngineValue;
     let searchEngineUrl;
     let searchEngineIconUrl;
     switch (searchEngine) {
-        case "baidu":
-            searchEngineName = "Baidu";
-            searchEngineUrl = "https://www.baidu.com/s?wd=";
-            searchEngineIconUrl = "https://www.baidu.com/favicon.ico";
-            break;
         case "bing":
-            searchEngineName = "Bing";
+            searchEngineName = "必应";
+            searchEngineValue = "bing";
             searchEngineUrl = "https://www.bing.com/search?q=";
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
         case "google":
-            searchEngineName = "Google";
+            searchEngineName = "谷歌";
+            searchEngineValue = "google";
             searchEngineUrl = "https://www.google.com/search?q=";
             searchEngineIconUrl = "https://www.google.com/favicon.ico";
             break;
-        case "yandex":
-            searchEngineName = "Yandex";
-            searchEngineUrl = "https://yandex.com/search/?text=";
-            searchEngineIconUrl = "https://yastatic.net/s3/home-static/_/92/929b10d17990e806734f68758ec917ec.png";
-            break;
         default:
-            searchEngineName = "Bing";
+            searchEngineName = "必应";
+            searchEngineValue = "bing";
             searchEngineUrl = "https://www.bing.com/search?q=";
             searchEngineIconUrl = "https://www.bing.com/favicon.ico";
             break;
     }
-    return {"searchEngineName": searchEngineName, "searchEngineUrl": searchEngineUrl, "searchEngineIconUrl": searchEngineIconUrl};
+    return {
+        "searchEngineName": searchEngineName,
+        "searchEngineValue": searchEngineValue,
+        "searchEngineUrl": searchEngineUrl,
+        "searchEngineIconUrl": searchEngineIconUrl
+    };
 }
 
 // 补全设置数据
 // 补全设置数据
 export function fixPreferenceData(preferenceData) {
     let isFixed = false;
-    if(!preferenceData.dynamicEffect) {
+    if (!preferenceData.dynamicEffect) {
         preferenceData.dynamicEffect = defaultPreferenceData.dynamicEffect;
         isFixed = true;
     }
-    if(!preferenceData.imageQuality) {
+    if (!preferenceData.imageQuality) {
         preferenceData.imageQuality = defaultPreferenceData.imageQuality;
         isFixed = true;
     }
-    if(!preferenceData.imageTopics) {
+    if (!preferenceData.imageTopics) {
         preferenceData.imageTopics = defaultPreferenceData.imageTopics;
         isFixed = true;
     }
-    if(preferenceData.customTopic === undefined || preferenceData.customTopic === null) {  // customTopic 可以为""
+    if (preferenceData.customTopic === undefined || preferenceData.customTopic === null) {  // customTopic 可以为""
         preferenceData.customTopic = defaultPreferenceData.customTopic;
         isFixed = true;
     }
-    if(!preferenceData.changeImageTime) {
+    if (!preferenceData.changeImageTime) {
         preferenceData.changeImageTime = defaultPreferenceData.changeImageTime;
         isFixed = true;
     }
-    if(preferenceData.nightMode === undefined || preferenceData.nightMode === null) {
+    if (preferenceData.nightMode === undefined || preferenceData.nightMode === null) {
         preferenceData.nightMode = defaultPreferenceData.nightMode;
         isFixed = true;
     }
-    if(preferenceData.autoDarkMode === undefined || preferenceData.autoDarkMode === null) {
-        preferenceData.autoDarkMode = defaultPreferenceData.autoDarkMode;
-        isFixed = true;
-    }
-    if(preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {
+    if (preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {
         preferenceData.noImageMode = defaultPreferenceData.noImageMode;
         isFixed = true;
     }
 
-    if(!preferenceData.searchEngine) {
+    if (!preferenceData.searchEngine) {
         preferenceData.searchEngine = defaultPreferenceData.searchEngine;
         isFixed = true;
     }
-    if(!preferenceData.buttonShape) {
+    if (!preferenceData.buttonShape) {
         preferenceData.buttonShape = defaultPreferenceData.buttonShape;
         isFixed = true;
     }
-    if(preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {
+    if (preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {
         preferenceData.simpleMode = defaultPreferenceData.simpleMode;
-        isFixed = true;
-    }
-    if(preferenceData.displayAlert === undefined || preferenceData.displayAlert === null) {
-        preferenceData.displayAlert = defaultPreferenceData.displayAlert;
         isFixed = true;
     }
 
@@ -371,12 +362,10 @@ export function getImageHistoryStorage() {
         let tempImageHistoryJson = JSON.parse(imageHistoryStorage);
         if (!isEmpty(tempImageHistoryJson)) {
             return tempImageHistoryJson.reverse();  // 重新到旧排序
-        }
-        else {
+        } else {
             return [];
         }
-    }
-    else {
+    } else {
         return [];
     }
 }
@@ -418,4 +407,56 @@ export function btnMouseOver(hoverColor, e) {
 export function btnMouseOut(fontColor, e) {
     e.currentTarget.style.backgroundColor = "transparent";
     e.currentTarget.style.color = fontColor;
+}
+
+// 修改菜单栏表单控件时变化主题颜色
+export function resetRadioColor(selectedRadio, allRadios, themeColor) {
+    // 重置所有不是当前选中的选项的颜色
+    for (let i = 0; i < allRadios.length; i++) {
+        let currentRadio = $("#" + allRadios[i]);
+        if (allRadios[i] !== selectedRadio) {
+            currentRadio.find(".arco-radio-icon").css({
+                "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
+                "backgroundColor": "#ffffff"          // var(--color-bg-2)
+            });
+        }
+        else {
+            currentRadio.find(".arco-radio-icon").css({
+                "borderColor": themeColor,
+                "backgroundColor": themeColor,
+            });
+            currentRadio.children(".arco-radio-label").css("color", themeColor);
+        }
+    }
+}
+
+export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor) {
+    // 重置所有不是当前选中的选项的颜色
+    for (let i = 0; i < allCheckboxes.length; i++) {
+        let currentCheckbox = $("#" + allCheckboxes[i]);
+        if (selectedCheckboxes.indexOf(allCheckboxes[i]) === -1) {
+            currentCheckbox.find(".arco-checkbox-icon").css({
+                "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
+                "backgroundColor": "#ffffff"          // var(--color-bg-2)
+            });
+        }
+        else {
+            currentCheckbox.find(".arco-checkbox-icon").css({
+                "borderColor": themeColor,
+                "backgroundColor": themeColor
+            }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
+            currentCheckbox.children(".arco-checkbox-label").css("color", themeColor);
+        }
+    }
+}
+
+export function resetSwitchColor(element, checked, themeColor) {
+    if (!checked) {
+        $(element).css("backgroundColor", "rgb(201, 205, 212)")      // var(--color-fill-4)
+            .children(".arco-switch-text").css("color", "#000000");  // var(--color-white)
+    }
+    else {
+        $(element).css("backgroundColor", themeColor)
+            .children(".arco-switch-text").css("color", getFontColor(themeColor));
+    }
 }

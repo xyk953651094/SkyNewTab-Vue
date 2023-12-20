@@ -1,6 +1,6 @@
 {
   "name": "skynewtab_vue",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,7 +11,7 @@
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.47",
     "blurhash": "^2.0.5",
-    "bootstrap-icons": "^1.10.5",
+    "bootstrap-icons": "^1.11.2",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.30.1",
