@@ -157,7 +157,7 @@ function searchEngineRadioOnChange(value) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
 
-    resetRadioColor(value, ["bing", "google"], props.hoverColor);
+    // resetRadioColor(value, ["bing", "google"], props.hoverColor);
 }
 
 function buttonShapeRadioOnChange(value) {
@@ -166,7 +166,7 @@ function buttonShapeRadioOnChange(value) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换按钮形状");
 
-    resetRadioColor(value, ["round", "default"], props.hoverColor);
+    // resetRadioColor(value, ["round", "default"], props.hoverColor);
 }
 
 function simpleModeSwitchOnChange(checked) {
@@ -179,7 +179,7 @@ function simpleModeSwitchOnChange(checked) {
         Message.success("已关闭简洁模式");
     }
 
-    resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
+    // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
 }
 
 // 重置设置

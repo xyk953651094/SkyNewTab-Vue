@@ -98,7 +98,7 @@ import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
-import {imageTopics} from "@/javascripts/publicConstants";
+import {imageTopics} from "./javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -242,16 +242,16 @@ onMounted(() => {
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
 
             // preferenceImageComponent
-            resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
-            resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
-            resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
-            resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
-            resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
+            // resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
+            // resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
+            // resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
+            // resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
+            // resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
 
             // preferenceFunctionComponent
-            resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
-            resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
-            resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
+            // resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
+            // resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
+            // resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
         }
 
         // modal

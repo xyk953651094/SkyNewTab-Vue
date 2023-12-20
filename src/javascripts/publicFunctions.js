@@ -413,17 +413,19 @@ export function btnMouseOut(fontColor, e) {
 export function resetRadioColor(selectedRadio, allRadios, themeColor) {
     // 重置所有不是当前选中的选项的颜色
     for (let i = 0; i < allRadios.length; i++) {
+        let currentRadio = $("#" + allRadios[i]);
         if (allRadios[i] !== selectedRadio) {
-            $("#" + allRadios[i]).find(".arco-radio-icon").css({
+            currentRadio.find(".arco-radio-icon").css({
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
         }
         else {
-            $("#" + allRadios[i]).find(".arco-radio-icon").css({
+            currentRadio.find(".arco-radio-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor,
             });
+            currentRadio.children(".arco-radio-label").css("color", themeColor);
         }
     }
 }
@@ -431,17 +433,19 @@ export function resetRadioColor(selectedRadio, allRadios, themeColor) {
 export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor) {
     // 重置所有不是当前选中的选项的颜色
     for (let i = 0; i < allCheckboxes.length; i++) {
+        let currentCheckbox = $("#" + allCheckboxes[i]);
         if (selectedCheckboxes.indexOf(allCheckboxes[i]) === -1) {
-            $("#" + allCheckboxes[i]).find(".arco-checkbox-icon").css({
+            currentCheckbox.find(".arco-checkbox-icon").css({
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
         }
         else {
-            $("#" + allCheckboxes[i]).find(".arco-checkbox-icon").css({
+            currentCheckbox.find(".arco-checkbox-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor
             }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
+            currentCheckbox.children(".arco-checkbox-label").css("color", themeColor);
         }
     }
 }
