@@ -3,7 +3,7 @@
         <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
-            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
+            :style="{borderRadius: preferenceData.buttonShape === 'round' ? '18px' : ''}"
             allow-clear
             class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
