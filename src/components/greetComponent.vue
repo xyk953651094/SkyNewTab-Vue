@@ -153,13 +153,13 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
     }
-});
+}, {immediate: true});
 
 watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         display.value = newValue ? "none" : "block";
     }
-});
+}, {immediate: true});
 
 function historyBtnOnClick() {
     window.open(searchEngineUrl.value + "历史上的今天", "_blank");

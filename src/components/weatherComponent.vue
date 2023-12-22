@@ -193,13 +193,13 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
             searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
         }
     }
-});
+}, {immediate: true});
 
 watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         display.value = newValue ? "none" : "block";
     }
-});
+}, {immediate: true});
 
 function infoBtnOnClick() {
     window.open(searchEngineUrl.value + "天气", "_blank");

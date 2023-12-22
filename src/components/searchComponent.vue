@@ -76,7 +76,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         searchEngineValue.value = searchEngineDetail.searchEngineValue;
         searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
     }
-})
+}, {immediate: true})
 
 function onFocus() {
     fadeIn("#searchMask", 300);
