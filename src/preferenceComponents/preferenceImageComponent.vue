@@ -186,17 +186,16 @@ import {
     btnMouseOver,
     getPreferenceDataStorage,
     getTimeDetails,
-    isEmpty, resetCheckboxColor, resetRadioColor, resetSwitchColor
+    isEmpty,
 } from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {imageTopics} from "../javascripts/publicConstants";
 
 let preferenceData = ref(getPreferenceDataStorage());
 let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,

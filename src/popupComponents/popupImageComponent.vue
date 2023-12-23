@@ -178,7 +178,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
         noImageMode.value = newValue.noImageMode;
     }
-});
+}, {immediate: true});
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {

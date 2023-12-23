@@ -295,9 +295,15 @@ export function getSearchEngineDetail(searchEngine) {
 }
 
 // 补全设置数据
-// 补全设置数据
 export function fixPreferenceData(preferenceData) {
     let isFixed = false;
+    // for (let key in defaultPreferenceData) {
+    //     if (preferenceData[key] === null || preferenceData[key] === undefined) {
+    //         preferenceData[key] = defaultPreferenceData[key];
+    //         isFixed = true;
+    //     }
+    // }
+
     if (!preferenceData.dynamicEffect) {
         preferenceData.dynamicEffect = defaultPreferenceData.dynamicEffect;
         isFixed = true;
@@ -318,11 +324,11 @@ export function fixPreferenceData(preferenceData) {
         preferenceData.changeImageTime = defaultPreferenceData.changeImageTime;
         isFixed = true;
     }
-    if (preferenceData.nightMode === undefined || preferenceData.nightMode === null) {
+    if (preferenceData.nightMode === undefined || preferenceData.nightMode === null) {  // boolean
         preferenceData.nightMode = defaultPreferenceData.nightMode;
         isFixed = true;
     }
-    if (preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {
+    if (preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {   // boolean
         preferenceData.noImageMode = defaultPreferenceData.noImageMode;
         isFixed = true;
     }
@@ -335,7 +341,7 @@ export function fixPreferenceData(preferenceData) {
         preferenceData.buttonShape = defaultPreferenceData.buttonShape;
         isFixed = true;
     }
-    if (preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {
+    if (preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {   // boolean
         preferenceData.simpleMode = defaultPreferenceData.simpleMode;
         isFixed = true;
     }

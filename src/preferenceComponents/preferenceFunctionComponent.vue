@@ -109,7 +109,7 @@ import {
     btnMouseOut,
     btnMouseOver,
     getPreferenceDataStorage,
-    isEmpty, resetRadioColor, resetSwitchColor,
+    isEmpty,
 } from "../javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
@@ -120,7 +120,7 @@ let displayClearStorageModal = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,

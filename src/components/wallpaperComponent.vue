@@ -160,9 +160,7 @@ function getWallpaper() {
 }
 
 onMounted(() => {
-    let noImageMode = props.preferenceData.noImageMode;
-
-    if (!noImageMode) {
+    if (!props.preferenceData.noImageMode) {
         // 防抖节流
         let lastRequestTime = localStorage.getItem("lastImageRequestTime");
         let nowTimeStamp = new Date().getTime();

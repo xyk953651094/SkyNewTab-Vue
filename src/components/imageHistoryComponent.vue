@@ -137,7 +137,7 @@ watch(() => props.imageHistory, (newValue, oldValue) => {
         imageHistoryJson.value = tempImageHistoryJson;
         imageLink.value = tempImageHistoryJson[0].imageLink;
     }
-})
+}, {immediate: true})
 
 function imageLinkBtnOnClick() {
     if (!isEmpty(imageLink.value)) {

@@ -3,7 +3,7 @@
         <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
-            :style="{borderRadius: (preferenceData.buttonShape === 'round' ? '18px' : '')}"
+            :style="{borderRadius: preferenceData.buttonShape === 'round' ? '18px' : ''}"
             allow-clear
             class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
@@ -76,7 +76,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         searchEngineValue.value = searchEngineDetail.searchEngineValue;
         searchEngineUrl.value = searchEngineDetail.searchEngineUrl;
     }
-})
+}, {immediate: true})
 
 function onFocus() {
     fadeIn("#searchMask", 300);

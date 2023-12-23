@@ -126,7 +126,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
         simpleMode.value = newValue.simpleMode;
     }
-});
+}, {immediate: true});
 
 function greetBtnOnClick() {
     window.open(searchEngineUrl.value + "万年历", "_blank",);

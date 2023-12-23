@@ -80,7 +80,7 @@ import {
     getFontColor,
     getImageHistoryStorage,
     getPreferenceDataStorage,
-    getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
+    getReverseColor,
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
@@ -98,7 +98,6 @@ import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
-import {imageTopics} from "./javascripts/publicConstants";
 
 const $ = require("jquery");
 

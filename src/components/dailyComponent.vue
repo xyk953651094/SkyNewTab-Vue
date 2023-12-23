@@ -181,7 +181,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         display.value = newValue ? "none" : "block";
     }
-})
+}, {immediate: true})
 
 function removeAllBtnOnClick() {
     let tempDaily = localStorage.getItem("daily");

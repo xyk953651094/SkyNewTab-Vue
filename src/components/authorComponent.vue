@@ -256,7 +256,7 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
     if (newValue !== oldValue) {
         searchEngineUrl.value = getSearchEngineDetail(newValue.searchEngine).searchEngineUrl;
     }
-});
+}, {immediate: true});
 
 function authorLinkBtnOnClick() {
     if (authorLink.value.length !== 0) {
