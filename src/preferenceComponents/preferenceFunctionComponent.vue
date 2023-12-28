@@ -109,18 +109,18 @@ import {
     btnMouseOut,
     btnMouseOver,
     getPreferenceDataStorage,
-    isEmpty,
-} from "../javascripts/publicFunctions";
+    isEmpty, resetRadioColor, resetSwitchColor,
+} from "@/javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 let displayResetPreferenceModal = ref(false);
 let displayClearStorageModal = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
 let disableImageTopic = ref(false);
 
-defineProps({
+const props = defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -157,7 +157,7 @@ function searchEngineRadioOnChange(value) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换搜索引擎");
 
-    // resetRadioColor(value, ["bing", "google"], props.hoverColor);
+    resetRadioColor(value, ["bing", "google"], props.hoverColor);
 }
 
 function buttonShapeRadioOnChange(value) {
@@ -166,7 +166,7 @@ function buttonShapeRadioOnChange(value) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换按钮形状");
 
-    // resetRadioColor(value, ["round", "default"], props.hoverColor);
+    resetRadioColor(value, ["round", "default"], props.hoverColor);
 }
 
 function simpleModeSwitchOnChange(checked) {
@@ -176,10 +176,11 @@ function simpleModeSwitchOnChange(checked) {
     if (checked) {
         Message.success("已开启简洁模式");
     } else {
-        Message.success("已关闭简洁模式");
+        Message.success("已关闭简洁模式，一秒后刷新页面");
+        refreshWindow();
     }
 
-    // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
+    resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
 }
 
 // 重置设置

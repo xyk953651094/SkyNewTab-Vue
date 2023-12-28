@@ -51,9 +51,9 @@
 
 <script setup>
 import {IconCalendar, IconCloud, IconCodeSquare, IconFileImage, IconInfoCircle} from "@arco-design/web-vue/es/icon";
-import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defineProps} from "vue";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 defineProps({
     hoverColor: {

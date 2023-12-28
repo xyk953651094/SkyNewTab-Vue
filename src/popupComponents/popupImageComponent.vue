@@ -79,11 +79,11 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCamera, IconClockCircle, IconInfoCircle, IconLocation, IconUser} from "@arco-design/web-vue/es/icon";
-import {btnMouseOut, btnMouseOver, getSearchEngineDetail, isEmpty} from "../javascripts/publicFunctions";
-import "../stylesheets/popupComponent.less"
+import {btnMouseOut, btnMouseOver, getSearchEngineDetail, isEmpty} from "@/javascripts/publicFunctions";
+import "@/stylesheets/popupComponent.less"
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
-import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
+import {defaultPreferenceData, unsplashUrl} from "@/javascripts/publicConstants";
 
 const btnMaxSize = 35;
 

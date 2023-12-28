@@ -82,8 +82,8 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMenu} from "@arco-design/web-vue/es/icon";
-import {changeThemeColor} from "../javascripts/publicFunctions";
-import {defaultPreferenceData, device} from "../javascripts/publicConstants";
+import {changeThemeColor} from "@/javascripts/publicFunctions";
+import {defaultPreferenceData, device} from "@/javascripts/publicConstants";
 import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
 import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
 import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";

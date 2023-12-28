@@ -19,9 +19,9 @@ import {
     httpRequest,
     imageDynamicEffect,
     isEmpty
-} from "../javascripts/publicFunctions";
-import "../stylesheets/wallpaperComponent.less"
-import {clientId, defaultPreferenceData, device, imageHistoryMaxSize} from "../javascripts/publicConstants";
+} from "@/javascripts/publicFunctions";
+import "@/stylesheets/wallpaperComponent.less"
+import {clientId, defaultPreferenceData, device, imageHistoryMaxSize} from "@/javascripts/publicConstants";
 import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 

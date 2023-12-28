@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-import "../stylesheets/publicStyles.less"
+import "@/stylesheets/publicStyles.less"
 import {defineProps, onMounted, ref, watch} from "vue"
 import {
     IconCalendar,
@@ -101,8 +101,8 @@ import {
     getSearchEngineDetail,
     getTimeDetails,
     httpRequest
-} from "../javascripts//publicFunctions";
-import {appId, appSecret, defaultPreferenceData} from "../javascripts/publicConstants";
+} from "@/javascripts//publicFunctions";
+import {appId, appSecret, defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const btnMaxSize = 80;
 

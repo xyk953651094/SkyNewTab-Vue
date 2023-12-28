@@ -80,7 +80,7 @@ import {
     getFontColor,
     getImageHistoryStorage,
     getPreferenceDataStorage,
-    getReverseColor,
+    getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
     setColorTheme,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
@@ -98,6 +98,7 @@ import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
 import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
+import {imageTopics} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -153,7 +154,7 @@ onMounted(() => {
         Notification.success({
             showIcon: false,
             title: "已更新至版本 V" + currentVersion,
-            content: "详细更新内容请前往 GitHub 或 GitLab 主页查看",
+            content: "详细内容请前往 GitHub 或 GitLab 主页查看",
             position: "bottomLeft",
             duration: 5000
         });
@@ -241,16 +242,16 @@ onMounted(() => {
             $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
 
             // preferenceImageComponent
-            // resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
-            // resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
-            // resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
-            // resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
-            // resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
+            resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
+            resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
+            resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
+            resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
+            resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
 
             // preferenceFunctionComponent
-            // resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
-            // resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
-            // resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
+            resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
+            resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
+            resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
         }
 
         // modal

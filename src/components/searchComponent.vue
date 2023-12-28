@@ -32,9 +32,9 @@
 
 <script setup lang="jsx">
 import {defineProps, ref, watch} from "vue";
-import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
-import "../stylesheets/searchComponent.less"
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "@/javascripts/publicFunctions";
+import "@/stylesheets/searchComponent.less"
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 let display = ref("inline-flex");
 let backgroundColor = ref("");
@@ -88,7 +88,8 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
     }
 }, {immediate: true});
 
-function onFocus() {
+function onFocus(event) {
+    console.log(event.target);
     fadeIn("#searchMask", 300);
     displayMask.value = "block";
 }
