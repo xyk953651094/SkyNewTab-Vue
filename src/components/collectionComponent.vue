@@ -149,8 +149,8 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconDelete, IconEdit, IconLink, IconPlus, IconPushpin} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
-import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 

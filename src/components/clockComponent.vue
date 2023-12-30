@@ -22,8 +22,8 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {getTimeDetails} from "../javascripts/publicFunctions";
-import "../stylesheets/clockComponent.less";
+import {getTimeDetails} from "@/javascripts/publicFunctions";
+import "@/stylesheets/clockComponent.less";
 
 const $ = require("jquery");
 

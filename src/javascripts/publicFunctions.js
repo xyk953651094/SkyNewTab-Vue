@@ -1,4 +1,4 @@
-import {darkThemeArray, defaultPreferenceData, lightThemeArray} from "../javascripts/publicConstants";
+import {darkThemeArray, defaultPreferenceData, lightThemeArray} from "@/javascripts/publicConstants";
 import "jquery-color"
 
 const $ = require("jquery");
@@ -156,6 +156,7 @@ export function getWeatherIcon(weatherInfo) {
 export function setColorTheme() {
     let currentHour = parseInt(getTimeDetails(new Date()).hour);
     let themeArray = lightThemeArray;
+    console.log(currentHour);
     if (currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
         themeArray = darkThemeArray;
     }
@@ -425,13 +426,14 @@ export function resetRadioColor(selectedRadio, allRadios, themeColor) {
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
+            currentRadio.children(".arco-radio-label").css({"fontWeight": "normal", "textDecoration": "none"});
         }
         else {
             currentRadio.find(".arco-radio-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor,
             });
-            currentRadio.children(".arco-radio-label").css("color", themeColor);
+            currentRadio.children(".arco-radio-label").css({"color": themeColor, "fontWeight": "bold", "textDecoration": "underline"});
         }
     }
 }
@@ -445,13 +447,14 @@ export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
+            currentCheckbox.children(".arco-checkbox-label").css({"fontWeight": "normal", "textDecoration": "none"});
         }
         else {
             currentCheckbox.find(".arco-checkbox-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor
             }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
-            currentCheckbox.children(".arco-checkbox-label").css("color", themeColor);
+            currentCheckbox.children(".arco-checkbox-label").css({"color": themeColor, "fontWeight": "bold", "textDecoration": "underline"});
         }
     }
 }

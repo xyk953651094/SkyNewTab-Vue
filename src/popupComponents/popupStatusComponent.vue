@@ -58,8 +58,8 @@ import {
     getGreetIcon,
     getSearchEngineDetail,
     getWeatherIcon
-} from "../javascripts/publicFunctions";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+} from "@/javascripts/publicFunctions";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const props = defineProps({
     imageData: {

@@ -74,8 +74,8 @@
 <script setup>
 import {IconFileImage, IconHistory} from "@arco-design/web-vue/es/icon";
 import {defineProps, onMounted, ref, watch} from "vue";
-import {btnMouseOut, btnMouseOver, changeThemeColor, isEmpty} from "../javascripts/publicFunctions";
-import {defaultPreferenceData, imageHistoryMaxSize, unsplashUrl} from "../javascripts/publicConstants";
+import {btnMouseOut, btnMouseOver, changeThemeColor, isEmpty} from "@/javascripts/publicFunctions";
+import {defaultPreferenceData, imageHistoryMaxSize, unsplashUrl} from "@/javascripts/publicConstants";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({

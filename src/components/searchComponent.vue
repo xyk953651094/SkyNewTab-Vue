@@ -3,7 +3,10 @@
         <div id="searchMask" :style="{display: displayMask}" class="searchMask zIndexMiddle"/>
         <a-input-search
             id="searchInput"
-            :style="{borderRadius: preferenceData.buttonShape === 'round' ? '18px' : ''}"
+            :style="{
+                borderRadius: preferenceData.buttonShape === 'round' ? '18px' : '',
+                display: display
+            }"
             allow-clear
             class="componentTheme zIndexHigh"
             placeholder="按下 Enter 键搜索"
@@ -29,10 +32,11 @@
 
 <script setup lang="jsx">
 import {defineProps, ref, watch} from "vue";
-import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "../javascripts/publicFunctions";
-import "../stylesheets/searchComponent.less"
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {changeThemeColor, fadeIn, fadeOut, getSearchEngineDetail} from "@/javascripts/publicFunctions";
+import "@/stylesheets/searchComponent.less"
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
+let display = ref("inline-flex");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let searchEngineName = ref("必应");
@@ -78,7 +82,14 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
     }
 }, {immediate: true})
 
-function onFocus() {
+watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        display.value = newValue ? "none" : "inline-flex";
+    }
+}, {immediate: true});
+
+function onFocus(event) {
+    console.log(event.target);
     fadeIn("#searchMask", 300);
     displayMask.value = "block";
 }

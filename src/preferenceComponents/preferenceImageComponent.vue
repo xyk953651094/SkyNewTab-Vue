@@ -186,16 +186,17 @@ import {
     btnMouseOver,
     getPreferenceDataStorage,
     getTimeDetails,
-    isEmpty,
-} from "../javascripts/publicFunctions";
+    isEmpty, resetCheckboxColor, resetRadioColor, resetSwitchColor,
+} from "@/javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
+import {imageTopics} from "@/javascripts/publicConstants";
 
 let preferenceData = ref(getPreferenceDataStorage());
 let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 
-defineProps({
+const props = defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -237,7 +238,7 @@ function dynamicEffectRadioOnChange(value) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更换显示效果，一秒后刷新页面");
 
-    // resetRadioColor(value, ["all", "translate", "rotate", "close"], props.hoverColor);
+    resetRadioColor(value, ["all", "translate", "rotate", "close"], props.hoverColor);
     refreshWindow();
 }
 
@@ -248,7 +249,7 @@ function imageQualityRadioOnChange(value) {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已更新图片质量，一秒后刷新页面");
 
-    // resetRadioColor(value, ["full", "regular"], props.hoverColor);
+    resetRadioColor(value, ["full", "regular"], props.hoverColor);
     refreshWindow();
 }
 
@@ -262,7 +263,7 @@ function imageTopicsCheckboxOnChange(values) {
         Message.info("全不选与全选的效果一样");
     }
 
-    // resetCheckboxColor(values, imageTopics, props.hoverColor);
+    resetCheckboxColor(values, imageTopics, props.hoverColor);
 }
 
 // 自定义主题
@@ -273,7 +274,6 @@ function submitCustomTopicBtnOnClick() {
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     Message.success("已启用自定主题，下次切换图片时生效");
     disableImageTopic.value = !isEmpty(inputValue);
-    // refreshWindow();
 }
 
 function clearCustomTopicBtnOnClick() {
@@ -304,8 +304,7 @@ function nightModeSwitchOnChange(checked) {
         Message.success("已恢复背景亮度");
     }
 
-    // resetSwitchColor("#nightModeSwitch", checked, props.hoverColor);
-    // refreshWindow();
+    resetSwitchColor("#nightModeSwitch", checked, props.hoverColor);
 }
 
 function noImageModeSwitchOnChange(checked) {
@@ -318,7 +317,7 @@ function noImageModeSwitchOnChange(checked) {
         Message.success("已关闭无图模式，一秒后刷新页面");
     }
 
-    // resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);
+    resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);
     refreshWindow();
 }
 

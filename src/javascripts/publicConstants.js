@@ -1,4 +1,4 @@
-import {getDevice} from "../javascripts/publicFunctions";
+import {getDevice} from "@/javascripts/publicFunctions";
 
 export let lightThemeArray = [
     {"bodyBackgroundColor": "#F2EEE8", "componentBackgroundColor": "#9B8A9D"},

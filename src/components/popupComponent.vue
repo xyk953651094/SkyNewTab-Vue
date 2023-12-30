@@ -40,8 +40,8 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {getFontColor, getPreferenceDataStorage, getReverseColor} from "../javascripts/publicFunctions";
-import "../stylesheets/popupComponent.less"
+import {getFontColor, getPreferenceDataStorage, getReverseColor} from "@/javascripts/publicFunctions";
+import "@/stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
 import PopupFooterComponent from "../popupComponents/popupFooterComponent.vue";

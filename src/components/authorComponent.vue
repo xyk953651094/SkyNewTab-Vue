@@ -165,14 +165,14 @@ import {
     IconLocation,
     IconUser
 } from "@arco-design/web-vue/es/icon";
-import {defaultPreferenceData, unsplashUrl} from "../javascripts/publicConstants";
+import {defaultPreferenceData, unsplashUrl} from "@/javascripts/publicConstants";
 import {
     btnMouseOut,
     btnMouseOver,
     changeThemeColor,
     getSearchEngineDetail,
     isEmpty
-} from "../javascripts/publicFunctions";
+} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 
 const btnMaxSize = 50;

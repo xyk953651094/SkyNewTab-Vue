@@ -64,8 +64,8 @@
 <script setup>
 import {IconEmail, IconGithub, IconGitlab, IconThumbDown, IconThumbUp} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
-import {btnMouseOut, btnMouseOver} from "../javascripts/publicFunctions";
-import {defaultPreferenceData} from "../javascripts/publicConstants";
+import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 defineProps({
     hoverColor: {
