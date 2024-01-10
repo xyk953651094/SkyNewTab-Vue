@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{minWidth: '550px'}"
             position="tr"
         >
             <a-button id="authorBtn" :shape="preferenceData.buttonShape" :style="{display: display, cursor: 'default'}"
@@ -73,6 +73,7 @@
                                         </template>
                                         {{ " " + authorCollections + " 个合集" }}
                                     </a-button>
+                                    <a-divider direction="vertical" :style="{borderColor: fontColor}"/>
                                     <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               type="text"
@@ -82,6 +83,7 @@
                                         </template>
                                         {{ " " + authorLikes + " 个点赞" }}
                                     </a-button>
+                                    <a-divider direction="vertical" :style="{borderColor: fontColor}"/>
                                     <a-button :shape="preferenceData.buttonShape"
                                               :style="{color: fontColor, cursor: 'default'}"
                                               type="text"

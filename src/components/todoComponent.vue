@@ -71,7 +71,7 @@
                                     <template #icon>
                                         <icon-tag/>
                                     </template>
-                                    {{ item.tag + "｜" + item.priority }}
+                                    {{ item.tag + " ｜ " + item.priority }}
                                 </a-button>
                             </a-col>
                         </a-row>

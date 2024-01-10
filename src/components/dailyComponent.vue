@@ -73,7 +73,7 @@
                                         <icon-clock-circle/>
                                     </template>
                                     {{
-                                        getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + "｜" + getDailyDescription(item.selectedTimeStamp)
+                                        getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + " ｜ " + getDailyDescription(item.selectedTimeStamp)
                                     }}
                                 </a-button>
                             </a-col>

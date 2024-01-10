@@ -114,9 +114,9 @@ onMounted(() => {
     let tempWeather = localStorage.getItem("lastWeather");
     let tempDaily = localStorage.getItem("daily");
     let tempTodos = localStorage.getItem("todos");
-    greetContent.value = tempGreet ? getGreetContent() + "｜" + setHoliday(JSON.parse(tempGreet)) : "暂无信息";
+    greetContent.value = tempGreet ? getGreetContent() + " ｜ " + setHoliday(JSON.parse(tempGreet)) : "暂无信息";
     weatherIcon.value = tempWeather ? getWeatherIcon(JSON.parse(tempWeather).weatherData.weather) : "";
-    weatherContent.value = tempWeather ? JSON.parse(tempWeather).weatherData.weather + "｜" + JSON.parse(tempWeather).weatherData.temperature + "°C" : "暂无信息";
+    weatherContent.value = tempWeather ? JSON.parse(tempWeather).weatherData.weather + " ｜ " + JSON.parse(tempWeather).weatherData.temperature + "°C" : "暂无信息";
     dailySize.value = tempDaily ? JSON.parse(tempDaily).length : 0;
     todoSize.value = tempTodos ? JSON.parse(tempTodos).length : 0;
 })

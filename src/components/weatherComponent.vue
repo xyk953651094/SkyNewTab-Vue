@@ -215,7 +215,7 @@ function locationBtnOnClick() {
 
 function setWeather(data) {
     weatherIcon.value = getWeatherIcon(data.weatherData.weather);
-    weatherInfo.value = data.weatherData.weather + "｜"
+    weatherInfo.value = data.weatherData.weather + " ｜ "
         + data.weatherData.temperature + "°C";
     location.value = data.region.replace("|", " · ");
     humidity.value = data.weatherData.humidity;

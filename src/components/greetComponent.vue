@@ -10,7 +10,7 @@
                 <template #icon>
                     <i :class="greetIcon"></i>
                 </template>
-                {{ greetContent + "｜" + holidayContent }}
+                {{ greetContent + " ｜ " + holidayContent }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -180,8 +180,8 @@ function setHoliday(data) {
     }
 
     holidayContent.value = tempHolidayContent;
-    calendar.value = timeDetails.value.showDate4 + " " + timeDetails.value.showWeek + "｜" +
-        data.yearTips + data.chineseZodiac + "年｜" + data.lunarCalendar + "｜" + data.constellation;
+    calendar.value = timeDetails.value.showDate4 + " " + timeDetails.value.showWeek + " ｜ " +
+        data.yearTips + data.chineseZodiac + "年 ｜ " + data.lunarCalendar + " ｜ " + data.constellation;
     suit.value = data.suit.replace(/\./g, " · ");
     avoid.value = data.avoid.replace(/\./g, " · ");
 }
