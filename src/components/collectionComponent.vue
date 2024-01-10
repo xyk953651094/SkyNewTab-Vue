@@ -238,7 +238,14 @@ function addModalBeforeOk() {
             collections = JSON.parse(tempCollections);
         }
         if (collections.length < collectionMaxSize.value) {
-            return true;
+            let urlRegExp = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]", "g");
+            if (urlRegExp.exec(webUrl) === null) {
+                Message.error("网页地址格式错误");
+                return false;
+            }
+            else {
+                return true;
+            }
         } else {
             Message.error("链接数量最多为" + collectionMaxSize.value + "个");
             return false;
@@ -258,14 +265,13 @@ function addModalOkBtnOnClick() {
         collections = JSON.parse(tempCollections);
     }
 
-    collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
-    localStorage.setItem("collections", JSON.stringify(collections));
+        collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
+        localStorage.setItem("collections", JSON.stringify(collections));
 
-    displayAddModal.value = false;
-    Message.success("添加成功");
-
-    collectionData.value = collections;
-    collectionSize.value = collections.length;
+        displayAddModal.value = false;
+        collectionData.value = collections;
+        collectionSize.value = collections.length;
+        Message.success("添加成功");
 }
 
 function addModalCancelBtnOnClick() {
