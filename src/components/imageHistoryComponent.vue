@@ -29,9 +29,9 @@
                                       @click="imageLinkBtnOnClick"
                                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-file-image/>
+                                    <icon-download/>
                                 </template>
-                                {{ "图片主页" }}
+                                {{ "下载图片" }}
                             </a-button>
                         </a-space>
                     </a-col>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import {IconFileImage, IconHistory} from "@arco-design/web-vue/es/icon";
+import {IconDownload, IconHistory} from "@arco-design/web-vue/es/icon";
 import {defineProps, onMounted, ref, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, isEmpty} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData, imageHistoryMaxSize, unsplashUrl} from "@/javascripts/publicConstants";

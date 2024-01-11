@@ -43,6 +43,12 @@
                         :hover-color="hoverColor"
                         @preference-data="getPreferenceData"
                     />
+                    <preference-help-component
+                        :background-color="backgroundColor"
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                        :preference-data="preferenceData"
+                    />
                     <preference-email-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
@@ -84,14 +90,15 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMenu} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData, device} from "@/javascripts/publicConstants";
-import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
-import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
-import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";
+import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
 import PreferenceImageComponent from "../preferenceComponents/preferenceImageComponent.vue";
 import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunctionComponent.vue";
-import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
+import PreferenceHelpComponent from "../preferenceComponents/preferenceHelpComponent.vue";
+import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
+import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";
 import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
 import PreferenceToTopComponent from "../preferenceComponents/preferenceToTopComponent.vue";
+import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");

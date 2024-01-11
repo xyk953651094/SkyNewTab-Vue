@@ -23,26 +23,15 @@
                         <a-typography-text :style="{color: fontColor}">{{ "摄影师与图片信息" }}</a-typography-text>
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
-                        <a-space>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor}" type="text"
-                                      @click="authorLinkBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-home/>
-                                </template>
-                                {{ "摄影师主页" }}
-                            </a-button>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor}" type="text"
-                                      @click="imageLinkBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-file-image/>
-                                </template>
-                                {{ "图片主页" }}
-                            </a-button>
-                        </a-space>
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor}" type="text"
+                                  @click="imageLinkBtnOnClick"
+                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-download />
+                            </template>
+                            {{ "下载图片" }}
+                        </a-button>
                     </a-col>
                 </a-row>
             </template>
@@ -126,27 +115,6 @@
                                         imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
                                     }}
                                 </a-button>
-                                <a-space>
-                                    <a-button :shape="preferenceData.buttonShape"
-                                              :style="{color: fontColor, cursor: 'default'}"
-                                              type="text"
-                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                        <template #icon>
-                                            <icon-clock-circle/>
-                                        </template>
-                                        {{ imageCreateTime }}
-                                    </a-button>
-                                    <a-button :shape="preferenceData.buttonShape"
-                                              :style="{color: fontColor}"
-                                              type="text"
-                                              @click="imageCameraBtnOnClick"
-                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                        <template #icon>
-                                            <icon-camera/>
-                                        </template>
-                                        {{ imageCamera }}
-                                    </a-button>
-                                </a-space>
                             </a-space>
                         </a-space>
                     </a-list-item>
@@ -160,9 +128,7 @@
 import {defineProps, ref, watch} from "vue"
 import {
     IconCamera,
-    IconClockCircle,
-    IconFileImage,
-    IconHome,
+    IconDownload,
     IconInfoCircle,
     IconLocation,
     IconUser
@@ -225,8 +191,6 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
-let imageCreateTime = ref("暂无信息");
-let imageCamera = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
     if (newValue !== oldValue) {
@@ -249,8 +213,6 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imagePreviewUrl.value = props.imageData.urls.regular;
         imageLocation.value = isEmpty(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmpty(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
-        imageCreateTime.value = getCreateTime(props.imageData.created_at);
-        imageCamera.value = isEmpty(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
     }
 })
 
@@ -282,18 +244,6 @@ function imageLocationBtnOnClick() {
     } else {
         Message.error("无跳转链接");
     }
-}
-
-function imageCameraBtnOnClick() {
-    if (imageCamera.value !== "暂无信息") {
-        window.open(searchEngineUrl.value + imageCamera.value, "_blank");
-    } else {
-        Message.error("无跳转链接");
-    }
-}
-
-function getCreateTime(createTime) {
-    return createTime.substring(0, createTime.indexOf("T"));
 }
 </script>
 
