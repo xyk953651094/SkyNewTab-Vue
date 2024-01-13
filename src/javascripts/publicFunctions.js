@@ -156,7 +156,6 @@ export function getWeatherIcon(weatherInfo) {
 export function setColorTheme() {
     let currentHour = parseInt(getTimeDetails(new Date()).hour);
     let themeArray = lightThemeArray;
-    console.log(currentHour);
     if (currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
         themeArray = darkThemeArray;
     }

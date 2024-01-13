@@ -1,4 +1,87 @@
 <template>
+<!--    <popover-component popover-position="bl" popover-min-width="550px"-->
+<!--                       button-id="greetBtn" :button-display="display"-->
+<!--                       :button-content="greetContent + ' ｜ ' + holidayContent"-->
+<!--                       :button-shape="preferenceData.buttonShape" :theme-color="themeColor"-->
+<!--    >-->
+<!--        <template #buttonIcon>-->
+<!--            <i :class="greetIcon"></i>-->
+<!--        </template>-->
+<!--        <template #popoverTitle>-->
+<!--            <a-row align="center">-->
+<!--                <a-col :span="10">-->
+<!--                    <a-typography-text :style="{color: fontColor}">{{ "万年历" }}</a-typography-text>-->
+<!--                </a-col>-->
+<!--                <a-col :span="14" :style="{textAlign: 'right'}">-->
+<!--                    <a-space>-->
+<!--                        <a-button :shape="preferenceData.buttonShape"-->
+<!--                                  :style="{color: fontColor}" type="text"-->
+<!--                                  @click="historyBtnOnClick"-->
+<!--                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">-->
+<!--                            <template #icon>-->
+<!--                                <icon-history/>-->
+<!--                            </template>-->
+<!--                            {{ "历史上的今天" }}-->
+<!--                        </a-button>-->
+<!--&lt;!&ndash;                        <a-button :shape="preferenceData.buttonShape"&ndash;&gt;-->
+<!--&lt;!&ndash;                                  :style="{color: fontColor}" type="text"&ndash;&gt;-->
+<!--&lt;!&ndash;                                  @click="infoBtnOnClick"&ndash;&gt;-->
+<!--&lt;!&ndash;                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <template #icon>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <icon-more-vertical/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </template>&ndash;&gt;-->
+<!--&lt;!&ndash;                            {{ "更多信息" }}&ndash;&gt;-->
+<!--&lt;!&ndash;                        </a-button>&ndash;&gt;-->
+<!--                        <button-component  button-content="更多信息" button-cursor="default"-->
+<!--                                           :button-on-click="infoBtnOnClick" :button-shape="preferenceData.buttonShape"-->
+<!--                                           :hover-color="hoverColor" :background-color="backgroundColor" :font-color="fontColor">-->
+<!--                            <template #buttonIcon>-->
+<!--                                <icon-more-vertical/>-->
+<!--                            </template>-->
+<!--                        </button-component>-->
+<!--                    </a-space>-->
+<!--                </a-col>-->
+<!--            </a-row>-->
+<!--        </template>-->
+<!--        <template #popoverContent>-->
+<!--            <a-list :bordered=false>-->
+<!--                <a-list-item>-->
+<!--                    <a-space direction="vertical">-->
+<!--                        <a-button :shape="preferenceData.buttonShape"-->
+<!--                                  :style="{color: fontColor, cursor: 'default'}"-->
+<!--                                  type="text"-->
+<!--                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">-->
+<!--                            <template #icon>-->
+<!--                                <icon-calendar/>-->
+<!--                            </template>-->
+<!--                            {{ calendar }}-->
+<!--                        </a-button>-->
+<!--                        <a-button :shape="preferenceData.buttonShape"-->
+<!--                                  :style="{color: fontColor, cursor: 'default'}"-->
+<!--                                  type="text"-->
+<!--                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">-->
+<!--                            <template #icon>-->
+<!--                                <icon-check-circle/>-->
+<!--                            </template>-->
+<!--                            {{ "宜：" + (suit.length < btnMaxSize ? suit : suit.substring(0, btnMaxSize) + "...") }}-->
+<!--                        </a-button>-->
+<!--                        <a-button :shape="preferenceData.buttonShape"-->
+<!--                                  :style="{color: fontColor, cursor: 'default'}"-->
+<!--                                  type="text"-->
+<!--                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">-->
+<!--                            <template #icon>-->
+<!--                                <icon-close-circle/>-->
+<!--                            </template>-->
+<!--                            {{-->
+<!--                                "忌：" + (avoid.length < btnMaxSize ? avoid : avoid.substring(0, btnMaxSize) + "...")-->
+<!--                            }}-->
+<!--                        </a-button>-->
+<!--                    </a-space>-->
+<!--                </a-list-item>-->
+<!--            </a-list>-->
+<!--        </template>-->
+<!--    </popover-component>-->
+
     <a-space>
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
@@ -141,6 +224,7 @@ let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
+    console.log("props.themeColor", newValue, oldValue);
     if (newValue !== oldValue) {
         hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
