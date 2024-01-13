@@ -24,7 +24,7 @@
                     </template>
                     {{ searchEngineName }}
                 </a-button>
-                <a-divider direction="vertical"/>
+                <a-divider direction="vertical" :style="{borderColor: backgroundColor}"/>
             </template>
         </a-input-search>
     </a-col>

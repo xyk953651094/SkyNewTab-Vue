@@ -111,6 +111,14 @@ function getWallpaper() {
                 content: "正在加载图片",
                 duration: 0
             });
+            setTimeout(() => {
+                if(display.value === "none") {
+                    Message.loading({
+                        content: "努力加载中，请耐心等待或检查网络",
+                        duration: 0
+                    });
+                }
+            }, 5000);
 
             // 缓存历史图片
             let lastImageStorage = localStorage.getItem("lastImage"); // 上一张图片
@@ -151,6 +159,15 @@ function getWallpaper() {
                     duration: 0
                 });
                 setWallpaper(lastImage);
+
+                setTimeout(() => {
+                    if(display.value === "none") {
+                        Message.loading({
+                            content: "努力加载中，请耐心等待或检查网络",
+                            duration: 0
+                        });
+                    }
+                }, 5000);
             } else {
                 Message.error("获取图片失败，请检查网络连接");
             }
@@ -178,6 +195,15 @@ onMounted(() => {
                 });
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
+
+                setTimeout(() => {
+                    if(display.value === "none") {
+                        Message.loading({
+                            content: "努力加载中，请耐心等待或检查网络",
+                            duration: 0
+                        });
+                    }
+                }, 5000);
             } else {
                 Message.error("无缓存图片可加载，请尝试重置插件");
             }

@@ -3,34 +3,34 @@
             :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
             :style="{border: '1px solid' + fontColor}"
             size="small"
-            title="联系作者"
+            title="帮助文档"
     >
         <template #extra>
-            <icon-email/>
+            <icon-question-circle />
         </template>
         <a-row>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
+                          href="https://xyk953651094.github.io/SkyDocuments/"
                           target="_blank"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-thumb-up/>
+                        <icon-github/>
                     </template>
-                    功能建议
+                    GitHub Pages
                 </a-button>
             </a-col>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
+                          href="https://xyk953651094.gitlab.io/SkyDocuments/"
                           target="_blank"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-thumb-down/>
+                        <icon-gitlab/>
                     </template>
-                    问题反馈
+                    GitLab Pages
                 </a-button>
             </a-col>
         </a-row>
@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import {IconEmail, IconThumbDown, IconThumbUp} from "@arco-design/web-vue/es/icon";
+import {IconQuestionCircle, IconGithub, IconGitlab} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";

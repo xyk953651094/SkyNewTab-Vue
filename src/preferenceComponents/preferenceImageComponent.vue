@@ -109,6 +109,10 @@
                         </a-col>
                     </a-row>
                 </a-checkbox-group>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{ imageTopicStatus }}
+                    </a-typography-text>
+                </template>
             </a-form-item>
             <a-form-item label="自定主题">
                 <a-space>
@@ -136,6 +140,10 @@
                         </template>
                     </a-button>
                 </a-space>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{ customTopicStatus }}
+                    </a-typography-text>
+                </template>
             </a-form-item>
             <a-form-item field="changeImageTime" label="切换间隔">
                 <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}"
@@ -195,6 +203,8 @@ import {imageTopics} from "@/javascripts/publicConstants";
 let preferenceData = ref(getPreferenceDataStorage());
 let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
+let imageTopicStatus = ref("已启用图片主题");
+let customTopicStatus = ref("已禁用自定主题");
 
 const props = defineProps({
     hoverColor: {
@@ -229,6 +239,10 @@ onMounted(() => {
     }
 
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
+    if (disableImageTopic.value) {
+        imageTopicStatus.value = "已禁用自定主题";
+        customTopicStatus.value = "已启用自定主题";
+    }
 })
 
 // 动效样式
@@ -272,16 +286,29 @@ function submitCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = inputValue;
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已启用自定主题，下次切换图片时生效");
+
     disableImageTopic.value = !isEmpty(inputValue);
+    imageTopicStatus.value = isEmpty(inputValue)? "已启用图片主题" : "已禁用图片主题";
+    customTopicStatus.value = isEmpty(inputValue)? "已禁用自定主题" : "已启用自定主题";
+
+    if (!isEmpty(inputValue)) {
+        Message.success("已启用自定主题，下次切换图片时生效");
+    } else {
+        Message.success("已禁用自定主题，一秒后刷新页面");
+        refreshWindow();
+    }
 }
 
 function clearCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = "";
     emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已禁用自定主题，一秒后刷新页面");
+
     disableImageTopic.value = false;
+    imageTopicStatus.value = "已启用图片主题";
+    customTopicStatus.value = "已禁用自定主题";
+
+    Message.success("已禁用自定主题，一秒后刷新页面");
     refreshWindow();
 }
 
