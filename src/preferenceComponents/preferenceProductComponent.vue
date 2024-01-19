@@ -22,7 +22,7 @@
             <a-col :span="5">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyDocuments/" target="_blank"
+                              href="https://github.com/xyk953651094/SkyDocuments/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -30,7 +30,7 @@
                         </template>
                     </a-button>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyDocuments/" target="_blank"
+                              href="https://gitlab.com/xyk953651094/SkyDocuments/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -52,7 +52,7 @@
             <a-col :span="5">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyWallpaper-Electron/" target="_blank"
+                              href="https://github.com/xyk953651094/SkyWallpaper-Electron/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -60,7 +60,7 @@
                         </template>
                     </a-button>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyWallpaper-Electron/" target="_blank"
+                              href="https://gitlab.com/xyk953651094/SkyWallpaper-Electron/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -82,7 +82,7 @@
             <a-col :span="5">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyNewTab-React/" target="_blank"
+                              href="https://github.com/xyk953651094/SkyNewTab-React/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -90,7 +90,7 @@
                         </template>
                     </a-button>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyNewTab-React/" target="_blank"
+                              href="https://gitlab.com/xyk953651094/SkyNewTab-React/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -112,7 +112,7 @@
             <a-col :span="5">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyNewTab-Poem-React/" target="_blank"
+                              href="https://github.com/xyk953651094/SkyNewTab-Poem-React/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -120,7 +120,7 @@
                         </template>
                     </a-button>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-React/" target="_blank"
+                              href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-React/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -142,7 +142,7 @@
             <a-col :span="5">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyNewTab-Poem-Angular/" target="_blank"
+                              href="https://github.com/xyk953651094/SkyNewTab-Poem-Angular/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>
@@ -150,7 +150,7 @@
                         </template>
                     </a-button>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-Angular/" target="_blank"
+                              href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-Angular/" target="_self"
                               type="text"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                         <template #icon>

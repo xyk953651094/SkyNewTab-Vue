@@ -12,7 +12,7 @@
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
-                          target="_blank"
+                          target="_self"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
@@ -24,7 +24,7 @@
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
-                          target="_blank"
+                          target="_self"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>

@@ -2,7 +2,7 @@
     <a-space>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://github.com/xyk953651094/SkyNewTab-Vue/"
-                  target="_blank"
+                  target="_self"
                   type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <icon-github/>
@@ -11,7 +11,7 @@
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://gitlab.com/xyk953651094/SkyNewTab-Vue/"
-                  target="_blank"
+                  target="_self"
                   type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <icon-gitlab/>
@@ -20,7 +20,7 @@
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://xyk953651094.blogspot.com/"
-                  target="_blank"
+                  target="_self"
                   type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
                 <icon-notification/>

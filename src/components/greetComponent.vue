@@ -246,11 +246,11 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true});
 
 function historyBtnOnClick() {
-    window.open(searchEngineUrl.value + "历史上的今天", "_blank");
+    window.open(searchEngineUrl.value + "历史上的今天", "_self");
 }
 
 function infoBtnOnClick() {
-    window.open(searchEngineUrl.value + "万年历", "_blank");
+    window.open(searchEngineUrl.value + "万年历", "_self");
 }
 
 // 万年历

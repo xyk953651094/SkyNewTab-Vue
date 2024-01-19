@@ -141,7 +141,7 @@ watch(() => props.imageHistory, (newValue, oldValue) => {
 
 function imageLinkBtnOnClick() {
     if (!isEmpty(imageLink.value)) {
-        window.open(imageLink.value + unsplashUrl, "_blank");
+        window.open(imageLink.value + unsplashUrl, "_self");
     } else {
         Message.error("无跳转链接");
     }
