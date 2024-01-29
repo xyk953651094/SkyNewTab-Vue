@@ -224,7 +224,6 @@ let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
-    console.log("props.themeColor", newValue, oldValue);
     if (newValue !== oldValue) {
         hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;

@@ -8,7 +8,7 @@
         <template #extra>
             <icon-settings/>
         </template>
-        <a-form :model="preferenceData" auto-label-width>
+        <a-form :model="preferenceData" auto-label-width :disabled="formDisabled">
             <a-form-item field="dynamicEffect" label="鼠标互动">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
@@ -117,13 +117,9 @@
             <a-form-item label="自定主题">
                 <a-space>
                     <a-form-item field="customTopic" no-style>
-                        <a-input id="customTopicInput"
-                                 v-model="preferenceData.customTopic"
-                                 :default-value="preferenceData.customTopic"
-                                 allow-clear
-                                 placeholder="英文搜索最准确"/>
+                        <a-input v-model="inputValue" @change="inputOnChange" allow-clear placeholder="英文搜索最准确"/>
                     </a-form-item>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                    <a-button :shape="buttonShape" :style="{color: fontColor}"
                               type="text" @click="submitCustomTopicBtnOnClick"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                     >
@@ -131,7 +127,7 @@
                             <icon-check/>
                         </template>
                     </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                    <a-button :shape="buttonShape" :style="{color: fontColor}"
                               type="text" @click="clearCustomTopicBtnOnClick"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                     >
@@ -194,17 +190,20 @@ import {
     btnMouseOver,
     getPreferenceDataStorage,
     getTimeDetails,
-    isEmpty, resetCheckboxColor, resetRadioColor, resetSwitchColor,
+    isEmpty,
 } from "@/javascripts/publicFunctions";
-import {defineProps, onMounted, ref} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {imageTopics} from "@/javascripts/publicConstants";
+// import {imageTopics} from "@/javascripts/publicConstants";
 
+let formDisabled = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
+let buttonShape = ref("round");
 let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 let imageTopicStatus = ref("已启用图片主题");
 let customTopicStatus = ref("已禁用自定主题");
+let inputValue = ref(getPreferenceDataStorage().customTopic);
 
 const props = defineProps({
     hoverColor: {
@@ -227,10 +226,25 @@ const props = defineProps({
         default: () => {
             return ""
         }
+    },
+    preferenceModified: {
+        type: Number,
+        required: true,
+        default: () => {
+            return 0
+        }
     }
 });
 
-const emit = defineEmits(["preferenceData"]);
+const emit = defineEmits(["preferenceData", "preferenceModified"]);
+
+watch(() => props.preferenceModified, (newValue, oldValue) => {
+    if (newValue !== oldValue && newValue !== 0) {
+        let tempPreferenceData = getPreferenceDataStorage();
+        preferenceData.value = tempPreferenceData;
+        buttonShape.value = tempPreferenceData.buttonShape;
+    }
+}, {immediate: true})
 
 onMounted(() => {
     let tempLastRequestTime = localStorage.getItem("lastImageRequestTime");
@@ -238,6 +252,7 @@ onMounted(() => {
         lastRequestTime.value = getTimeDetails(new Date(parseInt(tempLastRequestTime))).showDetail;
     }
 
+    buttonShape.value = preferenceData.value.buttonShape;
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
     if (disableImageTopic.value) {
         imageTopicStatus.value = "已禁用自定主题";
@@ -248,103 +263,123 @@ onMounted(() => {
 // 动效样式
 function dynamicEffectRadioOnChange(value) {
     preferenceData.value.dynamicEffect = value;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换显示效果，一秒后刷新页面");
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
 
-    resetRadioColor(value, ["all", "translate", "rotate", "close"], props.hoverColor);
+    Message.success("已更换显示效果，一秒后刷新页面");
+    // resetRadioColor(value, ["all", "translate", "rotate", "close"], props.hoverColor);
+    formDisabled.value = true;
     refreshWindow();
 }
 
 // 图片质量
 function imageQualityRadioOnChange(value) {
     preferenceData.value.imageQuality = value;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更新图片质量，一秒后刷新页面");
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
 
-    resetRadioColor(value, ["full", "regular"], props.hoverColor);
+    Message.success("已更新图片质量，一秒后刷新页面");
+    // resetRadioColor(value, ["full", "regular"], props.hoverColor);
+    formDisabled.value = true;
     refreshWindow();
 }
 
 // 图片主题
 function imageTopicsCheckboxOnChange(values) {
     preferenceData.value.imageTopics = values;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
+
     Message.success("已更换图片主题，下次切换图片时生效");
     if (values.length === 0) {
         Message.info("全不选与全选的效果一样");
     }
 
-    resetCheckboxColor(values, imageTopics, props.hoverColor);
+    // resetCheckboxColor(values, imageTopics, props.hoverColor);
+}
+
+function inputOnChange(value) {
+    inputValue.value = value;
 }
 
 // 自定义主题
 function submitCustomTopicBtnOnClick() {
-    let inputValue = document.getElementById("customTopicInput").children[0].value;
-    preferenceData.value.customTopic = inputValue;
-    emit("preferenceData", preferenceData.value);
+    preferenceData.value.customTopic = inputValue.value;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
 
-    disableImageTopic.value = !isEmpty(inputValue);
-    imageTopicStatus.value = isEmpty(inputValue)? "已启用图片主题" : "已禁用图片主题";
-    customTopicStatus.value = isEmpty(inputValue)? "已禁用自定主题" : "已启用自定主题";
+    disableImageTopic.value = !isEmpty(inputValue.value);
+    imageTopicStatus.value = isEmpty(inputValue.value)? "已启用图片主题" : "已禁用图片主题";
+    customTopicStatus.value = isEmpty(inputValue.value)? "已禁用自定主题" : "已启用自定主题";
 
-    if (!isEmpty(inputValue)) {
+    if (!isEmpty(inputValue.value)) {
         Message.success("已启用自定主题，下次切换图片时生效");
     } else {
         Message.success("已禁用自定主题，一秒后刷新页面");
+        formDisabled.value = true;
         refreshWindow();
     }
 }
 
 function clearCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = "";
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
 
     disableImageTopic.value = false;
     imageTopicStatus.value = "已启用图片主题";
     customTopicStatus.value = "已禁用自定主题";
 
     Message.success("已禁用自定主题，一秒后刷新页面");
+    formDisabled.value = true;
     refreshWindow();
 }
 
 function changeImageTimeOnChange(value) {
-    console.log(value);
     preferenceData.value.changeImageTime = value;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
+
     Message.success("已修改切换间隔，一秒后刷新页面");
+    formDisabled.value = true;
     refreshWindow();
 }
 
 function nightModeSwitchOnChange(checked) {
     preferenceData.value.nightMode = checked;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
+
     if (checked) {
         Message.success("已降低背景亮度");
     } else {
         Message.success("已恢复背景亮度");
     }
 
-    resetSwitchColor("#nightModeSwitch", checked, props.hoverColor);
+    // resetSwitchColor("#nightModeSwitch", checked, props.hoverColor);
 }
 
 function noImageModeSwitchOnChange(checked) {
     preferenceData.value.noImageMode = checked;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
+
     if (checked) {
         Message.success("已开启无图模式，一秒后刷新页面");
     } else {
         Message.success("已关闭无图模式，一秒后刷新页面");
     }
 
-    resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);
+    // resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);
+    formDisabled.value = true;
     refreshWindow();
 }
 

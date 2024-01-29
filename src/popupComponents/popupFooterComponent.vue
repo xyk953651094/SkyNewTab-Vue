@@ -34,7 +34,7 @@
             <template #icon>
                 <icon-gift/>
             </template>
-            支持
+            捐助
         </a-button>
     </a-space>
 </template>

@@ -25,7 +25,7 @@
             <template #icon>
                 <icon-calendar-clock/>
             </template>
-            {{ dailySize + " 个倒数日" }}
+            {{ dailySize + " 个" }}
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
                   type="text"
@@ -34,7 +34,16 @@
             <template #icon>
                 <icon-check-square/>
             </template>
-            {{ todoSize + " 个待办事项" }}
+            {{ todoSize + " 个" }}
+        </a-button>
+        <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
+                  type="text"
+                  @mouseout="btnMouseOut(fontColor, $event)"
+                  @mouseover="btnMouseOver(hoverColor, $event)">
+            <template #icon>
+                <i :class="focusMode ? 'bi bi-cup-hot-fill' : 'bi bi-cup-hot'"></i>
+            </template>
+            {{focusMode ? "专注中" : "未专注" }}
         </a-button>
     </a-space>
     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default', display: simpleMode ? 'inline-block' : 'none'}"
@@ -95,6 +104,7 @@ let weatherIcon = ref("");
 let weatherContent = ref("");
 let dailySize = ref("");
 let todoSize = ref("");
+let focusMode = ref(false);
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let simpleMode = ref(false);
 
@@ -114,11 +124,13 @@ onMounted(() => {
     let tempWeather = localStorage.getItem("lastWeather");
     let tempDaily = localStorage.getItem("daily");
     let tempTodos = localStorage.getItem("todos");
+    let tempFocusMode = localStorage.getItem("focusMode");
     greetContent.value = tempGreet ? getGreetContent() + " ｜ " + setHoliday(JSON.parse(tempGreet)) : "暂无信息";
     weatherIcon.value = tempWeather ? getWeatherIcon(JSON.parse(tempWeather).weatherData.weather) : "";
     weatherContent.value = tempWeather ? JSON.parse(tempWeather).weatherData.weather + " ｜ " + JSON.parse(tempWeather).weatherData.temperature + "°C" : "暂无信息";
     dailySize.value = tempDaily ? JSON.parse(tempDaily).length : 0;
     todoSize.value = tempTodos ? JSON.parse(tempTodos).length : 0;
+    focusMode.value = tempFocusMode ? JSON.parse(tempFocusMode) : false;
 })
 
 watch(() => props.preferenceData, (newValue, oldValue) => {

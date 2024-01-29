@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-check-square/>
                 </template>
-                {{ todoSize + " 个待办事项" }}
+                {{ todoSize + " 个" }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -105,7 +105,8 @@
         </template>
         <a-form>
             <a-form-item field="todoInput" label="待办内容">
-                <a-input id="todoInput" allow-clear maxLength="10" placeholder="请输入待办内容" showWordLimit/>
+                <a-input placeholder="请输入待办内容" v-model="inputValue" @change="inputOnChange"
+                         maxLength="10" show-word-limit allow-clear/>
             </a-form-item>
             <a-form-item field="todoSelect" label="标签分类">
                 <a-select id="todoSelect" default-value="work" @change="selectOnChange">
@@ -127,8 +128,6 @@ import {IconCheck, IconCheckSquare, IconPlus, IconTag} from "@arco-design/web-vu
 import {btnMouseOut, btnMouseOver, changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-
-const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
@@ -156,6 +155,7 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
+let inputValue = ref("");
 let listItems = ref([]);
 let todoSize = ref(0);
 let todoMaxSize = ref(5);
@@ -228,6 +228,7 @@ function showAddModalBtnOnClick() {
     }
     if (todos.length < todoMaxSize.value) {
         displayModal.value = true;
+        inputValue.value = "";
         tag.value = "工作";
         priority.value = "★";
     } else {
@@ -235,9 +236,12 @@ function showAddModalBtnOnClick() {
     }
 }
 
+function inputOnChange(value) {
+    inputValue.value = value;
+}
+
 function modalBeforeOk() {
-    let todoContent = $("#todoInput").children("input").val();
-    if (todoContent && todoContent.length > 0) {
+    if (inputValue.value && inputValue.value.length > 0) {
         let todos = [];
         let tempTodos = localStorage.getItem("todos");
         if (tempTodos) {
@@ -256,7 +260,6 @@ function modalBeforeOk() {
 }
 
 function modalOkBtnOnClick() {
-    let todoContent = $("#todoInput").children("input").val();
     let todos = [];
     let tempTodos = localStorage.getItem("todos");
     if (tempTodos) {
@@ -264,7 +267,7 @@ function modalOkBtnOnClick() {
     }
 
     todos.push({
-        "title": todoContent,
+        "title": inputValue.value,
         "tag": tag.value,
         "priority": priority.value,
         "timeStamp": Date.now()
@@ -278,7 +281,7 @@ function modalOkBtnOnClick() {
 }
 
 function modalCancelBtnOnClick() {
-    displayModal.value = false
+    displayModal.value = false;
 }
 
 function selectOnChange(value) {

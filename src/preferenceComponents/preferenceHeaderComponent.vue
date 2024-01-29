@@ -11,7 +11,7 @@
                 <template #icon>
                     <icon-gift/>
                 </template>
-                {{ "支持作者" }}
+                {{ "捐助" }}
             </a-button>
         </a-col>
     </a-row>

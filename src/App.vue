@@ -24,6 +24,10 @@
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                         />
+                        <focus-component
+                            :preference-data="preferenceData"
+                            :theme-color="themeColor"
+                        />
                         <preference-component
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
@@ -99,6 +103,7 @@ import DailyComponent from "./components/dailyComponent.vue";
 import imageLinkComponent from "./components/imageLinkComponent.vue";
 import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
 import {imageTopics} from "@/javascripts/publicConstants";
+import FocusComponent from "@/components/focusComponent.vue";
 
 const $ = require("jquery");
 
@@ -161,11 +166,11 @@ onMounted(() => {
         localStorage.setItem("SkyNewTabVueVersion", currentVersion);
 
         // 额外提醒
-        if (currentVersion === "2.5.0") {
+        if (currentVersion === "2.8.0") {
             Notification.success({
                 showIcon: false,
                 title: "重要通知",
-                content: "本次更新改动较大，请前往 菜单栏 => 功能设置 => 重置设置",
+                content: "新增专注模式，若专注模式无法生效，可尝试重新安装本插件",
                 position: "bottomLeft",
                 duration: 10000
             });
@@ -175,7 +180,9 @@ onMounted(() => {
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
         // 通用
-        $(".arco-list-item").css("padding", "10px 0");
+        $(".arco-list-header, .arco-list-item, .arco-list-footer").css("padding", "10px 0");
+        $(".arco-list-header").css("borderBottomColor", themeColor.value.componentFontColor);
+        $(".arco-list-footer").css("borderTopColor", themeColor.value.componentFontColor);
         $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
         $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
         $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
@@ -192,6 +199,12 @@ onMounted(() => {
                 "backgroundColor": themeColor.value.componentBackgroundColor,
                 "border": "1px solid " + themeColor.value.componentBackgroundColor
             });
+
+            // focusComponent
+            let focusMode = localStorage.getItem("focusMode");
+            if (focusMode) {
+                resetSwitchColor("#focusModeSwitch", JSON.parse(focusMode), themeColor.value.themeColor);
+            }
         }
 
         // message

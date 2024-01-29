@@ -13,7 +13,7 @@
                 <template #icon>
                     <icon-calendar-clock/>
                 </template>
-                {{ dailySize + " 个倒数日" }}
+                {{ dailySize + " 个" }}
             </a-button>
             <template #title>
                 <a-row align="center">
@@ -108,7 +108,8 @@
         </template>
         <a-form>
             <a-form-item field="dailyInput" label="倒数标题">
-                <a-input id="dailyInput" allow-clear maxLength="10" placeholder="请输入标题" showWordLimit/>
+                <a-input placeholder="请输入标题"  v-model="inputValue" @change="inputOnChange"
+                         maxLength="10" show-word-limit allow-clear/>
             </a-form-item>
             <a-form-item field="dailyDatePicker" label="倒数日期">
                 <a-date-picker id="dailyDatePicker" :allow-clear="false" @change="datePickerOnChange"/>
@@ -123,8 +124,6 @@ import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-de
 import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-
-const $ = require("jquery");
 
 const props = defineProps({
     themeColor: {
@@ -152,6 +151,7 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
+let inputValue = ref("");
 let listItems = ref([]);
 let dailySize = ref(0);
 let dailyMaxSize = ref(5);
@@ -223,15 +223,19 @@ function showAddModalBtnOnClick() {
     }
     if (daily.length < dailyMaxSize.value) {
         displayModal.value = true;
+        inputValue.value = "";
         selectedTimeStamp.value = 0;
     } else {
         Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
     }
 }
 
+function inputOnChange(value) {
+    inputValue.value = value;
+}
+
 function modalBeforeOk() {
-    let title = $("#dailyInput").children("input").val();
-    if (title && title.length > 0 && selectedTimeStamp.value !== 0) {
+    if (inputValue.value && inputValue.value.length > 0 && selectedTimeStamp.value !== 0) {
         let daily = [];
         let tempDaily = localStorage.getItem("daily");
         if (tempDaily) {
@@ -250,7 +254,6 @@ function modalBeforeOk() {
 }
 
 function modalOkBtnOnClick() {
-    let title = $("#dailyInput").children("input").val();
     let daily = [];
     let tempDaily = localStorage.getItem("daily");
     if (tempDaily) {
@@ -258,7 +261,7 @@ function modalOkBtnOnClick() {
     }
 
     daily.push({
-        "title": title,
+        "title": inputValue.value,
         "selectedTimeStamp": selectedTimeStamp.value,
         "timeStamp": Date.now()
     });
@@ -271,7 +274,7 @@ function modalOkBtnOnClick() {
 }
 
 function modalCancelBtnOnClick() {
-    displayModal.value = false
+    displayModal.value = false;
 }
 
 function getDailyDescription(selectedTimeStamp) {

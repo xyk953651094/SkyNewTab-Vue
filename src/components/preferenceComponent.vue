@@ -35,13 +35,17 @@
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-modified="preferenceModified"
                         @preference-data="getPreferenceData"
+                        @preference-modified="getPreferenceModified"
                     />
                     <preference-function-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
+                        :preference-modified="preferenceModified"
                         @preference-data="getPreferenceData"
+                        @preference-modified="getPreferenceModified"
                     />
                     <preference-help-component
                         :background-color="backgroundColor"
@@ -105,6 +109,7 @@ let drawerPosition = ref("right");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
+let preferenceModified = ref(false);
 
 const props = defineProps({
     themeColor: {
@@ -147,6 +152,10 @@ onMounted(() => {
         drawerPosition.value = "bottom";
     }
 })
+
+function getPreferenceModified(status) {
+    preferenceModified.value = status
+}
 
 function showDrawerBtnOnClick() {
     visible.value = true;
