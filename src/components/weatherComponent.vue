@@ -202,12 +202,12 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true});
 
 function infoBtnOnClick() {
-    window.open(searchEngineUrl.value + "天气", "_blank");
+    window.open(searchEngineUrl.value + "天气", "_self");
 }
 
 function locationBtnOnClick() {
     if (location.value !== "暂无信息") {
-        window.open(searchEngineUrl.value + location.value, "_blank");
+        window.open(searchEngineUrl.value + location.value, "_self");
     } else {
         Message.error("无跳转链接");
     }

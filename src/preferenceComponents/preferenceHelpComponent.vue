@@ -12,7 +12,7 @@
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="https://xyk953651094.github.io/SkyDocuments/"
-                          target="_blank"
+                          target="_self"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
@@ -24,7 +24,7 @@
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="https://xyk953651094.gitlab.io/SkyDocuments/"
-                          target="_blank"
+                          target="_self"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>

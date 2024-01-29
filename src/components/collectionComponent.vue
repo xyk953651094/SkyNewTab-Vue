@@ -211,7 +211,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function collectionBtnOnClick(item) {
-    window.open(item.webUrl, "_blank");
+    window.open(item.webUrl, "_self");
 }
 
 // 添加导航弹窗

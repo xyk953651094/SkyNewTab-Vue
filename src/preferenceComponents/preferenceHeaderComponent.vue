@@ -5,13 +5,13 @@
         </a-col>
         <a-col :span="12" :style="{textAlign: 'right'}">
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://afdian.net/a/xyk953651094" target="_blank"
+                      href="https://afdian.net/a/xyk953651094" target="_self"
                       type="text"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
                     <icon-gift/>
                 </template>
-                {{ "支持作者" }}
+                {{ "捐助" }}
             </a-button>
         </a-col>
     </a-row>

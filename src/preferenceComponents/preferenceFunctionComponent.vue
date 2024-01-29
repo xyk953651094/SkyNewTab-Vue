@@ -8,7 +8,7 @@
         <template #extra>
             <icon-settings/>
         </template>
-        <a-form :model="preferenceData" auto-label-width>
+        <a-form :model="preferenceData" auto-label-width :disabled="formDisabled">
             <a-form-item field="searchEngine" label="搜索引擎">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                :style="{width: '100%'}" @change="searchEngineRadioOnChange">
@@ -109,12 +109,13 @@ import {
     btnMouseOut,
     btnMouseOver,
     getPreferenceDataStorage,
-    isEmpty, resetRadioColor, resetSwitchColor,
+    isEmpty
 } from "@/javascripts/publicFunctions";
-import {defineProps, onMounted, ref} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
+let formDisabled = ref(false);
 let displayResetPreferenceModal = ref(false);
 let displayClearStorageModal = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
@@ -141,10 +142,23 @@ const props = defineProps({
         default: () => {
             return ""
         }
+    },
+    preferenceModified: {
+        type: Number,
+        required: true,
+        default: () => {
+            return 0
+        }
     }
 });
 
-const emit = defineEmits(["preferenceData"]);
+const emit = defineEmits(["preferenceData", "preferenceModified"]);
+
+watch(() => props.preferenceModified, (newValue, oldValue) => {
+    if (newValue !== oldValue && newValue !== 0) {
+        preferenceData.value = getPreferenceDataStorage();
+    }
+}, {immediate: true})
 
 onMounted(() => {
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
@@ -153,34 +167,38 @@ onMounted(() => {
 // 搜索引擎
 function searchEngineRadioOnChange(value) {
     preferenceData.value.searchEngine = value;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换搜索引擎");
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
 
-    resetRadioColor(value, ["bing", "google"], props.hoverColor);
+    Message.success("已更换搜索引擎");
+    // resetRadioColor(value, ["bing", "google"], props.hoverColor);
 }
 
 function buttonShapeRadioOnChange(value) {
     preferenceData.value.buttonShape = value;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    Message.success("已更换按钮形状");
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
 
-    resetRadioColor(value, ["round", "default"], props.hoverColor);
+    Message.success("已更换按钮形状");
+    // resetRadioColor(value, ["round", "default"], props.hoverColor);
 }
 
 function simpleModeSwitchOnChange(checked) {
     preferenceData.value.simpleMode = checked;
-    emit("preferenceData", preferenceData.value);
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    emit("preferenceModified", new Date().getTime());
+
     if (checked) {
         Message.success("已开启简洁模式");
     } else {
         Message.success("已关闭简洁模式，一秒后刷新页面");
+        formDisabled.value = true;
         refreshWindow();
     }
-
-    resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
+    // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
 }
 
 // 重置设置
@@ -192,6 +210,7 @@ function resetPreferenceOkBtnOnClick() {
     displayResetPreferenceModal.value = false;
     localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
     Message.success("已重置设置，一秒后刷新页面");
+    formDisabled.value = true;
     refreshWindow();
 }
 
@@ -208,6 +227,7 @@ function clearStorageOkBtnOnClick() {
     displayClearStorageModal.value = false;
     localStorage.clear();
     Message.success("已重置插件，一秒后刷新页面");
+    formDisabled.value = true;
     refreshWindow();
 }
 

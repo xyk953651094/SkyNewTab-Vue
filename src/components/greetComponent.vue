@@ -224,7 +224,6 @@ let suit = ref("暂无信息");
 let avoid = ref("暂无信息");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
-    console.log("props.themeColor", newValue, oldValue);
     if (newValue !== oldValue) {
         hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;
@@ -246,11 +245,11 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true});
 
 function historyBtnOnClick() {
-    window.open(searchEngineUrl.value + "历史上的今天", "_blank");
+    window.open(searchEngineUrl.value + "历史上的今天", "_self");
 }
 
 function infoBtnOnClick() {
-    window.open(searchEngineUrl.value + "万年历", "_blank");
+    window.open(searchEngineUrl.value + "万年历", "_self");
 }
 
 // 万年历

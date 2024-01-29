@@ -10,7 +10,7 @@
         </template>
         <a-space direction="vertical">
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.mxnzp.com/" target="_blank"
+                      href="https://www.mxnzp.com/" target="_self"
                       type="text"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
@@ -19,7 +19,7 @@
                 {{ "节气来源：https://www.mxnzp.com" }}
             </a-button>
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.jinrishici.com/" target="_blank"
+                      href="https://www.jinrishici.com/" target="_self"
                       type="text"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
@@ -28,7 +28,7 @@
                 {{ "天气来源：https://www.jinrishici.com" }}
             </a-button>
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://unsplash.com/" target="_blank"
+                      href="https://unsplash.com/" target="_self"
                       type="text"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>
@@ -37,7 +37,7 @@
                 {{ "图片来源：https://unsplash.com" }}
             </a-button>
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.jetbrains.com.cn/community/opensource/#support/" target="_blank"
+                      href="https://www.jetbrains.com.cn/community/opensource/#support/" target="_self"
                       type="text"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                 <template #icon>

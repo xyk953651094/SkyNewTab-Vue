@@ -104,7 +104,7 @@ function onSearch(value) {
 
 function onPressEnter() {
     let value = document.getElementById("searchInput").children[1].value;
-    window.open(searchEngineUrl.value + value, "_blank");
+    window.open(searchEngineUrl.value + value, "_self");
 }
 
 function changeSearchEngine() {
