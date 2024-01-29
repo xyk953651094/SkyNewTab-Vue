@@ -24,8 +24,6 @@ function forbiddenWeb(url) {
             let focusMode = result.focusMode;
             let focusFilter = result.focusFilter;
             let filterList = result.filterList;
-            console.log("1 ", filterList);
-            console.log("2 ", filterList.length);
 
             if (focusMode === true && filterList !== null) {
                 // 白名单模式
@@ -40,7 +38,6 @@ function forbiddenWeb(url) {
                             }
                         }
 
-                        console.log("5 ", isInWhiteList);
                         if (isInWhiteList === false) {
                             chrome.tabs.update({url: browserType + "://newtab"});
                         }
