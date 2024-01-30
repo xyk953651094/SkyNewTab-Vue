@@ -115,7 +115,7 @@ import {defineProps, onMounted, ref, toRaw, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 import {IconLink, IconDelete, IconPlus, IconSync} from "@arco-design/web-vue/es/icon";
-import {Message} from "@arco-design/web-vue";
+import {Message, Notification} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -154,6 +154,15 @@ onMounted(() => {
     let focusModeStorage = localStorage.getItem("focusMode");
     if (focusModeStorage) {
         tempFocusMode = JSON.parse(focusModeStorage);
+        if (tempFocusMode) {
+            Notification.info({
+                showIcon: false,
+                title: "已开启专注模式",
+                content: "部分网页将无法访问，右上角专注中可修改设置",
+                position: "bottomLeft",
+                duration: 5000
+            });
+        }
     } else {
         localStorage.setItem("focusMode", JSON.stringify(false));
         setExtensionStorage("focusMode", false);
@@ -206,13 +215,13 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 
 function setExtensionStorage(key, value) {
     const browserType = getBrowserType();
-    // console.log(browserType + " " + key + " " + value);
-    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-        chrome.storage.local.set({[key]: value});
-    }
-    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        browser.storage.local.set({[key]: value});
-    }
+    console.log(browserType + " " + key + " " + value);
+    // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+    //     chrome.storage.local.set({[key]: value});
+    // }
+    // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+    //     browser.storage.local.set({[key]: value});
+    // }
 }
 
 function focusModeSwitchOnChange(checked) {
