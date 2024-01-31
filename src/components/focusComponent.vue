@@ -143,10 +143,11 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let focusMode = ref(false);
-let focusFilter = ref("whiteListFilter");
+let focusFilter = ref("blackListFilter");
 let inputValue = ref("");
 let filterList = ref([]);
 const focusMaxSize = 5;
+const browserType = getBrowserType();
 
 onMounted(() => {
     // 初始化专注模式开启状态
@@ -169,13 +170,16 @@ onMounted(() => {
     }
 
     // 初始化过滤模式
-    let tempFocusFilter = "whiteListFilter";
+    let tempFocusFilter = "blackListFilter";
     let focusFilterStorage = localStorage.getItem("focusFilter");
     if (focusFilterStorage) {
         tempFocusFilter = focusFilterStorage;
+        if (tempFocusFilter === "whiteListFilter" && browserType === "Firefox") {
+            Message.info("Firefox 暂不支持白名单模式，请切换成黑名单模式");
+        }
     } else {
-        localStorage.setItem("focusFilter", "whiteListFilter");
-        setExtensionStorage("focusFilter", "whiteListFilter");
+        localStorage.setItem("focusFilter", "blackListFilter");
+        setExtensionStorage("focusFilter", "blackListFilter");
     }
 
     // 初始化名单
@@ -214,7 +218,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    const browserType = getBrowserType();
     // console.log(browserType + " " + key + " " + value);
     if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         chrome.storage.local.set({[key]: value});
@@ -240,10 +243,15 @@ function removeAllBtnOnClick() {
 }
 
 function  switchFilterBtnOnClick() {
-    let tempFocusFilter = focusFilter.value;
-    focusFilter.value = (tempFocusFilter === "whiteListFilter" ? "blackListFilter" : "whiteListFilter");
-    localStorage.setItem("focusFilter", focusFilter.value);
-    setExtensionStorage("focusFilter", focusFilter.value);
+    if (browserType === "Firefox") {
+        Message.error("Firefox 暂不支持白名单模式");
+    }
+    else {
+        let tempFocusFilter = focusFilter.value;
+        focusFilter.value = (tempFocusFilter === "whiteListFilter" ? "blackListFilter" : "whiteListFilter");
+        localStorage.setItem("focusFilter", focusFilter.value);
+        setExtensionStorage("focusFilter", focusFilter.value);
+    }
 }
 
 function inputOnChange(value) {
