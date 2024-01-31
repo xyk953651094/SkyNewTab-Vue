@@ -174,8 +174,8 @@ onMounted(() => {
     let focusFilterStorage = localStorage.getItem("focusFilter");
     if (focusFilterStorage) {
         tempFocusFilter = focusFilterStorage;
-        if (tempFocusFilter === "whiteListFilter" && browserType === "Firefox") {
-            Message.info("Firefox 暂不支持白名单模式，请切换成黑名单模式");
+        if (tempFocusFilter === "whiteListFilter" && (["Firefox", "Safari"].indexOf(browserType) !== -1)) {
+            Message.info("暂不支持白名单模式，请切换成黑名单模式");
         }
     } else {
         localStorage.setItem("focusFilter", "blackListFilter");
@@ -243,8 +243,8 @@ function removeAllBtnOnClick() {
 }
 
 function  switchFilterBtnOnClick() {
-    if (browserType === "Firefox") {
-        Message.error("Firefox 暂不支持白名单模式");
+    if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+        Message.error("暂不支持白名单模式");
     }
     else {
         let tempFocusFilter = focusFilter.value;
