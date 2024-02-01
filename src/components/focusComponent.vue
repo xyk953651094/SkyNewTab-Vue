@@ -44,17 +44,7 @@
                     <template #header>
                         <a-row align="center">
                             <a-col :span="8">
-                                <a-space>
-                                    <a-typography-text :style="{color: fontColor}">{{(focusFilter === "whiteListFilter" ? "白名单 " : "黑名单 ") + filterList.length + " / " + focusMaxSize }}</a-typography-text>
-                                    <a-button :shape="preferenceData.buttonShape"
-                                              :style="{color: fontColor}" type="text"
-                                              @click="switchFilterBtnOnClick"
-                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                        <template #icon>
-                                            <icon-sync />
-                                        </template>
-                                    </a-button>
-                                </a-space>
+                                <a-typography-text :style="{color: fontColor}">{{"黑名单 " + filterList.length + " / " + focusMaxSize }}</a-typography-text>
                             </a-col>
                             <a-col :span="16" :style="{textAlign: 'right'}">
                                 <a-space>
@@ -97,11 +87,7 @@
                     </a-list-item>
                     <template #footer>
                         <a-typography-text :style="{color: fontColor}">
-                            {{
-                                focusFilter === "whiteListFilter" ?
-                                    "白名单模式下，访问白名单外的网站将自动跳转至新标签页或空白页" :
-                                    "黑名单模式下，访问黑名单中的网站将自动跳转至新标签页或空白页"
-                            }}
+                            {{"访问黑名单中的网站将自动跳转至新标签页"}}
                         </a-typography-text>
                     </template>
                 </a-list>
@@ -114,7 +100,7 @@
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus, IconSync} from "@arco-design/web-vue/es/icon";
+import {IconLink, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
@@ -143,10 +129,10 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let focusMode = ref(false);
-let focusFilter = ref("whiteListFilter");
 let inputValue = ref("");
 let filterList = ref([]);
 const focusMaxSize = 5;
+const browserType = getBrowserType();
 
 onMounted(() => {
     // 初始化专注模式开启状态
@@ -157,16 +143,6 @@ onMounted(() => {
     } else {
         localStorage.setItem("focusMode", JSON.stringify(false));
         setExtensionStorage("focusMode", false);
-    }
-
-    // 初始化过滤模式
-    let tempFocusFilter = "whiteListFilter";
-    let focusFilterStorage = localStorage.getItem("focusFilter");
-    if (focusFilterStorage) {
-        tempFocusFilter = focusFilterStorage;
-    } else {
-        localStorage.setItem("focusFilter", "whiteListFilter");
-        setExtensionStorage("focusFilter", "whiteListFilter");
     }
 
     // 初始化名单
@@ -180,7 +156,6 @@ onMounted(() => {
     }
 
     focusMode.value = tempFocusMode;
-    focusFilter.value = tempFocusFilter;
     filterList.value = tempFilterList;
 })
 
@@ -205,7 +180,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    const browserType = getBrowserType();
     // console.log(browserType + " " + key + " " + value);
     if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         chrome.storage.local.set({[key]: value});
@@ -228,13 +202,6 @@ function removeAllBtnOnClick() {
         localStorage.removeItem("filterList");
         setExtensionStorage("filterList", []);
     }
-}
-
-function  switchFilterBtnOnClick() {
-    let tempFocusFilter = focusFilter.value;
-    focusFilter.value = (tempFocusFilter === "whiteListFilter" ? "blackListFilter" : "whiteListFilter");
-    localStorage.setItem("focusFilter", focusFilter.value);
-    setExtensionStorage("focusFilter", focusFilter.value);
 }
 
 function inputOnChange(value) {

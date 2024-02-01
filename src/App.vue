@@ -166,15 +166,15 @@ onMounted(() => {
         localStorage.setItem("SkyNewTabVueVersion", currentVersion);
 
         // 额外提醒
-        if (currentVersion === "2.8.0") {
-            Notification.success({
-                showIcon: false,
-                title: "重要通知",
-                content: "新增专注模式，若专注模式无法生效，可尝试重新安装本插件",
-                position: "bottomLeft",
-                duration: 10000
-            });
-        }
+        // if (currentVersion === "2.8.0") {
+        //     Notification.info({
+        //         showIcon: false,
+        //         title: "重要通知",
+        //         content: "新增专注模式，若专注模式无法生效，可尝试重新安装本插件",
+        //         position: "bottomLeft",
+        //         duration: 10000
+        //     });
+        // }
     }
 
     // 修改各类弹窗样式
