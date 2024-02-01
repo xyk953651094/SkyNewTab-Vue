@@ -44,17 +44,7 @@
                     <template #header>
                         <a-row align="center">
                             <a-col :span="8">
-                                <a-space>
-                                    <a-typography-text :style="{color: fontColor}">{{(focusFilter === "whiteListFilter" ? "白名单 " : "黑名单 ") + filterList.length + " / " + focusMaxSize }}</a-typography-text>
-                                    <a-button :shape="preferenceData.buttonShape"
-                                              :style="{color: fontColor}" type="text"
-                                              @click="switchFilterBtnOnClick"
-                                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                        <template #icon>
-                                            <icon-sync />
-                                        </template>
-                                    </a-button>
-                                </a-space>
+                                <a-typography-text :style="{color: fontColor}">{{"黑名单 " + filterList.length + " / " + focusMaxSize }}</a-typography-text>
                             </a-col>
                             <a-col :span="16" :style="{textAlign: 'right'}">
                                 <a-space>
@@ -97,11 +87,7 @@
                     </a-list-item>
                     <template #footer>
                         <a-typography-text :style="{color: fontColor}">
-                            {{
-                                focusFilter === "whiteListFilter" ?
-                                    "白名单模式下，访问白名单外的网站将自动跳转至新标签页或空白页" :
-                                    "黑名单模式下，访问黑名单中的网站将自动跳转至新标签页或空白页"
-                            }}
+                            {{"访问黑名单中的网站将自动跳转至新标签页"}}
                         </a-typography-text>
                     </template>
                 </a-list>
@@ -114,8 +100,8 @@
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus, IconSync} from "@arco-design/web-vue/es/icon";
-import {Message, Notification} from "@arco-design/web-vue";
+import {IconLink, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -143,7 +129,6 @@ let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
 let focusMode = ref(false);
-let focusFilter = ref("blackListFilter");
 let inputValue = ref("");
 let filterList = ref([]);
 const focusMaxSize = 5;
@@ -155,31 +140,9 @@ onMounted(() => {
     let focusModeStorage = localStorage.getItem("focusMode");
     if (focusModeStorage) {
         tempFocusMode = JSON.parse(focusModeStorage);
-        if (tempFocusMode) {
-            Notification.info({
-                showIcon: false,
-                title: "已开启专注模式",
-                content: "部分网页将无法访问，右上角专注中可修改设置",
-                position: "bottomLeft",
-                duration: 5000
-            });
-        }
     } else {
         localStorage.setItem("focusMode", JSON.stringify(false));
         setExtensionStorage("focusMode", false);
-    }
-
-    // 初始化过滤模式
-    let tempFocusFilter = "blackListFilter";
-    let focusFilterStorage = localStorage.getItem("focusFilter");
-    if (focusFilterStorage) {
-        tempFocusFilter = focusFilterStorage;
-        if (tempFocusFilter === "whiteListFilter" && (["Firefox", "Safari"].indexOf(browserType) !== -1)) {
-            Message.info("暂不支持白名单模式，请切换成黑名单模式");
-        }
-    } else {
-        localStorage.setItem("focusFilter", "blackListFilter");
-        setExtensionStorage("focusFilter", "blackListFilter");
     }
 
     // 初始化名单
@@ -193,7 +156,6 @@ onMounted(() => {
     }
 
     focusMode.value = tempFocusMode;
-    focusFilter.value = tempFocusFilter;
     filterList.value = tempFilterList;
 })
 
@@ -239,18 +201,6 @@ function removeAllBtnOnClick() {
         filterList.value = [];
         localStorage.removeItem("filterList");
         setExtensionStorage("filterList", []);
-    }
-}
-
-function  switchFilterBtnOnClick() {
-    if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        Message.error("暂不支持白名单模式");
-    }
-    else {
-        let tempFocusFilter = focusFilter.value;
-        focusFilter.value = (tempFocusFilter === "whiteListFilter" ? "blackListFilter" : "whiteListFilter");
-        localStorage.setItem("focusFilter", focusFilter.value);
-        setExtensionStorage("focusFilter", focusFilter.value);
     }
 }
 
