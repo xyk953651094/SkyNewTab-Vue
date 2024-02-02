@@ -146,27 +146,22 @@ const browserType = getBrowserType();
 
 onMounted(() => {
     // 初始化专注模式开启状态
-    let tempFocusMode = false;
     let focusModeStorage = localStorage.getItem("focusMode");
     if (focusModeStorage) {
-        tempFocusMode = JSON.parse(focusModeStorage);
+        focusMode.value = JSON.parse(focusModeStorage);
     } else {
         localStorage.setItem("focusMode", JSON.stringify(false));
         setExtensionStorage("focusMode", false);
     }
 
     // 初始化名单
-    let tempFilterList =[];
     let filterListStorage = localStorage.getItem("filterList");
     if (filterListStorage) {
-        tempFilterList = JSON.parse(filterListStorage);
+        filterList.value = JSON.parse(filterListStorage);
     } else {
         localStorage.setItem("filterList", JSON.stringify([]));
         setExtensionStorage("filterList", []);
     }
-
-    focusMode.value = tempFocusMode;
-    filterList.value = tempFilterList;
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -206,33 +201,25 @@ function focusModeSwitchOnChange(checked) {
 }
 
 function removeAllBtnOnClick() {
-    let tempFilterList = localStorage.getItem("filterList");
-    if (tempFilterList) {
-        filterList.value = [];
-        localStorage.removeItem("filterList");
-        setExtensionStorage("filterList", []);
-    }
+    filterList.value = [];
+    localStorage.removeItem("filterList");
+    setExtensionStorage("filterList", []);
 }
 
 function removeBtnOnClick(item) {
-    let tempFilterList = localStorage.getItem("filterList");
-    if (tempFilterList) {
-        tempFilterList = JSON.parse(tempFilterList);
-        let index = -1;
-        for (let i = 0; i < tempFilterList.length; i++) {
-            if (item.timeStamp === tempFilterList[i].timeStamp) {
-                index = i;
-                break;
-            }
+    let index = -1;
+    for (let i = 0; i < filterList.value.length; i++) {
+        if (item.timeStamp === filterList.value[i].timeStamp) {
+            index = i;
+            break;
         }
-        if (index !== -1) {
-            tempFilterList.splice(index, 1);
-        }
-        localStorage.setItem("filterList", JSON.stringify(tempFilterList));
-        setExtensionStorage("filterList", tempFilterList);
-
-        filterList.value = tempFilterList;
     }
+    if (index !== -1) {
+        filterList.value.splice(index, 1);
+    }
+
+    localStorage.setItem("filterList", JSON.stringify(filterList.value));
+    setExtensionStorage("filterList", filterList.value);
 }
 
 function showAddModalBtnOnClick() {
@@ -249,30 +236,28 @@ function inputOnChange(value) {
 }
 
 function modalBeforeOk() {
-    if (inputValue.value && inputValue.value.length > 0) {
-        if (filterList.value.length < focusMaxSize) {
+    if (filterList.value.length < focusMaxSize) {
+        if (inputValue.value && inputValue.value.length > 0) {
             return true;
         } else {
-            Message.error("域名数量最多为" + focusMaxSize + "个");
+            Message.error("域名不能为空");
             return false;
         }
     } else {
-        Message.error("域名不能为空");
+        Message.error("域名数量最多为" + focusMaxSize + "个");
         return false;
     }
 }
 
 function modalOkBtnOnClick() {
-    let tempFilterList = filterList.value;
-    tempFilterList.push({
+    filterList.value.push({
         "domain": inputValue.value,
         "timeStamp": Date.now()
     });
+
+    displayModal.value = false;
     localStorage.setItem("filterList", JSON.stringify(filterList.value));
     setExtensionStorage("filterList", toRaw(filterList.value));  // 不这么做传给 background 的字就变成 object
-
-    inputValue.value = "";
-    filterList.value = tempFilterList;
     Message.success("添加成功");
 }
 
