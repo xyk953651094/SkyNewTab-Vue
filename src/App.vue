@@ -291,6 +291,16 @@ onMounted(() => {
             });
         }
     });
+
+    // const observer = new MutationObserver((mutations) => {
+    //     mutations.forEach((mutation) => {
+    //         // 插入节点时
+    //         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+    //
+    //         }
+    //     });
+    // });
+    // observer.observe(document.body, {childList: true});
 });
 </script>
 
