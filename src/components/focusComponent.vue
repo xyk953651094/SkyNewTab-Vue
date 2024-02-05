@@ -141,7 +141,7 @@ let displayModal = ref(false);
 let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
-const focusMaxSize = 5;
+const focusMaxSize = 10;
 const browserType = getBrowserType();
 
 onMounted(() => {
@@ -185,13 +185,13 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    console.log(browserType + " " + key + " " + value);
-    // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-    //     chrome.storage.local.set({[key]: value});
-    // }
-    // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-    //     browser.storage.local.set({[key]: value});
-    // }
+    // console.log(browserType + " " + key + " " + value);
+    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+        chrome.storage.local.set({[key]: value});
+    }
+    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+        browser.storage.local.set({[key]: value});
+    }
 }
 
 function focusModeSwitchOnChange(checked) {
@@ -236,15 +236,10 @@ function inputOnChange(value) {
 }
 
 function modalBeforeOk() {
-    if (filterList.value.length < focusMaxSize) {
-        if (inputValue.value && inputValue.value.length > 0) {
-            return true;
-        } else {
-            Message.error("域名不能为空");
-            return false;
-        }
+    if (inputValue.value && inputValue.value.length > 0) {
+        return true;
     } else {
-        Message.error("域名数量最多为" + focusMaxSize + "个");
+        Message.error("域名不能为空");
         return false;
     }
 }

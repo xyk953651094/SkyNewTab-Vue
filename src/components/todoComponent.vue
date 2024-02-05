@@ -159,7 +159,7 @@ let inputValue = ref("");
 let todoList = ref([]);
 let tag = ref("工作");
 let priority = ref("★");
-const todoMaxSize = 5;
+const todoMaxSize = 10;
 
 onMounted(() => {
     let todoListStorage = localStorage.getItem("todos");
@@ -219,15 +219,10 @@ function inputOnChange(value) {
 }
 
 function modalBeforeOk() {
-    if (todoList.value.length < todoMaxSize) {
-        if (inputValue.value && inputValue.value.length > 0) {
-            return true;
-        } else {
-            Message.error("表单不能为空");
-            return false;
-        }
+    if (inputValue.value && inputValue.value.length > 0) {
+        return true;
     } else {
-        Message.error("待办数量最多为" + todoMaxSize + "个");
+        Message.error("表单不能为空");
         return false;
     }
 }

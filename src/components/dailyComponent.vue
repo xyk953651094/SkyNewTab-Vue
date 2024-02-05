@@ -154,7 +154,7 @@ let displayModal = ref(false);
 let inputValue = ref("");
 let dailyList = ref([]);
 let selectedTimeStamp = ref(0);
-const dailyMaxSize = 5;
+const dailyMaxSize = 10;
 
 onMounted(() => {
     let dailyListStorage = localStorage.getItem("daily");
@@ -213,15 +213,10 @@ function inputOnChange(value) {
 }
 
 function modalBeforeOk() {
-    if (dailyList.value.length < dailyMaxSize) {
-        if (inputValue.value && inputValue.value.length > 0 && selectedTimeStamp.value !== 0) {
-            return true;
-        } else {
-            Message.error("表单不能为空");
-            return false;
-        }
+    if (inputValue.value && inputValue.value.length > 0 && selectedTimeStamp.value !== 0) {
+        return true;
     } else {
-        Message.error("倒数日数量最多为" + dailyMaxSize + "个");
+        Message.error("表单不能为空");
         return false;
     }
 }

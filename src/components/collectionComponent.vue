@@ -72,11 +72,11 @@
             </a-row>
         </template>
         <a-form>
-            <a-form-item field="name" label="网站名称">
-                <a-input id="webNameInput" allow-clear maxLength="5" placeholder="请输入网站名称" showWordLimit/>
+            <a-form-item field="name" label="链接名称">
+                <a-input id="webNameInput" allow-clear maxLength="5" placeholder="请输入链接名称" showWordLimit/>
             </a-form-item>
-            <a-form-item field="post" label="网站地址">
-                <a-input id="webUrlInput" allow-clear placeholder="请输入网站地址"/>
+            <a-form-item field="post" label="链接地址">
+                <a-input id="webUrlInput" allow-clear placeholder="请输入链接地址"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -240,7 +240,7 @@ function addModalBeforeOk() {
         if (collections.length < collectionMaxSize.value) {
             let urlRegExp = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]", "g");
             if (urlRegExp.exec(webUrl) === null) {
-                Message.error("网页地址格式错误");
+                Message.error("链接地址格式错误");
                 return false;
             }
             else {
@@ -251,7 +251,7 @@ function addModalBeforeOk() {
             return false;
         }
     } else {
-        Message.error("网页内容不能为空");
+        Message.error("表单不能为空");
         return false;
     }
 }
