@@ -42,6 +42,15 @@ let imageLink = ref("");
 let display = ref("none");
 let displayCanvas = ref("none");
 
+function showFocusModeMessage() {
+    let focusModeStorage = localStorage.getItem("focusMode");
+    if (focusModeStorage) {
+        if (JSON.parse(focusModeStorage) === true) {
+            Message.info("已开启专注模式");
+        }
+    }
+}
+
 // 请求完成后处理步骤
 function setWallpaper(data) {
     imageData.value = data;
@@ -111,14 +120,6 @@ function getWallpaper() {
                 content: "正在加载图片",
                 duration: 0
             });
-            setTimeout(() => {
-                if(display.value === "none") {
-                    Message.loading({
-                        content: "努力加载中，请耐心等待或检查网络",
-                        duration: 0
-                    });
-                }
-            }, 5000);
 
             // 缓存历史图片
             let lastImageStorage = localStorage.getItem("lastImage"); // 上一张图片
@@ -159,17 +160,9 @@ function getWallpaper() {
                     duration: 0
                 });
                 setWallpaper(lastImage);
-
-                setTimeout(() => {
-                    if(display.value === "none") {
-                        Message.loading({
-                            content: "努力加载中，请耐心等待或检查网络",
-                            duration: 0
-                        });
-                    }
-                }, 5000);
             } else {
                 Message.error("获取图片失败，请检查网络连接");
+                showFocusModeMessage();
             }
         })
         .finally(function () {
@@ -195,17 +188,9 @@ onMounted(() => {
                 });
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
-
-                setTimeout(() => {
-                    if(display.value === "none") {
-                        Message.loading({
-                            content: "努力加载中，请耐心等待或检查网络",
-                            duration: 0
-                        });
-                    }
-                }, 5000);
             } else {
                 Message.error("无缓存图片可加载，请尝试重置插件");
+                showFocusModeMessage();
             }
         }
 
@@ -220,6 +205,7 @@ onMounted(() => {
                 Message.success("图片加载成功");
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
+                showFocusModeMessage();
 
                 // 设置动态效果
                 backgroundImage.classList.add("wallpaperFadeIn");

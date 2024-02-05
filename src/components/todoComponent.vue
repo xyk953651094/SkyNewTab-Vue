@@ -13,13 +13,13 @@
                 <template #icon>
                     <icon-check-square/>
                 </template>
-                {{ todoSize + " 个" }}
+                {{ todoList.length + " 个" }}
             </a-button>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
                         <a-typography-text :style="{color: fontColor}">
-                            {{ "待办事项 " + todoSize + " / " + todoMaxSize }}
+                            {{ "待办事项 " + todoList.length + " / " + todoMaxSize }}
                         </a-typography-text>
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
@@ -48,7 +48,7 @@
             </template>
             <template #content>
                 <a-list :bordered=false>
-                    <a-list-item v-for="item in listItems" :key="item.timestamp">
+                    <a-list-item v-for="item in todoList" :key="item.timestamp">
                         <a-row>
                             <a-col :span="12">
                                 <a-button :shape="preferenceData.buttonShape"
@@ -98,7 +98,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加待办事项 " + todoSize + " / " + todoMaxSize }}
+                        {{ "添加待办事项 " + todoList.length + " / " + todoMaxSize }}
                     </a-typography-text>
                 </a-col>
             </a-row>
@@ -156,21 +156,16 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
 let inputValue = ref("");
-let listItems = ref([]);
-let todoSize = ref(0);
-let todoMaxSize = ref(5);
+let todoList = ref([]);
 let tag = ref("工作");
 let priority = ref("★");
+const todoMaxSize = 10;
 
 onMounted(() => {
-    let todos = [];
-    let tempTodos = localStorage.getItem("todos");
-    if (tempTodos) {
-        todos = JSON.parse(tempTodos);
+    let todoListStorage = localStorage.getItem("todos");
+    if (todoListStorage) {
+        todoList.value = JSON.parse(todoListStorage);
     }
-
-    listItems.value = todos;
-    todoSize.value = todos.length;
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -189,50 +184,33 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function finishAllBtnOnClick() {
-    let tempTodos = localStorage.getItem("todos");
-    if (tempTodos) {
-        localStorage.removeItem("todos");
-
-        listItems.value = [];
-        todoSize.value = 0;
-    }
+    todoList.value = [];
+    localStorage.removeItem("todos");
 }
 
 function finishBtnOnClick(item) {
-    let todos = [];
-    let tempTodos = localStorage.getItem("todos");
-    if (tempTodos) {
-        todos = JSON.parse(tempTodos);
-        let index = -1;
-        for (let i = 0; i < todos.length; i++) {
-            if (item.timeStamp === todos[i].timeStamp) {
-                index = i;
-                break;
-            }
+    let index = -1;
+    for (let i = 0; i < todoList.value.length; i++) {
+        if (item.timeStamp === todoList.value[i].timeStamp) {
+            index = i;
+            break;
         }
-        if (index !== -1) {
-            todos.splice(index, 1);
-        }
-        localStorage.setItem("todos", JSON.stringify(todos));
-
-        listItems.value = todos;
-        todoSize.value = todos.length;
     }
+    if (index !== -1) {
+        todoList.value.splice(index, 1);
+    }
+
+    localStorage.setItem("todos", JSON.stringify(todoList.value));
 }
 
 function showAddModalBtnOnClick() {
-    let todos = [];
-    let tempTodos = localStorage.getItem("todos");
-    if (tempTodos) {
-        todos = JSON.parse(tempTodos);
-    }
-    if (todos.length < todoMaxSize.value) {
+    if (todoList.value.length < todoMaxSize) {
         displayModal.value = true;
         inputValue.value = "";
         tag.value = "工作";
         priority.value = "★";
     } else {
-        Message.error("待办数量最多为" + todoMaxSize.value + "个");
+        Message.error("待办数量最多为" + todoMaxSize + "个");
     }
 }
 
@@ -242,17 +220,7 @@ function inputOnChange(value) {
 
 function modalBeforeOk() {
     if (inputValue.value && inputValue.value.length > 0) {
-        let todos = [];
-        let tempTodos = localStorage.getItem("todos");
-        if (tempTodos) {
-            todos = JSON.parse(tempTodos);
-        }
-        if (todos.length < todoMaxSize.value) {
-            return true;
-        } else {
-            Message.error("待办数量最多为" + todoMaxSize.value + "个");
-            return false;
-        }
+        return true;
     } else {
         Message.error("表单不能为空");
         return false;
@@ -260,23 +228,15 @@ function modalBeforeOk() {
 }
 
 function modalOkBtnOnClick() {
-    let todos = [];
-    let tempTodos = localStorage.getItem("todos");
-    if (tempTodos) {
-        todos = JSON.parse(tempTodos);
-    }
-
-    todos.push({
+    todoList.value.push({
         "title": inputValue.value,
         "tag": tag.value,
         "priority": priority.value,
         "timeStamp": Date.now()
     });
-    localStorage.setItem("todos", JSON.stringify(todos));
 
     displayModal.value = false;
-    listItems.value = todos;
-    todoSize.value = todos.length;
+    localStorage.setItem("todos", JSON.stringify(todoList.value));
     Message.success("添加成功");
 }
 

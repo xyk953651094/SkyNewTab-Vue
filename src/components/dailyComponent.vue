@@ -13,13 +13,13 @@
                 <template #icon>
                     <icon-calendar-clock/>
                 </template>
-                {{ dailySize + " 个" }}
+                {{ dailyList.length + " 个" }}
             </a-button>
             <template #title>
                 <a-row align="center">
                     <a-col :span="10">
                         <a-typography-text :style="{color: fontColor}">{{
-                                "倒数日 " + dailySize + " / " + dailyMaxSize
+                                "倒数日 " + dailyList.length + " / " + dailyMaxSize
                             }}
                         </a-typography-text>
                     </a-col>
@@ -49,7 +49,7 @@
             </template>
             <template #content>
                 <a-list :bordered=false>
-                    <a-list-item v-for="item in listItems" :key="item.timestamp">
+                    <a-list-item v-for="item in dailyList" :key="item.timestamp">
                         <a-row>
                             <a-col :span="10">
                                 <a-button :shape="preferenceData.buttonShape"
@@ -101,7 +101,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加倒数日 " + dailySize + " / " + dailyMaxSize }}
+                        {{ "添加倒数日 " + dailyList.length + " / " + dailyMaxSize }}
                     </a-typography-text>
                 </a-col>
             </a-row>
@@ -152,20 +152,15 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let displayModal = ref(false);
 let inputValue = ref("");
-let listItems = ref([]);
-let dailySize = ref(0);
-let dailyMaxSize = ref(5);
+let dailyList = ref([]);
 let selectedTimeStamp = ref(0);
+const dailyMaxSize = 10;
 
 onMounted(() => {
-    let daily = [];
-    let tempDaily = localStorage.getItem("daily");
-    if (tempDaily) {
-        daily = JSON.parse(tempDaily);
+    let dailyListStorage = localStorage.getItem("daily");
+    if (dailyListStorage) {
+        dailyList.value = JSON.parse(dailyListStorage);
     }
-
-    listItems.value = daily;
-    dailySize.value = daily.length;
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -184,49 +179,32 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function removeAllBtnOnClick() {
-    let tempDaily = localStorage.getItem("daily");
-    if (tempDaily) {
-        localStorage.removeItem("daily");
-
-        listItems.value = [];
-        dailySize.value = 0;
-    }
+    dailyList.value = [];
+    localStorage.removeItem("daily");
 }
 
 function removeBtnOnClick(item) {
-    let daily = [];
-    let tempDaily = localStorage.getItem("daily");
-    if (tempDaily) {
-        daily = JSON.parse(tempDaily);
-        let index = -1;
-        for (let i = 0; i < daily.length; i++) {
-            if (item.timeStamp === daily[i].timeStamp) {
-                index = i;
-                break;
-            }
+    let index = -1;
+    for (let i = 0; i < dailyList.value.length; i++) {
+        if (item.timeStamp === dailyList.value[i].timeStamp) {
+            index = i;
+            break;
         }
-        if (index !== -1) {
-            daily.splice(index, 1);
-        }
-        localStorage.setItem("daily", JSON.stringify(daily));
-
-        listItems.value = daily
-        dailySize.value = daily.length;
     }
+    if (index !== -1) {
+        dailyList.value.splice(index, 1);
+    }
+
+    localStorage.setItem("daily", JSON.stringify(dailyList.value));
 }
 
 function showAddModalBtnOnClick() {
-    let daily = [];
-    let tempDaily = localStorage.getItem("daily");
-    if (tempDaily) {
-        daily = JSON.parse(tempDaily);
-    }
-    if (daily.length < dailyMaxSize.value) {
+    if (dailyList.value.length < dailyMaxSize) {
         displayModal.value = true;
         inputValue.value = "";
         selectedTimeStamp.value = 0;
     } else {
-        Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
+        Message.error("倒数日数量最多为" + dailyMaxSize + "个");
     }
 }
 
@@ -236,17 +214,7 @@ function inputOnChange(value) {
 
 function modalBeforeOk() {
     if (inputValue.value && inputValue.value.length > 0 && selectedTimeStamp.value !== 0) {
-        let daily = [];
-        let tempDaily = localStorage.getItem("daily");
-        if (tempDaily) {
-            daily = JSON.parse(tempDaily);
-        }
-        if (daily.length < dailyMaxSize.value) {
-            return true;
-        } else {
-            Message.error("倒数日数量最多为" + dailyMaxSize.value + "个");
-            return false;
-        }
+        return true;
     } else {
         Message.error("表单不能为空");
         return false;
@@ -254,22 +222,14 @@ function modalBeforeOk() {
 }
 
 function modalOkBtnOnClick() {
-    let daily = [];
-    let tempDaily = localStorage.getItem("daily");
-    if (tempDaily) {
-        daily = JSON.parse(tempDaily);
-    }
-
-    daily.push({
+    dailyList.value.push({
         "title": inputValue.value,
         "selectedTimeStamp": selectedTimeStamp.value,
         "timeStamp": Date.now()
     });
-    localStorage.setItem("daily", JSON.stringify(daily));
 
     displayModal.value = false;
-    listItems.value = daily;
-    dailySize.value = daily.length;
+    localStorage.setItem("daily", JSON.stringify(dailyList.value));
     Message.success("添加成功");
 }
 

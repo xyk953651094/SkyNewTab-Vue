@@ -4,14 +4,14 @@
                :style="{padding: '5px 10px', borderRadius: '4px'}"
                class="zIndexHigh">
             <a-space id="clock" align="center">
-                <a-typography-text :style="{color: backgroundColor}" class="textShadow clockText">
+                <a-typography-text :style="{color: backgroundColor, cursor: 'default'}" class="textShadow clockText">
                     {{ currentTime }}
                 </a-typography-text>
                 <a-space align="center" direction="vertical">
-                    <a-typography-text :style="{color: backgroundColor}" class="textShadow dateText">
+                    <a-typography-text :style="{color: backgroundColor, cursor: 'default'}" class="textShadow dateText">
                         {{ currentWeek }}
                     </a-typography-text>
-                    <a-typography-text :style="{color: backgroundColor}" class="textShadow dateText">
+                    <a-typography-text :style="{color: backgroundColor, cursor: 'default'}" class="textShadow dateText">
                         {{ currentDate }}
                     </a-typography-text>
                 </a-space>
