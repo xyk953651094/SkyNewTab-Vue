@@ -42,6 +42,15 @@ let imageLink = ref("");
 let display = ref("none");
 let displayCanvas = ref("none");
 
+function showFocusModeMessage() {
+    let focusModeStorage = localStorage.getItem("focusMode");
+    if (focusModeStorage) {
+        if (JSON.parse(focusModeStorage) === true) {
+            Message.info("已开启专注模式");
+        }
+    }
+}
+
 // 请求完成后处理步骤
 function setWallpaper(data) {
     imageData.value = data;
@@ -153,6 +162,7 @@ function getWallpaper() {
                 setWallpaper(lastImage);
             } else {
                 Message.error("获取图片失败，请检查网络连接");
+                showFocusModeMessage();
             }
         })
         .finally(function () {
@@ -180,6 +190,7 @@ onMounted(() => {
                 setWallpaper(lastImage);
             } else {
                 Message.error("无缓存图片可加载，请尝试重置插件");
+                showFocusModeMessage();
             }
         }
 
@@ -194,6 +205,7 @@ onMounted(() => {
                 Message.success("图片加载成功");
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
+                showFocusModeMessage();
 
                 // 设置动态效果
                 backgroundImage.classList.add("wallpaperFadeIn");
