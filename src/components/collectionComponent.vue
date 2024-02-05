@@ -16,7 +16,7 @@
 
                 <a-space>
                     <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
-                               content="添加快速链接"
+                               content="添加链接"
                                position="bottom">
                         <a-button :shape="preferenceData.buttonShape"
                                   :style="{color: fontColor, backgroundColor: backgroundColor}"
@@ -29,7 +29,7 @@
                         </a-button>
                     </a-tooltip>
                     <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
-                               content="编辑快速链接"
+                               content="编辑链接"
                                position="bottom">
                         <a-button :shape="preferenceData.buttonShape"
                                   :style="{color: fontColor, backgroundColor: backgroundColor}"
@@ -66,7 +66,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加快速链接 " + collectionSize + " / " + collectionMaxSize }}
+                        {{ "添加链接 " + collectionSize + " / " + collectionMaxSize }}
                     </a-typography-text>
                 </a-col>
             </a-row>
@@ -88,7 +88,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="12" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "编辑快速链接 " + collectionSize + " / " + collectionMaxSize }}
+                        {{ "编辑链接 " + collectionSize + " / " + collectionMaxSize }}
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
