@@ -8,7 +8,7 @@
         <template #extra>
             <icon-email/>
         </template>
-        <a-row>
+        <a-row :gutter="[0, 8]">
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
@@ -33,12 +33,21 @@
                     问题反馈
                 </a-button>
             </a-col>
+            <a-col :span="24">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}" type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-star />
+                    </template>
+                    如果喜欢这款插件，请在插件商店五星好评
+                </a-button>
+            </a-col>
         </a-row>
     </a-card>
 </template>
 
 <script setup>
-import {IconEmail, IconThumbDown, IconThumbUp} from "@arco-design/web-vue/es/icon";
+import {IconEmail, IconThumbDown, IconThumbUp, IconStar} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
