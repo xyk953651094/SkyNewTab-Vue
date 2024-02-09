@@ -1,7 +1,7 @@
 # 云开新标签页 based on Vue
 
 ## 简介
-* 适用于 Chrome、Edge、Firefox、Safari 的新标签页，定期展示不同的高质量图片，并提供日历、天气、倒数日、待办事项、专注模式、快速链接等实用功能
+* 适用于 Chrome、Edge、Firefox、Safari 的新标签页插件，定期展示不同的高质量图片，并提供日历、天气、倒数日、待办事项、专注模式、快速链接等实用功能
 * 基于 Html + JavaScript + Less + Vue + Webpack + Arco Design + Bootstrap Icon
 * 支持语言：中文
 * 所需权限：tabs、storage
