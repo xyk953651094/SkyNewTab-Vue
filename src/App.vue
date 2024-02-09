@@ -165,15 +165,27 @@ onMounted(() => {
         });
         localStorage.setItem("SkyNewTabVueVersion", currentVersion);
 
+        setTimeout(() => {
+            Notification.success({
+                showIcon: false,
+                title: "支持作者",
+                content: "如果喜欢这款插件，请在插件商店五星好评",
+                position: "bottomLeft",
+                duration: 5000
+            });
+        }, 1000);
+
         // 额外提醒
         // if (currentVersion === "2.8.0") {
-        //     Notification.info({
-        //         showIcon: false,
-        //         title: "重要通知",
-        //         content: "新增专注模式，若专注模式无法生效，可尝试重新安装本插件",
-        //         position: "bottomLeft",
-        //         duration: 10000
-        //     });
+        //     setTimeout(() => {
+        //         Notification.info({
+        //             showIcon: false,
+        //             title: "重要通知",
+        //             content: "新增专注模式，若专注模式无法生效，可尝试重新安装本插件",
+        //             position: "bottomLeft",
+        //             duration: 10000
+        //         });
+        //     }, 2000);
         // }
     }
 
