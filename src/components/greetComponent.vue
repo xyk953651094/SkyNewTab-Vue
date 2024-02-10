@@ -256,20 +256,27 @@ function infoBtnOnClick() {
 // 万年历
 function setHoliday(data) {
     let tempHolidayContent = data.solarTerms;
+    if (data.solarTerms.indexOf("后") === -1) {
+        tempHolidayContent = "今日" + tempHolidayContent;
+    }
+
     if (data.typeDes !== "休息日" && data.typeDes !== "工作日") {
         tempHolidayContent = tempHolidayContent + " · " + data.typeDes;
 
         // 发送恭贺通知
-        Notification.success({
-            showIcon: false,
-            title: "今日" + data.typeDes,
-            content: "云开新标签页祝您" + data.typeDes + "快乐！",
-            position: "bottomLeft",
-            duration: 5000
-        });
-    }
-    if (data.solarTerms.indexOf("后") === -1) {
-        tempHolidayContent = "今日" + tempHolidayContent;
+        let hideBlessStorage = localStorage.getItem("displayBless");
+        if (hideBlessStorage === null) {
+            Notification.success({
+                showIcon: false,
+                title: "今日" + data.typeDes,
+                content: "云开新标签页祝您" + data.typeDes + "快乐！",
+                position: "bottomLeft",
+                duration: 5000
+            });
+            localStorage.setItem("displayBless", JSON.stringify(true));
+        }
+    } else {
+        localStorage.removeItem("displayBless");
     }
 
     holidayContent.value = tempHolidayContent;
