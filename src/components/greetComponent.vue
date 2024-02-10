@@ -186,6 +186,7 @@ import {
     httpRequest
 } from "@/javascripts//publicFunctions";
 import {appId, appSecret, defaultPreferenceData} from "@/javascripts/publicConstants";
+import {Notification} from "@arco-design/web-vue";
 
 const btnMaxSize = 80;
 
@@ -257,6 +258,15 @@ function setHoliday(data) {
     let tempHolidayContent = data.solarTerms;
     if (data.typeDes !== "休息日" && data.typeDes !== "工作日") {
         tempHolidayContent = tempHolidayContent + " · " + data.typeDes;
+
+        // 发送恭贺通知
+        Notification.success({
+            showIcon: false,
+            title: "今日" + data.typeDes,
+            content: "云开新标签页祝您" + data.typeDes + "快乐！",
+            position: "bottomLeft",
+            duration: 5000
+        });
     }
     if (data.solarTerms.indexOf("后") === -1) {
         tempHolidayContent = "今日" + tempHolidayContent;
