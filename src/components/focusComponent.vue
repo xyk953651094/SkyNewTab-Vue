@@ -75,9 +75,33 @@
                         </template>
                     </a-list-item>
                     <template #footer>
-                        <a-typography-text :style="{color: fontColor}">
-                            {{"开启专注模式后，访问以上域名时将自动跳转至新标签页"}}
-                        </a-typography-text>
+                        <a-space>
+                            <a-typography-text :style="{color: fontColor}">
+                                {{displayPlayBtn === "block" ? "白噪音" : "播放中"}}
+                            </a-typography-text>
+                            <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
+                                <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
+                                <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
+                            </a-select>
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor, display: displayPlayBtn}" type="text"
+                                      @click="playBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                <template #icon>
+                                    <icon-play-arrow />
+                                </template>
+                                {{"播放"}}
+                            </a-button>
+                            <a-button :shape="preferenceData.buttonShape"
+                                      :style="{color: fontColor, display: displayPauseBtn}" type="text"
+                                      @click="pauseBtnOnClick"
+                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                <template #icon>
+                                    <icon-pause />
+                                </template>
+                                {{"暂停"}}
+                            </a-button>
+                        </a-space>
                     </template>
                 </a-list>
             </template>
@@ -101,6 +125,11 @@
                 <a-input placeholder="example.com" v-model="inputValue" @change="inputOnChange"
                          maxLength=20 show-word-limit allow-clear/>
             </a-form-item>
+            <a-form-item label="注意事项">
+                <a-typography-text :style="{color: fontColor}">
+                    {{"开启专注模式后，访问添加的域名时将自动跳转至新标签页"}}
+                </a-typography-text>
+            </a-form-item>
         </a-form>
     </a-modal>
 </template>
@@ -109,8 +138,16 @@
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconLink, IconDelete, IconPlus, IconPlayArrow, IconPause} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
+import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
+import focusSoundTwo from "../assets/focusSounds/松树林小雪.mp3";
+
+const focusAudio = new Audio();
+const focusSoundsDictionary = {
+    "focusSoundOne": focusSoundOne,
+    "focusSoundTwo": focusSoundTwo,
+}
 
 const props = defineProps({
     themeColor: {
@@ -141,6 +178,9 @@ let displayModal = ref(false);
 let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
+let focusSound = ref("古镇雨滴");
+let displayPlayBtn = ref("block");
+let displayPauseBtn = ref("none");
 const focusMaxSize = 10;
 const browserType = getBrowserType();
 
@@ -258,6 +298,43 @@ function modalOkBtnOnClick() {
 
 function modalCancelBtnOnClick() {
     displayModal.value = false;
+}
+
+function focusSoundSelectOnChange(value) {
+    focusSound.value = value;
+    displayPlayBtn.value = "none";
+    displayPauseBtn.value = "block";
+    playFocusSound(value);
+}
+
+function playBtnOnClick() {
+    displayPlayBtn.value = "none";
+    displayPauseBtn.value = "block";
+    playFocusSound(focusSound.value);
+}
+
+function pauseBtnOnClick() {
+    displayPlayBtn.value = "block";
+    displayPauseBtn.value = "none";
+    focusAudio.pause();
+}
+
+function playFocusSound(focusSound) {
+    switch (focusSound) {
+        case "古镇雨滴": {
+            focusAudio.src = focusSoundsDictionary.focusSoundOne;
+            break;
+        }
+        case "松树林小雪": {
+            focusAudio.src = focusSoundsDictionary.focusSoundTwo;
+            break;
+        }
+        default: {
+            focusAudio.src = focusSoundsDictionary.focusSoundOne;
+        }
+    }
+    focusAudio.loop = true;
+    focusAudio.play();
 }
 </script>
 

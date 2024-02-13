@@ -52,6 +52,16 @@ module.exports = {
                 test: /\.less$/,
                 use: ['style-loader', 'css-loader', 'less-loader'],
             },
+            {
+                test: /\.mp3$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        outputPath: 'assets/focusSounds',
+                        name: '[name].[ext]'
+                    }
+                }
+            },
         ]
     },
     plugins: [

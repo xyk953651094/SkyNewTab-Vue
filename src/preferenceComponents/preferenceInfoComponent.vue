@@ -16,7 +16,7 @@
                 <template #icon>
                     <icon-calendar/>
                 </template>
-                {{ "节气来源：https://www.mxnzp.com" }}
+                {{ "日历来源：https://www.mxnzp.com" }}
             </a-button>
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                       href="https://www.jinrishici.com/" target="_self"
@@ -37,6 +37,15 @@
                 {{ "图片来源：https://unsplash.com" }}
             </a-button>
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      href="https://www.soundvery.com/" target="_self"
+                      type="text"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                <template #icon>
+                    <icon-sound />
+                </template>
+                {{ "噪音来源：https://www.soundvery.com" }}
+            </a-button>
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                       href="https://www.jetbrains.com.cn/community/opensource/#support/" target="_self"
                       type="text"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
@@ -50,7 +59,7 @@
 </template>
 
 <script setup>
-import {IconCalendar, IconCloud, IconCodeSquare, IconFileImage, IconInfoCircle} from "@arco-design/web-vue/es/icon";
+import {IconCalendar, IconCloud, IconCodeSquare, IconFileImage, IconInfoCircle, IconSound} from "@arco-design/web-vue/es/icon";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
