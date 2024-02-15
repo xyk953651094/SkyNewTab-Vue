@@ -124,11 +124,11 @@
             <a-form-item field="focusInput" label="网站域名">
                 <a-input placeholder="example.com" v-model="inputValue" @change="inputOnChange"
                          maxLength=20 show-word-limit allow-clear/>
-            </a-form-item>
-            <a-form-item label="注意事项">
-                <a-typography-text :style="{color: fontColor}">
-                    {{"开启专注模式后，访问添加的域名时将自动跳转至新标签页"}}
-                </a-typography-text>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">
+                        {{"开启专注模式后，访问添加的域名时将自动跳转至本插件"}}
+                    </a-typography-text>
+                </template>
             </a-form-item>
         </a-form>
     </a-modal>

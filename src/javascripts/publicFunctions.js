@@ -450,7 +450,7 @@ export function resetRadioColor(selectedRadio, allRadios, themeColor) {
                 "borderColor": themeColor,
                 "backgroundColor": themeColor,
             });
-            currentRadio.children(".arco-radio-label").css({"color": themeColor, "fontWeight": "bold", "textDecoration": "underline"});
+            currentRadio.children(".arco-radio-label").css({"fontWeight": "bold", "textDecoration": "underline"});
         }
     }
 }
@@ -471,7 +471,7 @@ export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor
                 "borderColor": themeColor,
                 "backgroundColor": themeColor
             }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
-            currentCheckbox.children(".arco-checkbox-label").css({"color": themeColor, "fontWeight": "bold", "textDecoration": "underline"});
+            currentCheckbox.children(".arco-checkbox-label").css({"fontWeight": "bold", "textDecoration": "underline"});
         }
     }
 }
