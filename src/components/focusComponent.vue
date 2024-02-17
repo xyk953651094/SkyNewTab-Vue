@@ -77,29 +77,21 @@
                     <template #footer>
                         <a-space>
                             <a-typography-text :style="{color: fontColor}">
-                                {{displayPlayBtn === "block" ? "白噪音" : "播放中"}}
+                                {{focusAudioPaused ? "白噪音" : "播放中"}}
                             </a-typography-text>
                             <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
                                 <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
                                 <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
                             </a-select>
                             <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor, display: displayPlayBtn}" type="text"
+                                      :style="{color: fontColor}" type="text"
                                       @click="playBtnOnClick"
                                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-play-arrow />
+                                    <icon-play-arrow v-if="focusAudioPaused" />
+                                    <icon-pause v-else />
                                 </template>
-                                {{"播放"}}
-                            </a-button>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor, display: displayPauseBtn}" type="text"
-                                      @click="pauseBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-pause />
-                                </template>
-                                {{"暂停"}}
+                                {{focusAudioPaused ? "播放" : "暂停"}}
                             </a-button>
                         </a-space>
                     </template>
@@ -179,8 +171,7 @@ let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
 let focusSound = ref("古镇雨滴");
-let displayPlayBtn = ref("block");
-let displayPauseBtn = ref("none");
+let focusAudioPaused = ref(true);
 const focusMaxSize = 10;
 const browserType = getBrowserType();
 
@@ -302,21 +293,18 @@ function modalCancelBtnOnClick() {
 
 function focusSoundSelectOnChange(value) {
     focusSound.value = value;
-    displayPlayBtn.value = "none";
-    displayPauseBtn.value = "block";
+    focusAudioPaused.value = false;
     playFocusSound(value);
 }
 
 function playBtnOnClick() {
-    displayPlayBtn.value = "none";
-    displayPauseBtn.value = "block";
-    playFocusSound(focusSound.value);
-}
-
-function pauseBtnOnClick() {
-    displayPlayBtn.value = "block";
-    displayPauseBtn.value = "none";
-    focusAudio.pause();
+    if (focusAudio.paused) {
+        focusAudioPaused.value = false;
+        playFocusSound(focusSound.value);
+    } else {
+        focusAudioPaused.value = true;
+        focusAudio.pause();
+    }
 }
 
 function playFocusSound(focusSound) {
