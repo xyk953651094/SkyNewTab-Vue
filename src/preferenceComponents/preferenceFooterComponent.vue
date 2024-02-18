@@ -25,7 +25,7 @@
             <template #icon>
                 <icon-notification/>
             </template>
-            博客
+            Blogger
         </a-button>
     </a-space>
 </template>

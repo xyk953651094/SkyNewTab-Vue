@@ -25,7 +25,7 @@
             <template #icon>
                 <icon-notification/>
             </template>
-            博客
+            Blogger
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://afdian.net/a/xyk953651094/"

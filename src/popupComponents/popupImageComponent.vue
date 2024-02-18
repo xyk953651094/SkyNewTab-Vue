@@ -72,7 +72,7 @@
         <template #icon>
             <icon-info-circle/>
         </template>
-        已开启无图模式
+        已开启纯色模式
     </a-button>
 </template>
 

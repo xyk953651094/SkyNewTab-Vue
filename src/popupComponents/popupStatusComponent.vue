@@ -53,7 +53,7 @@
         <template #icon>
             <icon-info-circle/>
         </template>
-        已开启简洁模式
+        已开启极简模式
     </a-button>
 </template>
 

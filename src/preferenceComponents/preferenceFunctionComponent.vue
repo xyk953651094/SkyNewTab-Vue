@@ -35,7 +35,7 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-form-item field="simpleMode" label="简洁模式">
+            <a-form-item field="simpleMode" label="极简模式">
                 <a-switch v-model="preferenceData.simpleMode" id="simpleModeSwitch" @change="simpleModeSwitchOnChange">
                     <template #checked>
                         已开启
@@ -66,6 +66,10 @@
                         重置插件
                     </a-button>
                 </a-space>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{ "出现异常时可尝试重置设置或插件" }}
+                    </a-typography-text>
+                </template>
             </a-form-item>
         </a-form>
     </a-card>
@@ -82,7 +86,7 @@
             </a-row>
         </template>
         <a-typography-text :style="{color: fontColor}">
-            {{ "注意：所有设置项将被重置为默认值，确定重置吗？" }}
+            {{ "注意：所有设置项将被重置为默认值" }}
         </a-typography-text>
     </a-modal>
     <a-modal v-model:visible="displayClearStorageModal" :closable="false"
@@ -98,7 +102,7 @@
             </a-row>
         </template>
         <a-typography-text :style="{color: fontColor}">
-            {{ "注意：本地存储的所有数据将被清空，确定重置吗？" }}
+            {{ "注意：所有设置项将被重置为默认值，所有数据将被清空" }}
         </a-typography-text>
     </a-modal>
 </template>
@@ -192,9 +196,9 @@ function simpleModeSwitchOnChange(checked) {
     emit("preferenceModified", new Date().getTime());
 
     if (checked) {
-        Message.success("已开启简洁模式");
+        Message.success("已开启极简模式");
     } else {
-        Message.success("已关闭简洁模式，一秒后刷新页面");
+        Message.success("已关闭极简模式，一秒后刷新页面");
         formDisabled.value = true;
         refreshWindow();
     }

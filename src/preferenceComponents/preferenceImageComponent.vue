@@ -167,7 +167,7 @@
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
-                    <a-form-item field="noImageMode" label="无图模式">
+                    <a-form-item field="noImageMode" label="纯色模式">
                         <a-switch v-model="preferenceData.noImageMode" id="noImageModeSwitch" @change="noImageModeSwitchOnChange">
                             <template #checked>
                                 已开启
@@ -373,9 +373,9 @@ function noImageModeSwitchOnChange(checked) {
     emit("preferenceModified", new Date().getTime());
 
     if (checked) {
-        Message.success("已开启无图模式，一秒后刷新页面");
+        Message.success("已开启纯色模式，一秒后刷新页面");
     } else {
-        Message.success("已关闭无图模式，一秒后刷新页面");
+        Message.success("已关闭纯色模式，一秒后刷新页面");
     }
 
     // resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);
