@@ -8,58 +8,35 @@
         <template #extra>
             <icon-info-circle/>
         </template>
-        <a-space direction="vertical">
-            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.mxnzp.com/" target="_self"
-                      type="text"
-                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                <template #icon>
-                    <icon-calendar/>
-                </template>
-                {{ "日历来源：https://www.mxnzp.com" }}
-            </a-button>
-            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.jinrishici.com/" target="_self"
-                      type="text"
-                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                <template #icon>
-                    <icon-cloud/>
-                </template>
-                {{ "天气来源：https://www.jinrishici.com" }}
-            </a-button>
-            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://unsplash.com/" target="_self"
-                      type="text"
-                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                <template #icon>
-                    <icon-file-image/>
-                </template>
-                {{ "图片来源：https://unsplash.com" }}
-            </a-button>
-            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.soundvery.com/" target="_self"
-                      type="text"
-                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                <template #icon>
-                    <icon-sound />
-                </template>
-                {{ "噪音来源：https://www.soundvery.com" }}
-            </a-button>
-            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      href="https://www.jetbrains.com.cn/community/opensource/#support/" target="_self"
-                      type="text"
-                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                <template #icon>
-                    <icon-code-square/>
-                </template>
-                {{ "开发支持：JetBrains 免费许可证计划" }}
-            </a-button>
-        </a-space>
+        <a-row>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://github.com/xyk953651094/SkyNewTab-Vue/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-github/>
+                    </template>
+                    Github 产品主页
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://gitlab.com/xyk953651094/SkyNewTab-Vue/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-gitlab/>
+                    </template>
+                    GitLab 产品主页
+                </a-button>
+            </a-col>
+        </a-row>
     </a-card>
 </template>
 
 <script setup>
-import {IconCalendar, IconCloud, IconCodeSquare, IconFileImage, IconInfoCircle, IconSound} from "@arco-design/web-vue/es/icon";
+import {IconGithub, IconGitlab, IconInfoCircle} from "@arco-design/web-vue/es/icon";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";

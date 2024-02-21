@@ -7,7 +7,7 @@
             <template #icon>
                 <icon-github/>
             </template>
-            Github
+            Github 产品主页
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://gitlab.com/xyk953651094/SkyNewTab-Vue/"
@@ -16,7 +16,7 @@
             <template #icon>
                 <icon-gitlab/>
             </template>
-            GitLab
+            GitLab 产品主页
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://xyk953651094.blogspot.com/"
@@ -25,7 +25,7 @@
             <template #icon>
                 <icon-notification/>
             </template>
-            Blogger
+            博客
         </a-button>
         <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                   href="https://afdian.net/a/xyk953651094/"

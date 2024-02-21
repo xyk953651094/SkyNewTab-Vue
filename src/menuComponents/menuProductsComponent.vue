@@ -8,163 +8,35 @@
         <template #extra>
             <icon-apps/>
         </template>
-        <a-row :gutter="[0, 8]">
-            <a-col :span="19">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
-                          type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+        <a-row>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://github.com/xyk953651094/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-file/>
+                        <icon-github/>
                     </template>
-                    {{ "云开帮助文档" }}
+                    Github 作者主页
                 </a-button>
             </a-col>
-            <a-col :span="5">
-                <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyDocuments/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-github/>
-                        </template>
-                    </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyDocuments/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-gitlab/>
-                        </template>
-                    </a-button>
-                </a-space>
-            </a-col>
-            <a-col :span="19">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
-                          type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://gitlab.com/xyk953651094/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-apps/>
+                        <icon-gitlab/>
                     </template>
-                    {{ "云开壁纸（React）" }}
+                    GitLab 作者主页
                 </a-button>
-            </a-col>
-            <a-col :span="5">
-                <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyWallpaper-Electron/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-github/>
-                        </template>
-                    </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyWallpaper-Electron/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-gitlab/>
-                        </template>
-                    </a-button>
-                </a-space>
-            </a-col>
-            <a-col :span="19">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
-                          type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <i class="bi bi-puzzle"/>
-                    </template>
-                    {{ "云开新标签页（React）" }}
-                </a-button>
-            </a-col>
-            <a-col :span="5">
-                <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyNewTab-React/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-github/>
-                        </template>
-                    </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyNewTab-React/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-gitlab/>
-                        </template>
-                    </a-button>
-                </a-space>
-            </a-col>
-            <a-col :span="19">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
-                          type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <i class="bi bi-puzzle"/>
-                    </template>
-                    {{ "云开诗词新标签页（React）" }}
-                </a-button>
-            </a-col>
-            <a-col :span="5">
-                <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyNewTab-Poem-React/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-github/>
-                        </template>
-                    </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-React/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-gitlab/>
-                        </template>
-                    </a-button>
-                </a-space>
-            </a-col>
-            <a-col :span="19">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
-                          type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <i class="bi bi-puzzle"/>
-                    </template>
-                    {{ "云开诗词新标签页（Angular）" }}
-                </a-button>
-            </a-col>
-            <a-col :span="5">
-                <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://github.com/xyk953651094/SkyNewTab-Poem-Angular/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-github/>
-                        </template>
-                    </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              href="https://gitlab.com/xyk953651094/SkyNewTab-Poem-Angular/" target="_self"
-                              type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                        <template #icon>
-                            <icon-gitlab/>
-                        </template>
-                    </a-button>
-                </a-space>
             </a-col>
         </a-row>
     </a-card>
 </template>
 
 <script setup>
-import {IconApps, IconFile, IconGithub, IconGitlab} from "@arco-design/web-vue/es/icon";
+import {IconApps, IconGithub, IconGitlab} from "@arco-design/web-vue/es/icon";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defineProps} from "vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";

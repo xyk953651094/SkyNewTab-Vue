@@ -37,6 +37,12 @@
                         :hover-color="hoverColor"
                         @preference-data="getPreferenceData"
                     />
+                    <menu-info-component
+                        :background-color="backgroundColor"
+                        :font-color="fontColor"
+                        :hover-color="hoverColor"
+                        :preference-data="preferenceData"
+                    />
                     <menu-help-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
@@ -44,12 +50,6 @@
                         :preference-data="preferenceData"
                     />
                     <menu-email-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
-                    <menu-info-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
