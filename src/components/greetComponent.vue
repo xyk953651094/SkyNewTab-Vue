@@ -282,8 +282,8 @@ function setHoliday(data) {
     holidayContent.value = tempHolidayContent;
     calendar.value = timeDetails.value.showDate4 + " " + timeDetails.value.showWeek + " ｜ " +
         data.yearTips + data.chineseZodiac + "年 ｜ " + data.lunarCalendar + " ｜ " + data.constellation;
-    suit.value = data.suit.replace(/\./g, " · ");
-    avoid.value = data.avoid.replace(/\./g, " · ");
+    suit.value = data.suit.split(" ").join(" · ");
+    avoid.value = data.avoid.split(" ").join(" · ");
 }
 
 function getHoliday() {

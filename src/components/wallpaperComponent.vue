@@ -202,10 +202,10 @@ onMounted(() => {
             backgroundImage.onload = function () {
 
                 Message.clear();
-                Message.success("图片加载成功");
+                // Message.success("图片加载成功");
+                showFocusModeMessage();
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
-                showFocusModeMessage();
 
                 // 设置动态效果
                 backgroundImage.classList.add("wallpaperFadeIn");
