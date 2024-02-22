@@ -61,7 +61,6 @@
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <a-divider orientation="center">The End</a-divider>
                     <menu-to-top-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
