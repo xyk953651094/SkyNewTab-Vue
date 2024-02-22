@@ -3,12 +3,36 @@
             :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
             :style="{border: '1px solid' + fontColor}"
             size="small"
-            title="更多产品"
+            title="联系作者"
     >
         <template #extra>
-            <icon-apps/>
+            <icon-email/>
         </template>
-        <a-row>
+        <a-row :gutter="[0, 8]">
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
+                          target="_self"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-thumb-up/>
+                    </template>
+                    功能建议
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
+                          target="_self"
+                          type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-thumb-down/>
+                    </template>
+                    问题反馈
+                </a-button>
+            </a-col>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="https://github.com/xyk953651094/"
@@ -17,7 +41,7 @@
                     <template #icon>
                         <icon-github/>
                     </template>
-                    Github 作者主页
+                    作者主页
                 </a-button>
             </a-col>
             <a-col :span="12">
@@ -28,7 +52,7 @@
                     <template #icon>
                         <icon-gitlab/>
                     </template>
-                    GitLab 作者主页
+                    作者主页
                 </a-button>
             </a-col>
         </a-row>
@@ -36,9 +60,9 @@
 </template>
 
 <script setup>
-import {IconApps, IconGithub, IconGitlab} from "@arco-design/web-vue/es/icon";
-import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
+import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
+import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 defineProps({

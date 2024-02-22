@@ -43,19 +43,7 @@
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <menu-help-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
-                    <menu-email-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
-                    <menu-products-component
+                    <menu-contact-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
@@ -86,10 +74,8 @@ import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData, device} from "@/javascripts/publicConstants";
 import MenuHeaderComponent from "@/menuComponents/menuHeaderComponent.vue";
 import MenuPreferenceComponent from "@/menuComponents/menuPreferenceComponent.vue";
-import MenuHelpComponent from "@/menuComponents/menuHelpComponent.vue";
-import MenuEmailComponent from "@/menuComponents/menuEmailComponent.vue";
+import menuContactComponent from "@/menuComponents/menuContactComponent.vue";
 import MenuInfoComponent from "@/menuComponents/menuInfoComponent.vue";
-import MenuProductsComponent from "@/menuComponents/menuProductsComponent.vue";
 import MenuToTopComponent from "@/menuComponents/menuToTopComponent.vue";
 import MenuFooterComponent from "@/menuComponents/menuFooterComponent.vue";
 
