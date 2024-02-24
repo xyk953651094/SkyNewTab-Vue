@@ -170,10 +170,10 @@
             <a-form-item field="changeImageTime" label="切换间隔">
                 <a-select v-model="preferenceData.changeImageTime" :style="{width:'170px'}"
                           @change="changeImageTimeOnChange">
-                    <a-option value="0">{{ "每次刷新（不推荐）" }}</a-option>
-                    <a-option value="900000">{{ "每 15 分钟" }}</a-option>
-                    <a-option value="1800000">{{ "每 30 分钟" }}</a-option>
-                    <a-option value="3600000">{{ "每 60 分钟" }}</a-option>
+                    <a-option value="60000">{{ "每隔 1 分钟" }}</a-option>
+                    <a-option value="900000">{{ "每隔 15 分钟" }}</a-option>
+                    <a-option value="3600000">{{ "每隔 1 小时" }}</a-option>
+                    <a-option value="86400000">{{ "每隔 1 天" }}</a-option>
                 </a-select>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">{{ "上次切换：" + lastRequestTime }}
@@ -492,12 +492,18 @@ function simpleModeSwitchOnChange(checked) {
 
 // 重置设置
 function resetPreferenceBtnOnClick() {
-    displayResetPreferenceModal.value = true;
+    let resetTimeStampStorage = localStorage.getItem("resetTimeStamp");
+    if (resetTimeStampStorage && new Date().getTime() - parseInt(resetTimeStampStorage) < 60 * 1000) {
+        Message.error("操作过于频繁，请稍后再试");
+    } else {
+        displayResetPreferenceModal.value = true;
+    }
 }
 
 function resetPreferenceOkBtnOnClick() {
     displayResetPreferenceModal.value = false;
     localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+    localStorage.setItem("resetTimeStamp", JSON.stringify(new Date().getTime()));
     Message.success("已重置设置，一秒后刷新页面");
     formDisabled.value = true;
     refreshWindow();
@@ -509,12 +515,18 @@ function resetPreferenceCancelBtnOnClick() {
 
 // 重置插件
 function clearStorageBtnOnClick() {
-    displayClearStorageModal.value = true;
+    let resetTimeStampStorage = localStorage.getItem("resetTimeStamp");
+    if (resetTimeStampStorage && new Date().getTime() - parseInt(resetTimeStampStorage) < 60 * 1000) {
+        Message.error("操作过于频繁，请稍后再试");
+    } else {
+        displayClearStorageModal.value = true;
+    }
 }
 
 function clearStorageOkBtnOnClick() {
     displayClearStorageModal.value = false;
     localStorage.clear();
+    localStorage.setItem("resetTimeStamp", JSON.stringify(new Date().getTime()));
     Message.success("已重置插件，一秒后刷新页面");
     formDisabled.value = true;
     refreshWindow();

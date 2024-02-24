@@ -35,6 +35,18 @@
                 <a-list :bordered=false>
                     <a-list-item>
                         <a-space direction="vertical">
+                            <a-row :style="{display: weatherTips.length === 0 ? 'none' : 'flex'}">
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)"
+                                          @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <icon-bulb />
+                                    </template>
+                                    {{ weatherTips }}
+                                </a-button>
+                            </a-row>
                             <a-row :gutter="8">
                                 <a-col :span="12">
                                     <a-button :shape="preferenceData.buttonShape"
@@ -170,7 +182,8 @@ let fontColor = ref("");
 let lastRequestTime = ref("暂无信息");
 let weatherIcon = ref("");
 let weatherInfo = ref("暂无信息");
-let searchEngineUrl = ref("https://www.bing.com/search?q=")
+let searchEngineUrl = ref("https://www.bing.com/search?q=");
+let weatherTips = ref("");
 let location = ref("暂无信息");
 let humidity = ref("暂无信息");
 let pm25 = ref("暂无信息");
@@ -223,6 +236,12 @@ function setWeather(data) {
     rainfall.value = data.weatherData.rainfall + "%";
     visibility.value = data.weatherData.visibility;
     windInfo.value = data.weatherData.windDirection + " " + data.weatherData.windPower + " 级";
+
+    if (parseInt(data.weatherData.temperature) > 30) {
+        weatherTips.value = "天气炎热，请注意避暑，减少户外活动";
+    } else if (parseInt(data.weatherData.temperature) < 0) {
+        weatherTips.value = "天气寒冷，请注意防寒，减少户外活动";
+    }
 }
 
 function getWeather() {
