@@ -33,7 +33,7 @@
             </a-col>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
+                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议&body=提示：功能建议前请优先查阅帮助文档"
                           target="_self"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
@@ -45,7 +45,7 @@
             </a-col>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈"
+                          href="mailto:xyk953651094@qq.com?&subject=云开新标签页-问题反馈&body=提示：问题反馈前请优先查阅帮助文档"
                           target="_self"
                           type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
@@ -53,15 +53,6 @@
                         <icon-thumb-down/>
                     </template>
                     问题反馈
-                </a-button>
-            </a-col>
-            <a-col :span="12">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}" type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <icon-bulb />
-                    </template>
-                    建议或反馈前请优先查阅帮助文档
                 </a-button>
             </a-col>
         </a-row>
