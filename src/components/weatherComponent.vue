@@ -151,7 +151,7 @@ import {
     httpRequest
 } from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconClockCircle, IconLocation, IconMoreVertical} from "@arco-design/web-vue/es/icon";
+import {IconClockCircle, IconLocation, IconMoreVertical, IconBulb} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({

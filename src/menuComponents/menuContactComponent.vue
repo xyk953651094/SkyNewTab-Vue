@@ -11,6 +11,28 @@
         <a-row :gutter="[0, 8]">
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://github.com/xyk953651094/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-github/>
+                    </template>
+                    作者主页
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://gitlab.com/xyk953651094/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-gitlab/>
+                    </template>
+                    作者主页
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议"
                           target="_self"
                           type="text"
@@ -34,25 +56,12 @@
                 </a-button>
             </a-col>
             <a-col :span="12">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="https://github.com/xyk953651094/"
-                          target="_self"
-                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-github/>
+                        <icon-bulb />
                     </template>
-                    作者主页
-                </a-button>
-            </a-col>
-            <a-col :span="12">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="https://gitlab.com/xyk953651094/"
-                          target="_self"
-                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <icon-gitlab/>
-                    </template>
-                    作者主页
+                    联系作者前请先查阅帮助文档
                 </a-button>
             </a-col>
         </a-row>
@@ -60,7 +69,7 @@
 </template>
 
 <script setup>
-import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub} from "@arco-design/web-vue/es/icon";
+import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub, IconBulb} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
