@@ -170,9 +170,11 @@
             <a-form-item field="changeImageTime" label="切换间隔">
                 <a-select v-model="preferenceData.changeImageTime" :style="{width:'170px'}"
                           @change="changeImageTimeOnChange">
-                    <a-option value="60000">{{ "每隔 1 分钟" }}</a-option>
                     <a-option value="900000">{{ "每隔 15 分钟" }}</a-option>
+                    <a-option value="1800000">{{ "每隔 30 分钟" }}</a-option>
                     <a-option value="3600000">{{ "每隔 1 小时" }}</a-option>
+                    <a-option value="21600000">{{ "每隔 6 小时" }}</a-option>
+                    <a-option value="43200000">{{ "每隔 12 小时" }}</a-option>
                     <a-option value="86400000">{{ "每隔 1 天" }}</a-option>
                 </a-select>
                 <template #extra>

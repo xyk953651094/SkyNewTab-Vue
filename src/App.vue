@@ -176,17 +176,17 @@ onMounted(() => {
         }, 1000);
 
         // 额外提醒
-        if (currentVersion === "3.1.0") {
-            setTimeout(() => {
-                Notification.info({
-                    showIcon: false,
-                    title: "重要通知",
-                    content: "本次更新修改了偏好设置中的切换间隔，如出现异常请点击重置设置按钮",
-                    position: "bottomLeft",
-                    duration: 10000
-                });
-            }, 2000);
-        }
+        // if (currentVersion === "3.1.0") {
+        //     setTimeout(() => {
+        //         Notification.info({
+        //             showIcon: false,
+        //             title: "重要通知",
+        //             content: "本次更新修改了偏好设置中的切换间隔，如出现异常请点击重置设置按钮",
+        //             position: "bottomLeft",
+        //             duration: 10000
+        //         });
+        //     }, 2000);
+        // }
     }
 
     // 修改各类弹窗样式
