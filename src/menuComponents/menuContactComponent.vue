@@ -56,12 +56,12 @@
                 </a-button>
             </a-col>
             <a-col :span="12">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}" type="text"
                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
                         <icon-bulb />
                     </template>
-                    联系作者前请先查阅帮助文档
+                    建议或反馈前请优先查阅帮助文档
                 </a-button>
             </a-col>
         </a-row>
