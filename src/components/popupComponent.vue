@@ -60,9 +60,9 @@ onMounted(() => {
     if (tempImageData) {
         tempImageData = JSON.parse(tempImageData);
         imageData.value = tempImageData;
-        hoverColor.value = tempImageData.color;
-        backgroundColor.value = getReverseColor(tempImageData.color);
-        fontColor.value = getFontColor(getReverseColor(tempImageData.color));
+        hoverColor.value = getReverseColor(tempImageData.color);
+        backgroundColor.value = tempImageData.color;
+        fontColor.value = getFontColor(tempImageData.color);
 
         $("body").css({"backgroundColor": backgroundColor.value});
     } else {

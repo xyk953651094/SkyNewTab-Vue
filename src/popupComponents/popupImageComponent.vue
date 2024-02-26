@@ -7,8 +7,8 @@
                 :src="imagePreviewUrl"
                 :style="{borderRadius: '4px'}"
                 alt="图片加载失败"
-                height="150px"
-                width="250px"
+                height="120px"
+                width="200px"
             >
             </a-image>
             <canvas id="popupCanvas" :style="{display: displayCanvas}" class="popupCanvas"></canvas>
@@ -44,25 +44,6 @@
                     imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
                 }}
             </a-button>
-            <a-space>
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default'}"
-                          type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <icon-clock-circle/>
-                    </template>
-                    {{ imageCreateTime }}
-                </a-button>
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          type="text"
-                          @click="imageCameraBtnOnClick"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <icon-camera/>
-                    </template>
-                    {{ imageCamera }}
-                </a-button>
-            </a-space>
         </a-space>
     </a-space>
     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor, cursor: 'default', display: noImageMode ? 'inline-block' : 'none'}"
@@ -85,7 +66,7 @@ import {decode} from "blurhash";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData, unsplashUrl} from "@/javascripts/publicConstants";
 
-const btnMaxSize = 35;
+const btnMaxSize = 50;
 
 const props = defineProps({
     imageData: {
@@ -122,8 +103,6 @@ let imageLink = ref("");
 let imagePreviewUrl = ref("");
 let imageLocation = ref("暂无信息");
 let imageDescription = ref("暂无信息");
-let imageCreateTime = ref("暂无信息");
-let imageCamera = ref("暂无信息");
 let blurHashCode = ref("");
 let searchEngineUrl = ref("https://www.bing.com/search?q=");
 let noImageMode = ref(false)
@@ -152,8 +131,6 @@ watch(() => props.imageData, (newValue, oldValue) => {
         imagePreviewUrl.value = props.imageData.urls.regular;
         imageLocation.value = isEmpty(props.imageData.location.name) ? "暂无信息" : props.imageData.location.name;
         imageDescription.value = isEmpty(props.imageData.alt_description) ? "暂无信息" : props.imageData.alt_description;
-        imageCreateTime.value = getCreateTime(props.imageData.created_at);
-        imageCamera.value = isEmpty(props.imageData.exif.name) ? "暂无信息" : props.imageData.exif.name;
 
         blurHashCode.value = newValue.blur_hash;
         if (!isEmpty(blurHashCode.value)) {
@@ -199,14 +176,6 @@ function imageLinkBtnOnClick() {
 function imageLocationBtnOnClick() {
     if (imageLocation.value !== "暂无信息") {
         window.open(searchEngineUrl.value + imageLocation.value, "_blank");
-    } else {
-        Message.error("无跳转链接");
-    }
-}
-
-function imageCameraBtnOnClick() {
-    if (imageCamera.value !== "暂无信息") {
-        window.open(searchEngineUrl.value + imageCamera.value, "_blank");
     } else {
         Message.error("无跳转链接");
     }
