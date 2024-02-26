@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub, IconBulb} from "@arco-design/web-vue/es/icon";
+import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
