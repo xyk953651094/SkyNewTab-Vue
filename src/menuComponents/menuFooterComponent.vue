@@ -5,7 +5,7 @@
             <template #icon>
                 <icon-star />
             </template>
-            如果喜欢这款插件，请在插件商店五星好评
+            如果喜欢这款插件，请考虑捐助或五星好评
         </a-button>
     </a-space>
 </template>
