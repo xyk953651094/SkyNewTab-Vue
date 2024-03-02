@@ -33,6 +33,28 @@
             </a-col>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://github.com/xyk953651094?tab=repositories/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-github/>
+                    </template>
+                    更多产品
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          href="https://gitlab.com/users/xyk953651094/projects/"
+                          target="_self"
+                          type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                    <template #icon>
+                        <icon-gitlab/>
+                    </template>
+                    更多产品
+                </a-button>
+            </a-col>
+            <a-col :span="12">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="mailto:xyk953651094@qq.com?&subject=云开新标签页-功能建议&body=提示：功能建议前请优先查阅帮助文档"
                           target="_self"
                           type="text"
