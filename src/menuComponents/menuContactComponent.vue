@@ -33,7 +33,7 @@
             </a-col>
             <a-col :span="12">
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="https://github.com/xyk953651094?tab=repositories/"
+                          href="https://github.com/xyk953651094?tab=repositories"
                           target="_self"
                           type="text" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
