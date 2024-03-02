@@ -176,7 +176,6 @@ onMounted(() => {
         let nowTimeStamp = new Date().getTime();
         if (lastRequestTime === null) {  // 第一次请求时 lastRequestTime 为 null，因此直接进行请求赋值 lastRequestTime
             getWallpaper();
-            // } else if (nowTimeStamp - parseInt(lastRequestTime) > 0) {
         } else if (nowTimeStamp - parseInt(lastRequestTime) > parseInt(props.preferenceData.changeImageTime)) {  // 必须多于切换间隔才能进行新的请求
             getWallpaper();
         } else {  // 切换间隔内使用上一次请求结果
@@ -202,10 +201,10 @@ onMounted(() => {
             backgroundImage.onload = function () {
 
                 Message.clear();
-                Message.success("图片加载成功");
+                // Message.success("图片加载成功");
+                showFocusModeMessage();
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
-                showFocusModeMessage();
 
                 // 设置动态效果
                 backgroundImage.classList.add("wallpaperFadeIn");

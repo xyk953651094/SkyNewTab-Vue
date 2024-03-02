@@ -28,7 +28,7 @@
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                         />
-                        <preference-component
+                        <menu-component
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                             @preference-data="getPreferenceData"
@@ -37,13 +37,13 @@
                 </a-col>
                 <a-col :lg="0" :md="22" :sm="22" :xl="0" :xs="22" :xxl="0" style="text-align: right">
                     <a-space>
-                        <image-link-component
+                        <link-component
                             :display="componentDisplay"
                             :image-data="imageData"
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                         />
-                        <preference-component
+                        <menu-component
                             :preference-data="preferenceData"
                             :theme-color="themeColor"
                             @preference-data="getPreferenceData"
@@ -68,7 +68,7 @@
                     <a-space>
                         <author-component :display="componentDisplay" :image-data="imageData"
                                           :preference-data="preferenceData" :theme-color="themeColor"/>
-                        <image-history-component :display="componentDisplay" :image-history="imageHistory"
+                        <history-component :display="componentDisplay" :image-history="imageHistory"
                                                  :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
                 </a-col>
@@ -95,15 +95,15 @@ import SearchComponent from "./components/searchComponent.vue";
 import WallpaperComponent from "./components/wallpaperComponent.vue"
 import AuthorComponent from "./components/authorComponent.vue";
 import WeatherComponent from "./components/weatherComponent.vue";
-import PreferenceComponent from "./components/preferenceComponent.vue";
+import MenuComponent from "./components/menuComponent.vue";
 import CollectionComponent from "./components/collectionComponent.vue";
 import TodoComponent from "./components/todoComponent.vue";
 import ClockComponent from "./components/clockComponent.vue";
 import DailyComponent from "./components/dailyComponent.vue";
-import imageLinkComponent from "./components/imageLinkComponent.vue";
-import ImageHistoryComponent from "./components/imageHistoryComponent.vue";
-import {imageTopics} from "@/javascripts/publicConstants";
+import LinkComponent from "./components/linkComponent.vue";
+import HistoryComponent from "./components/historyComponent.vue";
 import FocusComponent from "@/components/focusComponent.vue";
+import {imageTopics} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -169,19 +169,19 @@ onMounted(() => {
             Notification.success({
                 showIcon: false,
                 title: "支持作者",
-                content: "如果喜欢这款插件，请在插件商店五星好评",
+                content: "如果喜欢这款插件，请考虑捐助或五星好评",
                 position: "bottomLeft",
                 duration: 5000
             });
         }, 1000);
 
         // 额外提醒
-        // if (currentVersion === "2.8.0") {
+        // if (currentVersion === "3.1.0") {
         //     setTimeout(() => {
         //         Notification.info({
         //             showIcon: false,
         //             title: "重要通知",
-        //             content: "新增专注模式，若专注模式无法生效，可尝试重新安装本插件",
+        //             content: "本次更新修改了偏好设置中的切换间隔，如出现异常请点击重置设置按钮",
         //             position: "bottomLeft",
         //             duration: 10000
         //         });

@@ -1,14 +1,40 @@
 <template>
     <a-card :body-style="{backgroundColor: backgroundColor}"
-            :header-style="{backgroundColor: backgroundColor, color: fontColor, borderBottom: '1px solid ' + fontColor}"
+            :header-style="{backgroundColor: backgroundColor, borderBottom: '1px solid ' + fontColor}"
             :style="{border: '1px solid' + fontColor}"
             size="small"
-            title="背景设置"
+            title="偏好设置"
     >
         <template #extra>
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width :disabled="formDisabled">
+            <a-form-item field="searchEngine" label="搜索引擎">
+                <a-radio-group v-model="preferenceData.searchEngine"
+                               :style="{width: '100%'}" @change="searchEngineRadioOnChange">
+                    <a-row>
+                        <a-col :span="12">
+                            <a-radio value="bing" id="bing">必应</a-radio>
+                        </a-col>
+                        <a-col :span="12">
+                            <a-radio value="google" id="google">谷歌</a-radio>
+                        </a-col>
+                    </a-row>
+                </a-radio-group>
+            </a-form-item>
+            <a-form-item field="buttonShape" label="按钮形状">
+                <a-radio-group v-model="preferenceData.buttonShape"
+                               :style="{width: '100%'}" @change="buttonShapeRadioOnChange">
+                    <a-row>
+                        <a-col :span="12">
+                            <a-radio value="round" id="round">圆形</a-radio>
+                        </a-col>
+                        <a-col :span="12">
+                            <a-radio value="default" id="default">方形</a-radio>
+                        </a-col>
+                    </a-row>
+                </a-radio-group>
+            </a-form-item>
             <a-form-item field="dynamicEffect" label="鼠标互动">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
@@ -117,9 +143,9 @@
             <a-form-item label="自定主题">
                 <a-space>
                     <a-form-item field="customTopic" no-style>
-                        <a-input v-model="inputValue" @change="inputOnChange" allow-clear placeholder="英文搜索最准确"/>
+                        <a-input :style="{width:'170px'}" v-model="customTopicInputValue" @change="customTopicInputOnChange" allow-clear placeholder="英文搜索最准确"/>
                     </a-form-item>
-                    <a-button :shape="buttonShape" :style="{color: fontColor}"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                               type="text" @click="submitCustomTopicBtnOnClick"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                     >
@@ -127,7 +153,7 @@
                             <icon-check/>
                         </template>
                     </a-button>
-                    <a-button :shape="buttonShape" :style="{color: fontColor}"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                               type="text" @click="clearCustomTopicBtnOnClick"
                               @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
                     >
@@ -142,11 +168,14 @@
                 </template>
             </a-form-item>
             <a-form-item field="changeImageTime" label="切换间隔">
-                <a-select v-model="preferenceData.changeImageTime" :style="{width:'162px'}"
+                <a-select v-model="preferenceData.changeImageTime" :style="{width:'170px'}"
                           @change="changeImageTimeOnChange">
-                    <a-option value="900000">{{ "每 15 分钟" }}</a-option>
-                    <a-option value="1800000">{{ "每 30 分钟" }}</a-option>
-                    <a-option value="3600000">{{ "每 60 分钟" }}</a-option>
+                    <a-option value="900000">{{ "每隔 15 分钟" }}</a-option>
+                    <a-option value="1800000">{{ "每隔 30 分钟" }}</a-option>
+                    <a-option value="3600000">{{ "每隔 1 小时" }}</a-option>
+                    <a-option value="21600000">{{ "每隔 6 小时" }}</a-option>
+                    <a-option value="43200000">{{ "每隔 12 小时" }}</a-option>
+                    <a-option value="86400000">{{ "每隔 1 天" }}</a-option>
                 </a-select>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">{{ "上次切换：" + lastRequestTime }}
@@ -178,34 +207,104 @@
                         </a-switch>
                     </a-form-item>
                 </a-col>
+                <a-col :span="12">
+                    <a-form-item field="simpleMode" label="极简模式">
+                        <a-switch v-model="preferenceData.simpleMode" id="simpleModeSwitch" @change="simpleModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
             </a-row>
+            <a-form-item field="clearStorageButton" label="危险设置">
+                <a-space>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                              type="text" @click="resetPreferenceBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    >
+                        <template #icon>
+                            <icon-redo/>
+                        </template>
+                        重置设置
+                    </a-button>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                              type="text" @click="clearStorageBtnOnClick"
+                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    >
+                        <template #icon>
+                            <icon-redo/>
+                        </template>
+                        重置插件
+                    </a-button>
+                </a-space>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{ "出现异常时可尝试重置设置或插件" }}
+                    </a-typography-text>
+                </template>
+            </a-form-item>
         </a-form>
     </a-card>
+    <a-modal v-model:visible="displayResetPreferenceModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             unmount-on-close @cancel="resetPreferenceCancelBtnOnClick" @ok="resetPreferenceOkBtnOnClick">
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "确定重置设置？" }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
+        <a-typography-text :style="{color: fontColor}">
+            {{ "注意：所有设置项将被重置为默认值" }}
+        </a-typography-text>
+    </a-modal>
+    <a-modal v-model:visible="displayClearStorageModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             unmount-on-close @cancel="clearStorageBtnCancelOnClick" @ok="clearStorageOkBtnOnClick">
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "确定重置插件？" }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
+        <a-typography-text :style="{color: fontColor}">
+            {{ "注意：所有设置项将被重置为默认值，所有数据将被清空" }}
+        </a-typography-text>
+    </a-modal>
 </template>
 
 <script setup>
-import {IconCheck, IconStop} from "@arco-design/web-vue/es/icon";
+import {IconCheck, IconRedo, IconSettings, IconStop} from "@arco-design/web-vue/es/icon";
 import {
     btnMouseOut,
     btnMouseOver,
-    getPreferenceDataStorage,
-    getTimeDetails,
-    isEmpty,
+    getPreferenceDataStorage, getTimeDetails,
+    isEmpty
 } from "@/javascripts/publicFunctions";
-import {defineProps, onMounted, ref, watch} from "vue";
+import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-// import {imageTopics} from "@/javascripts/publicConstants";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 let formDisabled = ref(false);
-let preferenceData = ref(getPreferenceDataStorage());
-let buttonShape = ref("round");
 let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 let imageTopicStatus = ref("已启用图片主题");
 let customTopicStatus = ref("已禁用自定主题");
-let inputValue = ref(getPreferenceDataStorage().customTopic);
+let customTopicInputValue = ref(getPreferenceDataStorage().customTopic);
+let displayResetPreferenceModal = ref(false);
+let displayClearStorageModal = ref(false);
+let preferenceData = ref(getPreferenceDataStorage());
 
-const props = defineProps({
+defineProps({
     hoverColor: {
         type: String,
         required: true,
@@ -226,33 +325,17 @@ const props = defineProps({
         default: () => {
             return ""
         }
-    },
-    preferenceModified: {
-        type: Number,
-        required: true,
-        default: () => {
-            return 0
-        }
     }
 });
 
-const emit = defineEmits(["preferenceData", "preferenceModified"]);
-
-watch(() => props.preferenceModified, (newValue, oldValue) => {
-    if (newValue !== oldValue && newValue !== 0) {
-        let tempPreferenceData = getPreferenceDataStorage();
-        preferenceData.value = tempPreferenceData;
-        buttonShape.value = tempPreferenceData.buttonShape;
-    }
-}, {immediate: true})
+const emit = defineEmits(["preferenceData"]);
 
 onMounted(() => {
     let tempLastRequestTime = localStorage.getItem("lastImageRequestTime");
     if (tempLastRequestTime !== null) {
         lastRequestTime.value = getTimeDetails(new Date(parseInt(tempLastRequestTime))).showDetail;
     }
-
-    buttonShape.value = preferenceData.value.buttonShape;
+    
     disableImageTopic.value = !isEmpty(preferenceData.value.customTopic);
     if (disableImageTopic.value) {
         imageTopicStatus.value = "已禁用自定主题";
@@ -260,12 +343,30 @@ onMounted(() => {
     }
 })
 
+// 搜索引擎
+function searchEngineRadioOnChange(value) {
+    preferenceData.value.searchEngine = value;
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+
+    Message.success("已更换搜索引擎");
+    // resetRadioColor(value, ["bing", "google"], props.hoverColor);
+}
+
+function buttonShapeRadioOnChange(value) {
+    preferenceData.value.buttonShape = value;
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+
+    Message.success("已更换按钮形状");
+    // resetRadioColor(value, ["round", "default"], props.hoverColor);
+}
+
 // 动效样式
 function dynamicEffectRadioOnChange(value) {
     preferenceData.value.dynamicEffect = value;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
     Message.success("已更换显示效果，一秒后刷新页面");
     // resetRadioColor(value, ["all", "translate", "rotate", "close"], props.hoverColor);
@@ -278,7 +379,6 @@ function imageQualityRadioOnChange(value) {
     preferenceData.value.imageQuality = value;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
     Message.success("已更新图片质量，一秒后刷新页面");
     // resetRadioColor(value, ["full", "regular"], props.hoverColor);
@@ -291,7 +391,6 @@ function imageTopicsCheckboxOnChange(values) {
     preferenceData.value.imageTopics = values;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
     Message.success("已更换图片主题，下次切换图片时生效");
     if (values.length === 0) {
@@ -301,22 +400,21 @@ function imageTopicsCheckboxOnChange(values) {
     // resetCheckboxColor(values, imageTopics, props.hoverColor);
 }
 
-function inputOnChange(value) {
-    inputValue.value = value;
+function customTopicInputOnChange(value) {
+    customTopicInputValue.value = value;
 }
 
 // 自定义主题
 function submitCustomTopicBtnOnClick() {
-    preferenceData.value.customTopic = inputValue.value;
+    preferenceData.value.customTopic = customTopicInputValue.value;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
-    disableImageTopic.value = !isEmpty(inputValue.value);
-    imageTopicStatus.value = isEmpty(inputValue.value)? "已启用图片主题" : "已禁用图片主题";
-    customTopicStatus.value = isEmpty(inputValue.value)? "已禁用自定主题" : "已启用自定主题";
+    disableImageTopic.value = !isEmpty(customTopicInputValue.value);
+    imageTopicStatus.value = isEmpty(customTopicInputValue.value)? "已启用图片主题" : "已禁用图片主题";
+    customTopicStatus.value = isEmpty(customTopicInputValue.value)? "已禁用自定主题" : "已启用自定主题";
 
-    if (!isEmpty(inputValue.value)) {
+    if (!isEmpty(customTopicInputValue.value)) {
         Message.success("已启用自定主题，下次切换图片时生效");
     } else {
         Message.success("已禁用自定主题，一秒后刷新页面");
@@ -329,8 +427,7 @@ function clearCustomTopicBtnOnClick() {
     preferenceData.value.customTopic = "";
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
-
+    
     disableImageTopic.value = false;
     imageTopicStatus.value = "已启用图片主题";
     customTopicStatus.value = "已禁用自定主题";
@@ -344,7 +441,6 @@ function changeImageTimeOnChange(value) {
     preferenceData.value.changeImageTime = value;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
     Message.success("已修改切换间隔，一秒后刷新页面");
     formDisabled.value = true;
@@ -355,7 +451,6 @@ function nightModeSwitchOnChange(checked) {
     preferenceData.value.nightMode = checked;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
     if (checked) {
         Message.success("已降低背景亮度");
@@ -370,7 +465,6 @@ function noImageModeSwitchOnChange(checked) {
     preferenceData.value.noImageMode = checked;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    emit("preferenceModified", new Date().getTime());
 
     if (checked) {
         Message.success("已开启纯色模式，一秒后刷新页面");
@@ -381,6 +475,67 @@ function noImageModeSwitchOnChange(checked) {
     // resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);
     formDisabled.value = true;
     refreshWindow();
+}
+
+function simpleModeSwitchOnChange(checked) {
+    preferenceData.value.simpleMode = checked;
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+
+    if (checked) {
+        Message.success("已开启极简模式");
+    } else {
+        Message.success("已关闭极简模式，一秒后刷新页面");
+        formDisabled.value = true;
+        refreshWindow();
+    }
+    // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
+}
+
+// 重置设置
+function resetPreferenceBtnOnClick() {
+    let resetTimeStampStorage = localStorage.getItem("resetTimeStamp");
+    if (resetTimeStampStorage && new Date().getTime() - parseInt(resetTimeStampStorage) < 60 * 1000) {
+        Message.error("操作过于频繁，请稍后再试");
+    } else {
+        displayResetPreferenceModal.value = true;
+    }
+}
+
+function resetPreferenceOkBtnOnClick() {
+    displayResetPreferenceModal.value = false;
+    localStorage.setItem("preferenceData", JSON.stringify(defaultPreferenceData));
+    localStorage.setItem("resetTimeStamp", JSON.stringify(new Date().getTime()));
+    Message.success("已重置设置，一秒后刷新页面");
+    formDisabled.value = true;
+    refreshWindow();
+}
+
+function resetPreferenceCancelBtnOnClick() {
+    displayResetPreferenceModal.value = false;
+}
+
+// 重置插件
+function clearStorageBtnOnClick() {
+    let resetTimeStampStorage = localStorage.getItem("resetTimeStamp");
+    if (resetTimeStampStorage && new Date().getTime() - parseInt(resetTimeStampStorage) < 60 * 1000) {
+        Message.error("操作过于频繁，请稍后再试");
+    } else {
+        displayClearStorageModal.value = true;
+    }
+}
+
+function clearStorageOkBtnOnClick() {
+    displayClearStorageModal.value = false;
+    localStorage.clear();
+    localStorage.setItem("resetTimeStamp", JSON.stringify(new Date().getTime()));
+    Message.success("已重置插件，一秒后刷新页面");
+    formDisabled.value = true;
+    refreshWindow();
+}
+
+function clearStorageBtnCancelOnClick() {
+    displayClearStorageModal.value = false;
 }
 
 function refreshWindow() {

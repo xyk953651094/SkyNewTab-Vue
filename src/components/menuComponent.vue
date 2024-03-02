@@ -24,61 +24,39 @@
                 @ok="handleOk"
             >
                 <template #title>
-                    <preference-header-component
+                    <menu-header-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
                 </template>
                 <a-space id="drawerContent" direction="vertical" size="large">
-                    <preference-image-component
+                    <menu-preference-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
-                        :preference-modified="preferenceModified"
                         @preference-data="getPreferenceData"
-                        @preference-modified="getPreferenceModified"
                     />
-                    <preference-function-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-modified="preferenceModified"
-                        @preference-data="getPreferenceData"
-                        @preference-modified="getPreferenceModified"
-                    />
-                    <preference-help-component
+                    <menu-info-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <preference-email-component
+                    <menu-contact-component
                         :background-color="backgroundColor"
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
-                    <preference-info-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
-                    <preference-product-component
-                        :background-color="backgroundColor"
-                        :font-color="fontColor"
-                        :hover-color="hoverColor"
-                        :preference-data="preferenceData"
-                    />
-                    <preference-to-top-component
+                    <menu-to-top-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
                     />
                 </a-space>
                 <template #footer>
-                    <preference-footer-component
+                    <menu-footer-component
                         :font-color="fontColor"
                         :hover-color="hoverColor"
                         :preference-data="preferenceData"
@@ -94,22 +72,18 @@ import {defineProps, onMounted, ref, watch} from "vue";
 import {IconMenu} from "@arco-design/web-vue/es/icon";
 import {changeThemeColor} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData, device} from "@/javascripts/publicConstants";
-import PreferenceHeaderComponent from "../preferenceComponents/preferenceHeaderComponent.vue";
-import PreferenceImageComponent from "../preferenceComponents/preferenceImageComponent.vue";
-import PreferenceFunctionComponent from "../preferenceComponents/preferenceFunctionComponent.vue";
-import PreferenceHelpComponent from "../preferenceComponents/preferenceHelpComponent.vue";
-import PreferenceEmailComponent from "../preferenceComponents/preferenceEmailComponent.vue";
-import PreferenceInfoComponent from "../preferenceComponents/preferenceInfoComponent.vue";
-import PreferenceProductComponent from "../preferenceComponents/preferenceProductComponent.vue";
-import PreferenceToTopComponent from "../preferenceComponents/preferenceToTopComponent.vue";
-import PreferenceFooterComponent from "../preferenceComponents/preferenceFooterComponent.vue";
+import MenuHeaderComponent from "@/menuComponents/menuHeaderComponent.vue";
+import MenuPreferenceComponent from "@/menuComponents/menuPreferenceComponent.vue";
+import menuContactComponent from "@/menuComponents/menuContactComponent.vue";
+import MenuInfoComponent from "@/menuComponents/menuInfoComponent.vue";
+import MenuToTopComponent from "@/menuComponents/menuToTopComponent.vue";
+import MenuFooterComponent from "@/menuComponents/menuFooterComponent.vue";
 
 let visible = ref(false);
 let drawerPosition = ref("right");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
-let preferenceModified = ref(false);
 
 const props = defineProps({
     themeColor: {
@@ -152,10 +126,6 @@ onMounted(() => {
         drawerPosition.value = "bottom";
     }
 })
-
-function getPreferenceModified(status) {
-    preferenceModified.value = status
-}
 
 function showDrawerBtnOnClick() {
     visible.value = true;
