@@ -520,15 +520,23 @@ function simpleModeSwitchOnChange(checked) {
 
 // 导入数据
 function importDataBtnOnClick() {
-    // TODO: 导入数据
-    Message.success("已成功导入数据，一秒后刷新页面");
-    refreshWindow();
+    if (device !== "") {
+        Message.error("暂不支持移动端");
+    } else {
+        // TODO: 导入数据
+        Message.success("已成功导入数据，一秒后刷新页面");
+        refreshWindow();
+    }
 }
 
 // 导入数据
 function exportDataBtnOnClick() {
-    // TODO: 导出数据
-    Message.success("已成功导出数据");
+    if (device !== "") {
+        Message.error("暂不支持移动端");
+    } else {
+        // TODO: 导出数据
+        Message.success("已成功导出数据");
+    }
 }
 
 // 重置设置
