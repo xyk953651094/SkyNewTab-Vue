@@ -220,20 +220,46 @@
                     </a-form-item>
                 </a-col>
             </a-row>
+            <a-form-item field="manageDataButton" label="数据管理">
+                <a-space>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="importDataBtnOnClick"
+                    >
+                        <template #icon>
+                            <icon-import />
+                        </template>
+                        导入数据
+                    </a-button>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="exportDataBtnOnClick"
+                    >
+                        <template #icon>
+                            <icon-export />
+                        </template>
+                        导出数据
+                    </a-button>
+                </a-space>
+            </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              type="text" @click="resetPreferenceBtnOnClick"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="resetPreferenceBtnOnClick"
                     >
                         <template #icon>
                             <icon-redo/>
                         </template>
                         重置设置
                     </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              type="text" @click="clearStorageBtnOnClick"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="clearStorageBtnOnClick"
                     >
                         <template #icon>
                             <icon-redo/>
@@ -283,7 +309,7 @@
 </template>
 
 <script setup>
-import {IconCheck, IconRedo, IconSettings, IconStop} from "@arco-design/web-vue/es/icon";
+import {IconCheck, IconRedo, IconSettings, IconStop, IconImport, IconExport} from "@arco-design/web-vue/es/icon";
 import {
     btnMouseOut,
     btnMouseOver,
@@ -490,6 +516,19 @@ function simpleModeSwitchOnChange(checked) {
         refreshWindow();
     }
     // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
+}
+
+// 导入数据
+function importDataBtnOnClick() {
+    // TODO: 导入数据
+    Message.success("已成功导入数据，一秒后刷新页面");
+    refreshWindow();
+}
+
+// 导入数据
+function exportDataBtnOnClick() {
+    // TODO: 导出数据
+    Message.success("已成功导出数据");
 }
 
 // 重置设置
