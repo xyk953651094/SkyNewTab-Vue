@@ -49,8 +49,7 @@
                             </a-col>
                             <a-col :span="12">
                                 <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor}" type="text"
-                                          @click="locationBtnOnClick"
+                                          :style="{color: fontColor, cursor: 'default'}" type="text"
                                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-location/>
@@ -210,14 +209,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 
 function infoBtnOnClick() {
     window.open(searchEngineUrl.value + "天气", "_self");
-}
-
-function locationBtnOnClick() {
-    if (location.value !== "暂无信息") {
-        window.open(searchEngineUrl.value + location.value, "_self");
-    } else {
-        Message.error("无跳转链接");
-    }
 }
 
 function setWeather(data) {
