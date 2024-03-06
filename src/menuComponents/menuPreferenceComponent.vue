@@ -222,16 +222,25 @@
             </a-row>
             <a-form-item field="manageDataButton" label="数据管理">
                 <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
-                              @mouseout="btnMouseOut(fontColor, $event)"
-                              @mouseover="btnMouseOver(hoverColor, $event)"
-                              @click="importDataBtnOnClick"
+                    <a-upload
+                        accept="application/json"
+                        limit="1"
+                        :auto-upload="false"
+                        :on-before-upload="(file) => {importDataBtnOnClick(file)}"
+                        :show-file-list="false"
                     >
-                        <template #icon>
-                            <icon-import />
+                        <template #upload-button>
+                            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                                      @mouseout="btnMouseOut(fontColor, $event)"
+                                      @mouseover="btnMouseOver(hoverColor, $event)"
+                            >
+                                <template #icon>
+                                    <icon-import />
+                                </template>
+                                导入数据
+                            </a-button>
                         </template>
-                        导入数据
-                    </a-button>
+                    </a-upload>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
                               @mouseout="btnMouseOut(fontColor, $event)"
                               @mouseover="btnMouseOver(hoverColor, $event)"
@@ -318,7 +327,7 @@ import {
 } from "@/javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData, device} from "@/javascripts/publicConstants";
 
 let formDisabled = ref(false);
 let lastRequestTime = ref("暂无信息");
@@ -519,23 +528,83 @@ function simpleModeSwitchOnChange(checked) {
 }
 
 // 导入数据
-function importDataBtnOnClick() {
+function importDataBtnOnClick(file) {
     if (device !== "") {
         Message.error("暂不支持移动端");
     } else {
-        // TODO: 导入数据
-        Message.success("已成功导入数据，一秒后刷新页面");
-        refreshWindow();
+        if (file.name.indexOf("云开新标签页") === 0) {
+            file.text().then(result =>{
+                let importData = JSON.parse(result);
+                if (importData) {
+                    localStorage.setItem("daily", JSON.stringify(importData.dailyList ? importData.dailyList : []));
+                    localStorage.setItem("todos", JSON.stringify(importData.todoList ? importData.todoList : []));
+                    localStorage.setItem("filterList", JSON.stringify(importData.filterList ? importData.filterList : []));
+                    localStorage.setItem("collections", JSON.stringify(importData.collectionList ? importData.collectionList : []));
+                    localStorage.setItem("preferenceData", JSON.stringify(importData.preferenceData ? importData.preferenceData : defaultPreferenceData));
+                    formDisabled.value = true;
+                    Message.success("导入数据成功，一秒后刷新页面");
+                    refreshWindow();
+                }
+                else {
+                    Message.error("导入数据失败");
+                }
+            })
+        } else {
+            Message.error("请选择正确的文件");
+        }
     }
+    return false;
 }
 
-// 导入数据
+// 导出数据
 function exportDataBtnOnClick() {
     if (device !== "") {
         Message.error("暂不支持移动端");
     } else {
-        // TODO: 导出数据
-        Message.success("已成功导出数据");
+        // 倒数日
+        let tempDailyList = [];
+        let dailyListStorage = localStorage.getItem("daily");
+        if (dailyListStorage) {
+            tempDailyList = JSON.parse(dailyListStorage);
+        }
+
+        // 待办事项
+        let tempTodoList = [];
+        let todoListStorage = localStorage.getItem("todos");
+        if (todoListStorage) {
+            tempTodoList = JSON.parse(todoListStorage);
+        }
+
+        // 专注模式过滤名单
+        let tempFilterList = [];
+        let filterListStorage = localStorage.getItem("filterList");
+        if (filterListStorage) {
+            tempFilterList = JSON.parse(filterListStorage);
+        }
+
+        // 快捷链接
+        let tempCollectionList = [];
+        let collectionStorage = localStorage.getItem("collections");
+        if (collectionStorage) {
+            tempCollectionList = JSON.parse(collectionStorage);
+        }
+
+        let exportData = {
+            dailyList: tempDailyList,
+            todoList: tempTodoList,
+            filterList: tempFilterList,
+            collectionList: tempCollectionList,
+            preferenceData: preferenceData.value,
+        }
+
+        let file = new Blob([JSON.stringify(exportData)], {type: "application/json"});
+        const objectURL = URL.createObjectURL(file);
+        let a = document.createElement("a");
+        a.href = objectURL;
+        a.download = "云开新标签页.json";
+        a.click();
+        URL.revokeObjectURL(objectURL);
+        Message.success("导出数据成功");
     }
 }
 
