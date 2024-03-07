@@ -77,21 +77,12 @@
                     问题反馈
                 </a-button>
             </a-col>
-            <a-col :span="12">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <icon-wechat />
-                    </template>
-                    公众号
-                </a-button>
-            </a-col>
         </a-row>
     </a-card>
 </template>
 
 <script setup>
-import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub, IconWechat} from "@arco-design/web-vue/es/icon";
+import {IconEmail, IconThumbDown, IconThumbUp, IconGitlab, IconGithub} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";

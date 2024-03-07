@@ -83,12 +83,15 @@
                                 <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
                                 <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
                             </a-select>
+                            <a-avatar>
+                                <img alt="avatar" :src="focusSoundIconUrl"/>
+                            </a-avatar>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
                                       @click="playBtnOnClick"
                                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-play-arrow v-if="focusAudioPaused" />
+                                    <icon-play-arrow-fill v-if="focusAudioPaused" />
                                     <icon-pause v-else />
                                 </template>
                                 {{focusAudioPaused ? "播放" : "暂停"}}
@@ -130,7 +133,7 @@
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus, IconPlayArrow, IconPause} from "@arco-design/web-vue/es/icon";
+import {IconLink, IconDelete, IconPlus, IconPlayArrowFill, IconPause} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
 import focusSoundTwo from "../assets/focusSounds/松树林小雪.mp3";
@@ -171,6 +174,7 @@ let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
 let focusSound = ref("古镇雨滴");
+let focusSoundIconUrl = ref("https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png");
 let focusAudioPaused = ref(true);
 const focusMaxSize = 10;
 const browserType = getBrowserType();
@@ -292,6 +296,19 @@ function modalCancelBtnOnClick() {
 }
 
 function focusSoundSelectOnChange(value) {
+    switch (value) {
+        case "古镇雨滴": {
+            focusSoundIconUrl.value = "https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png";
+            break;
+        }
+        case "松树林小雪": {
+            focusSoundIconUrl.value = "https://www.soundvery.com/KUpload/image/20240125/20240125190604_0946.png";
+            break;
+        }
+        default: {
+            focusSoundIconUrl.value = "https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png";
+        }
+    }
     focusSound.value = value;
     focusAudioPaused.value = false;
     playFocusSound(value);
