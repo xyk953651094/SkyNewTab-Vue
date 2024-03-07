@@ -125,39 +125,41 @@
                 </a-row>
             </template>
             <template #content>
-                <a-list :bordered=false>
+                <a-list :bordered=false :split="false">
                     <a-list-item>
-                        <a-space direction="vertical">
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      type="text"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-calendar/>
-                                </template>
-                                {{ calendar }}
-                            </a-button>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      type="text"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-check-circle/>
-                                </template>
-                                {{ "宜：" + (suit.length < btnMaxSize ? suit : suit.substring(0, btnMaxSize) + "...") }}
-                            </a-button>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor, cursor: 'default'}"
-                                      type="text"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-close-circle/>
-                                </template>
-                                {{
-                                    "忌：" + (avoid.length < btnMaxSize ? avoid : avoid.substring(0, btnMaxSize) + "...")
-                                }}
-                            </a-button>
-                        </a-space>
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text"
+                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-calendar/>
+                            </template>
+                            {{ calendar }}
+                        </a-button>
+                    </a-list-item>
+                    <a-list-item>
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text"
+                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-check-circle/>
+                            </template>
+                            {{ "宜：" + (suit.length < btnMaxSize ? suit : suit.substring(0, btnMaxSize) + "...") }}
+                        </a-button>
+                    </a-list-item>
+                    <a-list-item>
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text"
+                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-close-circle/>
+                            </template>
+                            {{
+                                "忌：" + (avoid.length < btnMaxSize ? avoid : avoid.substring(0, btnMaxSize) + "...")
+                            }}
+                        </a-button>
                     </a-list-item>
                 </a-list>
             </template>
