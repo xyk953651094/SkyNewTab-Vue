@@ -113,6 +113,8 @@
                     <a-option value="work">工作</a-option>
                     <a-option value="study">学习</a-option>
                     <a-option value="life">生活</a-option>
+                    <a-option value="rest">休闲</a-option>
+                    <a-option value="other">其它</a-option>
                 </a-select>
             </a-form-item>
             <a-form-item field="todoRate" label="优先级别">
@@ -200,6 +202,10 @@ function finishBtnOnClick(item) {
         todoList.value.splice(index, 1);
     }
 
+    todoList.value.sort((a, b) => {
+        return b.priority.length - a.priority.length;
+    });
+
     localStorage.setItem("todos", JSON.stringify(todoList.value));
 }
 
@@ -235,6 +241,10 @@ function modalOkBtnOnClick() {
         "timeStamp": Date.now()
     });
 
+    todoList.value.sort((a, b) => {
+        return b.priority.length - a.priority.length;
+    });
+
     displayModal.value = false;
     localStorage.setItem("todos", JSON.stringify(todoList.value));
     Message.success("添加成功");
@@ -254,6 +264,12 @@ function selectOnChange(value) {
             break;
         case "life":
             tag.value = "生活";
+            break;
+        case "rest":
+            tag.value = "休闲";
+            break;
+        case "other":
+            tag.value = "其它";
             break;
         default:
             tag.value = "工作";
