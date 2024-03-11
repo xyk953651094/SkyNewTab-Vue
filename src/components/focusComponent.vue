@@ -233,6 +233,12 @@ function focusModeSwitchOnChange(checked) {
     focusMode.value = checked;
     localStorage.setItem("focusMode", JSON.stringify(checked));
     setExtensionStorage("focusMode", checked);
+
+    // 关闭时停止播放白噪音
+    if (!checked && !focusAudio.paused) {
+        focusAudioPaused.value = true;
+        focusAudio.pause();
+    }
 }
 
 function removeAllBtnOnClick() {
