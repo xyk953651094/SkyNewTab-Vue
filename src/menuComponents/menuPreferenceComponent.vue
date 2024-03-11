@@ -9,7 +9,7 @@
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width :disabled="formDisabled">
-            <a-form-item field="searchEngine" label="搜索引擎">
+            <a-form-item field="searchEngine" label="搜索引擎" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                :style="{width: '100%'}" @change="searchEngineRadioOnChange">
                     <a-row>
@@ -35,7 +35,7 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-form-item field="dynamicEffect" label="鼠标互动">
+            <a-form-item field="dynamicEffect" label="鼠标互动" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
                     <a-row :gutter="[0, 8]">
@@ -208,7 +208,7 @@
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
-                    <a-form-item field="simpleMode" label="极简模式">
+                    <a-form-item field="simpleMode" label="极简模式" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                         <a-switch v-model="preferenceData.simpleMode" id="simpleModeSwitch" @change="simpleModeSwitchOnChange">
                             <template #checked>
                                 已开启
@@ -220,7 +220,7 @@
                     </a-form-item>
                 </a-col>
             </a-row>
-            <a-form-item field="manageDataButton" label="数据管理">
+            <a-form-item field="manageDataButton" label="数据管理" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                 <a-space>
                     <a-upload
                         accept="application/json"
