@@ -18,9 +18,8 @@
                           @mouseout="btnMouseOut(fontColor, $event)"
                           @mouseover="btnMouseOver(hoverColor, $event)">
                     <template #icon>
-                        <icon-notification/>
+                        <i class="bi bi-rss-fill"></i>
                     </template>
-                    {{ "博客" }}
                 </a-button>
                 <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                           href="https://afdian.net/a/xyk953651094" target="_self" type="text"
@@ -40,7 +39,7 @@
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconGift, IconNotification, IconWechat} from "@arco-design/web-vue/es/icon";
+import {IconGift, IconWechat} from "@arco-design/web-vue/es/icon";
 
 defineProps({
     hoverColor: {

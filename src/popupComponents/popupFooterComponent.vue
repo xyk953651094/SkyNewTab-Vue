@@ -32,7 +32,7 @@
                   @mouseout="btnMouseOut(fontColor, $event)"
                   @mouseover="btnMouseOver(hoverColor, $event)">
             <template #icon>
-                <icon-notification/>
+                <i class="bi bi-rss-fill"></i>
             </template>
             博客
         </a-button>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import {IconGift, IconGithub, IconGitlab, IconNotification, IconWechat} from "@arco-design/web-vue/es/icon";
+import {IconGift, IconGithub, IconGitlab, IconWechat} from "@arco-design/web-vue/es/icon";
 import {defineProps} from "vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
