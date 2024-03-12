@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '500px'}"
+            :style="{width: '550px'}"
             position="br"
         >
             <a-button id="focusBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -35,7 +35,7 @@
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{ "添加域名" }}
+                                {{ "添加黑名单" }}
                             </a-button>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -75,27 +75,38 @@
                         </template>
                     </a-list-item>
                     <template #footer>
-                        <a-space>
-                            <a-typography-text :style="{color: fontColor}">
-                                {{focusAudioPaused ? "白噪音" : "播放中"}}
-                            </a-typography-text>
-                            <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
-                                <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
-                                <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
-                            </a-select>
-                            <a-avatar>
-                                <img alt="avatar" :src="focusSoundIconUrl"/>
-                            </a-avatar>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor}" type="text"
-                                      @click="playBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-play-arrow-fill v-if="focusAudioPaused" />
-                                    <icon-pause v-else />
-                                </template>
-                                {{focusAudioPaused ? "播放" : "暂停"}}
-                            </a-button>
+                        <a-space direction="vertical">
+                            <a-space>
+                                <a-typography-text :style="{color: fontColor}">{{"专注时段"}}</a-typography-text>
+                                <a-select default-value="manual" :style="{width:'120px'}">
+                                    <a-option value="manual">{{ "手动" }}</a-option>
+                                    <a-option value="90000">{{ "15 分钟" }}</a-option>
+                                    <a-option value="180000">{{ "30 分钟" }}</a-option>
+                                    <a-option value="270000">{{ "45 分钟" }}</a-option>
+                                    <a-option value="360000">{{ "60 分钟" }}</a-option>
+                                </a-select>
+                                <a-typography-text :style="{color: fontColor}">{{"剩余时间：29 : 36"}}</a-typography-text>
+                            </a-space>
+                            <a-space>
+                                <a-typography-text :style="{color: fontColor}">{{"专注噪音"}}</a-typography-text>
+                                <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
+                                    <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
+                                    <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
+                                </a-select>
+                                <a-avatar>
+                                    <img alt="avatar" :src="focusSoundIconUrl"/>
+                                </a-avatar>
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor}" type="text"
+                                          @click="playBtnOnClick"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <icon-play-arrow-fill v-if="focusAudioPaused" />
+                                        <icon-pause v-else />
+                                    </template>
+                                    {{focusAudioPaused ? "播放" : "暂停"}}
+                                </a-button>
+                            </a-space>
                         </a-space>
                     </template>
                 </a-list>
@@ -110,7 +121,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加域名 " + filterList.length + " / " + focusMaxSize }}
+                        {{ "添加黑名单 " + filterList.length + " / " + focusMaxSize }}
                     </a-typography-text>
                 </a-col>
             </a-row>
@@ -118,10 +129,10 @@
         <a-form>
             <a-form-item field="focusInput" label="网站域名">
                 <a-input placeholder="example.com" v-model="inputValue" @change="inputOnChange"
-                         maxLength=20 show-word-limit allow-clear/>
+                         maxLength=30 show-word-limit allow-clear/>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">
-                        {{"开启专注模式后，访问添加的域名时将自动跳转至本插件"}}
+                        {{"开启专注模式后，访问黑名单中的域名时将自动跳转至本插件"}}
                     </a-typography-text>
                 </template>
             </a-form-item>
@@ -220,13 +231,13 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    // console.log(browserType + " " + key + " " + value);
-    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-        chrome.storage.local.set({[key]: value});
-    }
-    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        browser.storage.local.set({[key]: value});
-    }
+    console.log(browserType + " " + key + " " + value);
+    // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+    //     chrome.storage.local.set({[key]: value});
+    // }
+    // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+    //     browser.storage.local.set({[key]: value});
+    // }
 }
 
 function focusModeSwitchOnChange(checked) {
