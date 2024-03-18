@@ -42,9 +42,9 @@
                             <a-avatar :image-url="authorIconUrl" :size="64" :style="{backgroundColor: 'transparent'}"/>
                             <a-space direction="vertical">
                                 <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor}"
+                                          :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
-                                          @click="authorLinkBtnOnClick" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-user/>
                                     </template>
@@ -93,9 +93,8 @@
                                       shape="square"/>
                             <a-space direction="vertical">
                                 <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor}"
+                                          :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
-                                          @click="imageLocationBtnOnClick"
                                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-location/>
@@ -222,25 +221,9 @@ watch(() => props.preferenceData, (newValue, oldValue) => {
     }
 }, {immediate: true});
 
-function authorLinkBtnOnClick() {
-    if (authorLink.value.length !== 0) {
-        window.open(authorLink.value + unsplashUrl, "_self");
-    } else {
-        Message.error("无跳转链接");
-    }
-}
-
 function imageLinkBtnOnClick() {
     if (imageLink.value.length !== 0) {
         window.open(imageLink.value + unsplashUrl, "_self");
-    } else {
-        Message.error("无跳转链接");
-    }
-}
-
-function imageLocationBtnOnClick() {
-    if (imageLocation.value !== "暂无信息") {
-        window.open(searchEngineUrl.value + imageLocation.value, "_self");
     } else {
         Message.error("无跳转链接");
     }

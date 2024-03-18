@@ -32,25 +32,24 @@
                 </a-row>
             </template>
             <template #content>
-                <a-list :bordered=false>
+                <a-list :bordered=false :split="false">
+                    <a-list-item :style="{display: weatherTips.length === 0 ? 'none' : 'flex'}">
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text"
+                                  @mouseout="btnMouseOut(fontColor, $event)"
+                                  @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-bulb />
+                            </template>
+                            {{ weatherTips }}
+                        </a-button>
+                    </a-list-item>
                     <a-list-item>
-                        <a-row :gutter="[0, 8]">
-                            <a-col :span="24" :style="{display: weatherTips.length === 0 ? 'none' : 'block'}">
-                                <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          type="text"
-                                          @mouseout="btnMouseOut(fontColor, $event)"
-                                          @mouseover="btnMouseOver(hoverColor, $event)">
-                                    <template #icon>
-                                        <icon-bulb />
-                                    </template>
-                                    {{ weatherTips }}
-                                </a-button>
-                            </a-col>
+                        <a-row>
                             <a-col :span="12">
                                 <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor}" type="text"
-                                          @click="locationBtnOnClick"
+                                          :style="{color: fontColor, cursor: 'default'}" type="text"
                                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                     <template #icon>
                                         <icon-location/>
@@ -69,6 +68,10 @@
                                     {{ " 风速情况：" + windInfo }}
                                 </a-button>
                             </a-col>
+                        </a-row>
+                    </a-list-item>
+                    <a-list-item>
+                        <a-row>
                             <a-col :span="12">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
@@ -91,6 +94,10 @@
                                     {{ " 空气质量：" + pm25 }}
                                 </a-button>
                             </a-col>
+                        </a-row>
+                    </a-list-item>
+                    <a-list-item>
+                        <a-row>
                             <a-col :span="12">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
@@ -113,19 +120,19 @@
                                     {{ " 视线距离：" + visibility }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="24">
-                                <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          type="text"
-                                          @mouseout="btnMouseOut(fontColor, $event)"
-                                          @mouseover="btnMouseOver(hoverColor, $event)">
-                                    <template #icon>
-                                        <icon-clock-circle/>
-                                    </template>
-                                    {{ "上次更新：" + lastRequestTime }}
-                                </a-button>
-                            </a-col>
                         </a-row>
+                    </a-list-item>
+                    <a-list-item>
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor, cursor: 'default'}"
+                                  type="text"
+                                  @mouseout="btnMouseOut(fontColor, $event)"
+                                  @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-clock-circle/>
+                            </template>
+                            {{ "上次更新：" + lastRequestTime }}
+                        </a-button>
                     </a-list-item>
                 </a-list>
             </template>
@@ -146,7 +153,6 @@ import {
 } from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 import {IconClockCircle, IconLocation, IconMoreVertical, IconBulb} from "@arco-design/web-vue/es/icon";
-import {Message} from "@arco-design/web-vue";
 
 const props = defineProps({
     themeColor: {
@@ -210,14 +216,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 
 function infoBtnOnClick() {
     window.open(searchEngineUrl.value + "天气", "_self");
-}
-
-function locationBtnOnClick() {
-    if (location.value !== "暂无信息") {
-        window.open(searchEngineUrl.value + location.value, "_self");
-    } else {
-        Message.error("无跳转链接");
-    }
 }
 
 function setWeather(data) {

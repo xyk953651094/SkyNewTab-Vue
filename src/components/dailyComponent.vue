@@ -195,6 +195,10 @@ function removeBtnOnClick(item) {
         dailyList.value.splice(index, 1);
     }
 
+    dailyList.value.sort((a, b) => {
+        return a.selectedTimeStamp - b.selectedTimeStamp;
+    });
+
     localStorage.setItem("daily", JSON.stringify(dailyList.value));
 }
 
@@ -226,6 +230,10 @@ function modalOkBtnOnClick() {
         "title": inputValue.value,
         "selectedTimeStamp": selectedTimeStamp.value,
         "timeStamp": Date.now()
+    });
+
+    dailyList.value.sort((a, b) => {
+        return a.selectedTimeStamp - b.selectedTimeStamp;
     });
 
     displayModal.value = false;

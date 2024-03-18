@@ -54,13 +54,15 @@
         </a-layout-header>
         <a-layout-content id="content" class="alignCenter">
             <wallpaper-component :preference-data="preferenceData" @image-data="getImageData" @image-history="getImageHistory"/>
-            <a-space align="center" direction="vertical">
-                <clock-component :theme-color="themeColor"/>
-                <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
+            <a-row>
                 <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
-                    <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                    <a-space align="center" direction="vertical">
+                        <clock-component :theme-color="themeColor"/>
+                        <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                        <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
+                    </a-space>
                 </a-col>
-            </a-space>
+            </a-row>
         </a-layout-content>
         <a-layout-footer id="footer">
             <a-row justify="center">

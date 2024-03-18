@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '500px'}"
+            :style="{width: '550px'}"
             position="br"
         >
             <a-button id="focusBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -35,7 +35,7 @@
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{ "添加域名" }}
+                                {{ "添加黑名单" }}
                             </a-button>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -76,19 +76,20 @@
                     </a-list-item>
                     <template #footer>
                         <a-space>
-                            <a-typography-text :style="{color: fontColor}">
-                                {{focusAudioPaused ? "白噪音" : "播放中"}}
-                            </a-typography-text>
+                            <a-typography-text :style="{color: fontColor}">{{"白噪音"}}</a-typography-text>
                             <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
                                 <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
                                 <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
                             </a-select>
+                            <a-avatar>
+                                <img alt="avatar" :src="focusSoundIconUrl"/>
+                            </a-avatar>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
                                       @click="playBtnOnClick"
                                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
                                 <template #icon>
-                                    <icon-play-arrow v-if="focusAudioPaused" />
+                                    <icon-play-arrow-fill v-if="focusAudioPaused" />
                                     <icon-pause v-else />
                                 </template>
                                 {{focusAudioPaused ? "播放" : "暂停"}}
@@ -107,7 +108,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加域名 " + filterList.length + " / " + focusMaxSize }}
+                        {{ "添加黑名单 " + filterList.length + " / " + focusMaxSize }}
                     </a-typography-text>
                 </a-col>
             </a-row>
@@ -115,10 +116,10 @@
         <a-form>
             <a-form-item field="focusInput" label="网站域名">
                 <a-input placeholder="example.com" v-model="inputValue" @change="inputOnChange"
-                         maxLength=20 show-word-limit allow-clear/>
+                         maxLength=30 show-word-limit allow-clear/>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">
-                        {{"开启专注模式后，访问添加的域名时将自动跳转至本插件"}}
+                        {{"开启专注模式后，访问黑名单中的域名时将自动跳转至本插件"}}
                     </a-typography-text>
                 </template>
             </a-form-item>
@@ -130,16 +131,10 @@
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus, IconPlayArrow, IconPause} from "@arco-design/web-vue/es/icon";
+import {IconLink, IconDelete, IconPlus, IconPlayArrowFill, IconPause} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
-import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
-import focusSoundTwo from "../assets/focusSounds/松树林小雪.mp3";
 
 const focusAudio = new Audio();
-const focusSoundsDictionary = {
-    "focusSoundOne": focusSoundOne,
-    "focusSoundTwo": focusSoundTwo,
-}
 
 const props = defineProps({
     themeColor: {
@@ -171,6 +166,7 @@ let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
 let focusSound = ref("古镇雨滴");
+let focusSoundIconUrl = ref("https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png");
 let focusAudioPaused = ref(true);
 const focusMaxSize = 10;
 const browserType = getBrowserType();
@@ -229,6 +225,12 @@ function focusModeSwitchOnChange(checked) {
     focusMode.value = checked;
     localStorage.setItem("focusMode", JSON.stringify(checked));
     setExtensionStorage("focusMode", checked);
+
+    // 关闭时停止播放白噪音
+    if (!checked && !focusAudio.paused) {
+        focusAudioPaused.value = true;
+        focusAudio.pause();
+    }
 }
 
 function removeAllBtnOnClick() {
@@ -292,37 +294,46 @@ function modalCancelBtnOnClick() {
 }
 
 function focusSoundSelectOnChange(value) {
+    switch (value) {
+        case "古镇雨滴": {
+            focusSoundIconUrl.value = "https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png";
+            break;
+        }
+        case "松树林小雪": {
+            focusSoundIconUrl.value = "https://www.soundvery.com/KUpload/image/20240125/20240125190604_0946.png";
+            break;
+        }
+        default: {
+            focusSoundIconUrl.value = "https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png";
+        }
+    }
     focusSound.value = value;
     focusAudioPaused.value = false;
     playFocusSound(value);
 }
 
 function playBtnOnClick() {
-    if (browserType !== "Safari") {
-        if (focusAudio.paused) {
-            focusAudioPaused.value = false;
-            playFocusSound(focusSound.value);
-        } else {
-            focusAudioPaused.value = true;
-            focusAudio.pause();
-        }
+    if (focusAudio.paused) {
+        focusAudioPaused.value = false;
+        playFocusSound(focusSound.value);
     } else {
-        Message.error("Safari 暂不支持播放白噪音");
+        focusAudioPaused.value = true;
+        focusAudio.pause();
     }
 }
 
 function playFocusSound(focusSound) {
     switch (focusSound) {
         case "古镇雨滴": {
-            focusAudio.src = focusSoundsDictionary.focusSoundOne;
+            focusAudio.src = "https://www.soundvery.com/KUpload/file/20240111/20240111145637_8657.mp3";
             break;
         }
         case "松树林小雪": {
-            focusAudio.src = focusSoundsDictionary.focusSoundTwo;
+            focusAudio.src = "https://www.soundvery.com/KUpload/file/20240125/20240125190612_0979.mp3";
             break;
         }
         default: {
-            focusAudio.src = focusSoundsDictionary.focusSoundOne;
+            focusAudio.src = "https://www.soundvery.com/KUpload/file/20240111/20240111145637_8657.mp3";
         }
     }
     focusAudio.loop = true;

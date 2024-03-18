@@ -9,7 +9,7 @@
             <icon-settings/>
         </template>
         <a-form :model="preferenceData" auto-label-width :disabled="formDisabled">
-            <a-form-item field="searchEngine" label="搜索引擎">
+            <a-form-item field="searchEngine" label="搜索引擎" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                 <a-radio-group v-model="preferenceData.searchEngine"
                                :style="{width: '100%'}" @change="searchEngineRadioOnChange">
                     <a-row>
@@ -35,7 +35,7 @@
                     </a-row>
                 </a-radio-group>
             </a-form-item>
-            <a-form-item field="dynamicEffect" label="鼠标互动">
+            <a-form-item field="dynamicEffect" label="鼠标互动" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                 <a-radio-group v-model="preferenceData.dynamicEffect"
                                @change="dynamicEffectRadioOnChange">
                     <a-row :gutter="[0, 8]">
@@ -208,7 +208,7 @@
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
-                    <a-form-item field="simpleMode" label="极简模式">
+                    <a-form-item field="simpleMode" label="极简模式" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                         <a-switch v-model="preferenceData.simpleMode" id="simpleModeSwitch" @change="simpleModeSwitchOnChange">
                             <template #checked>
                                 已开启
@@ -220,20 +220,55 @@
                     </a-form-item>
                 </a-col>
             </a-row>
+            <a-form-item field="manageDataButton" label="数据管理" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
+                <a-space>
+                    <a-upload
+                        accept="application/json"
+                        limit="1"
+                        :auto-upload="false"
+                        :on-before-upload="(file) => {importDataBtnOnClick(file)}"
+                        :show-file-list="false"
+                    >
+                        <template #upload-button>
+                            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                                      @mouseout="btnMouseOut(fontColor, $event)"
+                                      @mouseover="btnMouseOver(hoverColor, $event)"
+                            >
+                                <template #icon>
+                                    <icon-import />
+                                </template>
+                                导入数据
+                            </a-button>
+                        </template>
+                    </a-upload>
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="exportDataBtnOnClick"
+                    >
+                        <template #icon>
+                            <icon-export />
+                        </template>
+                        导出数据
+                    </a-button>
+                </a-space>
+            </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-space>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              type="text" @click="resetPreferenceBtnOnClick"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="resetPreferenceBtnOnClick"
                     >
                         <template #icon>
                             <icon-redo/>
                         </template>
                         重置设置
                     </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              type="text" @click="clearStorageBtnOnClick"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                              @mouseout="btnMouseOut(fontColor, $event)"
+                              @mouseover="btnMouseOver(hoverColor, $event)"
+                              @click="clearStorageBtnOnClick"
                     >
                         <template #icon>
                             <icon-redo/>
@@ -283,7 +318,7 @@
 </template>
 
 <script setup>
-import {IconCheck, IconRedo, IconSettings, IconStop} from "@arco-design/web-vue/es/icon";
+import {IconCheck, IconRedo, IconSettings, IconStop, IconImport, IconExport} from "@arco-design/web-vue/es/icon";
 import {
     btnMouseOut,
     btnMouseOver,
@@ -292,7 +327,7 @@ import {
 } from "@/javascripts/publicFunctions";
 import {defineProps, onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData, device} from "@/javascripts/publicConstants";
 
 let formDisabled = ref(false);
 let lastRequestTime = ref("暂无信息");
@@ -490,6 +525,89 @@ function simpleModeSwitchOnChange(checked) {
         refreshWindow();
     }
     // resetSwitchColor("#simpleModeSwitch", checked, props.hoverColor);
+}
+
+// 导入数据
+function importDataBtnOnClick(file) {
+    if (device !== "") {
+        Message.error("暂不支持移动端");
+    } else {
+        if (file.name.indexOf("云开新标签页") === 0) {
+            file.text().then(result =>{
+                let importData = JSON.parse(result);
+                if (importData) {
+                    localStorage.setItem("daily", JSON.stringify(importData.dailyList ? importData.dailyList : []));
+                    localStorage.setItem("todos", JSON.stringify(importData.todoList ? importData.todoList : []));
+                    localStorage.setItem("filterList", JSON.stringify(importData.filterList ? importData.filterList : []));
+                    localStorage.setItem("collections", JSON.stringify(importData.collectionList ? importData.collectionList : []));
+                    localStorage.setItem("preferenceData", JSON.stringify(importData.preferenceData ? importData.preferenceData : defaultPreferenceData));
+                    formDisabled.value = true;
+                    Message.success("导入数据成功，一秒后刷新页面");
+                    refreshWindow();
+                }
+                else {
+                    Message.error("导入数据失败");
+                }
+            })
+        } else {
+            Message.error("请选择正确的文件");
+        }
+    }
+    return false;
+}
+
+// 导出数据
+function exportDataBtnOnClick() {
+    if (device !== "") {
+        Message.error("暂不支持移动端");
+    } else {
+        // 倒数日
+        let tempDailyList = [];
+        let dailyListStorage = localStorage.getItem("daily");
+        if (dailyListStorage) {
+            tempDailyList = JSON.parse(dailyListStorage);
+        }
+
+        // 待办事项
+        let tempTodoList = [];
+        let todoListStorage = localStorage.getItem("todos");
+        if (todoListStorage) {
+            tempTodoList = JSON.parse(todoListStorage);
+        }
+
+        // 专注模式过滤名单
+        let tempFilterList = [];
+        let filterListStorage = localStorage.getItem("filterList");
+        if (filterListStorage) {
+            tempFilterList = JSON.parse(filterListStorage);
+        }
+
+        // 快捷链接
+        let tempCollectionList = [];
+        let collectionStorage = localStorage.getItem("collections");
+        if (collectionStorage) {
+            tempCollectionList = JSON.parse(collectionStorage);
+        }
+
+        let exportData = {
+            title: "云开新标签页",
+            attention: "请不要修改本文件的名称和内容",
+            dailyList: tempDailyList,
+            todoList: tempTodoList,
+            filterList: tempFilterList,
+            collectionList: tempCollectionList,
+            preferenceData: preferenceData.value,
+        }
+
+        let file = new Blob([JSON.stringify(exportData)], {type: "application/json"});
+        const objectURL = URL.createObjectURL(file);
+        let a = document.createElement("a");
+        a.href = objectURL;
+        a.download = "云开新标签页.json";
+        a.click();
+        URL.revokeObjectURL(objectURL);
+        Message.success("导出数据成功");
+    }
 }
 
 // 重置设置
