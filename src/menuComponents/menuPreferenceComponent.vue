@@ -184,7 +184,7 @@
             </a-form-item>
             <a-row :gutter="24">
                 <a-col :span="12">
-                    <a-form-item field="nightMode" label="降低亮度">
+                    <a-form-item field="nightMode" label="降低亮度" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                         <a-switch v-model="preferenceData.nightMode" id="nightModeSwitch" @change="nightModeSwitchOnChange">
                             <template #checked>
                                 已开启
@@ -196,7 +196,7 @@
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
-                    <a-form-item field="noImageMode" label="纯色模式">
+                    <a-form-item field="noImageMode" label="纯色模式" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                         <a-switch v-model="preferenceData.noImageMode" id="noImageModeSwitch" @change="noImageModeSwitchOnChange">
                             <template #checked>
                                 已开启
