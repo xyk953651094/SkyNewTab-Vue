@@ -207,7 +207,11 @@ onMounted(() => {
                                 nextLoopMonth = 1;
                             }
 
-                            let nextLoopString = nextLoopYear + "-" + nextLoopMonth + "-" + loopDate;
+                            nextLoopYear = nextLoopYear.toString();
+                            nextLoopMonth = nextLoopMonth < 10 ? ("0" + nextLoopMonth) : nextLoopMonth.toString();
+                            loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+
+                            let nextLoopString = nextLoopYear.toString() + "-" + nextLoopMonth.toString() + "-" + loopDate.toString();
                             value.selectedTimeStamp = new Date(nextLoopString).getTime();
                             break;
                         }
@@ -216,7 +220,11 @@ onMounted(() => {
                             let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
                             let loopDate = new Date(value.selectedTimeStamp).getDate();
 
-                            let nextLoopString = nextLoopYear + "-" + loopMonth + "-" + loopDate;
+                            nextLoopYear = nextLoopYear.toString();
+                            loopMonth = loopMonth < 10 ? ("0" + loopMonth) : loopMonth.toString();
+                            loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+
+                            let nextLoopString = nextLoopYear.toString() + "-" + loopMonth.toString() + "-" + loopDate.toString();
                             value.selectedTimeStamp = new Date(nextLoopString).getTime();
                             break;
                         }

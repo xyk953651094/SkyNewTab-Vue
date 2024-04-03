@@ -74,7 +74,7 @@
                             </a-button>
                         </template>
                     </a-list-item>
-                    <template #footer>
+                    <template #header>
                         <a-space direction="vertical">
                             <a-space>
                                 <a-button :shape="preferenceData.buttonShape"
@@ -85,8 +85,9 @@
                                     </template>
                                     {{"专注时段"}}
                                 </a-button>
-                                <a-select default-value="manual" :style="{width:'120px'}">
+                                <a-select :default-value="focusPeriod" :style="{width:'120px'}" :disabled="focusMode" @change="focusTimeSelectOnChange">
                                     <a-option value="manual">{{ "手动结束" }}</a-option>
+                                    <a-option value="60000">{{ "1 分钟后" }}</a-option>
                                     <a-option value="900000">{{ "15 分钟后" }}</a-option>
                                     <a-option value="1800000">{{ "30 分钟后" }}</a-option>
                                     <a-option value="2700000">{{ "45 分钟后" }}</a-option>
@@ -95,7 +96,7 @@
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}" type="text"
                                           @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                    {{"结束时间：手动结束"}}
+                                    {{"结束时间：" + focusEndTime}}
                                 </a-button>
                             </a-space>
                             <a-space>
@@ -111,9 +112,6 @@
                                     <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
                                     <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
                                 </a-select>
-                                <a-avatar>
-                                    <img alt="avatar" :src="focusSoundIconUrl"/>
-                                </a-avatar>
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor}" type="text"
                                           @click="playBtnOnClick"
@@ -124,6 +122,9 @@
                                     </template>
                                     {{focusAudioPaused ? "播放" : "暂停"}}
                                 </a-button>
+                                <a-avatar>
+                                    <img alt="avatar" :src="focusSoundIconUrl"/>
+                                </a-avatar>
                             </a-space>
                         </a-space>
                     </template>
@@ -160,7 +161,13 @@
 
 <script setup>
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
-import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
+import {
+    btnMouseOut,
+    btnMouseOver,
+    changeThemeColor,
+    getBrowserType,
+    getTimeDetails
+} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 import {IconLink, IconDelete, IconPlus, IconPlayArrowFill, IconPause} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
@@ -196,6 +203,8 @@ let displayModal = ref(false);
 let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
+let focusPeriod = ref("manual");
+let focusEndTime = ref("未开启专注模式");
 let focusSound = ref("古镇雨滴");
 let focusSoundIconUrl = ref("https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png");
 let focusAudioPaused = ref(true);
@@ -220,6 +229,48 @@ onMounted(() => {
         localStorage.setItem("filterList", JSON.stringify([]));
         setExtensionStorage("filterList", []);
     }
+
+    // 初始化专注时间
+    let focusPeriodStorage = localStorage.getItem("focusPeriod");
+    if (focusPeriodStorage) {
+        focusPeriod.value = focusMode.value ? JSON.parse(focusPeriodStorage) : "manual"
+    } else {
+        localStorage.setItem("focusPeriod", JSON.stringify("manual"));
+    }
+
+    // 初始化专注截止时间
+    let tempFocusEndTimeStamp = -1;
+    let focusEndTimeStampStorage = localStorage.getItem("focusEndTimeStamp");
+    if (focusEndTimeStampStorage) {
+        tempFocusEndTimeStamp = JSON.parse(focusEndTimeStampStorage);
+
+        if (tempFocusEndTimeStamp === -1) {
+            focusEndTime.value = "未开启专注模式";
+        } else if (tempFocusEndTimeStamp === 0) {
+            focusEndTime.value = "手动关闭";
+        } else {
+            focusEndTime.value = getTimeDetails(new Date(tempFocusEndTimeStamp)).showDetail;
+        }
+    } else {
+        localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
+        setExtensionStorage("focusEndTimeStamp", -1);
+    }
+
+    // 极简模式下或者专注时段过去后关闭专注模式
+    if (props.preferenceData.simpleMode || (focusMode.value && tempFocusEndTimeStamp > 0 && Date.now() > tempFocusEndTimeStamp)) {
+        focusMode.value = false;
+        focusPeriod.value = "manual";
+        focusEndTime.value = "未开启专注模式";
+        localStorage.setItem("focusMode", JSON.stringify(false));
+        localStorage.setItem("focusPeriod", JSON.stringify("manual"));
+        localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
+        setExtensionStorage("focusMode", false);
+        setExtensionStorage("focusEndTimeStamp", -1);
+    }
+
+    if (focusMode.value) {
+        message.info("已开启专注模式");
+    }
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -236,26 +287,50 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
         if (newValue) {
             focusMode.value = false;
+            focusPeriod.value = "manual";
+            focusEndTime.value = "未开启专注模式";
             localStorage.setItem("focusMode", JSON.stringify(false));
+            localStorage.setItem("focusPeriod", JSON.stringify("manual"));
+            localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
             setExtensionStorage("focusMode", false);
+            setExtensionStorage("focusEndTimeStamp", -1);
         }
     }
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    console.log(browserType + " " + key + " " + value);
-    // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-    //     chrome.storage.local.set({[key]: value});
-    // }
-    // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-    //     browser.storage.local.set({[key]: value});
-    // }
+    // console.log(browserType + " " + key + " " + value);
+    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+        chrome.storage.local.set({[key]: value});
+    }
+    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+        browser.storage.local.set({[key]: value});
+    }
 }
 
 function focusModeSwitchOnChange(checked) {
+    let tempFocusEndTime;
+    let tempFocusEndTimeStamp;
+    if (checked) {
+        if (focusPeriod.value === "manual") {
+            tempFocusEndTime = "手动关闭";
+            tempFocusEndTimeStamp = 0;
+        } else {
+            tempFocusEndTimeStamp = Date.now() + Number(focusPeriod.value);
+            tempFocusEndTime = getTimeDetails(new Date(tempFocusEndTimeStamp)).showDetail;
+        }
+    } else {
+        tempFocusEndTime = "未开启专注模式";
+        tempFocusEndTimeStamp = -1;
+    }
+
     focusMode.value = checked;
+    focusEndTime.value = tempFocusEndTime;
     localStorage.setItem("focusMode", JSON.stringify(checked));
+    localStorage.setItem("focusPeriod", JSON.stringify(focusPeriod.value));
+    localStorage.setItem("focusEndTimeStamp", JSON.stringify(tempFocusEndTimeStamp));
     setExtensionStorage("focusMode", checked);
+    setExtensionStorage("focusEndTimeStamp", tempFocusEndTimeStamp);
 
     // 关闭时停止播放白噪音
     if (!checked && !focusAudio.paused) {
@@ -322,6 +397,10 @@ function modalOkBtnOnClick() {
 
 function modalCancelBtnOnClick() {
     displayModal.value = false;
+}
+
+function focusTimeSelectOnChange(value) {
+    focusPeriod.value = value;
 }
 
 function focusSoundSelectOnChange(value) {

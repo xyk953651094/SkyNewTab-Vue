@@ -197,9 +197,8 @@ onMounted(() => {
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
         // 通用
-        $(".arco-list-item, .arco-list-footer").css("padding", "6px 0");
-        $(".arco-list-footer").css("borderTopColor", themeColor.value.componentFontColor);
-        $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
+        $(".arco-list-header, .arco-list-item").css("padding", "6px 0");
+        $(".arco-list-header, .arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
         $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
         $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
         $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
