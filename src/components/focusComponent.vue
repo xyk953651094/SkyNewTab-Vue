@@ -83,7 +83,7 @@
                                     <template #icon>
                                         <i class="bi bi-hourglass-split"></i>
                                     </template>
-                                    {{"专注时段"}}
+                                    {{"自动结束"}}
                                 </a-button>
                                 <a-select :default-value="focusPeriod" :style="{width:'120px'}" :disabled="focusMode" @change="focusTimeSelectOnChange">
                                     <a-option value="manual">{{ "手动结束" }}</a-option>
@@ -247,7 +247,7 @@ onMounted(() => {
         if (tempFocusEndTimeStamp === -1) {
             focusEndTime.value = "未开启专注模式";
         } else if (tempFocusEndTimeStamp === 0) {
-            focusEndTime.value = "手动关闭";
+            focusEndTime.value = "手动结束";
         } else {
             focusEndTime.value = getTimeDetails(new Date(tempFocusEndTimeStamp)).showDetail;
         }
@@ -261,16 +261,14 @@ onMounted(() => {
         focusMode.value = false;
         focusPeriod.value = "manual";
         focusEndTime.value = "未开启专注模式";
-        localStorage.setItem("focusMode", JSON.stringify(false));
-        localStorage.setItem("focusPeriod", JSON.stringify("manual"));
-        localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
-        setExtensionStorage("focusMode", false);
-        setExtensionStorage("focusEndTimeStamp", -1);
+        resetFocusModeStorage();
     }
 
     if (focusMode.value) {
-        message.info("已开启专注模式");
+        Message.info("已开启专注模式");
     }
+
+    autoStopFocus(tempFocusEndTimeStamp);
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -289,11 +287,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
             focusMode.value = false;
             focusPeriod.value = "manual";
             focusEndTime.value = "未开启专注模式";
-            localStorage.setItem("focusMode", JSON.stringify(false));
-            localStorage.setItem("focusPeriod", JSON.stringify("manual"));
-            localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
-            setExtensionStorage("focusMode", false);
-            setExtensionStorage("focusEndTimeStamp", -1);
+            resetFocusModeStorage();
         }
     }
 }, {immediate: true})
@@ -313,7 +307,7 @@ function focusModeSwitchOnChange(checked) {
     let tempFocusEndTimeStamp;
     if (checked) {
         if (focusPeriod.value === "manual") {
-            tempFocusEndTime = "手动关闭";
+            tempFocusEndTime = "手动结束";
             tempFocusEndTimeStamp = 0;
         } else {
             tempFocusEndTimeStamp = Date.now() + Number(focusPeriod.value);
@@ -331,6 +325,8 @@ function focusModeSwitchOnChange(checked) {
     localStorage.setItem("focusEndTimeStamp", JSON.stringify(tempFocusEndTimeStamp));
     setExtensionStorage("focusMode", checked);
     setExtensionStorage("focusEndTimeStamp", tempFocusEndTimeStamp);
+
+    autoStopFocus(tempFocusEndTimeStamp);
 
     // 关闭时停止播放白噪音
     if (!checked && !focusAudio.paused) {
@@ -448,6 +444,30 @@ function playFocusSound(focusSound) {
     }
     focusAudio.loop = true;
     focusAudio.play();
+}
+
+// 倒计时自动关闭专注模式
+function autoStopFocus(focusEndTimeStamp) {
+    if (focusMode.value && focusEndTimeStamp > 0 && Date.now() < focusEndTimeStamp) {
+        let interval = setInterval(() => {
+            if (Date.now() >= focusEndTimeStamp) {
+                focusMode.value = false;
+                focusPeriod.value = "manual";
+                focusEndTime.value = "未开启专注模式";
+                resetFocusModeStorage();
+                Message.info("已关闭专注模式");
+                clearInterval(interval);
+            }
+        }, 1000);
+    }
+}
+
+function resetFocusModeStorage() {
+    localStorage.setItem("focusMode", JSON.stringify(false));
+    localStorage.setItem("focusPeriod", JSON.stringify("manual"));
+    localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
+    setExtensionStorage("focusMode", false);
+    setExtensionStorage("focusEndTimeStamp", -1);
 }
 </script>
 
