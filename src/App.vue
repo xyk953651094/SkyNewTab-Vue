@@ -55,6 +55,9 @@
         <a-layout-content id="content" class="alignCenter">
             <wallpaper-component :preference-data="preferenceData" @image-data="getImageData" @image-history="getImageHistory"/>
             <a-row>
+                <a-col :lg="0" :md="24" :sm="24" :xl="0" :xs="24" :xxl="0">
+                    <clock-component :theme-color="themeColor"/>
+                </a-col>
                 <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <a-space align="center" direction="vertical">
                         <clock-component :theme-color="themeColor"/>
@@ -194,9 +197,8 @@ onMounted(() => {
     // 修改各类弹窗样式
     $("body").bind("DOMNodeInserted", () => {
         // 通用
-        $(".arco-list-item, .arco-list-footer").css("padding", "6px 0");
-        $(".arco-list-footer").css("borderTopColor", themeColor.value.componentFontColor);
-        $(".arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
+        $(".arco-list-header, .arco-list-item").css("padding", "6px 0");
+        $(".arco-list-header, .arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
         $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
         $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
         $(".arco-empty-image").css("color", themeColor.value.componentFontColor);

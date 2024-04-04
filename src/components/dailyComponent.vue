@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{width: '650px'}"
             position="br"
         >
             <a-button id="dailyBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -73,7 +73,9 @@
                                         <icon-clock-circle/>
                                     </template>
                                     {{
-                                        getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + " ｜ " + getDailyDescription(item.selectedTimeStamp)
+                                        getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + " ｜ " +
+                                        getDailyDescription(item.selectedTimeStamp) +
+                                        (isEmpty(item.loop) ? "" : " · " + item.loop)
                                     }}
                                 </a-button>
                             </a-col>
@@ -108,11 +110,26 @@
         </template>
         <a-form>
             <a-form-item field="dailyInput" label="倒数标题">
-                <a-input placeholder="请输入标题"  v-model="inputValue" @change="inputOnChange"
+                <a-input placeholder="请输入标题" v-model="inputValue" @change="inputOnChange"
                          maxLength="10" show-word-limit allow-clear/>
             </a-form-item>
             <a-form-item field="dailyDatePicker" label="倒数日期">
-                <a-date-picker id="dailyDatePicker" :allow-clear="false" @change="datePickerOnChange"/>
+                <a-date-picker :disabledDate="(current) => dayjs(current).isBefore(dayjs())"
+                               :allow-clear="false" @change="datePickerOnChange"
+                               id="dailyDatePicker" :style="{width: '100%'}"
+                />
+            </a-form-item>
+            <a-form-item field="dailySelect" label="循环周期">
+                <a-select default-value="noLoop" @change="selectOnChange">
+                    <a-option value="noLoop">{{ "不循环" }}</a-option>
+                    <a-option value="everyWeek">{{ "每周" }}</a-option>
+                    <a-option value="everyMonth" :disabled="dailySelectDisabled">{{ "每月（29、30、31日不生效）" }}</a-option>
+                    <a-option value="everyYear" :disabled="dailySelectDisabled">{{ "每年（29、30、31日不生效）" }}</a-option>
+                </a-select>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">{{ "倒数日期为29、30、31日时，循环周期不得选择每月、每年" }}
+                    </a-typography-text>
+                </template>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -121,7 +138,8 @@
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
-import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails} from "@/javascripts/publicFunctions";
+import dayjs from "dayjs";
+import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails, isEmpty} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
@@ -154,13 +172,77 @@ let displayModal = ref(false);
 let inputValue = ref("");
 let dailyList = ref([]);
 let selectedTimeStamp = ref(0);
+let dailySelectDisabled =  ref(false);
+let loop = ref("");
+
 const dailyMaxSize = 10;
 
 onMounted(() => {
+    let tempDailyList = [];
     let dailyListStorage = localStorage.getItem("daily");
     if (dailyListStorage) {
-        dailyList.value = JSON.parse(dailyListStorage);
+        tempDailyList = JSON.parse(dailyListStorage);
+
+        // 更新循环倒数日
+        let tempDailyListModified = false;
+        tempDailyList.map((value) => {
+            let tempValue = value;
+            if (!isEmpty(value.loop)) {
+                let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
+                if (value.selectedTimeStamp < todayTimeStamp) {
+                    tempDailyListModified = true;
+                    switch (value.loop) {
+                        case "每周":
+                            value.selectedTimeStamp += 604800000;
+                            break;
+                        case "每月": {
+                            let loopYear = new Date(value.selectedTimeStamp).getFullYear();
+                            let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
+                            let loopDate = new Date(value.selectedTimeStamp).getDate();
+
+                            let nextLoopYear = loopYear;
+                            let nextLoopMonth = loopMonth + 1;
+                            if (loopMonth === 12) {
+                                nextLoopYear += 1;
+                                nextLoopMonth = 1;
+                            }
+
+                            nextLoopYear = nextLoopYear.toString();
+                            nextLoopMonth = nextLoopMonth < 10 ? ("0" + nextLoopMonth) : nextLoopMonth.toString();
+                            loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+
+                            let nextLoopString = nextLoopYear.toString() + "-" + nextLoopMonth.toString() + "-" + loopDate.toString();
+                            value.selectedTimeStamp = new Date(nextLoopString).getTime();
+                            break;
+                        }
+                        case "每年": {
+                            let nextLoopYear = new Date(value.selectedTimeStamp).getFullYear() + 1;
+                            let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
+                            let loopDate = new Date(value.selectedTimeStamp).getDate();
+
+                            nextLoopYear = nextLoopYear.toString();
+                            loopMonth = loopMonth < 10 ? ("0" + loopMonth) : loopMonth.toString();
+                            loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+
+                            let nextLoopString = nextLoopYear.toString() + "-" + loopMonth.toString() + "-" + loopDate.toString();
+                            value.selectedTimeStamp = new Date(nextLoopString).getTime();
+                            break;
+                        }
+                    }
+                }
+            }
+            return tempValue;
+        });
+
+        if (tempDailyListModified) {
+            tempDailyList.sort((a, b) => {
+                return a.selectedTimeStamp - b.selectedTimeStamp;
+            });
+            localStorage.setItem("daily", JSON.stringify(tempDailyList));
+        }
     }
+
+    dailyList.value = tempDailyList;
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -207,6 +289,7 @@ function showAddModalBtnOnClick() {
         displayModal.value = true;
         inputValue.value = "";
         selectedTimeStamp.value = 0;
+        loop.value = "";
     } else {
         Message.error("倒数日数量最多为" + dailyMaxSize + "个");
     }
@@ -229,6 +312,7 @@ function modalOkBtnOnClick() {
     dailyList.value.push({
         "title": inputValue.value,
         "selectedTimeStamp": selectedTimeStamp.value,
+        "loop": loop.value,
         "timeStamp": Date.now()
     });
 
@@ -261,10 +345,37 @@ function getDailyDescription(selectedTimeStamp) {
 function datePickerOnChange(value, date, dateString) {
     if (value) {
         selectedTimeStamp.value = new Date(value).getTime();
+        dailySelectDisabled.value = [29, 30, 31].indexOf(new Date(dateString).getDate()) !== -1;
+        if ([29, 30, 31].indexOf(new Date(dateString).getDate()) !== -1) {
+            loop.value = "";
+        }
     } else {
         selectedTimeStamp.value = 0;
     }
     console.log(date, dateString);
+}
+
+function selectOnChange(value) {
+    let tempLoop;
+    switch (value) {
+        case "noLoop":
+            tempLoop = "";
+            break;
+        case "everyWeek":
+            tempLoop = "每周";
+            break;
+        case "everyMonth":
+            tempLoop = "每月";
+            break;
+        case "everyYear":
+            tempLoop = "每年";
+            break;
+        default:
+            tempLoop = "";
+            break;
+    }
+
+    loop.value = tempLoop;
 }
 
 </script>

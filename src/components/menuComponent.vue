@@ -112,6 +112,8 @@ const getPreferenceData = (value) => {
 }
 
 watch(() => props.themeColor, (newValue, oldValue) => {
+    console.log(newValue)
+    console.log(oldValue)
     if (newValue !== oldValue) {
         hoverColor.value = props.themeColor.themeColor;
         backgroundColor.value = props.themeColor.componentBackgroundColor;

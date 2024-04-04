@@ -74,26 +74,57 @@
                             </a-button>
                         </template>
                     </a-list-item>
-                    <template #footer>
-                        <a-space>
-                            <a-typography-text :style="{color: fontColor}">{{"白噪音"}}</a-typography-text>
-                            <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
-                                <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
-                                <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
-                            </a-select>
-                            <a-avatar>
-                                <img alt="avatar" :src="focusSoundIconUrl"/>
-                            </a-avatar>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor}" type="text"
-                                      @click="playBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-play-arrow-fill v-if="focusAudioPaused" />
-                                    <icon-pause v-else />
-                                </template>
-                                {{focusAudioPaused ? "播放" : "暂停"}}
-                            </a-button>
+                    <template #header>
+                        <a-space direction="vertical">
+                            <a-space>
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}" type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <i class="bi bi-hourglass-split"></i>
+                                    </template>
+                                    {{"自动结束"}}
+                                </a-button>
+                                <a-select :default-value="focusPeriod" :style="{width:'120px'}" :disabled="focusMode" @change="focusTimeSelectOnChange">
+                                    <a-option value="manual">{{ "手动结束" }}</a-option>
+                                    <a-option value="900000">{{ "15 分钟后" }}</a-option>
+                                    <a-option value="1800000">{{ "30 分钟后" }}</a-option>
+                                    <a-option value="2700000">{{ "45 分钟后" }}</a-option>
+                                    <a-option value="3600000">{{ "60 分钟后" }}</a-option>
+                                </a-select>
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}" type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                    {{"结束时间：" + focusEndTime}}
+                                </a-button>
+                            </a-space>
+                            <a-space>
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}" type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <i class="bi bi-music-note-beamed"></i>
+                                    </template>
+                                    {{"专注噪音"}}
+                                </a-button>
+                                <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
+                                    <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
+                                    <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
+                                </a-select>
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor}" type="text"
+                                          @click="playBtnOnClick"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <icon-play-arrow-fill v-if="focusAudioPaused" />
+                                        <icon-pause v-else />
+                                    </template>
+                                    {{focusAudioPaused ? "播放" : "暂停"}}
+                                </a-button>
+                                <a-avatar>
+                                    <img alt="avatar" :src="focusSoundIconUrl"/>
+                                </a-avatar>
+                            </a-space>
                         </a-space>
                     </template>
                 </a-list>
@@ -129,7 +160,13 @@
 
 <script setup>
 import {defineProps, onMounted, ref, toRaw, watch} from "vue";
-import {btnMouseOut, btnMouseOver, changeThemeColor, getBrowserType} from "@/javascripts/publicFunctions";
+import {
+    btnMouseOut,
+    btnMouseOver,
+    changeThemeColor,
+    getBrowserType,
+    getTimeDetails
+} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 import {IconLink, IconDelete, IconPlus, IconPlayArrowFill, IconPause} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
@@ -165,6 +202,8 @@ let displayModal = ref(false);
 let focusMode = ref(false);
 let inputValue = ref("");
 let filterList = ref([]);
+let focusPeriod = ref("manual");
+let focusEndTime = ref("未开启专注模式");
 let focusSound = ref("古镇雨滴");
 let focusSoundIconUrl = ref("https://www.soundvery.com/KUpload/image/20240111/20240111145630_9331.png");
 let focusAudioPaused = ref(true);
@@ -189,6 +228,46 @@ onMounted(() => {
         localStorage.setItem("filterList", JSON.stringify([]));
         setExtensionStorage("filterList", []);
     }
+
+    // 初始化专注时间
+    let focusPeriodStorage = localStorage.getItem("focusPeriod");
+    if (focusPeriodStorage) {
+        focusPeriod.value = focusMode.value ? JSON.parse(focusPeriodStorage) : "manual"
+    } else {
+        localStorage.setItem("focusPeriod", JSON.stringify("manual"));
+    }
+
+    // 初始化专注截止时间
+    let tempFocusEndTimeStamp = -1;
+    let focusEndTimeStampStorage = localStorage.getItem("focusEndTimeStamp");
+    if (focusEndTimeStampStorage) {
+        tempFocusEndTimeStamp = JSON.parse(focusEndTimeStampStorage);
+
+        if (tempFocusEndTimeStamp === -1) {
+            focusEndTime.value = "未开启专注模式";
+        } else if (tempFocusEndTimeStamp === 0) {
+            focusEndTime.value = "手动结束";
+        } else {
+            focusEndTime.value = getTimeDetails(new Date(tempFocusEndTimeStamp)).showDetail;
+        }
+    } else {
+        localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
+        setExtensionStorage("focusEndTimeStamp", -1);
+    }
+
+    // 极简模式下或者专注时段过去后关闭专注模式
+    if (props.preferenceData.simpleMode || (focusMode.value && tempFocusEndTimeStamp > 0 && Date.now() > tempFocusEndTimeStamp)) {
+        focusMode.value = false;
+        focusPeriod.value = "manual";
+        focusEndTime.value = "未开启专注模式";
+        resetFocusModeStorage();
+    }
+
+    if (focusMode.value) {
+        Message.info("已开启专注模式");
+    }
+
+    autoStopFocus(tempFocusEndTimeStamp);
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -205,8 +284,9 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
         if (newValue) {
             focusMode.value = false;
-            localStorage.setItem("focusMode", JSON.stringify(false));
-            setExtensionStorage("focusMode", false);
+            focusPeriod.value = "manual";
+            focusEndTime.value = "未开启专注模式";
+            resetFocusModeStorage();
         }
     }
 }, {immediate: true})
@@ -222,9 +302,30 @@ function setExtensionStorage(key, value) {
 }
 
 function focusModeSwitchOnChange(checked) {
+    let tempFocusEndTime;
+    let tempFocusEndTimeStamp;
+    if (checked) {
+        if (focusPeriod.value === "manual") {
+            tempFocusEndTime = "手动结束";
+            tempFocusEndTimeStamp = 0;
+        } else {
+            tempFocusEndTimeStamp = Date.now() + Number(focusPeriod.value);
+            tempFocusEndTime = getTimeDetails(new Date(tempFocusEndTimeStamp)).showDetail;
+        }
+    } else {
+        tempFocusEndTime = "未开启专注模式";
+        tempFocusEndTimeStamp = -1;
+    }
+
     focusMode.value = checked;
+    focusEndTime.value = tempFocusEndTime;
     localStorage.setItem("focusMode", JSON.stringify(checked));
+    localStorage.setItem("focusPeriod", JSON.stringify(focusPeriod.value));
+    localStorage.setItem("focusEndTimeStamp", JSON.stringify(tempFocusEndTimeStamp));
     setExtensionStorage("focusMode", checked);
+    setExtensionStorage("focusEndTimeStamp", tempFocusEndTimeStamp);
+
+    autoStopFocus(tempFocusEndTimeStamp);
 
     // 关闭时停止播放白噪音
     if (!checked && !focusAudio.paused) {
@@ -293,6 +394,10 @@ function modalCancelBtnOnClick() {
     displayModal.value = false;
 }
 
+function focusTimeSelectOnChange(value) {
+    focusPeriod.value = value;
+}
+
 function focusSoundSelectOnChange(value) {
     switch (value) {
         case "古镇雨滴": {
@@ -338,6 +443,30 @@ function playFocusSound(focusSound) {
     }
     focusAudio.loop = true;
     focusAudio.play();
+}
+
+// 倒计时自动关闭专注模式
+function autoStopFocus(focusEndTimeStamp) {
+    if (focusMode.value && focusEndTimeStamp > 0 && Date.now() < focusEndTimeStamp) {
+        let interval = setInterval(() => {
+            if (Date.now() >= focusEndTimeStamp) {
+                focusMode.value = false;
+                focusPeriod.value = "manual";
+                focusEndTime.value = "未开启专注模式";
+                resetFocusModeStorage();
+                Message.info("已关闭专注模式");
+                clearInterval(interval);
+            }
+        }, 1000);
+    }
+}
+
+function resetFocusModeStorage() {
+    localStorage.setItem("focusMode", JSON.stringify(false));
+    localStorage.setItem("focusPeriod", JSON.stringify("manual"));
+    localStorage.setItem("focusEndTimeStamp", JSON.stringify(-1));
+    setExtensionStorage("focusMode", false);
+    setExtensionStorage("focusEndTimeStamp", -1);
 }
 </script>
 

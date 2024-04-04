@@ -1,5 +1,5 @@
 <template>
-    <a-button id="authorLiteBtn" :shape="preferenceData.buttonShape" :style="{display: display}"
+    <a-button id="imageLinkBtn" :shape="preferenceData.buttonShape" :style="{display: display}"
               class="componentTheme zIndexHigh"
               size="large" type="primary" @click="imageLinkBtnOnClick">
         <template #icon>
@@ -52,10 +52,13 @@ let fontColor = ref("");
 let imageLink = ref("");
 
 watch(() => props.themeColor, (newValue, oldValue) => {
+    console.log(newValue)
+    console.log(oldValue)
+
     if (newValue !== oldValue) {
         backgroundColor.value = props.themeColor.componentBackgroundColor;
         fontColor.value = props.themeColor.componentFontColor;
-        changeThemeColor("#authorLiteBtn", backgroundColor.value, fontColor.value);
+        changeThemeColor("#imageLinkBtn", backgroundColor.value, fontColor.value);
     }
 })
 
