@@ -455,6 +455,7 @@ function autoStopFocus(focusEndTimeStamp) {
                 focusEndTime.value = "未开启专注模式";
                 resetFocusModeStorage();
                 Message.info("已关闭专注模式");
+                focusAudio.pause();
                 clearInterval(interval);
             }
         }, 1000);
