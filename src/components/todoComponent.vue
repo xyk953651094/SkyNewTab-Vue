@@ -17,13 +17,17 @@
             </a-button>
             <template #title>
                 <a-row align="center">
-                    <a-col :span="10">
+                    <a-col :span="8">
                         <a-typography-text :style="{color: fontColor}">
                             {{ "待办事项 " + todoList.length + " / " + todoMaxSize }}
                         </a-typography-text>
                     </a-col>
-                    <a-col :span="14" :style="{textAlign: 'right'}">
+                    <a-col :span="16" :style="{textAlign: 'right'}">
                         <a-space>
+                            <a-switch v-model="notification" id="todoNotificationSwitch" @change="notificationSwitchOnChange">
+                                <template #checked>已开启</template>
+                                <template #unchecked>已关闭</template>
+                            </a-switch>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
                                       @click="showAddModalBtnOnClick"
@@ -156,6 +160,7 @@ let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
+let notification = ref(false);
 let displayModal = ref(false);
 let inputValue = ref("");
 let todoList = ref([]);
@@ -164,9 +169,19 @@ let priority = ref("★");
 const todoMaxSize = 10;
 
 onMounted(() => {
+    let notificationStorage = localStorage.getItem("todoNotification");
+    if (notificationStorage) {
+        notification.value = JSON.parse(notificationStorage);
+    } else {
+        localStorage.setItem("todoNotification", JSON.stringify(false));
+    }
+
     let todoListStorage = localStorage.getItem("todos");
     if (todoListStorage) {
         todoList.value = JSON.parse(todoListStorage);
+        if (notification.value) {
+            Message.warning("剩余 " + todoList.value.length + " 个待办事项未处理");
+        }
     }
 })
 
@@ -207,6 +222,11 @@ function finishBtnOnClick(item) {
     });
 
     localStorage.setItem("todos", JSON.stringify(todoList.value));
+}
+
+function notificationSwitchOnChange(checked) {
+    notification.value = checked;
+    localStorage.setItem("todoNotification", JSON.stringify(checked));
 }
 
 function showAddModalBtnOnClick() {

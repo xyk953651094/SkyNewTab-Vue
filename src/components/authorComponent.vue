@@ -93,17 +93,6 @@
                                       shape="square"/>
                             <a-space direction="vertical">
                                 <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          type="text"
-                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                    <template #icon>
-                                        <icon-location/>
-                                    </template>
-                                    {{
-                                        imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
-                                    }}
-                                </a-button>
-                                <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor}"
                                           type="text"
                                           @click="imageLinkBtnOnClick" @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
@@ -112,6 +101,17 @@
                                     </template>
                                     {{
                                         imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
+                                    }}
+                                </a-button>
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default'}"
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <icon-location/>
+                                    </template>
+                                    {{
+                                        imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..."
                                     }}
                                 </a-button>
                             </a-space>
