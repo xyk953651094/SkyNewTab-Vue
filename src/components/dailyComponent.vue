@@ -26,8 +26,8 @@
                     <a-col :span="16" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-switch v-model="notification" id="dailyNotificationSwitch" @change="notificationSwitchOnChange">
-                                <template #checked>已开启</template>
-                                <template #unchecked>已关闭</template>
+                                <template #checked>已提醒</template>
+                                <template #unchecked>不提醒</template>
                             </a-switch>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -202,7 +202,7 @@ onMounted(() => {
 
             // 倒数日通知
             if (notification.value && value.selectedTimeStamp === todayTimeStamp) {
-                Message.info("今日" + value.title);
+                Message.info({content: "今日" + value.title, position: "bottom"});
             }
 
             // 更新循环倒数日

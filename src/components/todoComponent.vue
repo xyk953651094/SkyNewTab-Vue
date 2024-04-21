@@ -25,8 +25,8 @@
                     <a-col :span="16" :style="{textAlign: 'right'}">
                         <a-space>
                             <a-switch v-model="notification" id="todoNotificationSwitch" @change="notificationSwitchOnChange">
-                                <template #checked>已开启</template>
-                                <template #unchecked>已关闭</template>
+                                <template #checked>已提醒</template>
+                                <template #unchecked>不提醒</template>
                             </a-switch>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -180,7 +180,7 @@ onMounted(() => {
     if (todoListStorage) {
         todoList.value = JSON.parse(todoListStorage);
         if (notification.value) {
-            Message.warning("剩余 " + todoList.value.length + " 个待办事项未处理");
+            Message.warning({content: "剩余 " + todoList.value.length + " 个待办事项未处理", position: "bottom"});
         }
     }
 })
