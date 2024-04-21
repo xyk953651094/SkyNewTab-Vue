@@ -18,12 +18,22 @@
             </a-space>
         </a-col>
     </a-row>
+<!--    <a-button :shape="preferenceData.buttonShape" size="large"-->
+<!--              :style="{color: fontColor, backgroundColor: backgroundColor}"-->
+<!--              class="componentTheme zIndexHigh"-->
+<!--              type="primary">-->
+<!--        <template #icon>-->
+<!--            <icon-clock-circle />-->
+<!--        </template>-->
+<!--        {{ currentDate + currentWeek + currentTime }}-->
+<!--    </a-button>-->
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
 import {getTimeDetails} from "@/javascripts/publicFunctions";
 import "@/stylesheets/clockComponent.less";
+import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
 
@@ -38,6 +48,13 @@ const props = defineProps({
                 "componentFontColor": ""
             }
         }
+    },
+    preferenceData: {
+        type: Object,
+        required: true,
+        default: () => {
+            return defaultPreferenceData
+        }
     }
 });
 
@@ -45,14 +62,14 @@ let backgroundColor = ref("");
 let fontColor = ref("");
 let currentTime = ref(getTimeDetails(new Date()).showTime);
 let currentWeek = ref(getTimeDetails(new Date()).showWeek);
-let currentDate = ref(getTimeDetails(new Date()).showDate);
+let currentDate = ref(getTimeDetails(new Date()).showDate5);
 
 onMounted(() => {
     setInterval(() => {
         let timeDetails = getTimeDetails(new Date());
         currentTime.value = timeDetails.showTime;
         currentWeek.value = timeDetails.showWeek;
-        currentDate.value = timeDetails.showDate;
+        currentDate.value = timeDetails.showDate5;
     }, 1000);
 })
 

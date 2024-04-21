@@ -537,7 +537,9 @@ function importDataBtnOnClick(file) {
                 let importData = JSON.parse(result);
                 if (importData) {
                     localStorage.setItem("daily", JSON.stringify(importData.dailyList ? importData.dailyList : []));
+                    localStorage.setItem("dailyNotification", JSON.stringify(importData.dailyNotification ? importData.dailyNotification : false));
                     localStorage.setItem("todos", JSON.stringify(importData.todoList ? importData.todoList : []));
+                    localStorage.setItem("todoNotification", JSON.stringify(importData.todoNotification ? importData.todoNotification : false));
                     localStorage.setItem("filterList", JSON.stringify(importData.filterList ? importData.filterList : []));
                     localStorage.setItem("collections", JSON.stringify(importData.collectionList ? importData.collectionList : []));
                     localStorage.setItem("preferenceData", JSON.stringify(importData.preferenceData ? importData.preferenceData : defaultPreferenceData));
@@ -568,11 +570,23 @@ function exportDataBtnOnClick() {
             tempDailyList = JSON.parse(dailyListStorage);
         }
 
+        let tempDailyNotification = false;
+        let dailyNotificationStorage = localStorage.getItem("dailyNotification");
+        if (dailyNotificationStorage) {
+            tempDailyNotification = JSON.parse(dailyNotificationStorage);
+        }
+
         // 待办事项
         let tempTodoList = [];
         let todoListStorage = localStorage.getItem("todos");
         if (todoListStorage) {
             tempTodoList = JSON.parse(todoListStorage);
+        }
+
+        let tempTodoNotification = false;
+        let todoNotificationStorage = localStorage.getItem("todoNotification");
+        if (todoNotificationStorage) {
+            tempTodoNotification = JSON.parse(todoNotificationStorage);
         }
 
         // 专注模式过滤名单
@@ -593,7 +607,9 @@ function exportDataBtnOnClick() {
             title: "云开新标签页",
             attention: "请不要修改本文件的名称和内容",
             dailyList: tempDailyList,
+            dailyNotification: tempDailyNotification,
             todoList: tempTodoList,
+            todoNotification: tempTodoNotification,
             filterList: tempFilterList,
             collectionList: tempCollectionList,
             preferenceData: preferenceData.value,

@@ -25,15 +25,6 @@
             </a-button>
             <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                       target="_blank"
-                      type="text" @click="imageLocationBtnOnClick"
-                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                <template #icon>
-                    <icon-location/>
-                </template>
-                {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
-            </a-button>
-            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                      target="_blank"
                       type="text" @click="imageLinkBtnOnClick"
                       @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
             >
@@ -43,6 +34,15 @@
                 {{
                     imageDescription.length < btnMaxSize ? imageDescription : imageDescription.substring(0, btnMaxSize) + "..."
                 }}
+            </a-button>
+            <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                      target="_blank"
+                      type="text" @click="imageLocationBtnOnClick"
+                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                <template #icon>
+                    <icon-location/>
+                </template>
+                {{ imageLocation.length < btnMaxSize ? imageLocation : imageLocation.substring(0, btnMaxSize) + "..." }}
             </a-button>
         </a-space>
     </a-space>

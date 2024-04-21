@@ -100,17 +100,11 @@ function getWallpaper() {
         data.query = imageQuery;
     }
 
-    Message.loading({
-        content: "正在获取图片",
-        duration: 0
-    });
+    Message.loading({content: "正在获取图片", duration: 0});
     httpRequest(headers, url, data, "GET")
         .then(function (resultData) {
-            Message.clear();
-            Message.loading({
-                content: "正在加载图片",
-                duration: 0
-            });
+            Message.clear("top");
+            Message.loading({content: "正在加载图片", duration: 0});
 
             // 缓存历史图片
             let lastImageStorage = localStorage.getItem("lastImage"); // 上一张图片
@@ -141,15 +135,12 @@ function getWallpaper() {
             setWallpaper(resultData);
         })
         .catch(function () {
-            Message.clear();
+            Message.clear("top");
             // 请求失败时显示上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
                 lastImage = JSON.parse(lastImage);
-                Message.loading({
-                    content: "获取图片失败，正在加载缓存图片",
-                    duration: 0
-                });
+                Message.loading({content: "获取图片失败，正在加载缓存图片", duration: 0});
                 setWallpaper(lastImage);
             } else {
                 Message.error("获取图片失败，请检查网络连接");
@@ -171,10 +162,7 @@ onMounted(() => {
         } else {  // 切换间隔内使用上一次请求结果
             let lastImage = localStorage.getItem("lastImage");
             if (lastImage) {
-                Message.loading({
-                    content: "正在加载缓存图片",
-                    duration: 0
-                });
+                Message.loading({content: "正在加载缓存图片", duration: 0});
                 lastImage = JSON.parse(lastImage);
                 setWallpaper(lastImage);
             } else {
@@ -189,7 +177,7 @@ onMounted(() => {
         if (backgroundImage instanceof HTMLElement) {
             backgroundImage.onload = function () {
 
-                Message.clear();
+                Message.clear("top");
                 document.getElementById("backgroundCanvas").className = "backgroundCanvas wallpaperFadeOut";
                 display.value = "block";
 

@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '650px'}"
+            :style="{width: '600px'}"
             position="br"
         >
             <a-button id="dailyBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -17,14 +17,18 @@
             </a-button>
             <template #title>
                 <a-row align="center">
-                    <a-col :span="10">
+                    <a-col :span="8">
                         <a-typography-text :style="{color: fontColor}">{{
                                 "倒数日 " + dailyList.length + " / " + dailyMaxSize
                             }}
                         </a-typography-text>
                     </a-col>
-                    <a-col :span="14" :style="{textAlign: 'right'}">
+                    <a-col :span="16" :style="{textAlign: 'right'}">
                         <a-space>
+                            <a-switch v-model="notification" id="dailyNotificationSwitch" @change="notificationSwitchOnChange">
+                                <template #checked>已提醒</template>
+                                <template #unchecked>不提醒</template>
+                            </a-switch>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
                                       @click="showAddModalBtnOnClick"
@@ -168,6 +172,7 @@ let display = ref("block");
 let hoverColor = ref("");
 let backgroundColor = ref("");
 let fontColor = ref("");
+let notification = ref(false);
 let displayModal = ref(false);
 let inputValue = ref("");
 let dailyList = ref([]);
@@ -178,56 +183,67 @@ let loop = ref("");
 const dailyMaxSize = 10;
 
 onMounted(() => {
+    let notificationStorage = localStorage.getItem("dailyNotification");
+    if (notificationStorage) {
+        notification.value = JSON.parse(notificationStorage);
+    } else {
+        localStorage.setItem("dailyNotification", JSON.stringify(false));
+    }
+
     let tempDailyList = [];
     let dailyListStorage = localStorage.getItem("daily");
     if (dailyListStorage) {
         tempDailyList = JSON.parse(dailyListStorage);
 
-        // 更新循环倒数日
         let tempDailyListModified = false;
         tempDailyList.map((value) => {
             let tempValue = value;
-            if (!isEmpty(value.loop)) {
-                let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
-                if (value.selectedTimeStamp < todayTimeStamp) {
-                    tempDailyListModified = true;
-                    switch (value.loop) {
-                        case "每周":
-                            value.selectedTimeStamp += 604800000;
-                            break;
-                        case "每月": {
-                            let loopYear = new Date(value.selectedTimeStamp).getFullYear();
-                            let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
-                            let loopDate = new Date(value.selectedTimeStamp).getDate();
+            let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
 
-                            let nextLoopYear = loopYear;
-                            let nextLoopMonth = loopMonth + 1;
-                            if (loopMonth === 12) {
-                                nextLoopYear += 1;
-                                nextLoopMonth = 1;
-                            }
+            // 倒数日通知
+            if (notification.value && value.selectedTimeStamp === todayTimeStamp) {
+                Message.info({content: "今日" + value.title, position: "bottom"});
+            }
 
-                            nextLoopYear = nextLoopYear.toString();
-                            nextLoopMonth = nextLoopMonth < 10 ? ("0" + nextLoopMonth) : nextLoopMonth.toString();
-                            loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+            // 更新循环倒数日
+            if (!isEmpty(value.loop) && value.selectedTimeStamp < todayTimeStamp) {
+                tempDailyListModified = true;
+                switch (value.loop) {
+                    case "每周":
+                        value.selectedTimeStamp += 604800000;
+                        break;
+                    case "每月": {
+                        let loopYear = new Date(value.selectedTimeStamp).getFullYear();
+                        let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
+                        let loopDate = new Date(value.selectedTimeStamp).getDate();
 
-                            let nextLoopString = nextLoopYear.toString() + "-" + nextLoopMonth.toString() + "-" + loopDate.toString();
-                            value.selectedTimeStamp = new Date(nextLoopString).getTime();
-                            break;
+                        let nextLoopYear = loopYear;
+                        let nextLoopMonth = loopMonth + 1;
+                        if (loopMonth === 12) {
+                            nextLoopYear += 1;
+                            nextLoopMonth = 1;
                         }
-                        case "每年": {
-                            let nextLoopYear = new Date(value.selectedTimeStamp).getFullYear() + 1;
-                            let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
-                            let loopDate = new Date(value.selectedTimeStamp).getDate();
 
-                            nextLoopYear = nextLoopYear.toString();
-                            loopMonth = loopMonth < 10 ? ("0" + loopMonth) : loopMonth.toString();
-                            loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+                        nextLoopYear = nextLoopYear.toString();
+                        nextLoopMonth = nextLoopMonth < 10 ? ("0" + nextLoopMonth) : nextLoopMonth.toString();
+                        loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
 
-                            let nextLoopString = nextLoopYear.toString() + "-" + loopMonth.toString() + "-" + loopDate.toString();
-                            value.selectedTimeStamp = new Date(nextLoopString).getTime();
-                            break;
-                        }
+                        let nextLoopString = nextLoopYear.toString() + "-" + nextLoopMonth.toString() + "-" + loopDate.toString();
+                        value.selectedTimeStamp = new Date(nextLoopString).getTime();
+                        break;
+                    }
+                    case "每年": {
+                        let nextLoopYear = new Date(value.selectedTimeStamp).getFullYear() + 1;
+                        let loopMonth = new Date(value.selectedTimeStamp).getMonth() + 1;
+                        let loopDate = new Date(value.selectedTimeStamp).getDate();
+
+                        nextLoopYear = nextLoopYear.toString();
+                        loopMonth = loopMonth < 10 ? ("0" + loopMonth) : loopMonth.toString();
+                        loopDate = loopDate < 10 ? ("0" + loopDate) : loopDate.toString();
+
+                        let nextLoopString = nextLoopYear.toString() + "-" + loopMonth.toString() + "-" + loopDate.toString();
+                        value.selectedTimeStamp = new Date(nextLoopString).getTime();
+                        break;
                     }
                 }
             }
@@ -282,6 +298,11 @@ function removeBtnOnClick(item) {
     });
 
     localStorage.setItem("daily", JSON.stringify(dailyList.value));
+}
+
+function notificationSwitchOnChange(checked) {
+    notification.value = checked;
+    localStorage.setItem("dailyNotification", JSON.stringify(checked));
 }
 
 function showAddModalBtnOnClick() {

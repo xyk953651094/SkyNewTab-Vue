@@ -56,11 +56,11 @@
             <wallpaper-component :preference-data="preferenceData" @image-data="getImageData" @image-history="getImageHistory"/>
             <a-row>
                 <a-col :lg="0" :md="24" :sm="24" :xl="0" :xs="24" :xxl="0">
-                    <clock-component :theme-color="themeColor"/>
+                    <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                 </a-col>
                 <a-col :lg="24" :md="0" :sm="0" :xl="24" :xs="0" :xxl="24">
                     <a-space align="center" direction="vertical">
-                        <clock-component :theme-color="themeColor"/>
+                        <clock-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <search-component :preference-data="preferenceData" :theme-color="themeColor"/>
                         <collection-component :preference-data="preferenceData" :theme-color="themeColor"/>
                     </a-space>
@@ -214,7 +214,14 @@ onMounted(() => {
                 "border": "1px solid " + themeColor.value.componentBackgroundColor
             });
 
-            // focusComponent
+            let dailyNotificationStorage = localStorage.getItem("dailyNotification");
+            if (dailyNotificationStorage) {
+                resetSwitchColor("#dailyNotificationSwitch", JSON.parse(dailyNotificationStorage), themeColor.value.themeColor);
+            }
+            let todoNotificationStorage = localStorage.getItem("todoNotification");
+            if (todoNotificationStorage) {
+                resetSwitchColor("#todoNotificationSwitch", JSON.parse(todoNotificationStorage), themeColor.value.themeColor);
+            }
             let focusMode = localStorage.getItem("focusMode");
             if (focusMode) {
                 resetSwitchColor("#focusModeSwitch", JSON.parse(focusMode), themeColor.value.themeColor);
