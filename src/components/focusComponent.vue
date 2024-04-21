@@ -259,7 +259,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    console.log(browserType + " " + key + " " + value);
+    // console.log(browserType + " " + key + " " + value);
     if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         chrome.storage.local.set({[key]: value});
     }
