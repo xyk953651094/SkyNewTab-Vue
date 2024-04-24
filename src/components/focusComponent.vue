@@ -259,13 +259,13 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    // console.log(browserType + " " + key + " " + value);
-    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-        chrome.storage.local.set({[key]: value});
-    }
-    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        browser.storage.local.set({[key]: value});
-    }
+    console.log(browserType + " " + key + " " + value);
+    // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+    //     chrome.storage.local.set({[key]: value});
+    // }
+    // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+    //     browser.storage.local.set({[key]: value});
+    // }
 }
 
 function focusModeSwitchOnChange(checked) {
@@ -304,6 +304,7 @@ function removeAllBtnOnClick() {
     filterList.value = [];
     localStorage.removeItem("filterList");
     setExtensionStorage("filterList", []);
+    Message.success("删除成功");
 }
 
 function removeBtnOnClick(item) {
@@ -320,6 +321,7 @@ function removeBtnOnClick(item) {
 
     localStorage.setItem("filterList", JSON.stringify(filterList.value));
     setExtensionStorage("filterList", filterList.value);
+    Message.success("删除成功");
 }
 
 function showAddModalBtnOnClick() {

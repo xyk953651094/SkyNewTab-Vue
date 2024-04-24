@@ -203,6 +203,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 function finishAllBtnOnClick() {
     todoList.value = [];
     localStorage.removeItem("todos");
+    Message.success("全部完成");
 }
 
 function finishBtnOnClick(item) {
@@ -222,6 +223,7 @@ function finishBtnOnClick(item) {
     });
 
     localStorage.setItem("todos", JSON.stringify(todoList.value));
+    message.success("已完成");
 }
 
 function notificationSwitchOnChange(checked) {

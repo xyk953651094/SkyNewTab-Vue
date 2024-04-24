@@ -279,6 +279,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 function removeAllBtnOnClick() {
     dailyList.value = [];
     localStorage.removeItem("daily");
+    Message.success("删除成功");
 }
 
 function removeBtnOnClick(item) {
@@ -298,6 +299,7 @@ function removeBtnOnClick(item) {
     });
 
     localStorage.setItem("daily", JSON.stringify(dailyList.value));
+    Message.success("删除成功");
 }
 
 function notificationSwitchOnChange(checked) {

@@ -80,7 +80,7 @@
             </a-form-item>
         </a-form>
     </a-modal>
-    <a-modal v-model:visible="displayEditModal" :closable="false"
+    <a-modal v-model:visible="displayEditModal" :closable="false" unmount-on-close
              :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              @cancel="editModalCancelBtnOnClick"
              @ok="editModalOkBtnOnClick">
@@ -106,30 +106,10 @@
         </template>
         <a-list :bordered=false>
             <a-list-item v-for="item in collectionData" :key="item.timestamp">
-                <a-row>
-                    <a-col :span="8">
-                        <a-button :shape="preferenceData.buttonShape"
-                                  :style="{color: fontColor, cursor: 'default'}"
-                                  type="text" @mouseout="btnMouseOut(fontColor, $event)"
-                                  @mouseover="btnMouseOver(hoverColor, $event)">
-                            <template #icon>
-                                <icon-pushpin/>
-                            </template>
-                            {{ item.webName }}
-                        </a-button>
-                    </a-col>
-                    <a-col :span="16">
-                        <a-button :shape="preferenceData.buttonShape"
-                                  :style="{color: fontColor, cursor: 'default'}"
-                                  type="text" @mouseout="btnMouseOut(fontColor, $event)"
-                                  @mouseover="btnMouseOver(hoverColor, $event)">
-                            <template #icon>
-                                <icon-link/>
-                            </template>
-                            {{ item.webUrl.length < 30 ? item.webUrl : item.webUrl.substring(0, 30) + "..." }}
-                        </a-button>
-                    </a-col>
-                </a-row>
+                <a-space>
+                    <a-input allow-clear :style="{width: '150px'}" @press-enter="editNameInputOnPressEnter(item, $event)" :default-value="item.webName" maxLength="5" showWordLimit/>
+                    <a-input allow-clear :style="{width: '250px'}" @press-enter="editUrlInputOnPressEnter(item, $event)" :default-value="item.webUrl" showWordLimit/>
+                </a-space>
                 <template #actions>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
                               type="text"
@@ -141,13 +121,18 @@
                     </a-button>
                 </template>
             </a-list-item>
+            <template #footer>
+                <a-typography-text :style="{color: fontColor}">
+                    {{ "在输入框中修改内容后按回车生效" }}
+                </a-typography-text>
+            </template>
         </a-list>
     </a-modal>
 </template>
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconEdit, IconLink, IconPlus, IconPushpin} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconEdit, IconPlus} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
@@ -290,6 +275,68 @@ function showEditModalBtnOnClick() {
     collectionData.value = collections;
 }
 
+function editNameInputOnPressEnter(item, e) {
+    if (e.target.value.length > 0) {
+        let collections = [];
+        let tempCollections = localStorage.getItem("collections");
+        if (tempCollections) {
+            collections = JSON.parse(tempCollections);
+
+            let index = -1;
+            for (let i = 0; i < collectionData.value.length; i++) {
+                if (item.timeStamp === collectionData.value[i].timeStamp) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index !== -1) {
+                collections[index].webName = e.target.value;
+
+                localStorage.setItem("collections", JSON.stringify(collections));
+
+                collectionData.value = collections;
+                collectionSize.value = collections.length;
+                Message.success("修改成功");
+            } else {
+                Message.error("修改失败");
+            }
+        }
+    } else {
+        Message.warning("链接名称不能为空");
+    }
+}
+
+function editUrlInputOnPressEnter(item, e) {
+    if (e.target.value.length > 0) {
+        let collections = [];
+        let tempCollections = localStorage.getItem("collections");
+        if (tempCollections) {
+            collections = JSON.parse(tempCollections);
+
+            let index = -1;
+            for (let i = 0; i < collectionData.value.length; i++) {
+                if (item.timeStamp === collectionData.value[i].timeStamp) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index !== -1) {
+                collections[index].webUrl = e.target.value;
+
+                localStorage.setItem("collections", JSON.stringify(collections));
+
+                collectionData.value = collections;
+                collectionSize.value = collections.length;
+                Message.success("修改成功");
+            } else {
+                Message.error("修改失败");
+            }
+        }
+    } else {
+        Message.warning("链接地址不能为空");
+    }
+}
+
 function editModalOkBtnOnClick() {
     displayEditModal.value = false;
 }
@@ -317,6 +364,7 @@ function removeBtnOnClick(item) {
 
         collectionData.value = collections;
         collectionSize.value = collections.length;
+        Message.success("删除成功");
     }
 }
 
