@@ -259,13 +259,13 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    console.log(browserType + " " + key + " " + value);
-    // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-    //     chrome.storage.local.set({[key]: value});
-    // }
-    // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-    //     browser.storage.local.set({[key]: value});
-    // }
+    // console.log(browserType + " " + key + " " + value);
+    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+        chrome.storage.local.set({[key]: value});
+    }
+    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+        browser.storage.local.set({[key]: value});
+    }
 }
 
 function focusModeSwitchOnChange(checked) {
