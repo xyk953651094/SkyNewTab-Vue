@@ -85,12 +85,10 @@
                             </a-select>
                             <a-select :default-value="focusPeriod" :style="{width:'120px'}" :disabled="focusMode" @change="focusTimeSelectOnChange">
                                 <a-option value="manual">{{ "手动结束" }}</a-option>
-                                <a-option value="900000">{{ "15 分钟后" }}</a-option>
                                 <a-option value="1800000">{{ "30 分钟后" }}</a-option>
                                 <a-option value="2700000">{{ "45 分钟后" }}</a-option>
                                 <a-option value="3600000">{{ "60 分钟后" }}</a-option>
                                 <a-option value="5400000">{{ "90 分钟后" }}</a-option>
-                                <a-option value="7200000">{{ "120 分钟后" }}</a-option>
                             </a-select>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor, cursor: 'default'}" type="text"

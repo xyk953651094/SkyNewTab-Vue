@@ -122,7 +122,7 @@
                 </template>
             </a-list-item>
             <template #footer>
-                <a-typography-text :style="{color: fontColor}">
+                <a-typography-text :style="{color: fontColor, display: collectionData.length > 0 ? 'inline-block' : 'none'}">
                     {{ "在输入框中修改内容后按回车生效" }}
                 </a-typography-text>
             </template>
