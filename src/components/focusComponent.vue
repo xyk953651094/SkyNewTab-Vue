@@ -278,6 +278,10 @@ function focusModeSwitchOnChange(checked) {
     let tempFocusEndTime;
     let tempFocusEndTimeStamp;
     if (checked) {
+        if (filterList.value.length === 0) {
+            Message.warning("请添加黑名单");
+        }
+
         if (focusPeriod.value === "manual") {
             tempFocusEndTime = "手动结束";
             tempFocusEndTimeStamp = 0;

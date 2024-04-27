@@ -55,7 +55,7 @@
                 <a-list :bordered=false>
                     <a-list-item v-for="item in dailyList" :key="item.timestamp">
                         <a-row>
-                            <a-col :span="10">
+                            <a-col :span="9">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -67,7 +67,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="14">
+                            <a-col :span="15">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -305,6 +305,9 @@ function removeBtnOnClick(item) {
 function notificationSwitchOnChange(checked) {
     notification.value = checked;
     localStorage.setItem("dailyNotification", JSON.stringify(checked));
+    if (dailyList.value.length === 0) {
+        Message.warning("请添加倒数日");
+    }
 }
 
 function showAddModalBtnOnClick() {
