@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '600px'}"
+            :style="{width: '650px'}"
             position="br"
         >
             <a-button id="dailyBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -67,7 +67,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="15">
+                            <a-col :span="11">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -78,9 +78,20 @@
                                     </template>
                                     {{
                                         getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + " ｜ " +
-                                        getDailyDescription(item.selectedTimeStamp) +
-                                        (isEmpty(item.loop) ? "" : " · " + item.loop)
+                                        getDailyDescription(item.selectedTimeStamp)
                                     }}
+                                </a-button>
+                            </a-col>
+                            <a-col :span="4">
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default', display: isEmpty(item.loop) ? 'none' : 'block'}"
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)"
+                                          @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <icon-loop />
+                                    </template>
+                                    {{isEmpty(item.loop) ? "" : item.loop}}
                                 </a-button>
                             </a-col>
                         </a-row>
@@ -141,7 +152,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus, IconLoop} from "@arco-design/web-vue/es/icon";
 import dayjs from "dayjs";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails, isEmpty} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";

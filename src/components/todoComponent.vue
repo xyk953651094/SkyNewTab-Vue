@@ -66,19 +66,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="5">
-                                <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor, cursor: 'default'}"
-                                          type="text"
-                                          @mouseout="btnMouseOut(fontColor, $event)"
-                                          @mouseover="btnMouseOver(hoverColor, $event)">
-                                    <template #icon>
-                                        <icon-clock-circle />
-                                    </template>
-                                    {{ isEmpty(item.time) ? "未设置" : item.time }}
-                                </a-button>
-                            </a-col>
-                            <a-col :span="10">
+                            <a-col :span="9">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -88,6 +76,18 @@
                                         <icon-tag/>
                                     </template>
                                     {{ item.tag + " ｜ " + item.priority }}
+                                </a-button>
+                            </a-col>
+                            <a-col :span="6">
+                                <a-button :shape="preferenceData.buttonShape"
+                                          :style="{color: fontColor, cursor: 'default', display: isEmpty(item.time) ? 'none' : 'block'}"
+                                          type="text"
+                                          @mouseout="btnMouseOut(fontColor, $event)"
+                                          @mouseover="btnMouseOver(hoverColor, $event)">
+                                    <template #icon>
+                                        <icon-clock-circle />
+                                    </template>
+                                    {{ isEmpty(item.time) ? "" : item.time }}
                                 </a-button>
                             </a-col>
                         </a-row>
@@ -133,7 +133,7 @@
                     <a-option value="other">其它</a-option>
                 </a-select>
             </a-form-item>
-            <a-form-item field="todoTime" label="截止日期">
+            <a-form-item field="todoTime" label="截止时间">
                 <a-time-picker format="HH:mm" :step="{hour: 1, minute: 5, second: 1}"
                                @change="timePickerOnChange"
                                placeholder="可选，注意插件并不会通知截止时间" :style="{width: '100%'}" />
