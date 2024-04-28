@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '650px'}"
+            :style="{width: '600px'}"
             position="br"
         >
             <a-button id="dailyBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -67,7 +67,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="11">
+                            <a-col :span="15">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -78,20 +78,9 @@
                                     </template>
                                     {{
                                         getTimeDetails(new Date(item.selectedTimeStamp)).showDate4 + " ｜ " +
-                                        getDailyDescription(item.selectedTimeStamp)
+                                        getDailyDescription(item.selectedTimeStamp) +
+                                        (isEmpty(item.loop) ? "" : " · " + item.loop)
                                     }}
-                                </a-button>
-                            </a-col>
-                            <a-col :span="4">
-                                <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor, cursor: 'default', display: isEmpty(item.loop) ? 'none' : 'block'}"
-                                          type="text"
-                                          @mouseout="btnMouseOut(fontColor, $event)"
-                                          @mouseover="btnMouseOver(hoverColor, $event)">
-                                    <template #icon>
-                                        <icon-loop />
-                                    </template>
-                                    {{isEmpty(item.loop) ? "" : item.loop}}
                                 </a-button>
                             </a-col>
                         </a-row>
