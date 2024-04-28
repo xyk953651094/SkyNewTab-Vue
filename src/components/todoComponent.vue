@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{width: '600px'}"
             position="br"
         >
             <a-button id="todoBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -54,7 +54,7 @@
                 <a-list :bordered=false>
                     <a-list-item v-for="item in todoList" :key="item.timestamp">
                         <a-row>
-                            <a-col :span="12">
+                            <a-col :span="14">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -66,7 +66,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="12">
+                            <a-col :span="10">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -110,7 +110,7 @@
         <a-form>
             <a-form-item field="todoInput" label="待办内容">
                 <a-input placeholder="请输入待办内容" v-model="inputValue" @change="inputOnChange"
-                         maxLength="10" show-word-limit allow-clear/>
+                         maxLength="15" show-word-limit allow-clear/>
             </a-form-item>
             <a-form-item field="todoSelect" label="标签分类">
                 <a-select id="todoSelect" default-value="work" @change="selectOnChange">
@@ -179,7 +179,7 @@ onMounted(() => {
     let todoListStorage = localStorage.getItem("todos");
     if (todoListStorage) {
         todoList.value = JSON.parse(todoListStorage);
-        if (notification.value) {
+        if (notification.value && todoList.value.length > 0) {
             Message.warning({content: "剩余 " + todoList.value.length + " 个待办事项未处理", position: "bottom"});
         }
     }
@@ -203,6 +203,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 function finishAllBtnOnClick() {
     todoList.value = [];
     localStorage.removeItem("todos");
+    Message.success("全部完成");
 }
 
 function finishBtnOnClick(item) {
@@ -222,11 +223,15 @@ function finishBtnOnClick(item) {
     });
 
     localStorage.setItem("todos", JSON.stringify(todoList.value));
+    Message.success("已完成");
 }
 
 function notificationSwitchOnChange(checked) {
     notification.value = checked;
     localStorage.setItem("todoNotification", JSON.stringify(checked));
+    if (todoList.value.length === 0) {
+        Message.warning("请添加待办事项");
+    }
 }
 
 function showAddModalBtnOnClick() {

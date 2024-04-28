@@ -76,17 +76,19 @@
                     </a-list-item>
                     <template #header>
                         <a-space>
-                            <a-select v-model="focusSound" :style="{width:'120px'}" @change="focusSoundSelectOnChange">
-                                <a-option value="none">{{ "关闭白噪音" }}</a-option>
-                                <a-option value="古镇雨滴">{{ "古镇雨滴" }}</a-option>
-                                <a-option value="松树林小雪">{{ "松树林小雪" }}</a-option>
+                            <a-select v-model="focusSound" :style="{width:'160px'}" @change="focusSoundSelectOnChange">
+                                <a-option value="none">{{ "不播放白噪音" }}</a-option>
+                                <a-option value="古镇雨滴">{{ "声谷 - 古镇雨滴" }}</a-option>
+                                <a-option value="松树林小雪">{{ "声谷 - 松树林小雪" }}</a-option>
+                                <a-option value="漓江水">{{ "声谷 - 漓江水" }}</a-option>
+                                <a-option value="泉水水滴">{{ "声谷 - 泉水水滴" }}</a-option>
                             </a-select>
                             <a-select :default-value="focusPeriod" :style="{width:'120px'}" :disabled="focusMode" @change="focusTimeSelectOnChange">
                                 <a-option value="manual">{{ "手动结束" }}</a-option>
-                                <a-option value="900000">{{ "15 分钟后" }}</a-option>
                                 <a-option value="1800000">{{ "30 分钟后" }}</a-option>
                                 <a-option value="2700000">{{ "45 分钟后" }}</a-option>
                                 <a-option value="3600000">{{ "60 分钟后" }}</a-option>
+                                <a-option value="5400000">{{ "90 分钟后" }}</a-option>
                             </a-select>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor, cursor: 'default'}" type="text"
@@ -138,6 +140,10 @@ import {
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 import {IconLink, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
+import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
+import focusSoundTwo from "../assets/focusSounds/松树林小雪.mp3";
+import focusSoundThree from "../assets/focusSounds/漓江水.mp3";
+import focusSoundFour from "../assets/focusSounds/泉水水滴.mp3";
 
 const focusAudio = new Audio();
 
@@ -259,7 +265,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    console.log(browserType + " " + key + " " + value);
+    // console.log(browserType + " " + key + " " + value);
     if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         chrome.storage.local.set({[key]: value});
     }
@@ -272,6 +278,10 @@ function focusModeSwitchOnChange(checked) {
     let tempFocusEndTime;
     let tempFocusEndTimeStamp;
     if (checked) {
+        if (filterList.value.length === 0) {
+            Message.warning("请添加黑名单");
+        }
+
         if (focusPeriod.value === "manual") {
             tempFocusEndTime = "手动结束";
             tempFocusEndTimeStamp = 0;
@@ -304,6 +314,7 @@ function removeAllBtnOnClick() {
     filterList.value = [];
     localStorage.removeItem("filterList");
     setExtensionStorage("filterList", []);
+    Message.success("删除成功");
 }
 
 function removeBtnOnClick(item) {
@@ -320,6 +331,7 @@ function removeBtnOnClick(item) {
 
     localStorage.setItem("filterList", JSON.stringify(filterList.value));
     setExtensionStorage("filterList", filterList.value);
+    Message.success("删除成功");
 }
 
 function showAddModalBtnOnClick() {
@@ -376,15 +388,28 @@ function focusSoundSelectOnChange(value) {
 function playFocusSound(focusSound) {
     switch (focusSound) {
         case "古镇雨滴": {
-            focusAudio.src = "https://www.soundvery.com/KUpload/file/20240111/20240111145637_8657.mp3";
+            // focusAudio.src = "https://www.soundvery.com/KUpload/file/20240111/20240111145637_8657.mp3";
+            focusAudio.src = focusSoundOne;
             break;
         }
         case "松树林小雪": {
-            focusAudio.src = "https://www.soundvery.com/KUpload/file/20240125/20240125190612_0979.mp3";
+            // focusAudio.src = "https://www.soundvery.com/KUpload/file/20240125/20240125190612_0979.mp3";
+            focusAudio.src = focusSoundTwo;
+            break;
+        }
+        case "漓江水": {
+            // focusAudio.src = "https://www.soundvery.com/KUpload/file/20240406/20240406102328_8511.mp3";
+            focusAudio.src = focusSoundThree;
+            break;
+        }
+        case "泉水水滴": {
+            // focusAudio.src = "https://www.soundvery.com/KUpload/file/20240406/20240406105745_9941.mp3";
+            focusAudio.src = focusSoundFour;
             break;
         }
         default: {
-            focusAudio.src = "https://www.soundvery.com/KUpload/file/20240111/20240111145637_8657.mp3";
+            // focusAudio.src = "https://www.soundvery.com/KUpload/file/20240111/20240111145637_8657.mp3";
+            focusAudio.src = focusSoundOne;
         }
     }
     focusAudio.loop = true;
@@ -401,7 +426,7 @@ function autoStopFocus(focusEndTimeStamp) {
                 focusEndTime.value = "未开启专注模式";
                 focusSound.value = "none";
                 resetFocusModeStorage();
-                Message.info("已关闭专注模式");
+                Message.info("已结束专注模式");
                 focusAudio.pause();
                 clearInterval(interval);
             }

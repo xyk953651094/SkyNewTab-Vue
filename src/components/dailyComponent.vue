@@ -55,7 +55,7 @@
                 <a-list :bordered=false>
                     <a-list-item v-for="item in dailyList" :key="item.timestamp">
                         <a-row>
-                            <a-col :span="10">
+                            <a-col :span="9">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -67,7 +67,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="14">
+                            <a-col :span="15">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -141,7 +141,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus, IconLoop} from "@arco-design/web-vue/es/icon";
 import dayjs from "dayjs";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails, isEmpty} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
@@ -279,6 +279,7 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 function removeAllBtnOnClick() {
     dailyList.value = [];
     localStorage.removeItem("daily");
+    Message.success("删除成功");
 }
 
 function removeBtnOnClick(item) {
@@ -298,11 +299,15 @@ function removeBtnOnClick(item) {
     });
 
     localStorage.setItem("daily", JSON.stringify(dailyList.value));
+    Message.success("删除成功");
 }
 
 function notificationSwitchOnChange(checked) {
     notification.value = checked;
     localStorage.setItem("dailyNotification", JSON.stringify(checked));
+    if (dailyList.value.length === 0) {
+        Message.warning("请添加倒数日");
+    }
 }
 
 function showAddModalBtnOnClick() {
