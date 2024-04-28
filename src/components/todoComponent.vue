@@ -54,7 +54,7 @@
                 <a-list :bordered=false>
                     <a-list-item v-for="item in todoList" :key="item.timestamp">
                         <a-row>
-                            <a-col :span="9">
+                            <a-col :span="14">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -66,7 +66,7 @@
                                     {{ item.title }}
                                 </a-button>
                             </a-col>
-                            <a-col :span="9">
+                            <a-col :span="10">
                                 <a-button :shape="preferenceData.buttonShape"
                                           :style="{color: fontColor, cursor: 'default'}"
                                           type="text"
@@ -76,18 +76,6 @@
                                         <icon-tag/>
                                     </template>
                                     {{ item.tag + " ｜ " + item.priority }}
-                                </a-button>
-                            </a-col>
-                            <a-col :span="6">
-                                <a-button :shape="preferenceData.buttonShape"
-                                          :style="{color: fontColor, cursor: 'default', display: isEmpty(item.time) ? 'none' : 'block'}"
-                                          type="text"
-                                          @mouseout="btnMouseOut(fontColor, $event)"
-                                          @mouseover="btnMouseOver(hoverColor, $event)">
-                                    <template #icon>
-                                        <icon-clock-circle />
-                                    </template>
-                                    {{ isEmpty(item.time) ? "" : item.time }}
                                 </a-button>
                             </a-col>
                         </a-row>
@@ -122,7 +110,7 @@
         <a-form>
             <a-form-item field="todoInput" label="待办内容">
                 <a-input placeholder="请输入待办内容" v-model="inputValue" @change="inputOnChange"
-                         maxLength="10" show-word-limit allow-clear/>
+                         maxLength="15" show-word-limit allow-clear/>
             </a-form-item>
             <a-form-item field="todoSelect" label="标签分类">
                 <a-select id="todoSelect" default-value="work" @change="selectOnChange">
@@ -133,11 +121,6 @@
                     <a-option value="other">其它</a-option>
                 </a-select>
             </a-form-item>
-            <a-form-item field="todoTime" label="截止时间">
-                <a-time-picker format="HH:mm" :step="{hour: 1, minute: 5, second: 1}"
-                               @change="timePickerOnChange"
-                               placeholder="可选，注意插件并不会通知截止时间" :style="{width: '100%'}" />
-            </a-form-item>
             <a-form-item field="todoRate" label="优先级别">
                 <a-rate :allow-clear="true" :color="hoverColor" default-value="1" @change="rateOnChange"/>
             </a-form-item>
@@ -147,8 +130,8 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCheck, IconCheckSquare, IconPlus, IconClockCircle, IconTag} from "@arco-design/web-vue/es/icon";
-import {btnMouseOut, btnMouseOver, changeThemeColor, isEmpty} from "@/javascripts/publicFunctions";
+import {IconCheck, IconCheckSquare, IconPlus, IconTag} from "@arco-design/web-vue/es/icon";
+import {btnMouseOut, btnMouseOver, changeThemeColor} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
@@ -181,7 +164,6 @@ let notification = ref(false);
 let displayModal = ref(false);
 let inputValue = ref("");
 let todoList = ref([]);
-let selectedTodoTime = ref("");
 let tag = ref("工作");
 let priority = ref("★");
 const todoMaxSize = 10;
@@ -280,7 +262,6 @@ function modalOkBtnOnClick() {
     todoList.value.push({
         "title": inputValue.value,
         "tag": tag.value,
-        "time": selectedTodoTime.value,
         "priority": priority.value,
         "timeStamp": Date.now()
     });
@@ -317,14 +298,6 @@ function selectOnChange(value) {
             break;
         default:
             tag.value = "工作";
-    }
-}
-
-function timePickerOnChange(timeString) {
-    if (timeString) {
-        selectedTodoTime.value = timeString;
-    } else {
-        selectedTodoTime.value = "";
     }
 }
 
