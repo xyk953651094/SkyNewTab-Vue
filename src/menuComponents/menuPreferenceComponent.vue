@@ -62,7 +62,7 @@
                             <a-radio value="full" id="full">清晰</a-radio>
                         </a-col>
                         <a-col :span="12">
-                            <a-radio value="regular" id="regular">省流</a-radio>
+                            <a-radio value="regular" id="regular">标准</a-radio>
                         </a-col>
                     </a-row>
                 </a-radio-group>
@@ -127,9 +127,9 @@
                         <a-col :span="12">
                             <a-checkbox name="arts-culture" value="bDo48cUhwnY" id="bDo48cUhwnY">文化</a-checkbox>
                         </a-col>
-                        <a-col :span="12">
-                            <a-checkbox name="history" value="dijpbw99kQQ" id="dijpbw99kQQ">历史</a-checkbox>
-                        </a-col>
+<!--                        <a-col :span="12">-->
+<!--                            <a-checkbox name="history" value="dijpbw99kQQ" id="dijpbw99kQQ">历史</a-checkbox>-->
+<!--                        </a-col>-->
                         <a-col :span="12">
                             <a-checkbox name="athletics" value="Bn-DjrcBrwo" id="Bn-DjrcBrwo">体育</a-checkbox>
                         </a-col>
