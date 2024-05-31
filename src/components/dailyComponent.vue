@@ -141,7 +141,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus, IconLoop} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import dayjs from "dayjs";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails, isEmpty} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";

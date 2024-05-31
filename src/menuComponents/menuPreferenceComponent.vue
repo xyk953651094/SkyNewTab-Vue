@@ -253,6 +253,18 @@
                     </a-button>
                 </a-space>
             </a-form-item>
+            <a-form-item field="accessKeyButton" label="访问密钥">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)"
+                          @mouseover="btnMouseOver(hoverColor, $event)"
+                          @click="accessKeyBtnOnClick"
+                >
+                    <template #icon>
+                        <icon-idcard />
+                    </template>
+                    自定义 Unsplash Access Key
+                </a-button>
+            </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
@@ -283,6 +295,30 @@
             </a-form-item>
         </a-form>
     </a-card>
+    <a-modal v-model:visible="displayAccessKeyModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             unmount-on-close @cancel="accessKeyCancelBtnOnClick" @ok="accessKeyOkBtnOnClick">
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "自定义 Unsplash Access Key" }}
+                    </a-typography-text>
+                </a-col>
+            </a-row>
+        </template>
+        <a-form>
+            <a-form-item field="accessKeyInput" label="访问密钥">
+                <a-input placeholder="请输入自定义访问密钥，详情请前往帮助文档查看" v-model="accessKeyInputValue" @change="accessKeyInputOnChange"
+                         allow-clear/>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">
+                        {{"自定义访问密钥为空时将使用插件默认访问密钥"}}
+                    </a-typography-text>
+                </template>
+            </a-form-item>
+        </a-form>
+    </a-modal>
     <a-modal v-model:visible="displayResetPreferenceModal" :closable="false"
              :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              unmount-on-close @cancel="resetPreferenceCancelBtnOnClick" @ok="resetPreferenceOkBtnOnClick">
@@ -318,7 +354,7 @@
 </template>
 
 <script setup>
-import {IconCheck, IconRedo, IconSettings, IconStop, IconImport, IconExport} from "@arco-design/web-vue/es/icon";
+import {IconCheck, IconRedo, IconSettings, IconStop, IconImport, IconExport, IconIdcard} from "@arco-design/web-vue/es/icon";
 import {
     btnMouseOut,
     btnMouseOver,
@@ -335,6 +371,8 @@ let disableImageTopic = ref(false);
 let imageTopicStatus = ref("已启用图片主题");
 let customTopicStatus = ref("已禁用自定主题");
 let customTopicInputValue = ref(getPreferenceDataStorage().customTopic);
+let displayAccessKeyModal = ref(false);
+let accessKeyInputValue = ref("");
 let displayResetPreferenceModal = ref(false);
 let displayClearStorageModal = ref(false);
 let preferenceData = ref(getPreferenceDataStorage());
@@ -624,6 +662,29 @@ function exportDataBtnOnClick() {
         URL.revokeObjectURL(objectURL);
         Message.success("导出数据成功");
     }
+}
+
+// 访问密钥
+function accessKeyBtnOnClick() {
+    displayAccessKeyModal.value = true;
+}
+
+function accessKeyInputOnChange(value) {
+    accessKeyInputValue.value = value;
+}
+
+function accessKeyOkBtnOnClick() {
+    displayAccessKeyModal.value = false;
+    preferenceData.value.accessKey = accessKeyInputValue.value;
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+    Message.success("已修改访问密钥，下次获取图片时生效");
+    formDisabled.value = true;
+    refreshWindow();
+}
+
+function accessKeyCancelBtnOnClick() {
+    displayAccessKeyModal.value = false;
 }
 
 // 重置设置

@@ -90,7 +90,7 @@ function getWallpaper() {
     let headers = {};
     let url = "https://api.unsplash.com/photos/random?";
     let data = {
-        "client_id": clientId,
+        "client_id": props.preferenceData.accessKey === "" ? clientId : props.preferenceData.accessKey,
         "orientation": (device === "iPhone" || device === "Android") ? "portrait" : "landscape",
         "topics": imageTopics,
         "content_filter": "high",
