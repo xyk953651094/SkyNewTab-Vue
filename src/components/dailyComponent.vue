@@ -201,7 +201,7 @@ onMounted(() => {
             let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
 
             // 倒数日通知
-            if (notification.value && value.selectedTimeStamp === todayTimeStamp) {
+            if (notification.value && value.selectedTimeStamp === todayTimeStamp && !props.preferenceData.simpleMode) {
                 Message.info({content: "今日" + value.title, position: "bottom"});
             }
 

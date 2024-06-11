@@ -179,7 +179,7 @@ onMounted(() => {
     let todoListStorage = localStorage.getItem("todos");
     if (todoListStorage) {
         todoList.value = JSON.parse(todoListStorage);
-        if (notification.value && todoList.value.length > 0) {
+        if (notification.value && todoList.value.length > 0 && !props.preferenceData.simpleMode) {
             Message.warning({content: "剩余 " + todoList.value.length + " 个待办事项未处理", position: "bottom"});
         }
     }
