@@ -100,10 +100,13 @@
              unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "添加待办事项 " + todoList.length + " / " + todoMaxSize }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-check-square/>
                 </a-col>
             </a-row>
         </template>

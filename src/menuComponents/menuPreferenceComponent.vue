@@ -141,31 +141,31 @@
                 </template>
             </a-form-item>
             <a-form-item label="自定主题">
-                <a-space>
-                    <a-form-item field="customTopic" no-style>
-                        <a-input :style="{width:'170px'}" v-model="customTopicInputValue" @change="customTopicInputOnChange" allow-clear placeholder="英文搜索最准确"/>
-                    </a-form-item>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              type="text" @click="submitCustomTopicBtnOnClick"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                    >
-                        <template #icon>
-                            <icon-check/>
-                        </template>
-                    </a-button>
-                    <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                              type="text" @click="clearCustomTopicBtnOnClick"
-                              @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
-                    >
-                        <template #icon>
-                            <icon-stop/>
-                        </template>
-                    </a-button>
-                </a-space>
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
+                          type="text" @click="customTopicBtnOnClick"
+                          @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)"
+                >
+                    <template #icon>
+                        <icon-tag />
+                    </template>
+                    自定义 Unsplash 图片主题
+                </a-button>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">{{ customTopicStatus }}
                     </a-typography-text>
                 </template>
+            </a-form-item>
+            <a-form-item field="accessKeyButton" label="访问密钥">
+                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
+                          @mouseout="btnMouseOut(fontColor, $event)"
+                          @mouseover="btnMouseOver(hoverColor, $event)"
+                          @click="accessKeyBtnOnClick"
+                >
+                    <template #icon>
+                        <icon-idcard />
+                    </template>
+                    自定义 Unsplash 访问密钥
+                </a-button>
             </a-form-item>
             <a-form-item field="changeImageTime" label="切换间隔">
                 <a-select v-model="preferenceData.changeImageTime" :style="{width:'170px'}"
@@ -253,18 +253,6 @@
                     </a-button>
                 </a-space>
             </a-form-item>
-            <a-form-item field="accessKeyButton" label="访问密钥">
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)"
-                          @mouseover="btnMouseOver(hoverColor, $event)"
-                          @click="accessKeyBtnOnClick"
-                >
-                    <template #icon>
-                        <icon-idcard />
-                    </template>
-                    自定义 Unsplash Access Key
-                </a-button>
-            </a-form-item>
             <a-form-item field="clearStorageButton" label="危险设置">
                 <a-space>
                     <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}" type="text"
@@ -295,20 +283,50 @@
             </a-form-item>
         </a-form>
     </a-card>
+    <a-modal v-model:visible="displayCustomTopicModal" :closable="false"
+             :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
+             unmount-on-close @cancel="customTopicCancelBtnOnClick" @ok="customTopicOkBtnOnClick">
+        <template #title>
+            <a-row :style="{width: '100%'}" align="center">
+                <a-col :span="12">
+                    <a-typography-text :style="{color: fontColor}">
+                        {{ "自定义 Unsplash 图片主题" }}
+                    </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-tag />
+                </a-col>
+            </a-row>
+        </template>
+        <a-form :model="preferenceData">
+            <a-form-item field="customTopic" label="自定主题">
+                <a-input placeholder="请输入自定义图片主题，英文结果更准确，例如 flower" v-model="customTopicInputValue" @change="customTopicInputOnChange"
+                         allow-clear/>
+                <template #extra>
+                    <a-typography-text :style="{color: fontColor}">
+                        {{"自定义图片主题为空时将使用选择的图片主题"}}
+                    </a-typography-text>
+                </template>
+            </a-form-item>
+        </a-form>
+    </a-modal>
     <a-modal v-model:visible="displayAccessKeyModal" :closable="false"
              :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
              unmount-on-close @cancel="accessKeyCancelBtnOnClick" @ok="accessKeyOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "自定义 Unsplash Access Key" }}
+                        {{ "自定义 Unsplash 访问密钥" }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-idcard />
                 </a-col>
             </a-row>
         </template>
-        <a-form>
-            <a-form-item field="accessKeyInput" label="访问密钥">
+        <a-form :model="preferenceData">
+            <a-form-item field="accessKey" label="访问密钥">
                 <a-input placeholder="请输入自定义访问密钥，详情请前往帮助文档查看" v-model="accessKeyInputValue" @change="accessKeyInputOnChange"
                          allow-clear/>
                 <template #extra>
@@ -324,10 +342,13 @@
              unmount-on-close @cancel="resetPreferenceCancelBtnOnClick" @ok="resetPreferenceOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "确定重置设置？" }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-redo/>
                 </a-col>
             </a-row>
         </template>
@@ -340,10 +361,13 @@
              unmount-on-close @cancel="clearStorageBtnCancelOnClick" @ok="clearStorageOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "确定重置插件？" }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-redo/>
                 </a-col>
             </a-row>
         </template>
@@ -354,7 +378,14 @@
 </template>
 
 <script setup>
-import {IconCheck, IconRedo, IconSettings, IconStop, IconImport, IconExport, IconIdcard} from "@arco-design/web-vue/es/icon";
+import {
+    IconTag,
+    IconRedo,
+    IconSettings,
+    IconImport,
+    IconExport,
+    IconIdcard
+} from "@arco-design/web-vue/es/icon";
 import {
     btnMouseOut,
     btnMouseOver,
@@ -370,6 +401,7 @@ let lastRequestTime = ref("暂无信息");
 let disableImageTopic = ref(false);
 let imageTopicStatus = ref("已启用图片主题");
 let customTopicStatus = ref("已禁用自定主题");
+let displayCustomTopicModal = ref(false);
 let customTopicInputValue = ref(getPreferenceDataStorage().customTopic);
 let displayAccessKeyModal = ref(false);
 let accessKeyInputValue = ref("");
@@ -473,41 +505,74 @@ function imageTopicsCheckboxOnChange(values) {
     // resetCheckboxColor(values, imageTopics, props.hoverColor);
 }
 
+// 自定义主题
+function customTopicBtnOnClick() {
+    displayCustomTopicModal.value = true;
+}
+
 function customTopicInputOnChange(value) {
     customTopicInputValue.value = value;
 }
 
-// 自定义主题
-function submitCustomTopicBtnOnClick() {
-    preferenceData.value.customTopic = customTopicInputValue.value;
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    emit("preferenceData", preferenceData.value);
+function customTopicOkBtnOnClick() {
+    if (customTopicInputValue.value.length > 0) {
+        displayCustomTopicModal.value = false;
+        preferenceData.value.customTopic = customTopicInputValue.value;
+        localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+        emit("preferenceData", preferenceData.value);
 
-    disableImageTopic.value = !isEmpty(customTopicInputValue.value);
-    imageTopicStatus.value = isEmpty(customTopicInputValue.value)? "已启用图片主题" : "已禁用图片主题";
-    customTopicStatus.value = isEmpty(customTopicInputValue.value)? "已禁用自定主题" : "已启用自定主题";
+        disableImageTopic.value = !isEmpty(customTopicInputValue.value);
+        imageTopicStatus.value = isEmpty(customTopicInputValue.value)? "已启用图片主题" : "已禁用图片主题";
+        customTopicStatus.value = isEmpty(customTopicInputValue.value)? "已禁用自定主题" : "已启用自定主题";
 
-    if (!isEmpty(customTopicInputValue.value)) {
-        Message.success("已启用自定主题，下次切换图片时生效");
+        if (!isEmpty(customTopicInputValue.value)) {
+            Message.success("已启用自定主题，下次切换图片时生效");
+        } else {
+            Message.success("已禁用自定主题，一秒后刷新页面");
+            formDisabled.value = true;
+            refreshWindow();
+        }
     } else {
+        displayCustomTopicModal.value = false;
+        preferenceData.value.customTopic = "";
+        localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+        emit("preferenceData", preferenceData.value);
+
+        disableImageTopic.value = false;
+        imageTopicStatus.value = "已启用图片主题";
+        customTopicStatus.value = "已禁用自定主题";
+
         Message.success("已禁用自定主题，一秒后刷新页面");
         formDisabled.value = true;
         refreshWindow();
     }
 }
 
-function clearCustomTopicBtnOnClick() {
-    preferenceData.value.customTopic = "";
+function customTopicCancelBtnOnClick() {
+    displayCustomTopicModal.value = false;
+}
+
+// 访问密钥
+function accessKeyBtnOnClick() {
+    displayAccessKeyModal.value = true;
+}
+
+function accessKeyInputOnChange(value) {
+    accessKeyInputValue.value = value;
+}
+
+function accessKeyOkBtnOnClick() {
+    displayAccessKeyModal.value = false;
+    preferenceData.value.accessKey = accessKeyInputValue.value;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
-    
-    disableImageTopic.value = false;
-    imageTopicStatus.value = "已启用图片主题";
-    customTopicStatus.value = "已禁用自定主题";
-
-    Message.success("已禁用自定主题，一秒后刷新页面");
+    Message.success("已修改访问密钥，下次获取图片时生效");
     formDisabled.value = true;
     refreshWindow();
+}
+
+function accessKeyCancelBtnOnClick() {
+    displayAccessKeyModal.value = false;
 }
 
 function changeImageTimeOnChange(value) {
@@ -662,29 +727,6 @@ function exportDataBtnOnClick() {
         URL.revokeObjectURL(objectURL);
         Message.success("导出数据成功");
     }
-}
-
-// 访问密钥
-function accessKeyBtnOnClick() {
-    displayAccessKeyModal.value = true;
-}
-
-function accessKeyInputOnChange(value) {
-    accessKeyInputValue.value = value;
-}
-
-function accessKeyOkBtnOnClick() {
-    displayAccessKeyModal.value = false;
-    preferenceData.value.accessKey = accessKeyInputValue.value;
-    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
-    emit("preferenceData", preferenceData.value);
-    Message.success("已修改访问密钥，下次获取图片时生效");
-    formDisabled.value = true;
-    refreshWindow();
-}
-
-function accessKeyCancelBtnOnClick() {
-    displayAccessKeyModal.value = false;
 }
 
 // 重置设置

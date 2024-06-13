@@ -2,59 +2,52 @@
     <a-row :style="{display: display}">
         <a-col :span="24" class="alignCenter">
             <a-space>
-                <a-tooltip v-for="item in collectionData" :key="item.timeStamp" :background-color="backgroundColor"
-                           :content="item.webUrl"
-                           :content-style="{color: fontColor}" position="bottom">
+                <a-button v-for="item in collectionData" :key="item.timeStamp" :shape="preferenceData.buttonShape"
+                          :style="{color: fontColor, backgroundColor: backgroundColor}"
+                          class="componentTheme zIndexHigh"
+                          type="primary"
+                          @click="collectionBtnOnClick(item)">
+                    {{ item.webName }}
+                </a-button>
+                <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
+                           content="添加链接"
+                           position="bottom">
                     <a-button :shape="preferenceData.buttonShape"
                               :style="{color: fontColor, backgroundColor: backgroundColor}"
                               class="componentTheme zIndexHigh"
                               type="primary"
-                              @click="collectionBtnOnClick(item)">
-                        {{ item.webName }}
+                              @click="showAddModalBtnOnClick">
+                        <template #icon>
+                            <icon-plus/>
+                        </template>
                     </a-button>
                 </a-tooltip>
-
-                <a-space>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
-                               content="添加链接"
-                               position="bottom">
-                        <a-button :shape="preferenceData.buttonShape"
-                                  :style="{color: fontColor, backgroundColor: backgroundColor}"
-                                  class="componentTheme zIndexHigh"
-                                  type="primary"
-                                  @click="showAddModalBtnOnClick">
-                            <template #icon>
-                                <icon-plus/>
-                            </template>
-                        </a-button>
-                    </a-tooltip>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
-                               content="编辑链接"
-                               position="bottom">
-                        <a-button :shape="preferenceData.buttonShape"
-                                  :style="{color: fontColor, backgroundColor: backgroundColor}"
-                                  class="componentTheme zIndexHigh"
-                                  type="primary"
-                                  @click="showEditModalBtnOnClick">
-                            <template #icon>
-                                <icon-edit/>
-                            </template>
-                        </a-button>
-                    </a-tooltip>
-                    <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
-                               content="全部删除"
-                               position="bottom">
-                        <a-button :shape="preferenceData.buttonShape"
-                                  :style="{color: fontColor, backgroundColor: backgroundColor}"
-                                  class="componentTheme zIndexHigh"
-                                  type="primary"
-                                  @click="removeAllBtnOnClick">
-                            <template #icon>
-                                <icon-delete/>
-                            </template>
-                        </a-button>
-                    </a-tooltip>
-                </a-space>
+                <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
+                           content="编辑链接"
+                           position="bottom">
+                    <a-button :shape="preferenceData.buttonShape"
+                              :style="{color: fontColor, backgroundColor: backgroundColor}"
+                              class="componentTheme zIndexHigh"
+                              type="primary"
+                              @click="showEditModalBtnOnClick">
+                        <template #icon>
+                            <icon-edit/>
+                        </template>
+                    </a-button>
+                </a-tooltip>
+                <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
+                           content="全部删除"
+                           position="bottom">
+                    <a-button :shape="preferenceData.buttonShape"
+                              :style="{color: fontColor, backgroundColor: backgroundColor}"
+                              class="componentTheme zIndexHigh"
+                              type="primary"
+                              @click="removeAllBtnOnClick">
+                        <template #icon>
+                            <icon-delete/>
+                        </template>
+                    </a-button>
+                </a-tooltip>
             </a-space>
         </a-col>
     </a-row>
@@ -64,10 +57,13 @@
              @cancel="addModalCancelBtnOnClick" @ok="addModalOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "添加链接 " + collectionSize + " / " + collectionMaxSize }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-link />
                 </a-col>
             </a-row>
         </template>
@@ -132,7 +128,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconDelete, IconEdit, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconEdit, IconPlus, IconLink} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";

@@ -107,10 +107,13 @@
              unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "添加黑名单 " + filterList.length + " / " + focusMaxSize }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-stop />
                 </a-col>
             </a-row>
         </template>
@@ -138,7 +141,7 @@ import {
     getTimeDetails
 } from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
+import {IconLink, IconDelete, IconPlus, IconStop} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
 import focusSoundTwo from "../assets/focusSounds/松树林小雪.mp3";

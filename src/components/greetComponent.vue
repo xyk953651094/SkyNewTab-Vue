@@ -101,26 +101,15 @@
                         <a-typography-text :style="{color: fontColor}">{{ "万年历" }}</a-typography-text>
                     </a-col>
                     <a-col :span="14" :style="{textAlign: 'right'}">
-                        <a-space>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor}" type="text"
-                                      @click="historyBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-history/>
-                                </template>
-                                {{ "历史上的今天" }}
-                            </a-button>
-                            <a-button :shape="preferenceData.buttonShape"
-                                      :style="{color: fontColor}" type="text"
-                                      @click="infoBtnOnClick"
-                                      @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
-                                <template #icon>
-                                    <icon-more-vertical/>
-                                </template>
-                                {{ "更多信息" }}
-                            </a-button>
-                        </a-space>
+                        <a-button :shape="preferenceData.buttonShape"
+                                  :style="{color: fontColor}" type="text"
+                                  @click="infoBtnOnClick"
+                                  @mouseout="btnMouseOut(fontColor, $event)" @mouseover="btnMouseOver(hoverColor, $event)">
+                            <template #icon>
+                                <icon-more-vertical/>
+                            </template>
+                            {{ "更多信息" }}
+                        </a-button>
                     </a-col>
                 </a-row>
             </template>
@@ -174,7 +163,6 @@ import {
     IconCalendar,
     IconCheckCircle,
     IconCloseCircle,
-    IconHistory,
     IconMoreVertical,
 } from "@arco-design/web-vue/es/icon";
 import {
@@ -246,10 +234,6 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
         display.value = newValue ? "none" : "block";
     }
 }, {immediate: true});
-
-function historyBtnOnClick() {
-    window.open(searchEngineUrl.value + "历史上的今天", "_self");
-}
 
 function infoBtnOnClick() {
     window.open(searchEngineUrl.value + "万年历", "_self");
