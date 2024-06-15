@@ -59,7 +59,7 @@
                                   @mouseout="btnMouseOut(fontColor, $event)"
                                   @mouseover="btnMouseOver(hoverColor, $event)">
                             <template #icon>
-                                <icon-link />
+                                <icon-stop />
                             </template>
                             {{ item.domain }}
                         </a-button>
@@ -141,7 +141,7 @@ import {
     getTimeDetails
 } from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
-import {IconLink, IconDelete, IconPlus, IconStop} from "@arco-design/web-vue/es/icon";
+import {IconDelete, IconPlus, IconStop} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
 import focusSoundTwo from "../assets/focusSounds/松树林小雪.mp3";

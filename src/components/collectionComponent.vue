@@ -2,13 +2,18 @@
     <a-row :style="{display: display}">
         <a-col :span="24" class="alignCenter">
             <a-space>
-                <a-button v-for="item in collectionData" :key="item.timeStamp" :shape="preferenceData.buttonShape"
-                          :style="{color: fontColor, backgroundColor: backgroundColor}"
-                          class="componentTheme zIndexHigh"
-                          type="primary"
-                          @click="collectionBtnOnClick(item)">
-                    {{ item.webName }}
-                </a-button>
+                <a-tooltip v-for="item in collectionData" :key="item.timeStamp"
+                           :background-color="backgroundColor" :content-style="{color: fontColor}"
+                           :content="'前往 ' + item.webName"
+                           position="bottom">
+                    <a-button :shape="preferenceData.buttonShape"
+                              :style="{color: fontColor, backgroundColor: backgroundColor}"
+                              class="componentTheme zIndexHigh"
+                              type="primary"
+                              @click="collectionBtnOnClick(item)">
+                        {{ item.webName }}
+                    </a-button>
+                </a-tooltip>
                 <a-tooltip :background-color="backgroundColor" :content-style="{color: fontColor}"
                            content="添加链接"
                            position="bottom">
