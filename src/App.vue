@@ -174,7 +174,7 @@ onMounted(() => {
             Notification.success({
                 showIcon: false,
                 title: "支持作者",
-                content: "如果喜欢这款插件，请考虑捐助或五星好评",
+                content: "如果喜欢这款插件，请考虑五星好评",
                 position: "bottomLeft",
                 duration: 5000
             });
