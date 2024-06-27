@@ -21,15 +21,6 @@
                         <i class="bi bi-rss-fill"></i>
                     </template>
                 </a-button>
-                <a-button :shape="preferenceData.buttonShape" :style="{color: fontColor}"
-                          href="https://afdian.net/a/xyk953651094" target="_self" type="text"
-                          @mouseout="btnMouseOut(fontColor, $event)"
-                          @mouseover="btnMouseOver(hoverColor, $event)">
-                    <template #icon>
-                        <icon-gift/>
-                    </template>
-                    {{ "捐助" }}
-                </a-button>
             </a-space>
         </a-col>
     </a-row>

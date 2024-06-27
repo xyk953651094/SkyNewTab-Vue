@@ -66,7 +66,7 @@ export let defaultPreferenceData = {
     imageTopics: ["bo8jQKTaE0Y"],
     customTopic: "",
     changeImageTime: "3600000",
-    nightMode: false,
+    nightMode: true,
     noImageMode: false,
 
     searchEngine: "bing",
