@@ -105,10 +105,13 @@
              unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "添加倒数日 " + dailyList.length + " / " + dailyMaxSize }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-calendar-clock/>
                 </a-col>
             </a-row>
         </template>
@@ -141,7 +144,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref, watch} from "vue";
-import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus, IconLoop} from "@arco-design/web-vue/es/icon";
+import {IconCalendarClock, IconClockCircle, IconDelete, IconPlus} from "@arco-design/web-vue/es/icon";
 import dayjs from "dayjs";
 import {btnMouseOut, btnMouseOver, changeThemeColor, getTimeDetails, isEmpty} from "@/javascripts/publicFunctions";
 import {Message} from "@arco-design/web-vue";
@@ -201,7 +204,7 @@ onMounted(() => {
             let todayTimeStamp = new Date(getTimeDetails(new Date()).showDate5).getTime();
 
             // 倒数日通知
-            if (notification.value && value.selectedTimeStamp === todayTimeStamp) {
+            if (notification.value && value.selectedTimeStamp === todayTimeStamp && !props.preferenceData.simpleMode) {
                 Message.info({content: "今日" + value.title, position: "bottom"});
             }
 

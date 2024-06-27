@@ -100,10 +100,13 @@
              unmount-on-close @cancel="modalCancelBtnOnClick" @ok="modalOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
-                <a-col :span="24" :style="{display: 'flex', alignItems: 'center'}">
+                <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
                         {{ "添加待办事项 " + todoList.length + " / " + todoMaxSize }}
                     </a-typography-text>
+                </a-col>
+                <a-col :span="12" :style="{textAlign: 'right'}">
+                    <icon-check-square/>
                 </a-col>
             </a-row>
         </template>
@@ -179,7 +182,7 @@ onMounted(() => {
     let todoListStorage = localStorage.getItem("todos");
     if (todoListStorage) {
         todoList.value = JSON.parse(todoListStorage);
-        if (notification.value && todoList.value.length > 0) {
+        if (notification.value && todoList.value.length > 0 && !props.preferenceData.simpleMode) {
             Message.warning({content: "剩余 " + todoList.value.length + " 个待办事项未处理", position: "bottom"});
         }
     }
