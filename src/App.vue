@@ -164,7 +164,7 @@ onMounted(() => {
         Notification.success({
             showIcon: false,
             title: "已更新至版本 V" + currentVersion,
-            content: "详细内容请前往 GitHub 或 GitLab 主页查看",
+            content: "详细内容请前往菜单栏更新日志查看",
             position: "bottomLeft",
             duration: 5000
         });
