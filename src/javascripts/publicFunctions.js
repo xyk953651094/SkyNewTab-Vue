@@ -1,4 +1,4 @@
-import {darkThemeArray, defaultPreferenceData, lightThemeArray} from "@/javascripts/publicConstants";
+import {colorRegExp, darkThemeArray, defaultPreferenceData, lightThemeArray} from "@/javascripts/publicConstants";
 import "jquery-color"
 
 const $ = require("jquery");
@@ -179,7 +179,7 @@ export function setColorTheme() {
 // 根据图片背景颜色获取反色主题
 export function getReverseColor(color) {
     // 验证输入是否为7字符长且以#开头
-    if (!/^#[0-9A-Fa-f]{6}$/.test(color)) {
+    if (!colorRegExp.test(color)) {
         throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
     }
 
@@ -203,7 +203,7 @@ export function getReverseColor(color) {
 
 // 根据元素背景颜色获取字体颜色
 export function getFontColor(color) {
-    let rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+    let rgb = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
 
     if (!rgb) {
         return "#ffffff";
@@ -398,20 +398,12 @@ export function getImageHistoryStorage() {
 
 // 过渡动画
 export function changeThemeColor(element, backgroundColor, fontColor, time = 300) {
+    if (!colorRegExp.test(backgroundColor) || !colorRegExp.test(fontColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     $(element).animate({
         backgroundColor: backgroundColor,
-        color: fontColor,
-    }, {queue: false, duration: time});
-}
-
-export function changeBackgroundColor(element, backgroundColor, time = 300) {
-    $(element).animate({
-        backgroundColor: backgroundColor,
-    }, {queue: false, duration: time});
-}
-
-export function changeFontColor(element, fontColor, time = 300) {
-    $(element).animate({
         color: fontColor,
     }, {queue: false, duration: time});
 }
@@ -426,17 +418,29 @@ export function fadeOut(element, time = 300) {
 
 // 按钮（clockComponent 不适用公共方法，已单独实现）
 export function btnMouseOver(hoverColor, e) {
+    if (!colorRegExp.test(hoverColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     e.currentTarget.style.backgroundColor = hoverColor;
     e.currentTarget.style.color = getFontColor(hoverColor);
 }
 
 export function btnMouseOut(fontColor, e) {
+    if (!colorRegExp.test(fontColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     e.currentTarget.style.backgroundColor = "transparent";
     e.currentTarget.style.color = fontColor;
 }
 
 // 修改菜单栏表单控件时变化主题颜色
 export function resetRadioColor(selectedRadio, allRadios, themeColor) {
+    if (!colorRegExp.test(themeColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     // 重置所有不是当前选中的选项的颜色
     for (let i = 0; i < allRadios.length; i++) {
         let currentRadio = $("#" + allRadios[i]);
@@ -458,6 +462,10 @@ export function resetRadioColor(selectedRadio, allRadios, themeColor) {
 }
 
 export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor) {
+    if (!colorRegExp.test(themeColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     // 重置所有不是当前选中的选项的颜色
     for (let i = 0; i < allCheckboxes.length; i++) {
         let currentCheckbox = $("#" + allCheckboxes[i]);
@@ -479,6 +487,10 @@ export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor
 }
 
 export function resetSwitchColor(element, checked, themeColor) {
+    if (!colorRegExp.test(themeColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     if (!checked) {
         $(element).css("backgroundColor", "rgb(201, 205, 212)")      // var(--color-fill-4)
             .children(".arco-switch-text").css("color", "#000000");  // var(--color-white)
