@@ -90,7 +90,7 @@ import {
     getImageHistoryStorage,
     getPreferenceDataStorage,
     getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
-    setColorTheme,
+    setThemeColor,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
 import {Notification} from '@arco-design/web-vue';
@@ -154,7 +154,7 @@ const getPreferenceData = (value) => {
 onMounted(() => {
     // 未加载图片前随机显示颜色主题
     if (themeColor.value.themeColor === "") {
-        themeColor.value = setColorTheme();
+        themeColor.value = setThemeColor();
     }
 
     // 版本号提醒
