@@ -453,14 +453,14 @@ export function resetRadioColor(selectedRadio, allRadios, themeColor) {
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
-            currentRadio.children(".arco-radio-label").css({"fontWeight": "normal", "textDecoration": "none"});
+            currentRadio.children(".arco-radio-label").css({"textDecoration": "none"});
         }
         else {
             currentRadio.find(".arco-radio-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor,
             });
-            currentRadio.children(".arco-radio-label").css({"fontWeight": "bold", "textDecoration": "underline"});
+            currentRadio.children(".arco-radio-label").css({"textDecoration": "underline"});
         }
     }
 }
@@ -478,14 +478,14 @@ export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
-            currentCheckbox.children(".arco-checkbox-label").css({"fontWeight": "normal", "textDecoration": "none"});
+            currentCheckbox.children(".arco-checkbox-label").css({"textDecoration": "none"});
         }
         else {
             currentCheckbox.find(".arco-checkbox-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor
             }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
-            currentCheckbox.children(".arco-checkbox-label").css({"fontWeight": "bold", "textDecoration": "underline"});
+            currentCheckbox.children(".arco-checkbox-label").css({"textDecoration": "underline"});
         }
     }
 }
