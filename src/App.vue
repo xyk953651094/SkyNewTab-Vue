@@ -90,7 +90,7 @@ import {
     getImageHistoryStorage,
     getPreferenceDataStorage,
     getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
-    setColorTheme,
+    setThemeColor,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
 import {Notification} from '@arco-design/web-vue';
@@ -154,7 +154,7 @@ const getPreferenceData = (value) => {
 onMounted(() => {
     // 未加载图片前随机显示颜色主题
     if (themeColor.value.themeColor === "") {
-        themeColor.value = setColorTheme();
+        themeColor.value = setThemeColor();
     }
 
     // 版本号提醒
@@ -164,7 +164,7 @@ onMounted(() => {
         Notification.success({
             showIcon: false,
             title: "已更新至版本 V" + currentVersion,
-            content: "详细内容请前往 GitHub 或 GitLab 主页查看",
+            content: "详细内容请前往菜单栏更新日志查看",
             position: "bottomLeft",
             duration: 5000
         });
@@ -174,7 +174,7 @@ onMounted(() => {
             Notification.success({
                 showIcon: false,
                 title: "支持作者",
-                content: "如果喜欢这款插件，请考虑捐助或五星好评",
+                content: "如果喜欢这款插件，请考虑五星好评",
                 position: "bottomLeft",
                 duration: 5000
             });

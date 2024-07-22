@@ -600,14 +600,15 @@ function nightModeSwitchOnChange(checked) {
 }
 
 function noImageModeSwitchOnChange(checked) {
+    preferenceData.value.nightMode = !checked;  // 同时调整亮度
     preferenceData.value.noImageMode = checked;
     localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
     emit("preferenceData", preferenceData.value);
 
     if (checked) {
-        Message.success("已开启纯色模式，一秒后刷新页面");
+        Message.success("已开启纯色模式并恢复背景亮度，一秒后刷新页面");
     } else {
-        Message.success("已关闭纯色模式，一秒后刷新页面");
+        Message.success("已关闭纯色模式并降低背景亮度，一秒后刷新页面");
     }
 
     // resetSwitchColor("#noImageModeSwitch", checked, props.hoverColor);

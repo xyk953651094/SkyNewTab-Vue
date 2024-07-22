@@ -40,7 +40,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {getFontColor, getPreferenceDataStorage, getReverseColor} from "@/javascripts/publicFunctions";
+import {getFontColor, getPreferenceDataStorage, getReverseColor, setThemeColor} from "@/javascripts/publicFunctions";
 import "@/stylesheets/popupComponent.less"
 import PopupImageComponent from "../popupComponents/popupImageComponent.vue";
 import PopupStatusComponent from "../popupComponents/popupStatusComponent.vue";
@@ -56,21 +56,28 @@ let fontColor = ref("");
 let preferenceData = ref(getPreferenceDataStorage());
 
 onMounted(() => {
-    let tempImageData = localStorage.getItem("lastImage");
-    if (tempImageData) {
-        tempImageData = JSON.parse(tempImageData);
-        imageData.value = tempImageData;
-        hoverColor.value = getReverseColor(tempImageData.color);
-        backgroundColor.value = tempImageData.color;
-        fontColor.value = getFontColor(tempImageData.color);
-
-        $("body").css({"backgroundColor": backgroundColor.value});
+    if (preferenceData.value.noImageMode) {
+        const tempThemeColor = setThemeColor();
+        hoverColor.value = tempThemeColor.componentBackgroundColor;
+        backgroundColor.value = tempThemeColor.themeColor;
+        fontColor.value = getFontColor(tempThemeColor.themeColor);
     } else {
-        Message.error("暂无图片信息");
+        let tempImageData = localStorage.getItem("lastImage");
+        if (tempImageData) {
+            tempImageData = JSON.parse(tempImageData);
+            imageData.value = tempImageData;
+            hoverColor.value = getReverseColor(tempImageData.color);
+            backgroundColor.value = tempImageData.color;
+            fontColor.value = getFontColor(tempImageData.color);
+        } else {
+            Message.error("暂无图片信息");
+        }
     }
+    const bodyEle = $("body");
+    bodyEle.css({"backgroundColor": backgroundColor.value});
 
     // 修改各类弹窗样式
-    $("body").bind("DOMNodeInserted", () => {
+    bodyEle.bind("DOMNodeInserted", () => {
         $(".arco-list-item").css("padding", "10px 0");
 
         // message

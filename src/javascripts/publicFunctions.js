@@ -1,4 +1,8 @@
-import {darkThemeArray, defaultPreferenceData, lightThemeArray} from "@/javascripts/publicConstants";
+import {
+    colorRegExp, darkColors,
+    defaultPreferenceData,
+    lightColors
+} from "@/javascripts/publicConstants";
 import "jquery-color"
 
 const $ = require("jquery");
@@ -85,6 +89,7 @@ export function getGreetContent() {
     let hour = new Date().getHours();
 
     const greets = {
+        default: "您好",
         morning: "朝霞满",
         noon: "正当午",
         afternoon: "斜阳下",
@@ -93,7 +98,9 @@ export function getGreetContent() {
         daybreak: "又一宿"
     };
 
-    if (hour >= 0 && hour < 6) {            // 凌晨
+    if (isNaN(hour)) {
+        return greets.default;
+    } else if (hour >= 0 && hour < 6) {            // 凌晨
         return greets.daybreak;
     } else if (hour >= 6 && hour < 11) {    // 上午
         return greets.morning;
@@ -111,7 +118,10 @@ export function getGreetContent() {
 // 获取问候语图标 className
 export function getGreetIcon() {
     let hour = new Date().getHours();
-    if (hour >= 6 && hour < 12) {   // 上午
+
+    if (isNaN(hour)) {
+        return "";
+    } else if (hour >= 6 && hour < 12) {   // 上午
         return "bi bi-sunrise";
     } else if (hour >= 12 && hour < 18) {  // 下午
         return "bi bi-sunset";
@@ -122,69 +132,97 @@ export function getGreetIcon() {
 
 // 获取天气图标className
 export function getWeatherIcon(weatherInfo) {
-    if (weatherInfo.indexOf("晴") !== -1) {
-        return "bi bi-sun"
-    } else if (weatherInfo.indexOf("阴") !== -1) {
-        return "bi bi-cloud"
-    } else if (weatherInfo.indexOf("云") !== -1) {
-        return "bi bi-clouds"
-    } else if (weatherInfo.indexOf("雨") !== -1) {
-        return "bi bi-cloud-rain"
-    } else if (weatherInfo.indexOf("雾") !== -1) {
-        return "bi bi-cloud-fog"
-    } else if (weatherInfo.indexOf("霾") !== -1) {
-        return "bi bi-cloud-haze"
-    } else if (weatherInfo.indexOf("雪") !== -1) {
-        return "bi bi-cloud-snow"
-    } else if (weatherInfo.indexOf("雹") !== -1) {
-        return "bi bi-cloud-hail"
-    } else {
-        return ""
-    }
+    const iconMap = {
+        "晴": "bi bi-sun",
+        "阴": "bi bi-cloud",
+        "云": "bi bi-clouds",
+        "雨": "bi bi-cloud-rain",
+        "雾": "bi bi-cloud-fog",
+        "霾": "bi bi-cloud-haze",
+        "雪": "bi bi-cloud-snow",
+        "雹": "bi bi-cloud-hail",
+    };
+
+    // 构建正则表达式，以匹配映射中的天气情况
+    const regex = new RegExp(Object.keys(iconMap).join("|"));
+    // 在天气信息中寻找匹配的天气情况
+    const match = weatherInfo.match(regex);
+
+    // 如果找到匹配项，返回相应的图标类；否则返回空字符串
+    return match ? iconMap[match[0]] : "";
 }
 
 // 请求unsplash图片前随机显示多彩颜色主题
-export function setColorTheme() {
+export function setThemeColor() {
     let currentHour = parseInt(getTimeDetails(new Date()).hour);
-    let themeArray = lightThemeArray;
+    let lightRandomNum = Math.floor(Math.random() * lightColors.length);
+    let darkRandomNum = Math.floor(Math.random() * darkColors.length);
+
+    let themeColor = {
+        "themeColor": lightColors[lightRandomNum],
+        "componentBackgroundColor": darkColors[darkRandomNum],
+        "componentFontColor": getFontColor(darkColors[darkRandomNum])
+    };
     if (currentHour > 18 || currentHour < 6) {  // 夜间显示深色背景
-        themeArray = darkThemeArray;
+        themeColor = {
+            "themeColor": darkColors[lightRandomNum],
+            "componentBackgroundColor": lightColors[darkRandomNum],
+            "componentFontColor": getFontColor(lightColors[darkRandomNum])
+        };
     }
 
-    let randomNum = Math.floor(Math.random() * themeArray.length);
     let body = document.getElementsByTagName("body")[0];
-    body.style.backgroundColor = themeArray[randomNum].bodyBackgroundColor;  // 设置body背景颜色
-
-    return {
-        "themeColor": themeArray[randomNum].bodyBackgroundColor,
-        "componentBackgroundColor": themeArray[randomNum].componentBackgroundColor,
-        "componentFontColor": getFontColor(themeArray[randomNum].componentBackgroundColor),
-    };  // 返回各组件背景颜色
+    if (body) {
+        body.style.backgroundColor = themeColor.themeColor;    // 设置body背景颜色
+    } else {
+        console.error("Unable to find the <body> element.");
+    }
+    return themeColor;
 }
 
 // 根据图片背景颜色获取反色主题
 export function getReverseColor(color) {
-    color = "0x" + color.replace("#", "");
-    let newColor = "000000" + (0xFFFFFF - parseInt(color)).toString(16);
-    return "#" + newColor.substring(newColor.length - 6, newColor.length);
+    // 验证输入是否为7字符长且以#开头
+    if (!colorRegExp.test(color)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
+    // 移除#并转换为16进制数，同时处理类型安全
+    const colorValue = Number.parseInt(color.slice(1), 16);
+
+    // 确保colorValue在正确的范围内
+    if (colorValue > 0xFFFFFF) {
+        throw new Error("Color value exceeds the maximum range.");
+    }
+
+    // 计算反色
+    const reverseColorValue = 0xFFFFFF - colorValue;
+
+    // 将计算出的反色值转换为16进制字符串，并确保它以6位数的形式呈现
+    const reverseColorHex = reverseColorValue.toString(16).padStart(6, '0');
+
+    // 返回最终结果，确保结果以#开头
+    return "#" + reverseColorHex;
 }
 
 // 根据元素背景颜色获取字体颜色
 export function getFontColor(color) {
-    let rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
-    if (rgb) {
-        let r = parseInt(rgb[1], 16);
-        let g = parseInt(rgb[2], 16);
-        let b = parseInt(rgb[3], 16);
-        let gray = Math.round(r * 0.299 + g * 0.587 + b * 0.114);
-        if (gray > 128) {
-            return "#000000";
-        } else {
-            return "#ffffff";
-        }
-    } else {
+    let rgb = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+
+    if (!rgb) {
         return "#ffffff";
     }
+
+    let r = parseInt(rgb[1], 16);
+    let g = parseInt(rgb[2], 16);
+    let b = parseInt(rgb[3], 16);
+
+    if (isNaN(r) || isNaN(g) || isNaN(b)) {
+        return "#ffffff";
+    }
+
+    let gray = Math.round(r * 0.299 + g * 0.587 + b * 0.114);
+    return gray > 128 ? "#000000" : "#ffffff";
 }
 
 // 桌面端壁纸动态效果
@@ -240,129 +278,102 @@ export function imageDynamicEffect(element, effectType) {
 
 // 判断设备型号
 export function getDevice() {
-    let ua = navigator.userAgent;
-    if (ua.indexOf("iPhone") > -1) {
-        return "iPhone"
-    } else if (ua.indexOf("iPad") > -1) {
-        return "iPad"
-    } else if (ua.indexOf("Android") > -1) {
-        return "Android"
-    } else {
-        return ""
+    const userAgent = navigator.userAgent;
+
+    const deviceDetection = {
+        "iPhone": userAgent.includes("iPhone"),
+        "iPad": userAgent.includes("iPad"),
+        "Android": userAgent.includes("Android"),
+    };
+
+    for (const device in deviceDetection) {
+        if (deviceDetection[device]) {
+            return device;
+        }
     }
+    return "";
 }
 
 export function getBrowserType() {
-    let userAgent = navigator.userAgent;
-    let browser="Other";
-    if (userAgent.indexOf("Chrome") !== -1 && userAgent.indexOf("Safari") !== -1){
-        browser="Chrome";
+    const userAgent = navigator.userAgent;
+
+    const browserDetection = {
+        "Chrome": userAgent.includes("Chrome") && !userAgent.includes("Safari"),
+        "Edge": userAgent.includes("Edge"),
+        "Firefox": userAgent.includes("Firefox"),
+        "Safari": userAgent.includes("Safari") && !userAgent.includes("Chrome"),
+    };
+
+    for (const browser in browserDetection) {
+        if (browserDetection[browser]) {
+            return browser;
+        }
     }
-    else if (userAgent.indexOf("Edge") !== -1){
-        browser="Edge";
-    }
-    else if (userAgent.indexOf("Firefox") !== -1){
-        browser = "Firefox";
-    }
-    else if (userAgent.indexOf("Safari") !== -1 && userAgent.indexOf("Chrome") === -1){
-        browser="Safari";
-    }
-    return browser;
+    return "Other";
 }
 
 export function getSearchEngineDetail(searchEngine) {
-    let searchEngineName;
-    let searchEngineValue;
-    let searchEngineUrl;
-    let searchEngineIconUrl;
-    switch (searchEngine) {
-        case "bing":
-            searchEngineName = "必应";
-            searchEngineValue = "bing";
-            searchEngineUrl = "https://www.bing.com/search?q=";
-            searchEngineIconUrl = "https://www.bing.com/favicon.ico";
-            break;
-        case "google":
-            searchEngineName = "谷歌";
-            searchEngineValue = "google";
-            searchEngineUrl = "https://www.google.com/search?q=";
-            searchEngineIconUrl = "https://www.google.com/favicon.ico";
-            break;
-        default:
-            searchEngineName = "必应";
-            searchEngineValue = "bing";
-            searchEngineUrl = "https://www.bing.com/search?q=";
-            searchEngineIconUrl = "https://www.bing.com/favicon.ico";
-            break;
-    }
-    return {
-        "searchEngineName": searchEngineName,
-        "searchEngineValue": searchEngineValue,
-        "searchEngineUrl": searchEngineUrl,
-        "searchEngineIconUrl": searchEngineIconUrl
+    const searchEngineMap = {
+        "bing": {
+            searchEngineName: "必应",
+            searchEngineValue: "bing",
+            searchEngineUrl: "https://www.bing.com/search?q=",
+        },
+        "google": {
+            searchEngineName: "谷歌",
+            searchEngineValue: "google",
+            searchEngineUrl: "https://www.google.com/search?q=",
+        },
     };
+
+    return searchEngineMap[searchEngine] || searchEngineMap.bing;
 }
 
 // 补全设置数据
 export function fixPreferenceData(preferenceData) {
     let isFixed = false;
-    // for (let key in defaultPreferenceData) {
-    //     if (preferenceData[key] === null || preferenceData[key] === undefined) {
-    //         preferenceData[key] = defaultPreferenceData[key];
-    //         isFixed = true;
-    //     }
-    // }
 
-    if (!preferenceData.dynamicEffect) {
-        preferenceData.dynamicEffect = defaultPreferenceData.dynamicEffect;
-        isFixed = true;
-    }
-    if (!preferenceData.imageQuality) {
-        preferenceData.imageQuality = defaultPreferenceData.imageQuality;
-        isFixed = true;
-    }
-    if (!preferenceData.imageTopics) {
-        preferenceData.imageTopics = defaultPreferenceData.imageTopics;
-        isFixed = true;
-    }
-    if (preferenceData.customTopic === undefined || preferenceData.customTopic === null) {  // customTopic 可以为""
-        preferenceData.customTopic = defaultPreferenceData.customTopic;
-        isFixed = true;
-    }
-    if (!preferenceData.changeImageTime) {
-        preferenceData.changeImageTime = defaultPreferenceData.changeImageTime;
-        isFixed = true;
-    }
-    if (preferenceData.nightMode === undefined || preferenceData.nightMode === null) {  // boolean
-        preferenceData.nightMode = defaultPreferenceData.nightMode;
-        isFixed = true;
-    }
-    if (preferenceData.noImageMode === undefined || preferenceData.noImageMode === null) {   // boolean
-        preferenceData.noImageMode = defaultPreferenceData.noImageMode;
-        isFixed = true;
+    function setDefaultIfUndefinedOrNull(obj, key, defaultValue) {
+        if (obj[key] === undefined || obj[key] === null) {
+            obj[key] = defaultValue;
+            isFixed = true;
+        }
     }
 
-    if (!preferenceData.searchEngine) {
-        preferenceData.searchEngine = defaultPreferenceData.searchEngine;
-        isFixed = true;
-    }
-    if (!preferenceData.buttonShape) {
-        preferenceData.buttonShape = defaultPreferenceData.buttonShape;
-        isFixed = true;
-    }
-    if (preferenceData.simpleMode === undefined || preferenceData.simpleMode === null) {   // boolean
-        preferenceData.simpleMode = defaultPreferenceData.simpleMode;
-        isFixed = true;
-    }
-    if (preferenceData.accessKey === undefined || preferenceData.accessKey === null) {   // boolean
-        preferenceData.accessKey = defaultPreferenceData.accessKey;
-        isFixed = true;
-    }
+    setDefaultIfUndefinedOrNull(preferenceData, 'dynamicEffect', defaultPreferenceData.dynamicEffect);
+    setDefaultIfUndefinedOrNull(preferenceData, 'imageQuality', defaultPreferenceData.imageQuality);
+    setDefaultIfUndefinedOrNull(preferenceData, 'imageTopics', defaultPreferenceData.imageTopics);
+    setDefaultIfUndefinedOrNull(preferenceData, 'customTopic', defaultPreferenceData.customTopic);
+    setDefaultIfUndefinedOrNull(preferenceData, 'changeImageTime', defaultPreferenceData.changeImageTime);
+    setDefaultIfUndefinedOrNull(preferenceData, 'nightMode', defaultPreferenceData.nightMode);
+    setDefaultIfUndefinedOrNull(preferenceData, 'noImageMode', defaultPreferenceData.noImageMode);
+    setDefaultIfUndefinedOrNull(preferenceData, 'searchEngine', defaultPreferenceData.searchEngine);
+    setDefaultIfUndefinedOrNull(preferenceData, 'buttonShape', defaultPreferenceData.buttonShape);
+    setDefaultIfUndefinedOrNull(preferenceData, 'simpleMode', defaultPreferenceData.simpleMode);
+    setDefaultIfUndefinedOrNull(preferenceData, 'accessKey', defaultPreferenceData.accessKey);
 
     if (isFixed) {
         localStorage.setItem("preferenceData", JSON.stringify(preferenceData));  // 重新保存设置
     }
     return preferenceData;
+}
+
+// 封装对 localStorage 的操作，增加异常处理
+export function getLocalStorageItem(key) {
+    try {
+        return localStorage.getItem(key);
+    } catch (error) {
+        console.error("Error reading from localStorage:", error);
+        return null;
+    }
+}
+
+export function setLocalStorageItem(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch (error) {
+        console.error("Error writing to localStorage:", error);
+    }
 }
 
 export function getPreferenceDataStorage() {
@@ -391,20 +402,12 @@ export function getImageHistoryStorage() {
 
 // 过渡动画
 export function changeThemeColor(element, backgroundColor, fontColor, time = 300) {
+    if (!colorRegExp.test(backgroundColor) || !colorRegExp.test(fontColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     $(element).animate({
         backgroundColor: backgroundColor,
-        color: fontColor,
-    }, {queue: false, duration: time});
-}
-
-export function changeBackgroundColor(element, backgroundColor, time = 300) {
-    $(element).animate({
-        backgroundColor: backgroundColor,
-    }, {queue: false, duration: time});
-}
-
-export function changeFontColor(element, fontColor, time = 300) {
-    $(element).animate({
         color: fontColor,
     }, {queue: false, duration: time});
 }
@@ -419,17 +422,29 @@ export function fadeOut(element, time = 300) {
 
 // 按钮（clockComponent 不适用公共方法，已单独实现）
 export function btnMouseOver(hoverColor, e) {
+    if (!colorRegExp.test(hoverColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     e.currentTarget.style.backgroundColor = hoverColor;
     e.currentTarget.style.color = getFontColor(hoverColor);
 }
 
 export function btnMouseOut(fontColor, e) {
+    if (!colorRegExp.test(fontColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     e.currentTarget.style.backgroundColor = "transparent";
     e.currentTarget.style.color = fontColor;
 }
 
 // 修改菜单栏表单控件时变化主题颜色
 export function resetRadioColor(selectedRadio, allRadios, themeColor) {
+    if (!colorRegExp.test(themeColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     // 重置所有不是当前选中的选项的颜色
     for (let i = 0; i < allRadios.length; i++) {
         let currentRadio = $("#" + allRadios[i]);
@@ -438,19 +453,23 @@ export function resetRadioColor(selectedRadio, allRadios, themeColor) {
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
-            currentRadio.children(".arco-radio-label").css({"fontWeight": "normal", "textDecoration": "none"});
+            currentRadio.children(".arco-radio-label").css({"textDecoration": "none"});
         }
         else {
             currentRadio.find(".arco-radio-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor,
             });
-            currentRadio.children(".arco-radio-label").css({"fontWeight": "bold", "textDecoration": "underline"});
+            currentRadio.children(".arco-radio-label").css({"textDecoration": "underline"});
         }
     }
 }
 
 export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor) {
+    if (!colorRegExp.test(themeColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     // 重置所有不是当前选中的选项的颜色
     for (let i = 0; i < allCheckboxes.length; i++) {
         let currentCheckbox = $("#" + allCheckboxes[i]);
@@ -459,19 +478,23 @@ export function resetCheckboxColor(selectedCheckboxes, allCheckboxes, themeColor
                 "borderColor": "rgb( 229,230,235 )",  // var(--color-neutral-3)
                 "backgroundColor": "#ffffff"          // var(--color-bg-2)
             });
-            currentCheckbox.children(".arco-checkbox-label").css({"fontWeight": "normal", "textDecoration": "none"});
+            currentCheckbox.children(".arco-checkbox-label").css({"textDecoration": "none"});
         }
         else {
             currentCheckbox.find(".arco-checkbox-icon").css({
                 "borderColor": themeColor,
                 "backgroundColor": themeColor
             }).find(".arco-checkbox-icon-check").css("color", getFontColor(themeColor));
-            currentCheckbox.children(".arco-checkbox-label").css({"fontWeight": "bold", "textDecoration": "underline"});
+            currentCheckbox.children(".arco-checkbox-label").css({"textDecoration": "underline"});
         }
     }
 }
 
 export function resetSwitchColor(element, checked, themeColor) {
+    if (!colorRegExp.test(themeColor)) {
+        throw new Error("Invalid color format. Expected a 6-digit hexadecimal color code prefixed with '#'.");
+    }
+
     if (!checked) {
         $(element).css("backgroundColor", "rgb(201, 205, 212)")      // var(--color-fill-4)
             .children(".arco-switch-text").css("color", "#000000");  // var(--color-white)
