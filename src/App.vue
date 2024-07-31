@@ -195,134 +195,130 @@ onMounted(() => {
     }
 
     // 修改各类弹窗样式
-    $("body").bind("DOMNodeInserted", () => {
-        // 通用
-        $(".arco-list-header, .arco-list-item, .arco-list-footer").css("padding", "6px 0");
-        $(".arco-list-header, .arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
-        $(".arco-list-footer").css("borderTopColor", themeColor.value.componentFontColor);
-        $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
-        $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
-        $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
-        $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
-        $("div.arco-typography").css("margin-bottom", "0");
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            // 插入节点时
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                // 通用
+                $(".arco-list-header, .arco-list-item, .arco-list-footer").css("padding", "6px 0");
+                $(".arco-list-header, .arco-list-item:not(:last-child)").css("borderBottomColor", themeColor.value.componentFontColor);
+                $(".arco-list-footer").css("borderTopColor", themeColor.value.componentFontColor);
+                $(".arco-list-item-meta-title").css("color", themeColor.value.componentFontColor);
+                $(".arco-list-item-meta-description").css("color", themeColor.value.componentFontColor);
+                $(".arco-empty-image").css("color", themeColor.value.componentFontColor);
+                $(".arco-empty-description").css("color", themeColor.value.componentFontColor);
+                $("div.arco-typography").css("margin-bottom", "0");
 
-        // popover
-        let popoverEle = $(".arco-popover");
-        if (popoverEle.length && popoverEle.length > 0) {
-            $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-popover-popup-arrow").css({
-                "backgroundColor": themeColor.value.componentBackgroundColor,
-                "border": "1px solid " + themeColor.value.componentBackgroundColor
-            });
+                // popover
+                let popoverEle = $(".arco-popover");
+                if (popoverEle.length && popoverEle.length > 0) {
+                    $(".arco-popover-title").css("color", themeColor.value.componentFontColor);
+                    $(".arco-popover-popup-arrow").css({
+                        "backgroundColor": themeColor.value.componentBackgroundColor,
+                        "border": "1px solid " + themeColor.value.componentBackgroundColor
+                    });
 
-            let dailyNotificationStorage = localStorage.getItem("dailyNotification");
-            if (dailyNotificationStorage) {
-                resetSwitchColor("#dailyNotificationSwitch", JSON.parse(dailyNotificationStorage), themeColor.value.themeColor);
+                    let dailyNotificationStorage = localStorage.getItem("dailyNotification");
+                    if (dailyNotificationStorage) {
+                        resetSwitchColor("#dailyNotificationSwitch", JSON.parse(dailyNotificationStorage), themeColor.value.themeColor);
+                    }
+                    let todoNotificationStorage = localStorage.getItem("todoNotification");
+                    if (todoNotificationStorage) {
+                        resetSwitchColor("#todoNotificationSwitch", JSON.parse(todoNotificationStorage), themeColor.value.themeColor);
+                    }
+                    let focusMode = localStorage.getItem("focusMode");
+                    if (focusMode) {
+                        resetSwitchColor("#focusModeSwitch", JSON.parse(focusMode), themeColor.value.themeColor);
+                    }
+                }
+
+                // message
+                let messageEle = $(".arco-message");
+                if (messageEle.length && messageEle.length > 0) {
+                    messageEle.css({
+                        "backgroundColor": themeColor.value.componentBackgroundColor,
+                        "borderColor": themeColor.value.componentBackgroundColor
+                    });
+                    $(".arco-message-icon").css("color", themeColor.value.componentFontColor);
+                    $(".arco-message-content").css("color", themeColor.value.componentFontColor);
+                }
+
+                // notification
+                let notificationEle = $(".arco-notification");
+                if (notificationEle.length && notificationEle.length > 0) {
+                    notificationEle.css({
+                        "backgroundColor": themeColor.value.componentBackgroundColor,
+                        "borderColor": themeColor.value.componentBackgroundColor
+                    });
+                    $(".arco-notification-icon").css("color", themeColor.value.componentFontColor);
+                    $(".arco-notification-title").css("color", themeColor.value.componentFontColor);
+                    $(".arco-notification-content").css("color", themeColor.value.componentFontColor);
+                }
+
+                // drawer
+                let drawerEle = $(".arco-drawer");
+                if (drawerEle.length && drawerEle.length > 0) {
+                    $(".arco-drawer-header").css("borderBottomColor", themeColor.value.componentFontColor);
+                    $(".arco-drawer-title").css("color", themeColor.value.componentFontColor);
+                    $(".arco-card-header-title").css("color", themeColor.value.componentFontColor);
+                    $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
+                    $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
+                    $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
+                    $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
+                    $(".arco-collapse-item-header").css({
+                        "backgroundColor": themeColor.value.componentBackgroundColor,
+                        "color": themeColor.value.componentFontColor
+                    });
+                    $(".arco-collapse-item-content").css({
+                        "backgroundColor": themeColor.value.componentBackgroundColor,
+                        "color": themeColor.value.componentFontColor
+                    });
+                    $(".arco-drawer-footer").css({
+                        "borderTopColor": themeColor.value.componentFontColor,
+                        "textAlign": "center"
+                    });
+                    $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
+
+                    // preferenceImageComponent
+                    resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
+                    resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
+                    resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
+                    resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
+                    resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
+
+                    // preferenceFunctionComponent
+                    resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
+                    resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
+                    resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
+                }
+
+                // modal
+                let modalEle = $(".arco-modal");
+                if (modalEle.length && modalEle.length > 0) {
+                    $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
+                    $(".arco-modal-header").css("borderBottomColor", "transparent");
+                    $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
+                    $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
+                    $(".arco-modal-footer").css("borderTopColor", "transparent");
+                    $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
+                    if (preferenceData.value.buttonShape === "round") {
+                        $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
+                    } else {
+                        $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-square arco-btn-text").removeClass("arco-btn-shape-round");
+                    }
+                    $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {
+                        e.currentTarget.style.backgroundColor = themeColor.value.themeColor;
+                        e.currentTarget.style.color = getFontColor(themeColor.value.themeColor);
+                    });
+                    $(".arco-modal-footer > .arco-btn").on("mouseout", (e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = themeColor.value.componentFontColor;
+                    });
+                }
             }
-            let todoNotificationStorage = localStorage.getItem("todoNotification");
-            if (todoNotificationStorage) {
-                resetSwitchColor("#todoNotificationSwitch", JSON.parse(todoNotificationStorage), themeColor.value.themeColor);
-            }
-            let focusMode = localStorage.getItem("focusMode");
-            if (focusMode) {
-                resetSwitchColor("#focusModeSwitch", JSON.parse(focusMode), themeColor.value.themeColor);
-            }
-        }
-
-        // message
-        let messageEle = $(".arco-message");
-        if (messageEle.length && messageEle.length > 0) {
-            messageEle.css({
-                "backgroundColor": themeColor.value.componentBackgroundColor,
-                "borderColor": themeColor.value.componentBackgroundColor
-            });
-            $(".arco-message-icon").css("color", themeColor.value.componentFontColor);
-            $(".arco-message-content").css("color", themeColor.value.componentFontColor);
-        }
-
-        // notification
-        let notificationEle = $(".arco-notification");
-        if (notificationEle.length && notificationEle.length > 0) {
-            notificationEle.css({
-                "backgroundColor": themeColor.value.componentBackgroundColor,
-                "borderColor": themeColor.value.componentBackgroundColor
-            });
-            $(".arco-notification-icon").css("color", themeColor.value.componentFontColor);
-            $(".arco-notification-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-notification-content").css("color", themeColor.value.componentFontColor);
-        }
-
-        // drawer
-        let drawerEle = $(".arco-drawer");
-        if (drawerEle.length && drawerEle.length > 0) {
-            $(".arco-drawer-header").css("borderBottomColor", themeColor.value.componentFontColor);
-            $(".arco-drawer-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-card-header-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-card-header-extra").css("color", themeColor.value.componentFontColor);
-            $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-radio-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-checkbox-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-collapse-item-header").css({
-                "backgroundColor": themeColor.value.componentBackgroundColor,
-                "color": themeColor.value.componentFontColor
-            });
-            $(".arco-collapse-item-content").css({
-                "backgroundColor": themeColor.value.componentBackgroundColor,
-                "color": themeColor.value.componentFontColor
-            });
-            $(".arco-drawer-footer").css({
-                "borderTopColor": themeColor.value.componentFontColor,
-                "textAlign": "center"
-            });
-            $(".arco-drawer-mask").css({"backdropFilter": "blur(10px)"});
-
-            // preferenceImageComponent
-            resetRadioColor(preferenceData.value.dynamicEffect, ["all", "translate", "rotate", "close"], themeColor.value.themeColor);
-            resetRadioColor(preferenceData.value.imageQuality, ["full", "regular"], themeColor.value.themeColor);
-            resetCheckboxColor(preferenceData.value.imageTopics, imageTopics, themeColor.value.themeColor);
-            resetSwitchColor("#nightModeSwitch", preferenceData.value.nightMode, themeColor.value.themeColor);
-            resetSwitchColor("#noImageModeSwitch", preferenceData.value.noImageMode, themeColor.value.themeColor);
-
-            // preferenceFunctionComponent
-            resetRadioColor(preferenceData.value.searchEngine, ["bing", "google"], themeColor.value.themeColor);
-            resetRadioColor(preferenceData.value.buttonShape, ["round", "default"], themeColor.value.themeColor);
-            resetSwitchColor("#simpleModeSwitch", preferenceData.value.simpleMode, themeColor.value.themeColor);
-        }
-
-        // modal
-        let modalEle = $(".arco-modal");
-        if (modalEle.length && modalEle.length > 0) {
-            $(".arco-modal").css("backgroundColor", themeColor.value.componentBackgroundColor);
-            $(".arco-modal-header").css("borderBottomColor", "transparent");
-            $(".arco-modal-title").css("color", themeColor.value.componentFontColor);
-            $(".arco-form-item-label").css("color", themeColor.value.componentFontColor);
-            $(".arco-modal-footer").css("borderTopColor", "transparent");
-            $(".arco-modal-footer > .arco-btn").css("color", themeColor.value.componentFontColor);
-            if (preferenceData.value.buttonShape === "round") {
-                $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-round arco-btn-text").removeClass("arco-btn-shape-square");
-            } else {
-                $(".arco-modal-footer > .arco-btn").addClass("arco-btn-shape-square arco-btn-text").removeClass("arco-btn-shape-round");
-            }
-            $(".arco-modal-footer > .arco-btn").on("mouseover", (e) => {
-                e.currentTarget.style.backgroundColor = themeColor.value.themeColor;
-                e.currentTarget.style.color = getFontColor(themeColor.value.themeColor);
-            });
-            $(".arco-modal-footer > .arco-btn").on("mouseout", (e) => {
-                e.currentTarget.style.backgroundColor = "transparent";
-                e.currentTarget.style.color = themeColor.value.componentFontColor;
-            });
-        }
+        });
     });
-
-    // const observer = new MutationObserver((mutations) => {
-    //     mutations.forEach((mutation) => {
-    //         // 插入节点时
-    //         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-    //
-    //         }
-    //     });
-    // });
-    // observer.observe(document.body, {childList: true});
+    observer.observe(document.body, {childList: true});
 });
 </script>
 
