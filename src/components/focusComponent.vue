@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{width: '600px'}"
             position="br"
         >
             <a-button id="focusBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -74,7 +74,7 @@
                             </a-button>
                         </template>
                     </a-list-item>
-                    <template #header>
+                    <template #footer>
                         <a-space>
                             <a-select v-model="focusSound" :style="{width:'160px'}" @change="focusSoundSelectOnChange">
                                 <a-option value="none">{{ "不播放白噪音" }}</a-option>
@@ -269,11 +269,14 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 
 function setExtensionStorage(key, value) {
     // console.log(browserType + " " + key + " " + value);
-    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-        chrome.storage.local.set({[key]: value});
-    }
-    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        browser.storage.local.set({[key]: value});
+    try {
+        if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+            chrome.storage.local.set({[key]: value});
+        } else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+            browser.storage.local.set({[key]: value});
+        }
+    } catch (error) {
+        console.error("Error writing to localStorage:", error);
     }
 }
 

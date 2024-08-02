@@ -35,7 +35,7 @@
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{ "添加待办事项" }}
+                                {{ "添加待办" }}
                             </a-button>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -102,7 +102,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加待办事项 " + todoList.length + " / " + todoMaxSize }}
+                        {{ "添加待办 " + todoList.length + " / " + todoMaxSize }}
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">

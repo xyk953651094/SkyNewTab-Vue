@@ -36,7 +36,7 @@
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{ "添加倒数日" }}
+                                {{ "添加倒数" }}
                             </a-button>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -107,7 +107,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加倒数日 " + dailyList.length + " / " + dailyMaxSize }}
+                        {{ "添加倒数 " + dailyList.length + " / " + dailyMaxSize }}
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
