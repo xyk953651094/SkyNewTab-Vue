@@ -35,7 +35,7 @@
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{ "添加黑名单" }}
+                                {{ "添加名单" }}
                             </a-button>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -109,7 +109,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加黑名单 " + filterList.length + " / " + focusMaxSize }}
+                        {{ "添加名单 " + filterList.length + " / " + focusMaxSize }}
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
@@ -123,7 +123,7 @@
                          maxLength=30 show-word-limit allow-clear/>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">
-                        {{"开启专注模式后，访问黑名单中的域名时将自动跳转至本插件"}}
+                        {{"开启专注模式后，访问名单中的域名时将自动跳转至本插件"}}
                     </a-typography-text>
                 </template>
             </a-form-item>
@@ -285,7 +285,7 @@ function focusModeSwitchOnChange(checked) {
     let tempFocusEndTimeStamp;
     if (checked) {
         if (filterList.value.length === 0) {
-            Message.warning("请添加黑名单");
+            Message.warning("请先添加名单");
         }
 
         if (focusPeriod.value === "manual") {
