@@ -398,7 +398,7 @@ export function setExtensionStorage(key, value) {
     }
 }
 
-export function removeExtensionStorage(key: string) {
+export function removeExtensionStorage(key) {
     try {
         // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         //     chrome.storage.sync.remove(key);
