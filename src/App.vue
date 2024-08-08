@@ -85,11 +85,11 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {
-    changeThemeColor,
+    changeThemeColor, getExtensionStorage,
     getFontColor,
     getImageHistoryStorage,
     getPreferenceDataStorage,
-    getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor,
+    getReverseColor, resetCheckboxColor, resetRadioColor, resetSwitchColor, setExtensionStorage,
     setThemeColor,
 } from "./javascripts/publicFunctions";
 import "./stylesheets/publicStyles.less"
@@ -158,8 +158,8 @@ onMounted(() => {
     }
 
     // 版本号提醒
-    let storageVersion = localStorage.getItem("SkyNewTabVueVersion");
     let currentVersion = require('../package.json').version;
+    let storageVersion = getExtensionStorage("SkyNewTabVueVersion", "0.0.0");
     if (storageVersion !== currentVersion) {
         Notification.success({
             showIcon: false,
@@ -168,7 +168,7 @@ onMounted(() => {
             position: "bottomLeft",
             duration: 5000
         });
-        localStorage.setItem("SkyNewTabVueVersion", currentVersion);
+        setExtensionStorage("SkyNewTabVueVersion", currentVersion);
 
         setTimeout(() => {
             Notification.success({
@@ -218,18 +218,12 @@ onMounted(() => {
                         "border": "1px solid " + themeColor.value.componentBackgroundColor
                     });
 
-                    let dailyNotificationStorage = localStorage.getItem("dailyNotification");
-                    if (dailyNotificationStorage) {
-                        resetSwitchColor("#dailyNotificationSwitch", JSON.parse(dailyNotificationStorage), themeColor.value.themeColor);
-                    }
-                    let todoNotificationStorage = localStorage.getItem("todoNotification");
-                    if (todoNotificationStorage) {
-                        resetSwitchColor("#todoNotificationSwitch", JSON.parse(todoNotificationStorage), themeColor.value.themeColor);
-                    }
-                    let focusMode = localStorage.getItem("focusMode");
-                    if (focusMode) {
-                        resetSwitchColor("#focusModeSwitch", JSON.parse(focusMode), themeColor.value.themeColor);
-                    }
+                    let dailyNotificationStorage = getExtensionStorage("dailyNotification", false);
+                    let todoNotificationStorage = getExtensionStorage("todoNotification", false);
+                    let focusModeStorage = getExtensionStorage("focusMode", false);
+                    resetSwitchColor("#dailyNotificationSwitch", dailyNotificationStorage, themeColor.value.themeColor);
+                    resetSwitchColor("#todoNotificationSwitch", todoNotificationStorage, themeColor.value.themeColor);
+                    resetSwitchColor("#focusModeSwitch", focusModeStorage, themeColor.value.themeColor);
                 }
 
                 // message

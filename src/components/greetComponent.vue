@@ -85,7 +85,7 @@
     <a-space>
         <a-popover :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
                    :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-                   :style="{minWidth: '550px'}"
+                   :style="{minWidth: '600px'}"
                    position="bl"
         >
             <a-button id="greetBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -176,7 +176,6 @@ import {
     httpRequest
 } from "@/javascripts//publicFunctions";
 import {appId, appSecret, defaultPreferenceData} from "@/javascripts/publicConstants";
-import {Notification} from "@arco-design/web-vue";
 
 const btnMaxSize = 80;
 
@@ -248,21 +247,6 @@ function setHoliday(data) {
 
     if (data.typeDes !== "休息日" && data.typeDes !== "工作日") {
         tempHolidayContent = tempHolidayContent + " · " + data.typeDes;
-
-        // 发送恭贺通知
-        let hideBlessStorage = localStorage.getItem("displayBless");
-        if (hideBlessStorage === null) {
-            Notification.success({
-                showIcon: false,
-                title: "今日" + data.typeDes,
-                content: "云开新标签页祝您" + data.typeDes + "快乐！",
-                position: "bottomLeft",
-                duration: 5000
-            });
-            localStorage.setItem("displayBless", JSON.stringify(true));
-        }
-    } else {
-        localStorage.removeItem("displayBless");
     }
 
     holidayContent.value = tempHolidayContent;

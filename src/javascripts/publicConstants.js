@@ -81,7 +81,7 @@ export let defaultPreferenceData = {
     noImageMode: false,
 
     searchEngine: "bing",
-    buttonShape: "round",
+    buttonShape: "default",
     simpleMode: false,
     accessKey: ""
 }
@@ -111,6 +111,7 @@ export let imageTopics = [
 
 // 常用变量
 export const device = getDevice();  // 获取当前设备类型
+export const browserType = getBrowserType();
 export const colorRegExp = /^#[0-9A-Fa-f]{6}$/;
 export const clientId = "ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM";
 export const unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范

@@ -137,10 +137,9 @@ import {
     btnMouseOut,
     btnMouseOver,
     changeThemeColor,
-    getBrowserType,
     getTimeDetails
 } from "@/javascripts/publicFunctions";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData, browserType} from "@/javascripts/publicConstants";
 import {IconDelete, IconPlus, IconStop} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
@@ -183,7 +182,6 @@ let focusPeriod = ref("manual");
 let focusEndTime = ref("未开启专注模式");
 let focusSound = ref("none");
 const focusMaxSize = 10;
-const browserType = getBrowserType();
 
 onMounted(() => {
     // 初始化专注模式开启状态

@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{minWidth: '550px'}"
+            :style="{minWidth: '600px'}"
             position="tr"
         >
             <a-button id="authorBtn" :shape="preferenceData.buttonShape" :style="{display: display, cursor: 'default'}"
