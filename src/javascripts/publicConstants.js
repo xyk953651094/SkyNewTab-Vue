@@ -1,4 +1,4 @@
-import {getDevice} from "@/javascripts/publicFunctions";
+import {getDevice, getBrowserType} from "@/javascripts/publicFunctions";
 
 export const lightColors = [
     // "#A04F3C",

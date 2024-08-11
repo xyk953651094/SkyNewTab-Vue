@@ -1,7 +1,7 @@
 import {
     colorRegExp, darkColors,
     defaultPreferenceData,
-    lightColors
+    lightColors, browserType
 } from "@/javascripts/publicConstants";
 import "jquery-color"
 
@@ -359,14 +359,19 @@ export function fixPreferenceData(preferenceData) {
 }
 
 // 封装对 localStorage 的操作，增加异常处理
-export function getExtensionStorage(key, defaultValue) {
+export async function getExtensionStorage(key, defaultValue) {
     try {
         let tempStorage;
+        // 生产环境
         // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-        //     tempStorage = chrome.storage.local.get({key});
+        //     await chrome.storage.local.get(key).then((result) => {
+        //         tempStorage = result[key];
+        //     });
         // }
         // else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        //     tempStorage = browser.storage.local.get({key});
+        //     await browser.storage.local.get(key).then((result) => {
+        //         tempStorage = result[key];
+        //     });
         // }
         //
         // if (tempStorage === null || tempStorage === undefined) {
@@ -377,6 +382,7 @@ export function getExtensionStorage(key, defaultValue) {
         // }
         // return tempStorage;
 
+        // 开发环境
         tempStorage = localStorage.getItem(key);
         if (tempStorage) {
             try {
@@ -398,6 +404,7 @@ export function getExtensionStorage(key, defaultValue) {
 
 export function setExtensionStorage(key, value) {
     try {
+        // 生产环境
         // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         //     chrome.storage.local.set({[key]: value});
         // }
@@ -405,6 +412,7 @@ export function setExtensionStorage(key, value) {
         //     browser.storage.local.set({[key]: value});
         // }
 
+        // 开发环境
         localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
         console.error("Error writing to storage:", error);
@@ -413,6 +421,7 @@ export function setExtensionStorage(key, value) {
 
 export function removeExtensionStorage(key) {
     try {
+        // 生产环境
         // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         //     chrome.storage.local.remove(key);
         // }
@@ -420,6 +429,7 @@ export function removeExtensionStorage(key) {
         //     browser.storage.local.remove(key);
         // }
 
+        // 开发环境
         localStorage.removeItem(key);
     } catch (error) {
         console.error("Error removing from storage:", error);
@@ -428,6 +438,7 @@ export function removeExtensionStorage(key) {
 
 export function clearExtensionStorage() {
     try {
+        // 生产环境
         // if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
         //     chrome.storage.local.clear();
         // }
@@ -435,6 +446,7 @@ export function clearExtensionStorage() {
         //     browser.storage.local.clear();
         // }
 
+        // 开发环境
         localStorage.clear();
     } catch (error) {
         console.error("Error clearing storage:", error);

@@ -159,40 +159,41 @@ onMounted(() => {
 
     // 版本号提醒
     let currentVersion = require('../package.json').version;
-    let storageVersion = getExtensionStorage("SkyNewTabVueVersion", "0.0.0");
-    if (storageVersion !== currentVersion) {
-        Notification.success({
-            showIcon: false,
-            title: "已更新至版本 V" + currentVersion,
-            content: "详细内容请前往菜单栏更新日志查看",
-            position: "bottomLeft",
-            duration: 5000
-        });
-        setExtensionStorage("SkyNewTabVueVersion", currentVersion);
-
-        setTimeout(() => {
+    getExtensionStorage("SkyNewTabVueVersion", "0.0.0").then((storageVersion) => {
+        if (storageVersion !== currentVersion) {
             Notification.success({
                 showIcon: false,
-                title: "支持作者",
-                content: "如果喜欢这款插件，请考虑五星好评",
+                title: "已更新至版本 V" + currentVersion,
+                content: "详细内容请前往菜单栏更新日志查看",
                 position: "bottomLeft",
                 duration: 5000
             });
-        }, 1000);
+            setExtensionStorage("SkyNewTabVueVersion", currentVersion);
 
-        // 额外提醒
-        // if (currentVersion === "3.1.0") {
-        //     setTimeout(() => {
-        //         Notification.info({
-        //             showIcon: false,
-        //             title: "重要通知",
-        //             content: "本次更新修改了偏好设置中的切换间隔，如出现异常请点击重置设置按钮",
-        //             position: "bottomLeft",
-        //             duration: 10000
-        //         });
-        //     }, 2000);
-        // }
-    }
+            setTimeout(() => {
+                Notification.success({
+                    showIcon: false,
+                    title: "支持作者",
+                    content: "如果喜欢这款插件，请考虑五星好评",
+                    position: "bottomLeft",
+                    duration: 5000
+                });
+            }, 1000);
+
+            // 额外提醒
+            // if (currentVersion === "3.1.0") {
+            //     setTimeout(() => {
+            //         Notification.info({
+            //             showIcon: false,
+            //             title: "重要通知",
+            //             content: "本次更新修改了偏好设置中的切换间隔，如出现异常请点击重置设置按钮",
+            //             position: "bottomLeft",
+            //             duration: 10000
+            //         });
+            //     }, 2000);
+            // }
+        }
+    });
 
     // 修改各类弹窗样式
     const observer = new MutationObserver((mutations) => {
@@ -218,12 +219,15 @@ onMounted(() => {
                         "border": "1px solid " + themeColor.value.componentBackgroundColor
                     });
 
-                    let dailyNotificationStorage = getExtensionStorage("dailyNotification", false);
-                    let todoNotificationStorage = getExtensionStorage("todoNotification", false);
-                    let focusModeStorage = getExtensionStorage("focusMode", false);
-                    resetSwitchColor("#dailyNotificationSwitch", dailyNotificationStorage, themeColor.value.themeColor);
-                    resetSwitchColor("#todoNotificationSwitch", todoNotificationStorage, themeColor.value.themeColor);
-                    resetSwitchColor("#focusModeSwitch", focusModeStorage, themeColor.value.themeColor);
+                    getExtensionStorage("dailyNotification", false).then((dailyNotificationStorage) => {
+                        resetSwitchColor("#dailyNotificationSwitch", dailyNotificationStorage, themeColor.value.themeColor);
+                    });
+                    getExtensionStorage("todoNotification", false).then((todoNotificationStorage) => {
+                        resetSwitchColor("#todoNotificationSwitch", todoNotificationStorage, themeColor.value.themeColor);
+                    });
+                    getExtensionStorage("focusMode", false).then((focusModeStorage) => {
+                        resetSwitchColor("#focusModeSwitch", focusModeStorage, themeColor.value.themeColor);
+                    });
                 }
 
                 // message
