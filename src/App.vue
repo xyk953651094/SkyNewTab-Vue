@@ -170,15 +170,15 @@ onMounted(() => {
             });
             setExtensionStorage("SkyNewTabVueVersion", currentVersion);
 
-            setTimeout(() => {
-                Notification.success({
-                    showIcon: false,
-                    title: "支持作者",
-                    content: "如果喜欢这款插件，请考虑五星好评",
-                    position: "bottomLeft",
-                    duration: 5000
-                });
-            }, 1000);
+            // setTimeout(() => {
+            //     Notification.success({
+            //         showIcon: false,
+            //         title: "支持作者",
+            //         content: "如果喜欢这款插件，请考虑五星好评",
+            //         position: "bottomLeft",
+            //         duration: 5000
+            //     });
+            // }, 1000);
 
             // 额外提醒
             // if (currentVersion === "3.1.0") {

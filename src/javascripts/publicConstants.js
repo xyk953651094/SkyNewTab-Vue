@@ -82,7 +82,7 @@ export let defaultPreferenceData = {
 
     searchEngine: "bing",
     buttonShape: "default",
-    simpleMode: false,
+    simpleMode: true,
     accessKey: ""
 }
 
