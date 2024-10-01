@@ -135,7 +135,7 @@
 import {defineProps, onMounted, ref, watch} from "vue";
 import {IconDelete, IconEdit, IconPlus, IconLink} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
-import {btnMouseOut, btnMouseOver} from "@/javascripts/publicFunctions";
+import {btnMouseOut, btnMouseOver, getExtensionStorage, setExtensionStorage, removeExtensionStorage} from "@/javascripts/publicFunctions";
 import {defaultPreferenceData} from "@/javascripts/publicConstants";
 
 const $ = require("jquery");
@@ -202,40 +202,34 @@ function collectionBtnOnClick(item) {
 
 // 添加导航弹窗
 function showAddModalBtnOnClick() {
-    let collections = [];
-    let tempCollections = localStorage.getItem("collections");
-    if (tempCollections) {
-        collections = JSON.parse(tempCollections);
-    }
-    if (collections.length < collectionMaxSize.value) {
-        displayAddModal.value = true
-    } else {
-        Message.error("链接数量最多为" + collectionMaxSize.value + "个");
-    }
+    getExtensionStorage("collections", []).then((collections) => {
+        if (collections.length < collectionMaxSize.value) {
+            displayAddModal.value = true
+        } else {
+            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
+        }
+    });
 }
 
 function addModalBeforeOk() {
     let webName = $("#webNameInput").children("input").val();
     let webUrl = $("#webUrlInput").children("input").val();
     if (webName && webUrl && webName.length > 0 && webUrl.length > 0) {
-        let collections = [];
-        let tempCollections = localStorage.getItem("collections");
-        if (tempCollections) {
-            collections = JSON.parse(tempCollections);
-        }
-        if (collections.length < collectionMaxSize.value) {
-            let urlRegExp = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]", "g");
-            if (urlRegExp.exec(webUrl) === null) {
-                Message.error("链接地址格式错误");
+        getExtensionStorage("collections", []).then((collections) => {
+            if (collections.length < collectionMaxSize.value) {
+                let urlRegExp = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]", "g");
+                if (urlRegExp.exec(webUrl) === null) {
+                    Message.error("链接地址格式错误");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            } else {
+                Message.error("链接数量最多为" + collectionMaxSize.value + "个");
                 return false;
             }
-            else {
-                return true;
-            }
-        } else {
-            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
-            return false;
-        }
+        });
     } else {
         Message.error("表单不能为空");
         return false;
@@ -245,19 +239,16 @@ function addModalBeforeOk() {
 function addModalOkBtnOnClick() {
     let webName = $("#webNameInput").children("input").val();
     let webUrl = $("#webUrlInput").children("input").val();
-    let collections = [];
-    let tempCollections = localStorage.getItem("collections");
-    if (tempCollections) {
-        collections = JSON.parse(tempCollections);
-    }
 
+    getExtensionStorage("collections", []).then((collections) => {
         collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
-        localStorage.setItem("collections", JSON.stringify(collections));
+        setExtensionStorage("collections", collections);
 
         displayAddModal.value = false;
         collectionData.value = collections;
         collectionSize.value = collections.length;
         Message.success("添加成功");
+    });
 }
 
 function addModalCancelBtnOnClick() {
@@ -266,42 +257,36 @@ function addModalCancelBtnOnClick() {
 
 // 编辑导航弹窗
 function showEditModalBtnOnClick() {
-    let collections = [];
-    let tempCollections = localStorage.getItem("collections");
-    if (tempCollections) {
-        collections = JSON.parse(tempCollections);
-    }
-
-    displayEditModal.value = true;
-    collectionData.value = collections;
+    getExtensionStorage("collections", []).then((collections) => {
+        displayEditModal.value = true;
+        collectionData.value = collections;
+    });
 }
 
 function editNameInputOnPressEnter(item, e) {
     if (e.target.value.length > 0) {
-        let collections = [];
-        let tempCollections = localStorage.getItem("collections");
-        if (tempCollections) {
-            collections = JSON.parse(tempCollections);
+        getExtensionStorage("collections", null).then((collections) => {
+            if (collections) {
+                let index = -1;
+                for (let i = 0; i < collectionData.value.length; i++) {
+                    if (item.timeStamp === collectionData.value[i].timeStamp) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index !== -1) {
+                    collections[index].webName = e.target.value;
 
-            let index = -1;
-            for (let i = 0; i < collectionData.value.length; i++) {
-                if (item.timeStamp === collectionData.value[i].timeStamp) {
-                    index = i;
-                    break;
+                    setExtensionStorage("collections", collections);
+
+                    collectionData.value = collections;
+                    collectionSize.value = collections.length;
+                    Message.success("修改成功");
+                } else {
+                    Message.error("修改失败");
                 }
             }
-            if (index !== -1) {
-                collections[index].webName = e.target.value;
-
-                localStorage.setItem("collections", JSON.stringify(collections));
-
-                collectionData.value = collections;
-                collectionSize.value = collections.length;
-                Message.success("修改成功");
-            } else {
-                Message.error("修改失败");
-            }
-        }
+        });
     } else {
         Message.warning("链接名称不能为空");
     }
@@ -309,30 +294,28 @@ function editNameInputOnPressEnter(item, e) {
 
 function editUrlInputOnPressEnter(item, e) {
     if (e.target.value.length > 0) {
-        let collections = [];
-        let tempCollections = localStorage.getItem("collections");
-        if (tempCollections) {
-            collections = JSON.parse(tempCollections);
+        getExtensionStorage("collections", null).then((collections) => {
+            if (collections) {
+                let index = -1;
+                for (let i = 0; i < collectionData.value.length; i++) {
+                    if (item.timeStamp === collectionData.value[i].timeStamp) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index !== -1) {
+                    collections[index].webUrl = e.target.value;
 
-            let index = -1;
-            for (let i = 0; i < collectionData.value.length; i++) {
-                if (item.timeStamp === collectionData.value[i].timeStamp) {
-                    index = i;
-                    break;
+                    setExtensionStorage("collections", collections);
+
+                    collectionData.value = collections;
+                    collectionSize.value = collections.length;
+                    Message.success("修改成功");
+                } else {
+                    Message.error("修改失败");
                 }
             }
-            if (index !== -1) {
-                collections[index].webUrl = e.target.value;
-
-                localStorage.setItem("collections", JSON.stringify(collections));
-
-                collectionData.value = collections;
-                collectionSize.value = collections.length;
-                Message.success("修改成功");
-            } else {
-                Message.error("修改失败");
-            }
-        }
+        });
     } else {
         Message.warning("链接地址不能为空");
     }
@@ -347,37 +330,37 @@ function editModalCancelBtnOnClick() {
 }
 
 function removeBtnOnClick(item) {
-    let collections = [];
-    let tempCollections = localStorage.getItem("collections");
-    if (tempCollections) {
-        collections = JSON.parse(tempCollections);
-        let index = -1;
-        for (let i = 0; i < collections.length; i++) {
-            if (item.timeStamp === collections[i].timeStamp) {
-                index = i;
-                break;
+    getExtensionStorage("collections", null).then((collections) => {
+        if (collections) {
+            let index = -1;
+            for (let i = 0; i < collections.length; i++) {
+                if (item.timeStamp === collections[i].timeStamp) {
+                    index = i;
+                    break;
+                }
             }
-        }
-        if (index !== -1) {
-            collections.splice(index, 1);
-        }
-        localStorage.setItem("collections", JSON.stringify(collections));
+            if (index !== -1) {
+                collections.splice(index, 1);
+            }
+            setExtensionStorage("collections", collections);
 
-        collectionData.value = collections;
-        collectionSize.value = collections.length;
-        Message.success("删除成功");
-    }
+            collectionData.value = collections;
+            collectionSize.value = collections.length;
+            Message.success("删除成功");
+        }
+    });
 }
 
 function removeAllBtnOnClick() {
-    let tempCollections = localStorage.getItem("collections");
-    if (tempCollections) {
-        localStorage.removeItem("collections");
+    getExtensionStorage("collections", null).then((collections) => {
+        if (collections) {
+            removeExtensionStorage("collections");
 
-        collectionData.value = [];
-        collectionSize.value = 0;
-        Message.success("删除成功");
-    }
+            collectionData.value = [];
+            collectionSize.value = 0;
+            Message.success("删除成功");
+        }
+    });
 }
 
 </script>
