@@ -1,7 +1,8 @@
 import {
     colorRegExp, darkColors,
     defaultPreferenceData,
-    lightColors, browserType
+    lightColors,
+    // browserType
 } from "@/javascripts/publicConstants";
 import "jquery-color"
 

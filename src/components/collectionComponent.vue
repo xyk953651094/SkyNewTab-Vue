@@ -58,7 +58,7 @@
     </a-row>
     <a-modal v-model:visible="displayAddModal" :closable="false"
              :mask-style="{backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'}"
-             :onBeforeOk="addModalBeforeOk" unmount-on-close
+             unmount-on-close
              @cancel="addModalCancelBtnOnClick" @ok="addModalOkBtnOnClick">
         <template #title>
             <a-row :style="{width: '100%'}" align="center">
@@ -172,14 +172,10 @@ let collectionSize = ref(0);
 let collectionMaxSize = ref(5);
 
 onMounted(() => {
-    let collections = [];
-    let tempCollections = localStorage.getItem("collections");
-
-    if (tempCollections) {
-        collections = JSON.parse(tempCollections);
+    getExtensionStorage("collections", []).then((collections) => {
         collectionData.value = collections;
         collectionSize.value = collections.length;
-    }
+    });
 })
 
 watch(() => props.themeColor, (newValue, oldValue) => {
@@ -202,37 +198,10 @@ function collectionBtnOnClick(item) {
 
 // 添加导航弹窗
 function showAddModalBtnOnClick() {
-    getExtensionStorage("collections", []).then((collections) => {
-        if (collections.length < collectionMaxSize.value) {
-            displayAddModal.value = true
-        } else {
-            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
-        }
-    });
-}
-
-function addModalBeforeOk() {
-    let webName = $("#webNameInput").children("input").val();
-    let webUrl = $("#webUrlInput").children("input").val();
-    if (webName && webUrl && webName.length > 0 && webUrl.length > 0) {
-        getExtensionStorage("collections", []).then((collections) => {
-            if (collections.length < collectionMaxSize.value) {
-                let urlRegExp = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]", "g");
-                if (urlRegExp.exec(webUrl) === null) {
-                    Message.error("链接地址格式错误");
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            } else {
-                Message.error("链接数量最多为" + collectionMaxSize.value + "个");
-                return false;
-            }
-        });
+    if (collectionData.value.length < collectionMaxSize.value) {
+        displayAddModal.value = true
     } else {
-        Message.error("表单不能为空");
-        return false;
+        Message.error("链接数量最多为" + collectionMaxSize.value + "个");
     }
 }
 
@@ -240,15 +209,26 @@ function addModalOkBtnOnClick() {
     let webName = $("#webNameInput").children("input").val();
     let webUrl = $("#webUrlInput").children("input").val();
 
-    getExtensionStorage("collections", []).then((collections) => {
-        collections.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
-        setExtensionStorage("collections", collections);
+    if (webName && webUrl && webName.length > 0 && webUrl.length > 0) {
+        if (collectionData.value.length < collectionMaxSize.value) {
+            let urlRegExp = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]", "g");
+            if (urlRegExp.exec(webUrl) === null) {
+                Message.error("链接地址格式错误");
+            }
+            else {
+                collectionData.value.push({"webName": webName, "webUrl": webUrl, "timeStamp": Date.now()});
+                setExtensionStorage("collections", collectionData.value);
 
-        displayAddModal.value = false;
-        collectionData.value = collections;
-        collectionSize.value = collections.length;
-        Message.success("添加成功");
-    });
+                displayAddModal.value = false;
+                collectionSize.value = collectionData.value.length;
+                Message.success("添加成功");
+            }
+        } else {
+            Message.error("链接数量最多为" + collectionMaxSize.value + "个");
+        }
+    } else {
+        Message.error("表单不能为空");
+    }
 }
 
 function addModalCancelBtnOnClick() {
@@ -257,36 +237,28 @@ function addModalCancelBtnOnClick() {
 
 // 编辑导航弹窗
 function showEditModalBtnOnClick() {
-    getExtensionStorage("collections", []).then((collections) => {
-        displayEditModal.value = true;
-        collectionData.value = collections;
-    });
+    displayEditModal.value = true;
 }
 
 function editNameInputOnPressEnter(item, e) {
     if (e.target.value.length > 0) {
-        getExtensionStorage("collections", null).then((collections) => {
-            if (collections) {
-                let index = -1;
-                for (let i = 0; i < collectionData.value.length; i++) {
-                    if (item.timeStamp === collectionData.value[i].timeStamp) {
-                        index = i;
-                        break;
-                    }
-                }
-                if (index !== -1) {
-                    collections[index].webName = e.target.value;
-
-                    setExtensionStorage("collections", collections);
-
-                    collectionData.value = collections;
-                    collectionSize.value = collections.length;
-                    Message.success("修改成功");
-                } else {
-                    Message.error("修改失败");
-                }
+        let index = -1;
+        for (let i = 0; i < collectionData.value.length; i++) {
+            if (item.timeStamp === collectionData.value[i].timeStamp) {
+                index = i;
+                break;
             }
-        });
+        }
+        if (index !== -1) {
+            collectionData.value[index].webName = e.target.value;
+
+            setExtensionStorage("collections", collectionData.value);
+
+            collectionSize.value = collectionData.value.length;
+            Message.success("修改成功");
+        } else {
+            Message.error("修改失败");
+        }
     } else {
         Message.warning("链接名称不能为空");
     }
@@ -294,28 +266,23 @@ function editNameInputOnPressEnter(item, e) {
 
 function editUrlInputOnPressEnter(item, e) {
     if (e.target.value.length > 0) {
-        getExtensionStorage("collections", null).then((collections) => {
-            if (collections) {
-                let index = -1;
-                for (let i = 0; i < collectionData.value.length; i++) {
-                    if (item.timeStamp === collectionData.value[i].timeStamp) {
-                        index = i;
-                        break;
-                    }
-                }
-                if (index !== -1) {
-                    collections[index].webUrl = e.target.value;
-
-                    setExtensionStorage("collections", collections);
-
-                    collectionData.value = collections;
-                    collectionSize.value = collections.length;
-                    Message.success("修改成功");
-                } else {
-                    Message.error("修改失败");
-                }
+        let index = -1;
+        for (let i = 0; i < collectionData.value.length; i++) {
+            if (item.timeStamp === collectionData.value[i].timeStamp) {
+                index = i;
+                break;
             }
-        });
+        }
+        if (index !== -1) {
+            collectionData.value[index].webUrl = e.target.value;
+
+            setExtensionStorage("collections", collectionData.value);
+
+            collectionSize.value = collectionData.value.length;
+            Message.success("修改成功");
+        } else {
+            Message.error("修改失败");
+        }
     } else {
         Message.warning("链接地址不能为空");
     }
@@ -330,37 +297,28 @@ function editModalCancelBtnOnClick() {
 }
 
 function removeBtnOnClick(item) {
-    getExtensionStorage("collections", null).then((collections) => {
-        if (collections) {
-            let index = -1;
-            for (let i = 0; i < collections.length; i++) {
-                if (item.timeStamp === collections[i].timeStamp) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index !== -1) {
-                collections.splice(index, 1);
-            }
-            setExtensionStorage("collections", collections);
-
-            collectionData.value = collections;
-            collectionSize.value = collections.length;
-            Message.success("删除成功");
+    let index = -1;
+    for (let i = 0; i < collectionData.value.length; i++) {
+        if (item.timeStamp === collectionData.value[i].timeStamp) {
+            index = i;
+            break;
         }
-    });
+    }
+    if (index !== -1) {
+        collectionData.value.splice(index, 1);
+    }
+    setExtensionStorage("collections", collectionData.value);
+
+    collectionSize.value = collectionData.value.length;
+    Message.success("删除成功");
 }
 
 function removeAllBtnOnClick() {
-    getExtensionStorage("collections", null).then((collections) => {
-        if (collections) {
-            removeExtensionStorage("collections");
+    removeExtensionStorage("collections");
 
-            collectionData.value = [];
-            collectionSize.value = 0;
-            Message.success("删除成功");
-        }
-    });
+    collectionData.value = [];
+    collectionSize.value = 0;
+    Message.success("删除成功");
 }
 
 </script>
