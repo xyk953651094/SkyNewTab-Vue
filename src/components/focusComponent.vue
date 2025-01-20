@@ -11,7 +11,7 @@
                       size="large"
                       type="primary">
                 <template #icon>
-                    <i :class="focusMode ? 'bi bi-cup-hot-fill' : 'bi bi-cup-hot'"></i>
+                    <i :class="focusMode ? 'bi bi-cup-hot' : 'bi bi-cup'"></i>
                 </template>
                 {{ focusMode ? "专注中" : "未专注" }}
             </a-button>
