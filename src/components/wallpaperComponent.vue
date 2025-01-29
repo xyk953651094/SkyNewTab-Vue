@@ -11,6 +11,7 @@
     </a-image>
     <canvas id="backgroundCanvas" :style="{display: displayCanvas}" class="backgroundCanvas"/>
     <div id="backgroundMask" :style="{display: preferenceData.nightMode ? 'block' : 'none'}" class="backgroundMask zIndexMiddle"/>
+    <div id="backgroundBlur" :style="{display: preferenceData.blurMode ? 'block' : 'none'}" class="backgroundBlur zIndexMiddle"/>
 </template>
 
 <script setup>
