@@ -3,7 +3,7 @@
         <a-popover
             :arrow-style="{backgroundColor: backgroundColor, border: '1px solid' + backgroundColor}"
             :content-style="{ backgroundColor: backgroundColor, color: fontColor, border: 'none' }"
-            :style="{width: '550px'}"
+            :style="{width: '600px'}"
             position="br"
         >
             <a-button id="focusBtn" :shape="preferenceData.buttonShape" :style="{cursor: 'default', display: display}"
@@ -11,7 +11,7 @@
                       size="large"
                       type="primary">
                 <template #icon>
-                    <i :class="focusMode ? 'bi bi-cup-hot-fill' : 'bi bi-cup-hot'"></i>
+                    <i :class="focusMode ? 'bi bi-cup-hot' : 'bi bi-cup'"></i>
                 </template>
                 {{ focusMode ? "专注中" : "未专注" }}
             </a-button>
@@ -35,7 +35,7 @@
                                 <template #icon>
                                     <icon-plus/>
                                 </template>
-                                {{ "添加黑名单" }}
+                                {{ "添加名单" }}
                             </a-button>
                             <a-button :shape="preferenceData.buttonShape"
                                       :style="{color: fontColor}" type="text"
@@ -74,7 +74,7 @@
                             </a-button>
                         </template>
                     </a-list-item>
-                    <template #header>
+                    <template #footer>
                         <a-space>
                             <a-select v-model="focusSound" :style="{width:'160px'}" @change="focusSoundSelectOnChange">
                                 <a-option value="none">{{ "不播放白噪音" }}</a-option>
@@ -109,7 +109,7 @@
             <a-row :style="{width: '100%'}" align="center">
                 <a-col :span="12">
                     <a-typography-text :style="{color: fontColor}">
-                        {{ "添加黑名单 " + filterList.length + " / " + focusMaxSize }}
+                        {{ "添加名单 " + filterList.length + " / " + focusMaxSize }}
                     </a-typography-text>
                 </a-col>
                 <a-col :span="12" :style="{textAlign: 'right'}">
@@ -123,7 +123,7 @@
                          maxLength=30 show-word-limit allow-clear/>
                 <template #extra>
                     <a-typography-text :style="{color: fontColor}">
-                        {{"开启专注模式后，访问黑名单中的域名时将自动跳转至本插件"}}
+                        {{"开启专注模式后，访问名单中的域名时将自动跳转至本插件"}}
                     </a-typography-text>
                 </template>
             </a-form-item>
@@ -137,10 +137,9 @@ import {
     btnMouseOut,
     btnMouseOver,
     changeThemeColor,
-    getBrowserType,
     getTimeDetails
 } from "@/javascripts/publicFunctions";
-import {defaultPreferenceData} from "@/javascripts/publicConstants";
+import {defaultPreferenceData, browserType} from "@/javascripts/publicConstants";
 import {IconDelete, IconPlus, IconStop} from "@arco-design/web-vue/es/icon";
 import {Message} from "@arco-design/web-vue";
 import focusSoundOne from "../assets/focusSounds/古镇雨滴.mp3";
@@ -183,7 +182,6 @@ let focusPeriod = ref("manual");
 let focusEndTime = ref("未开启专注模式");
 let focusSound = ref("none");
 const focusMaxSize = 10;
-const browserType = getBrowserType();
 
 onMounted(() => {
     // 初始化专注模式开启状态
@@ -268,13 +266,16 @@ watch(() => props.preferenceData.simpleMode, (newValue, oldValue) => {
 }, {immediate: true})
 
 function setExtensionStorage(key, value) {
-    // console.log(browserType + " " + key + " " + value);
-    if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
-        chrome.storage.local.set({[key]: value});
-    }
-    else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
-        browser.storage.local.set({[key]: value});
-    }
+    console.log(browserType + " " + key + " " + value);
+    // try {
+    //     if (["Chrome", "Edge"].indexOf(browserType) !== -1) {
+    //         chrome.storage.local.set({[key]: value});
+    //     } else if (["Firefox", "Safari"].indexOf(browserType) !== -1) {
+    //         browser.storage.local.set({[key]: value});
+    //     }
+    // } catch (error) {
+    //     console.error("Error writing to localStorage:", error);
+    // }
 }
 
 function focusModeSwitchOnChange(checked) {
@@ -282,7 +283,7 @@ function focusModeSwitchOnChange(checked) {
     let tempFocusEndTimeStamp;
     if (checked) {
         if (filterList.value.length === 0) {
-            Message.warning("请添加黑名单");
+            Message.warning("请先添加名单");
         }
 
         if (focusPeriod.value === "manual") {

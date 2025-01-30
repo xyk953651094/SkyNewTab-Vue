@@ -24,7 +24,7 @@
             <template #icon>
                 <icon-info-circle/>
             </template>
-            {{"版本：V" + require('../../package.json').version}}
+            {{"V" + require('../../package.json').version}}
         </a-button>
     </a-space>
 </template>

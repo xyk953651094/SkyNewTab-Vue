@@ -196,6 +196,18 @@
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
+                    <a-form-item field="nightMode" label="模糊背景" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
+                        <a-switch v-model="preferenceData.blurMode" id="blurModeSwitch" @change="blurModeSwitchOnChange">
+                            <template #checked>
+                                已开启
+                            </template>
+                            <template #unchecked>
+                                已关闭
+                            </template>
+                        </a-switch>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
                     <a-form-item field="noImageMode" label="纯色模式" :style="{display: ['iPhone', 'Android'].indexOf(device) === -1 ? 'flex' : 'none'}">
                         <a-switch v-model="preferenceData.noImageMode" id="noImageModeSwitch" @change="noImageModeSwitchOnChange">
                             <template #checked>
@@ -597,6 +609,20 @@ function nightModeSwitchOnChange(checked) {
     }
 
     // resetSwitchColor("#nightModeSwitch", checked, props.hoverColor);
+}
+
+function blurModeSwitchOnChange(checked) {
+    preferenceData.value.blurMode = checked;
+    localStorage.setItem("preferenceData", JSON.stringify(preferenceData.value));
+    emit("preferenceData", preferenceData.value);
+
+    if (checked) {
+        Message.success("已开启模糊背景");
+    } else {
+        Message.success("已关闭模糊背景");
+    }
+
+    // resetSwitchColor("#blurModeSwitch", checked, props.hoverColor);
 }
 
 function noImageModeSwitchOnChange(checked) {
